@@ -12,6 +12,8 @@ We'd love to hear from you. Whether you're interested in collaboration, have que
 
 **Email:** [NCerbone@civicos-institute.org](mailto:NCerbone@civicos-institute.org)
 
+**Phone:** 561-287-3579
+
 **Address:**  
 CivicOS Institute  
 4884 Beresford Circle  
