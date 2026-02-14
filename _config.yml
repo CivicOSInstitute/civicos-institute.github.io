@@ -1,0 +1,49 @@
+# Site settings
+title: CivicOS Institute
+description: >- 
+  A nonprofit research organization dedicated to civic technology, 
+  open data systems, and digital public infrastructure.
+baseurl: ""
+url: "https://civicos-institute.org"
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Author information
+author:
+  name: Nicholas A. Cerbone
+  email: NCerbone@civicos-institute.org
+
+# Social links
+social:
+  github: CivicOSInstitute
+  # Add other social links as needed
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: About
+    url: /about/
+  - title: Research
+    url: /research/
+  - title: Contact
+    url: /contact/
+
+# Google Analytics (add ID after setup)
+# google_analytics: UA-XXXXXXXX-X
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md

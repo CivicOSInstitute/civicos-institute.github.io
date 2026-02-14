@@ -1,0 +1,56 @@
+---
+layout: default
+title: Contact
+permalink: /contact/
+---
+
+# Contact Us
+
+We'd love to hear from you. Whether you're interested in collaboration, have questions about our work, or want to support our mission, please reach out.
+
+## General Inquiries
+
+**Email:** [NCerbone@civicos-institute.org](mailto:NCerbone@civicos-institute.org)
+
+**Address:**  
+CivicOS Institute  
+4884 Beresford Circle  
+West Palm Beach, FL 33417
+
+## Connect With Us
+
+- **GitHub:** [github.com/CivicOSInstitute](https://github.com/CivicOSInstitute)
+- **GoFundMe:** [Support Our Work](https://www.gofundme.com/f/ac3c30ee)
+
+## How Can We Help?
+
+### For Researchers
+Interested in collaborating on civic technology research? Let's discuss how we can work together.
+
+### For Policymakers
+Looking for expertise on civic technology implementation or policy? We can provide research-based guidance.
+
+### For Technologists
+Want to contribute to open-source civic technology projects? Check out our GitHub repositories.
+
+### For Funders
+Interested in supporting nonprofit civic technology research? Let's discuss how your investment can advance the public interest.
+
+### For Media
+Seeking expert commentary on civic technology, open government, or digital public infrastructure? We're available for interviews.
+
+## Response Time
+
+We aim to respond to all inquiries within 2-3 business days. Thank you for your patience.
+
+---
+
+## Mailing List
+
+*Coming soon:* Subscribe to our newsletter for updates on our research, publications, and events.
+
+---
+
+<p style="text-align: center; margin-top: 40px;">
+  <a href="mailto:NCerbone@civicos-institute.org" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 40px;">Email Us</a>
+</p>

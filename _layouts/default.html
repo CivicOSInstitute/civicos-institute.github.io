@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+    {% feed_meta %}
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrapper">
+            <a class="site-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+            <nav class="site-nav">
+                {% for item in site.navigation %}
+                    <a class="page-link" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            {{ content }}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col">
+                    <h2 class="footer-heading">{{ site.title | escape }}</h2>
+                    <p>{{ site.description | escape }}</p>
+                </div>
+                <div class="footer-col">
+                    <p>
+                        <strong>Contact:</strong><br>
+                        {{ site.author.name }}<br>
+                        <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a><br>
+                        4884 Beresford Circle<br>
+                        West Palm Beach, FL 33417
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p>
+                        <strong>Follow Us:</strong><br>
+                        <a href="https://github.com/{{ site.social.github }}">GitHub</a><br>
+                        <a href="https://www.gofundme.com/f/ac3c30ee">Support Our Work</a>
+                    </p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; {{ site.time | date: '%Y' }} {{ site.title | escape }}. All rights reserved.
+                <br>A Florida nonprofit corporation in formation. 501(c)(3) status pending.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
