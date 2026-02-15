@@ -6,7 +6,6 @@ title: Home
 <section class="hero">
   <div class="wrapper">
     <img src="/assets/images/logo.png" alt="CivicOS Institute Logo" style="max-height: 120px; width: auto; margin-bottom: 20px;">
-    <h1>CivicOS Institute</h1>
     <p class="tagline">
       Advancing civic technology, open data, and digital public infrastructure 
       for more transparent, accountable, and accessible democratic institutions.
