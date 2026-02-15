@@ -14,6 +14,9 @@ title: Home
       <a href="/about/" class="btn">Learn More</a>
       <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary" style="margin-left: 15px;">Support Our Work</a>
     </p>
+    <p style="margin-top: 20px;">
+      <a href="https://x.com/CivicOSinstitut" style="color: #666; text-decoration: none;">Follow us on X</a>
+    </p>
   </div>
 </section>
 

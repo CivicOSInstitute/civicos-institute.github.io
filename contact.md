@@ -22,6 +22,7 @@ West Palm Beach, FL 33417
 ## Connect With Us
 
 - **GitHub:** [github.com/CivicOSInstitute](https://github.com/CivicOSInstitute)
+- **X (Twitter):** [@CivicOSinstitut](https://x.com/CivicOSinstitut)
 - **GoFundMe:** [Support Our Work](https://www.gofundme.com/f/help-launch-the-civicos-institute)
 
 ## How Can We Help?
