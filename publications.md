@@ -84,7 +84,7 @@ CivicOS Institute collaborates with:
 
 Be the first to receive our white papers, policy briefs, and research findings.
 
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+<form action="https://formspree.io/f/mbdaobda" method="POST">
   <label>
     Email:
     <input type="email" name="email" required placeholder="you@example.com">

@@ -43,7 +43,7 @@ title: Home
     <span class="close" onclick="closeNewsletterModal()">&times;</span>
     <h3>Subscribe to Our Newsletter</h3>
     <p>Get weekly updates delivered to your inbox.</p>
-    <form id="newsletterForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <form id="newsletterForm" action="https://formspree.io/f/mbdaobda" method="POST">
       <input type="email" name="email" placeholder="Enter your email" required class="form-input">
       <input type="text" name="name" placeholder="Your name (optional)" class="form-input">
       <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
