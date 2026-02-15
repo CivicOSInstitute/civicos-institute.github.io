@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Publications & Research
+permalink: /publications/
 ---
 
 # Publications & Research
