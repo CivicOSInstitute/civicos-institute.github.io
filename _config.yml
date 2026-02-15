@@ -31,6 +31,8 @@ navigation:
     url: /about/
   - title: Research
     url: /research/
+  - title: News
+    url: /news.html
   - title: Contact
     url: /contact/
 
