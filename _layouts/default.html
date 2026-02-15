@@ -59,6 +59,19 @@
                     </p>
                 </div>
             </div>
+            <div class="footer-nav" style="text-align: center; padding: 20px 0; border-top: 1px solid #eee; margin-top: 20px;">
+                <p style="margin-bottom: 10px;">
+                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Back to Top</a>
+                </p>
+                <p style="margin-bottom: 10px;">
+                    <a href="{{ '/' | relative_url }}">Home</a> |
+                    <a href="{{ '/about/' | relative_url }}">About</a> |
+                    <a href="{{ '/publications/' | relative_url }}">Publications</a> |
+                    <a href="{{ '/research/' | relative_url }}">Research</a> |
+                    <a href="{{ '/news.html' | relative_url }}">News</a> |
+                    <a href="{{ '/contact/' | relative_url }}">Contact</a>
+                </p>
+            </div>
             <div class="copyright">
                 &copy; {{ site.time | date: '%Y' }} {{ site.title | escape }}. All rights reserved.
                 <br>A Florida nonprofit corporation in formation. 501(c)(3) status pending.
