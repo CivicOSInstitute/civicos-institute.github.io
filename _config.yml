@@ -29,6 +29,8 @@ navigation:
     url: /
   - title: About
     url: /about/
+  - title: Publications
+    url: /publications/
   - title: Research
     url: /research/
   - title: News
