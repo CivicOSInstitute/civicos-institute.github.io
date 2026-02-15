@@ -7,12 +7,16 @@
     <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
     <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+    <link rel="icon" type="image/png" href="{{ "/assets/images/logo.png" | relative_url }}">
     {% feed_meta %}
 </head>
 <body>
     <header class="site-header">
         <div class="wrapper">
-            <a class="site-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+            <a class="site-title" href="{{ "/" | relative_url }}" style="display: flex; align-items: center; gap: 10px;">
+                <img src="{{ "/assets/images/logo.png" | relative_url }}" alt="CivicOS Institute Logo" style="height: 40px; width: auto;">
+                <span>{{ site.title | escape }}</span>
+            </a>
             <nav class="site-nav">
                 {% for item in site.navigation %}
                     <a class="page-link" href="{{ item.url | relative_url }}">{{ item.title }}</a>
@@ -31,7 +35,10 @@
         <div class="wrapper">
             <div class="footer-col-wrapper">
                 <div class="footer-col">
-                    <h2 class="footer-heading">{{ site.title | escape }}</h2>
+                    <h2 class="footer-heading" style="display: flex; align-items: center; gap: 10px;">
+                        <img src="{{ "/assets/images/logo.png" | relative_url }}" alt="CivicOS Institute Logo" style="height: 30px; width: auto;">
+                        {{ site.title | escape }}
+                    </h2>
                     <p>{{ site.description | escape }}</p>
                 </div>
                 <div class="footer-col">
