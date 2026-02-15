@@ -11,11 +11,11 @@ title: Home
       for more transparent, accountable, and accessible democratic institutions.
     </p>
     <p style="margin-top: 30px;">
-      <a href="/about/" class="btn">Learn More</a>
-      <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary" style="margin-left: 15px;">Support Our Work</a>
+      <a href="/about/" class="btn" style="border: 2px solid #fff;">Learn More</a>
+      <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary" style="margin-left: 15px; border: 2px solid #fff;">Support Our Work</a>
     </p>
     <p style="margin-top: 20px;">
-      <a href="https://x.com/CivicOSinstitut" class="btn" style="background: #000; color: #fff;">Follow us on X</a>
+      <a href="https://x.com/CivicOSinstitut" class="btn" style="background: #000; color: #fff; border: 2px solid #fff;">Follow us on X</a>
     </p>
   </div>
 </section>
