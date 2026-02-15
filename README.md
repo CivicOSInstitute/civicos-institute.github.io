@@ -4,18 +4,18 @@
 
 Official website for CivicOS Institute, a nonprofit research organization dedicated to civic technology, open data systems, and digital public infrastructure.
 
-## 🌐 Live Site
+## Live Site
 
 **URL:** https://civicos-institute.org
 
-## 🏗️ Built With
+## Built With
 
 - **Jekyll** - Static site generator
 - **GitHub Pages** - Hosting
 - **Minima Theme** - Base theme with custom styling
 - **SCSS** - Custom styles
 
-## 📁 Structure
+## Structure
 
 ```
 .
@@ -33,7 +33,7 @@ Official website for CivicOS Institute, a nonprofit research organization dedica
 └── README.md            # This file
 ```
 
-## 🚀 Local Development
+## Local Development
 
 1. **Install dependencies:**
    ```bash
@@ -47,7 +47,7 @@ Official website for CivicOS Institute, a nonprofit research organization dedica
 
 3. **View at:** http://localhost:4000
 
-## 📝 Content Updates
+## Content Updates
 
 To update content, edit the Markdown files:
 - `index.md` - Homepage
@@ -57,19 +57,19 @@ To update content, edit the Markdown files:
 
 Changes pushed to the `main` branch will automatically deploy to the live site.
 
-## 🎨 Customization
+## Customization
 
 - Edit `_config.yml` for site settings
 - Modify `assets/css/style.scss` for styling
 - Update `_layouts/default.html` for structure
 
-## 📄 License
+## License
 
 Content: © 2025 CivicOS Institute
 
 Code: MIT License
 
-## 🤝 Contributing
+## Contributing
 
 This is the official website repository for CivicOS Institute. For corrections or suggestions, please open an issue or contact us at NCerbone@civicos-institute.org.
 

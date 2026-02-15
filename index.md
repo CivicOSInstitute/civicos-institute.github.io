@@ -19,7 +19,7 @@ title: Home
 
 <section class="latest-news">
   <div class="wrapper">
-    <h2>📰 Latest in GovTech & AI Policy</h2>
+    <h2>Latest in GovTech & AI Policy</h2>
     <div id="top-stories">
       <div class="loading-small">Loading...</div>
     </div>
@@ -31,7 +31,7 @@ title: Home
 
 <section class="newsletter-section">
   <div class="wrapper">
-    <h2>📬 Stay in the Loop</h2>
+    <h2>Stay in the Loop</h2>
     <p class="newsletter-tagline">Weekly insights on how technology is reshaping public institutions — plus updates on our work to make government work better for everyone.</p>
     <button class="btn btn-primary" onclick="openNewsletterModal()">Subscribe to Our Newsletter</button>
   </div>
@@ -67,7 +67,7 @@ title: Home
   
   <div class="focus-grid">
     <div class="focus-card">
-      <h3>🔍 Research</h3>
+      <h3>Research</h3>
       <p>
         Conducting cutting-edge research in civic technology, open data systems, 
         and digital public infrastructure to inform policy and practice.
@@ -75,7 +75,7 @@ title: Home
     </div>
     
     <div class="focus-card">
-      <h3>💻 Open Source</h3>
+      <h3>Open Source</h3>
       <p>
         Developing and maintaining open-source software platforms that enable 
         civic engagement, transparency, and democratic participation.
@@ -83,7 +83,7 @@ title: Home
     </div>
     
     <div class="focus-card">
-      <h3>📚 Education</h3>
+      <h3>Education</h3>
       <p>
         Educating the public, policymakers, and technologists on best practices 
         in civic technology and open government standards.
@@ -91,7 +91,7 @@ title: Home
     </div>
     
     <div class="focus-card">
-      <h3>🤝 Collaboration</h3>
+      <h3>Collaboration</h3>
       <p>
         Partnering with public sector entities, academic institutions, and civil 
         society to improve civic systems and democratic institutions.
