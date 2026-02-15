@@ -51,11 +51,11 @@ Practical, no-code approaches to using AI for transparency, accessibility, and c
 
 ---
 
-### Chattanooga's Gig City: Lessons for Civic Tech
+### Open Data Standards for Municipal Transparency
 **Expected:** May 2026  
-**Type:** Case Study
+**Type:** Technical White Paper
 
-An in-depth analysis of Chattanooga's municipal broadband innovation, featuring insights from former CIO Brent Messer. Examines what worked, what didn't, and replicability frameworks for other cities.
+A comparative analysis of existing open data standards (Socrata, CKAN, Open311) and recommendations for municipal implementation. Includes cost-benefit analysis and migration pathways for legacy systems.
 
 **Get early access:** [Subscribe to our newsletter](#newsletter)
 
