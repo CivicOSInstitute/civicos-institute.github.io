@@ -51,7 +51,9 @@ Our governance documents are available upon request and will be published on thi
 ### Nicholas A. Cerbone
 **Founder & Executive Director**
 
-Nicholas founded CivicOS Institute to advance the use of technology in strengthening democratic institutions. He brings expertise in [background] and a commitment to open government and civic innovation.
+I founded the CivicOS Institute because I've seen firsthand how difficult it is for residents to navigate local government systems that were never designed for modern life. From permits to public records to essential services, families and small businesses lose time, money, and opportunities simply because the tools are outdated.
+
+After years of working on community-focused problem-solving and municipal research, I realized the only way to fix this is to build a dedicated nonprofit whose sole mission is to modernize civic infrastructure in a responsible, transparent, and publicly accountable way.
 
 *Full team bios coming soon.*
 
