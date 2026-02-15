@@ -73,7 +73,7 @@ CivicOS Institute relies on the generosity of donors who share our vision for be
 - Educate policymakers and the public
 - Build communities of practice
 
-<a href="https://www.gofundme.com/f/ac3c30ee" class="btn btn-primary">Donate via GoFundMe</a>
+<a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary">Donate via GoFundMe</a>
 
 ## Contact
 

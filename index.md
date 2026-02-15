@@ -12,7 +12,7 @@ title: Home
     </p>
     <p style="margin-top: 30px;">
       <a href="/about/" class="btn">Learn More</a>
-      <a href="https://www.gofundme.com/f/ac3c30ee" class="btn btn-primary" style="margin-left: 15px;">Support Our Work</a>
+      <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary" style="margin-left: 15px;">Support Our Work</a>
     </p>
   </div>
 </section>

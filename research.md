@@ -120,4 +120,4 @@ Research requires resources. Your support enables us to:
 - Publish findings openly
 - Support emerging researchers
 
-<a href="https://www.gofundme.com/f/ac3c30ee" class="btn btn-primary">Support Our Research</a>
+<a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" class="btn btn-primary">Support Our Research</a>
