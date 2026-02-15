@@ -10,7 +10,7 @@ CivicOS Institute produces research, technical specifications, and policy analys
 
 ---
 
-## 📄 Technical Specifications
+## Technical Specifications
 
 ### Open Civic Specifications v2.0
 **Published:** November 2025  
@@ -29,7 +29,7 @@ The foundational technical specification for the CivicOS ecosystem. Defines open
 
 ---
 
-## 📋 White Papers (Coming Soon)
+## White Papers (Coming Soon)
 
 ### The Cost of Opaque Government: A Florida Case Study
 **Expected:** March 2026  
@@ -61,13 +61,13 @@ A comparative analysis of existing open data standards (Socrata, CKAN, Open311) 
 
 ---
 
-## 📰 Commentary & Op-Eds
+## Commentary & Op-Eds
 
 *Watch this space for published commentary on civic technology, government transparency, and open-source infrastructure.*
 
 ---
 
-## 🔬 Research Partnerships
+## Research Partnerships
 
 CivicOS Institute collaborates with:
 - Academic institutions studying civic technology
@@ -78,7 +78,7 @@ CivicOS Institute collaborates with:
 
 ---
 
-## 📬 Get Research Updates
+## Get Research Updates
 
 ### Newsletter Signup
 
@@ -117,7 +117,7 @@ Be the first to receive our white papers, policy briefs, and research findings.
 
 ---
 
-## 📁 Open Source
+## Open Source
 
 All CivicOS Institute research and specifications are open source:
 
