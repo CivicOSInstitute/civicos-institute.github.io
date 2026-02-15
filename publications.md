@@ -19,7 +19,7 @@ CivicOS Institute produces research, technical specifications, and policy analys
 
 The foundational technical specification for the CivicOS ecosystem. Defines open standards for civic interoperability, workflow architectures, and the Logos Engine reference framework.
 
-[View on GitHub](https://github.com/CivicOSInstitute/open-civic-specs) | [Download PDF](#)
+[View on GitHub](https://github.com/CivicOSInstitute/open-civic-specs)
 
 **Key Topics:**
 - Civic data interoperability standards
