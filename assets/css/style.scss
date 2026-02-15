@@ -102,12 +102,13 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Buttons */
+/* Buttons - Force white text to override link styles */
+a.btn,
 .btn {
   display: inline-block;
   padding: 12px 30px;
   background-color: var(--primary-color);
-  color: white;
+  color: white !important;
   border-radius: 5px;
   font-weight: 600;
   text-transform: uppercase;
@@ -115,20 +116,23 @@ a:hover {
   transition: background-color 0.3s;
 }
 
+a.btn:hover,
 .btn:hover {
   background-color: #c41e3a;
-  color: white;
+  color: white !important;
   text-decoration: none;
 }
 
+a.btn-primary,
 .btn-primary {
   background-color: #c41e3a;
-  color: white;
+  color: white !important;
 }
 
+a.btn-primary:hover,
 .btn-primary:hover {
   background-color: #a01830;
-  color: white;
+  color: white !important;
 }
 
 /* Mission Box */
