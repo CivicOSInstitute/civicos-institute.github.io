@@ -29,6 +29,8 @@ navigation:
     url: /
   - title: About
     url: /about/
+  - title: Governance
+    url: /governance/
   - title: Publications
     url: /publications/
   - title: Research
