@@ -29,6 +29,29 @@ title: Home
   </div>
 </section>
 
+<section class="newsletter-section">
+  <div class="wrapper">
+    <h2>📬 Stay in the Loop</h2>
+    <p class="newsletter-tagline">Weekly insights on how technology is reshaping public institutions — plus updates on our work to make government work better for everyone.</p>
+    <button class="btn btn-primary" onclick="openNewsletterModal()">Subscribe to Our Newsletter</button>
+  </div>
+</section>
+
+<!-- Newsletter Modal -->
+<div id="newsletterModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeNewsletterModal()">&times;</span>
+    <h3>Subscribe to Our Newsletter</h3>
+    <p>Get weekly updates delivered to your inbox.</p>
+    <form id="newsletterForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="Enter your email" required class="form-input">
+      <input type="text" name="name" placeholder="Your name (optional)" class="form-input">
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+    </form>
+    <p class="form-note">We respect your privacy. Unsubscribe anytime.</p>
+  </div>
+</div>
+
 <div class="wrapper">
   <div class="mission-box">
     <h2>Our Mission</h2>
@@ -173,6 +196,23 @@ async function loadTopStories() {
 }
 
 loadTopStories();
+
+// Newsletter Modal Functions
+function openNewsletterModal() {
+  document.getElementById('newsletterModal').style.display = 'block';
+}
+
+function closeNewsletterModal() {
+  document.getElementById('newsletterModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('newsletterModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
 </script>
 
 <style>
@@ -253,5 +293,99 @@ loadTopStories();
   .story-date {
     align-self: flex-start;
   }
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6e 100%);
+  color: white;
+  padding: 50px 0;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.newsletter-section h2 {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.newsletter-tagline {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto 25px auto;
+  line-height: 1.5;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+}
+
+.modal-content h3 {
+  color: #1e3a5f;
+  margin-top: 0;
+}
+
+.modal-content p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #1e3a5f;
+}
+
+.form-note {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 15px;
+  margin-bottom: 0;
 }
 </style>
