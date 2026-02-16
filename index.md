@@ -16,6 +16,7 @@ title: Home
     </p>
     <p style="margin-top: 20px;">
       <a href="https://x.com/CivicOSinstitut" class="btn" style="background: #000; color: #fff; border: 2px solid #fff; margin-right: 15px;">Follow us on X</a>
+      <a href="https://facebook.com/CivicOSInstitute" class="btn" style="background: #1877F2; color: #fff; border: 2px solid #fff; margin-right: 15px;">Follow on Facebook</a>
       <a href="https://discord.gg/tECtT9zeTT" class="btn" style="background: #5865F2; color: #fff; border: 2px solid #fff;">Join our Discord</a>
     </p>
   </div>
