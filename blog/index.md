@@ -26,4 +26,4 @@ This week, I've been thinking about infrastructure — not concrete and steel, b
 
 ---
 
-*Letters are published every Tuesday at 9:12 AM EST.*
+*Letters are published every Tuesday morning.*
