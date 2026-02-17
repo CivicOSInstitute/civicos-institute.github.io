@@ -10,7 +10,7 @@ permalink: /about/
 
 CivicOS Institute was founded on the belief that technology can and should serve the public interest. In an era of increasing digital transformation, democratic institutions need research-driven, open-source solutions that promote transparency, accountability, and citizen engagement.
 
-We are a Florida-based nonprofit corporation, established in 2025, with a mission to bridge the gap between civic needs and technological capability.
+CivicOS Institute was conceived in 2025 and officially formed as a Florida nonprofit corporation in February 2026. Our mission is to bridge the gap between civic needs and technological capability.
 
 ## Legal Status
 
