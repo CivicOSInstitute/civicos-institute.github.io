@@ -45,7 +45,7 @@ title: Home
 <section class="newsletter-section">
   <div class="wrapper">
     <h2>Stay in the Loop</h2>
-    <p class="newsletter-tagline">Weekly insights on how technology is reshaping public institutions — plus updates on our work to make government work better for everyone.</p>
+    <p class="newsletter-tagline">Weekly insights on how technology is reshaping public institutions, plus updates on our work to make government work better for everyone.</p>
     <button class="btn btn-primary" onclick="openNewsletterModal()">Subscribe to Our Newsletter</button>
   </div>
 </section>

@@ -29,7 +29,7 @@ We're developing technical specifications and standards for interoperability bet
 
 ### 2. Digital Public Infrastructure
 
-Researching the architecture, governance, and implementation of digital infrastructure that serves public needs—from identity systems to payment platforms to data registries.
+Researching the architecture, governance, and implementation of digital infrastructure that serves public needs, from identity systems to payment platforms to data registries.
 
 **Key Questions:**
 - What makes digital infrastructure genuinely "public"?
@@ -42,7 +42,7 @@ Researching the architecture, governance, and implementation of digital infrastr
 
 ### 3. Civic Engagement Platforms
 
-Exploring the design, implementation, and impact of technology platforms that facilitate citizen participation in governance—from public commenting to participatory budgeting to digital deliberation.
+Exploring the design, implementation, and impact of technology platforms that facilitate citizen participation in governance, from public commenting to participatory budgeting to digital deliberation.
 
 **Key Questions:**
 - What design patterns maximize inclusive participation?
