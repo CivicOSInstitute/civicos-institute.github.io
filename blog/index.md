@@ -14,7 +14,7 @@ Each Tuesday, the Director shares updates on CivicOS Institute's work, progress,
 
 **[Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/)**  
 *February 17, 2026*  
-This week at CivicOS Institute, we continue our work building the foundation for transparent, accountable civic technology. Board candidate outreach continues with website improvements and hybrid memory system implementation...
+This week, I've been thinking about infrastructure — not concrete and steel, but the invisible systems that determine whether technology serves democracy or undermines it. As AI becomes embedded in government decision-making, the governance frameworks we establish in the next 1,000 days will determine whether we get transparency and accountability or opaque algorithms making consequential decisions without public scrutiny.
 
 ---
 
@@ -22,7 +22,7 @@ This week at CivicOS Institute, we continue our work building the foundation for
 
 | Date | Title | Summary |
 |------|-------|---------|
-| Feb 17, 2026 | [Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/) | Board recruitment outreach, website automation, and hybrid memory system implementation. |
+| Feb 17, 2026 | [Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/) | On building the invisible infrastructure that determines whether AI serves democracy, and why the next 1,000 days are critical for establishing governance frameworks that prioritize transparency and accountability. |
 
 ---
 
