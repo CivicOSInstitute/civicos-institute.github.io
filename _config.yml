@@ -33,6 +33,8 @@ navigation:
     url: /about/
   - title: Letter from Director
     url: /letter-from-director/
+  - title: Blog
+    url: /blog/
   - title: Governance
     url: /governance/
   - title: Publications
