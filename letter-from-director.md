@@ -28,7 +28,7 @@ Our work focuses on three priorities:
 
 This is urgent work. The governance frameworks we establish in the next three years will determine whether AI becomes a tool for democratic renewal or a mechanism of algorithmic control. The defaults we set now will persist for decades. We cannot afford to get this wrong.
 
-I am asking for your support. CivicOS Institute is incorporated in Florida and has applied for 501(c)(3) status. We are assembling a board of directors with deep expertise in government, academia, and technology. And we are launching our first research projects this spring.
+I am asking for your support. CivicOS Institute has begun the formation process in Florida and is preparing to apply for 501(c)(3) status. We are assembling a board of directors with deep expertise in government, academia, and technology. And we are launching our first research projects this spring.
 
 If you believe, as I do, that democratic institutions deserve digital infrastructure as thoughtful and accountable as the people they serve, please join us. Contribute your expertise. Volunteer your time. Support our work financially. Or simply stay informed and help spread the word.
 
