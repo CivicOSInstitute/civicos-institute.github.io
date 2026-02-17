@@ -312,20 +312,57 @@ a.btn-primary:hover,
   }
 }
 
-/* Responsive */
+/* Mobile Navigation - Hamburger Menu */
+.mobile-menu-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2rem;
+  .mobile-menu-toggle {
+    display: block !important;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    color: var(--primary-color);
+    z-index: 100;
   }
   
   .site-nav {
-    float: none;
-    text-align: center;
-    margin-top: 10px;
+    display: none !important;
+    width: 100%;
+    flex-direction: column;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 15px;
+    padding: 15px 0;
+  }
+  
+  .site-nav.active {
+    display: flex !important;
   }
   
   .site-nav .page-link {
-    margin: 0 10px;
+    display: block;
+    padding: 12px 0;
+    margin: 0;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+    font-size: 1rem;
+    margin-left: 0;
+  }
+  
+  .site-nav .page-link:last-child {
+    border-bottom: none;
+  }
+  
+  .site-header .wrapper {
+    flex-wrap: wrap;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
   }
   
   /* Hero Section Buttons - Stack vertically on mobile */
@@ -358,5 +395,21 @@ a.btn-primary:hover,
   /* Reduce hero padding on mobile */
   .hero {
     padding: 50px 15px;
+  }
+}
+
+/* Desktop Navigation */
+@media (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+  
+  .site-nav {
+    display: flex !important;
+    flex-direction: row;
+  }
+  
+  .site-nav .page-link {
+    margin-left: 20px;
   }
 }
