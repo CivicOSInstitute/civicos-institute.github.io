@@ -1,3 +1,9 @@
+---
+layout: default
+title: Document Retention Policy
+permalink: /governance/document-retention-policy/
+---
+
 # Document Retention & Records Policy
 
 **Document Number:** 04  

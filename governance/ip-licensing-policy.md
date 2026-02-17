@@ -1,3 +1,9 @@
+---
+layout: default
+title: IP & Licensing Policy
+permalink: /governance/ip-licensing-policy/
+---
+
 # Intellectual Property & Licensing Policy
 
 **Document Number:** 05  

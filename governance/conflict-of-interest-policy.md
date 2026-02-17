@@ -1,4 +1,10 @@
 # CIVICOS INSTITUTE
+---
+layout: default
+title: Conflict of Interest Policy
+permalink: /governance/conflict-of-interest-policy/
+---
+
 # CONFLICT OF INTEREST POLICY
 
 ## PURPOSE

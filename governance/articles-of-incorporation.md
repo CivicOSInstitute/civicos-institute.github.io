@@ -1,3 +1,9 @@
+---
+layout: default
+title: Articles of Incorporation
+permalink: /governance/articles-of-incorporation/
+---
+
 ARTICLES OF INCORPORATION
 OF
 CIVICOS INSTITUTE

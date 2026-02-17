@@ -1,3 +1,9 @@
+---
+layout: default
+title: Data Privacy & Security Policy
+permalink: /governance/data-privacy-security-policy/
+---
+
 # Data, Privacy & Security Policy
 
 **Document Number:** 06  

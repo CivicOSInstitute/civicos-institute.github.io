@@ -1,3 +1,9 @@
+---
+layout: default
+title: Bylaws
+permalink: /governance/bylaws/
+---
+
 # CIVICOS INSTITUTE BYLAWS
 
 ## ARTICLE I: NAME AND PURPOSE

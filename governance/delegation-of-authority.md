@@ -1,4 +1,10 @@
 # CIVICOS INSTITUTE
+---
+layout: default
+title: Delegation of Authority
+permalink: /governance/delegation-of-authority/
+---
+
 # DELEGATION OF AUTHORITY MATRIX
 
 ## PURPOSE
