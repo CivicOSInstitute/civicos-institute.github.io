@@ -21,18 +21,96 @@
 </head>
 <body>
     <header class="site-header">
-        <div class="wrapper">
+        <div class="wrapper" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <a class="site-title" href="{{ "/" | relative_url }}" style="display: flex; align-items: center; gap: 10px;">
                 <img src="{{ "/assets/images/logo.png" | relative_url }}" alt="CivicOS Institute Logo" style="height: 40px; width: auto;">
                 <span>{{ site.title | escape }}</span>
             </a>
-            <nav class="site-nav">
+            
+            <!-- Mobile Hamburger Button -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu" style="display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 10px; color: #1e3a5f;">
+                ☰
+            </button>
+            
+            <nav class="site-nav" id="mainNav">
                 {% for item in site.navigation %}
                     <a class="page-link" href="{{ item.url | relative_url }}">{{ item.title }}</a>
                 {% endfor %}
             </nav>
         </div>
     </header>
+    
+    <!-- Mobile Menu Styles and Script -->
+    <style>
+        /* Mobile Navigation Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block !important;
+            }
+            
+            .site-nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                background: #fff;
+                border-top: 1px solid #e0e0e0;
+                margin-top: 15px;
+                padding: 15px 0;
+            }
+            
+            .site-nav.active {
+                display: flex;
+            }
+            
+            .site-nav .page-link {
+                display: block;
+                padding: 12px 0;
+                margin: 0;
+                border-bottom: 1px solid #f0f0f0;
+                text-align: center;
+                font-size: 1rem;
+            }
+            
+            .site-nav .page-link:last-child {
+                border-bottom: none;
+            }
+            
+            .site-header .wrapper {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* Desktop Navigation (default) */
+        @media (min-width: 769px) {
+            .site-nav {
+                display: flex !important;
+                flex-direction: row;
+            }
+            
+            .site-nav .page-link {
+                margin-left: 20px;
+            }
+        }
+    </style>
+    
+    <script>
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            const button = document.querySelector('.mobile-menu-toggle');
+            nav.classList.toggle('active');
+            button.textContent = nav.classList.contains('active') ? '✕' : '☰';
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.site-nav .page-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.getElementById('mainNav');
+                const button = document.querySelector('.mobile-menu-toggle');
+                nav.classList.remove('active');
+                button.textContent = '☰';
+            });
+        });
+    </script>
 
     <!-- Scrolling Call-to-Action Ticker - Inline Styles for Reliability -->
     <div style="background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%); color: white; height: 40px; overflow: hidden; position: relative; border-bottom: 2px solid #1e3a5f;">
