@@ -327,4 +327,36 @@ a.btn-primary:hover,
   .site-nav .page-link {
     margin: 0 10px;
   }
+  
+  /* Hero Section Buttons - Stack vertically on mobile */
+  .hero .btn {
+    display: block;
+    width: 80%;
+    max-width: 280px;
+    margin: 10px auto !important;
+    text-align: center;
+  }
+  
+  /* Social media buttons in hero - full width stacked */
+  .hero p:nth-of-type(3) .btn {
+    display: block;
+    width: 85%;
+    max-width: 300px;
+    margin: 8px auto !important;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
+  
+  /* Main CTA buttons - better spacing */
+  .hero p:nth-of-type(2) .btn {
+    display: block;
+    width: 85%;
+    max-width: 300px;
+    margin: 10px auto !important;
+  }
+  
+  /* Reduce hero padding on mobile */
+  .hero {
+    padding: 50px 15px;
+  }
 }
