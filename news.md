@@ -7,9 +7,22 @@ title: News
   <h1>GovTech & AI Policy News</h1>
   <p class="tagline">Live aggregation of news at the intersection of government, technology, and artificial intelligence.</p>
   
-  <div id="news-container">
-    <div class="loading">Loading latest news...</div>
-  </div>
+  <!-- Daily Curated News Widget - Auto-updated -->
+  <section class="daily-news">
+    <h2>🗞️ Today's Curated Stories</h2>
+    <p class="update-note">Auto-aggregated daily at 7 AM from GovTech, StateScoop, Code for America, Sunlight Foundation, and more.</p>
+    {% include news-widget.html %}
+  </section>
+  
+  <hr class="section-divider">
+  
+  <!-- Live RSS Feed -->
+  <section class="live-feed">
+    <h2>📡 Live News Feed</h2>
+    <div id="news-container">
+      <div class="loading">Loading latest news...</div>
+    </div>
+  </section>
   
   <div class="news-sources">
     <h3>Sources</h3>
@@ -19,6 +32,9 @@ title: News
       <li><a href="https://www.govexec.com" target="_blank">Government Executive</a> — Federal management</li>
       <li><a href="https://www.route-fifty.com" target="_blank">Route Fifty</a> — State & local government tech</li>
       <li><a href="https://techpolicy.press" target="_blank">Tech Policy Press</a> — Technology & democracy</li>
+      <li><a href="https://www.govtech.com" target="_blank">GovTech</a> — State & local technology</li>
+      <li><a href="https://statescoop.com" target="_blank">StateScoop</a> — State government technology</li>
+      <li><a href="https://www.codeforamerica.org" target="_blank">Code for America</a> — Civic technology</li>
     </ul>
   </div>
 </div>
@@ -93,9 +109,9 @@ async function loadNews() {
           <span class="news-source">${item.source}</span>
           <span class="news-date">${dateStr}</span>
         </div>
-        <h2 class="news-title">
+        <h3 class="news-title">
           <a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>
-        </h2>
+        </h3>
         <p class="news-description">${description}</p>
       </article>
     `;
@@ -120,6 +136,31 @@ loadNews();
   text-align: center;
   padding: 40px;
   color: #d32f2f;
+}
+
+.daily-news {
+  margin-bottom: 40px;
+}
+
+.daily-news h2 {
+  margin-bottom: 10px;
+}
+
+.update-note {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.section-divider {
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 40px 0;
+}
+
+.live-feed h2 {
+  margin-bottom: 20px;
 }
 
 .news-item {
@@ -148,7 +189,7 @@ loadNews();
 }
 
 .news-title {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin: 0 0 10px 0;
   line-height: 1.3;
 }
@@ -182,6 +223,9 @@ loadNews();
 .news-sources ul {
   list-style: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
 }
 
 .news-sources li {
