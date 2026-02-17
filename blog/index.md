@@ -14,7 +14,7 @@ Each Tuesday, the Director shares updates on CivicOS Institute's work, progress,
 
 **[Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/)**  
 *February 17, 2026*  
-This week, I've been thinking about infrastructure — not concrete and steel, but the invisible systems that determine whether technology serves democracy or undermines it. As AI becomes embedded in government decision-making, the governance frameworks we establish in the next 1,000 days will determine whether we get transparency and accountability or opaque algorithms making consequential decisions without public scrutiny.
+This week, I've been thinking about infrastructure, not concrete and steel, but the invisible systems that determine whether technology serves democracy or undermines it. As AI becomes embedded in government decision-making, the governance frameworks we establish in the next 1,000 days will determine whether we get transparency and accountability or opaque algorithms making consequential decisions without public scrutiny.
 
 ---
 
