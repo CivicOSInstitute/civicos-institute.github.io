@@ -10,7 +10,7 @@ title: News
   <!-- Daily Curated News Widget - Auto-updated -->
   <section class="daily-news">
     <h2>🗞️ Today's Curated Stories</h2>
-    <p class="update-note">Auto-aggregated daily at 7 AM from GovTech, StateScoop, Code for America, Sunlight Foundation, and more.</p>
+    <p class="update-note">Auto-aggregated daily at 7 AM from GovTech, StateScoop, Code for America, Sunlight Foundation, MIT Tech Review, and more.</p>
     {% include news-widget.html %}
   </section>
   
@@ -23,20 +23,6 @@ title: News
       <div class="loading">Loading latest news...</div>
     </div>
   </section>
-  
-  <div class="news-sources">
-    <h3>Sources</h3>
-    <ul>
-      <li><a href="https://fedscoop.com" target="_blank">FedScoop</a> — Federal technology news</li>
-      <li><a href="https://nextgov.com" target="_blank">NextGov</a> — Federal IT and cybersecurity</li>
-      <li><a href="https://www.govexec.com" target="_blank">Government Executive</a> — Federal management</li>
-      <li><a href="https://www.route-fifty.com" target="_blank">Route Fifty</a> — State & local government tech</li>
-      <li><a href="https://techpolicy.press" target="_blank">Tech Policy Press</a> — Technology & democracy</li>
-      <li><a href="https://www.govtech.com" target="_blank">GovTech</a> — State & local technology</li>
-      <li><a href="https://statescoop.com" target="_blank">StateScoop</a> — State government technology</li>
-      <li><a href="https://www.codeforamerica.org" target="_blank">Code for America</a> — Civic technology</li>
-    </ul>
-  </div>
 </div>
 
 <script>
@@ -208,36 +194,5 @@ loadNews();
   color: #555;
   line-height: 1.5;
   margin: 0;
-}
-
-.news-sources {
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 2px solid #e0e0e0;
-}
-
-.news-sources h3 {
-  margin-bottom: 15px;
-}
-
-.news-sources ul {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-}
-
-.news-sources li {
-  padding: 5px 0;
-}
-
-.news-sources a {
-  color: #1565c0;
-  text-decoration: none;
-}
-
-.news-sources a:hover {
-  text-decoration: underline;
 }
 </style>
