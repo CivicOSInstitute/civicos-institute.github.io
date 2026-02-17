@@ -31,6 +31,8 @@ navigation:
     url: /
   - title: About
     url: /about/
+  - title: Letter from Director
+    url: /letter-from-director/
   - title: Governance
     url: /governance/
   - title: Publications
