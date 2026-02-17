@@ -238,6 +238,80 @@ a.btn-primary:hover,
   background-color: #c41e3a;
 }
 
+/* Scrolling Ticker Tape - Red Call-to-Action Banner */
+.ticker-tape {
+  background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%);
+  color: white;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #1e3a5f;
+}
+
+.ticker-content {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker-scroll 30s linear infinite;
+  padding-left: 100%;
+}
+
+.ticker-content span {
+  display: inline-block;
+  padding: 0 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticker-content a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.ticker-content a:hover {
+  color: #ffd700;
+  text-decoration: none;
+}
+
+.ticker-separator {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400 !important;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.ticker-tape:hover .ticker-content {
+  animation-play-state: paused;
+}
+
+/* Responsive Ticker */
+@media (max-width: 768px) {
+  .ticker-tape {
+    height: 35px;
+  }
+  
+  .ticker-content span {
+    font-size: 0.8rem;
+    padding: 0 20px;
+  }
+  
+  .ticker-content {
+    animation: ticker-scroll 25s linear infinite;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero h1 {
