@@ -9,12 +9,18 @@ def select_model(task: str, priority: str = "normal") -> str:
     if any(k in t for k in ["debug", "bug", "fix", "refactor", "script", "automation", "deploy", "infra", "database", "docker", "ci", "build"]):
         return "Codex"
 
+    # Email/simple ops stay local-first unless explicitly research-heavy
+    if any(k in t for k in ["email", "inbox", "reply", "triage", "simple task", "todo", "reminder"]):
+        if any(k in t for k in ["research", "compare", "cross-source", "multi-source", "external scan"]):
+            return "Gemini"
+        return "Qwen"
+
     # Research
     if any(k in t for k in ["research", "compare", "scan", "summarize", "analyze"]):
         return "Qwen" if priority != "high" else "Gemini"
 
     # Writing/comms
-    if any(k in t for k in ["email", "post", "copy", "announcement", "draft", "proposal"]):
+    if any(k in t for k in ["post", "copy", "announcement", "draft", "proposal"]):
         return "Qwen" if priority != "high" else "GPT-4o"
 
     # Default local-first

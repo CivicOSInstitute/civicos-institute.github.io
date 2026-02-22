@@ -48,7 +48,8 @@ Always require explicit human confirmation for:
 ## Sub-Agent Model Defaults
 - `coding`, `automation`, `debug`, `infra` → **Codex**
 - `research`, `scan`, `summarize` → **Qwen** first, escalate to **Gemini** if weak
-- `draft`, `email`, `announcement` → **Qwen** first, escalate to **GPT-4o** for final polish
+- `email`, `inbox`, `simple tasks` → **Qwen** (local) by default
+- `draft`, `announcement` → **Qwen** first, escalate to **GPT-4o** for final polish
 - `bulk/background` → **Qwen** / **Mistral**
 
 ## Escalation Trigger Checklist
@@ -60,3 +61,15 @@ Escalate from local if any true:
 
 ## Operator Note
 When spawning sub-agents, pass `model` explicitly to enforce this matrix.
+
+### Smart spawn helper
+Use:
+```bash
+~/.openclaw/workspace/scripts/spawn_smart.sh "<task description>" [low|normal|high] [run|session]
+```
+
+Examples:
+```bash
+~/.openclaw/workspace/scripts/spawn_smart.sh "debug stripe api sync" high run
+~/.openclaw/workspace/scripts/spawn_smart.sh "summarize inbox for today" normal session
+```
