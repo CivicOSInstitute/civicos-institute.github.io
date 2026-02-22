@@ -46,7 +46,7 @@ Always require explicit human confirmation for:
 - Public statements representing organization policy
 
 ## Sub-Agent Model Defaults
-- `coding`, `automation`, `debug`, `infra` → **Codex**
+- `artifact architect`, `coding`, `automation`, `debug`, `infra` → **Codex**
 - `research`, `scan`, `summarize` → **Qwen** first, escalate to **Gemini** if weak
 - `email`, `inbox`, `simple tasks` → **Qwen** (local) by default
 - `draft`, `announcement` → **Qwen** first, escalate to **GPT-4o** for final polish

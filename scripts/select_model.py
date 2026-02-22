@@ -6,7 +6,7 @@ def select_model(task: str, priority: str = "normal") -> str:
     t = (task or "").lower()
 
     # High-confidence technical escalation
-    if any(k in t for k in ["debug", "bug", "fix", "refactor", "script", "automation", "deploy", "infra", "database", "docker", "ci", "build"]):
+    if any(k in t for k in ["artifact architect", "debug", "bug", "fix", "refactor", "script", "automation", "deploy", "infra", "database", "docker", "ci", "build"]):
         return "Codex"
 
     # Email/simple ops stay local-first unless explicitly research-heavy
