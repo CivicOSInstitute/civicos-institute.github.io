@@ -1,0 +1,15 @@
+services:
+  main-dashboard:
+    build: .
+    ports:
+      - "8090:8090"
+    volumes:
+      - /Users/AI-OPS/.openclaw/task-tracker:/root/.openclaw/task-tracker:ro
+      - /Users/AI-OPS/.openclaw/civic-crm:/root/.openclaw/civic-crm:ro
+      - /Users/AI-OPS/.openclaw/token-tracker:/root/.openclaw/token-tracker:ro
+      - /Users/AI-OPS/.openclaw/advisory-council:/root/.openclaw/advisory-council:ro
+      - /Users/AI-OPS/.openclaw/workspace:/root/.openclaw/workspace:rw
+      - /Users/AI-OPS/Desktop:/root/Desktop:rw
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production

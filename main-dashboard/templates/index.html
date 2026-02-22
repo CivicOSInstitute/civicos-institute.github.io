@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicOS Command Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-logo {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .header-logo img {
+            height: 240px;
+            width: auto;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header-left {
+            flex: 1;
+        }
+        
+        .header-right {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .header-meta {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online { background: #10b981; box-shadow: 0 0 8px #10b981; }
+        .status-offline { background: #ef4444; }
+        .status-warning { background: #f59e0b; }
+        
+        .card-body {
+            padding: 1.25rem;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .metric-value.success { color: #10b981; }
+        .metric-value.warning { color: #f59e0b; }
+        .metric-value.danger { color: #ef4444; }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.15s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #475569;
+        }
+        
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            color: #f59e0b;
+        }
+        
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+        
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #64748b;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .activity-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #334155;
+            font-size: 0.875rem;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .header-meta {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1>CivicOS Command Center</h1>
+        </div>
+        <div class="header-logo">
+            <img src="/static/logo.webp" alt="CivicOS Logo">
+        </div>
+        <div class="header-right">
+            <div class="header-meta">
+                <div>{{ now.strftime('%A, %B %d, %Y') }}</div>
+                <div style="font-size: 0.75rem; margin-top: 0.25rem;">Tailscale: 100.81.239.69</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        {% if alerts %}
+        {% for alert in alerts %}
+        <div class="alert alert-{{ alert.type }}">
+            <span>{{ alert.icon }}</span>
+            <span>{{ alert.message }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="grid">
+            <!-- Task Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if services.task_tracker.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                        Task Tracker
+                    </h2>
+                    <a href="http://100.81.239.69:8082" class="btn btn-primary" target="_blank">Open</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Total Tasks</span>
+                        <span class="metric-value">{{ task_stats.total or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">In Progress</span>
+                        <span class="metric-value warning">{{ task_stats.in_progress or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Blocked</span>
+                        <span class="metric-value danger">{{ task_stats.blocked or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Completed</span>
+                        <span class="metric-value success">{{ task_stats.completed or 0 }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="http://100.81.239.69:8082" class="btn btn-secondary" target="_blank">View All Tasks</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CRM -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if services.crm.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                        CRM
+                    </h2>
+                    <a href="http://100.81.239.69:8083" class="btn btn-primary" target="_blank">Open</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Total Contacts</span>
+                        <span class="metric-value">{{ crm_stats.total or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hot Prospects</span>
+                        <span class="metric-value success">{{ crm_stats.hot or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Board Candidates</span>
+                        <span class="metric-value warning">{{ crm_stats.board or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Foundation Contacts</span>
+                        <span class="metric-value">{{ crm_stats.foundation or 0 }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="http://100.81.239.69:8083" class="btn btn-secondary" target="_blank">View Contacts</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Token Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if services.token_tracker.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                        Token Tracker
+                    </h2>
+                    <a href="http://100.81.239.69:8081" class="btn btn-primary" target="_blank">Open</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Today's Spend</span>
+                        <span class="metric-value {% if token_stats.today > 5 %}warning{% else %}success{% endif %}">
+                            ${{ "%.2f"|format(token_stats.today or 0) }}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">This Week</span>
+                        <span class="metric-value">${{ "%.2f"|format(token_stats.week or 0) }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">This Month</span>
+                        <span class="metric-value">${{ "%.2f"|format(token_stats.month or 0) }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Active APIs</span>
+                        <span class="metric-value">{{ token_stats.apis or 0 }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="http://100.81.239.69:8081" class="btn btn-secondary" target="_blank">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advisory Council -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot status-online"></span>
+                        Advisory Council
+                    </h2>
+                    <a href="#" class="btn btn-primary" onclick="runCouncil(); return false;">Run Analysis</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Critical Issues</span>
+                        <span class="metric-value danger">{{ council_stats.critical or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Important</span>
+                        <span class="metric-value warning">{{ council_stats.important or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Informational</span>
+                        <span class="metric-value">{{ council_stats.info or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Last Run</span>
+                        <span class="metric-value" style="font-size: 0.875rem;">{{ council_stats.last_run or 'Never' }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="http://100.81.239.69:8083" class="btn btn-secondary" target="_blank">View CRM</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Website Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if services.website.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                        Website
+                    </h2>
+                    <a href="https://civicos-institute.org" class="btn btn-primary" target="_blank">Visit</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Status</span>
+                        <span class="metric-value {% if services.website.status == 'online' %}success{% else %}danger{% endif %}">
+                            {{ services.website.status|title }}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">News Widget</span>
+                        <span class="metric-value {% if services.news_widget.status == 'online' %}success{% else %}warning{% endif %}">
+                            {{ services.news_widget.status|title }}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Last Deploy</span>
+                        <span class="metric-value" style="font-size: 0.875rem;">{{ website_stats.last_deploy or 'Unknown' }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="https://civicos-institute.org/news" class="btn btn-secondary" target="_blank">News</a>
+                        <a href="https://civicos-institute.org/blog" class="btn btn-secondary" target="_blank">Blog</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SearXNG Search -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if services.searxng.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                        SearXNG Search
+                    </h2>
+                    <a href="http://100.81.239.69:8080" class="btn btn-primary" target="_blank">Search</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Status</span>
+                        <span class="metric-value {% if services.searxng.status == 'online' %}success{% else %}danger{% endif %}">
+                            {{ services.searxng.status|title }}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Type</span>
+                        <span class="metric-value">Private Meta-Search</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Privacy</span>
+                        <span class="metric-value success">No Tracking</span>
+                    </div>
+                    <div class="quick-links">
+                        <form action="http://100.81.239.69:8080/search" method="get" target="_blank" style="display: flex; gap: 0.5rem; width: 100%;">
+                            <input type="text" name="q" placeholder="Search privately..." style="flex: 1; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                            <button type="submit" class="btn btn-primary">Go</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Media -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot status-online"></span>
+                        Social Media
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">X (Twitter)</span>
+                        <span class="metric-value">@CivicOsInstitut</span>
+                        <a href="https://x.com/CivicOsInstitut" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Open</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Facebook</span>
+                        <span class="metric-value">CivicOS Institute</span>
+                        <a href="https://facebook.com/CivicOSInstitute" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Open</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">LinkedIn</span>
+                        <span class="metric-value">CivicOS Institute</span>
+                        <a href="https://linkedin.com/company/civicos-institute" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Open</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Discord</span>
+                        <span class="metric-value">Community Server</span>
+                        <a href="https://discord.gg/civictech" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Join</a>
+                    </div>
+                    <div class="quick-links">
+                        <a href="https://civicos-institute.org/social" class="btn btn-secondary" target="_blank">All Accounts</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Google Drive -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot status-online"></span>
+                        Google Drive
+                    </h2>
+                    <a href="https://drive.google.com" class="btn btn-primary" target="_blank">Open</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Board Documents</span>
+                        <a href="https://drive.google.com/drive/folders/BOARD_FOLDER_ID" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">View</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Grant Applications</span>
+                        <a href="https://drive.google.com/drive/folders/GRANTS_FOLDER_ID" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">View</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Financial Records</span>
+                        <a href="https://drive.google.com/drive/folders/FINANCE_FOLDER_ID" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">View</a>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Marketing Assets</span>
+                        <a href="https://drive.google.com/drive/folders/MARKETING_FOLDER_ID" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">View</a>
+                    </div>
+                    <div class="quick-links">
+                        <a href="https://drive.google.com/drive/u/0/my-drive" class="btn btn-secondary" target="_blank">My Drive</a>
+                        <a href="https://docs.google.com" class="btn btn-secondary" target="_blank">Docs</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Email (Himalaya) -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if email_stats.unread > 0 %}status-warning{% else %}status-online{% endif %}"></span>
+                        Email
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Unread (Nick)</span>
+                        <span class="metric-value {% if email_stats.nick_unread > 0 %}warning{% endif %}">{{ email_stats.nick_unread or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Unread (Burt)</span>
+                        <span class="metric-value {% if email_stats.burt_unread > 0 %}warning{% endif %}">{{ email_stats.burt_unread or 0 }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Unread</span>
+                        <span class="metric-value {% if email_stats.unread > 0 %}warning{% else %}success{% endif %}">{{ email_stats.unread or 0 }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <button onclick="checkEmail('nick')" class="btn btn-secondary" style="flex: 1;">Check Nick</button>
+                        <button onclick="checkEmail('burt')" class="btn btn-secondary" style="flex: 1;">Check Burt</button>
+                    </div>
+                    <div id="email-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- System Admin -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot status-online"></span>
+                        System Admin
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Gateway Status</span>
+                        <span class="metric-value success">Running</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Uptime</span>
+                        <span class="metric-value">{{ gateway_stats.uptime or 'Unknown' }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Version</span>
+                        <span class="metric-value" style="font-size: 0.875rem;">{{ gateway_stats.version or 'Unknown' }}</span>
+                    </div>
+                    <div class="quick-links">
+                        <button onclick="confirmGatewayRestart()" class="btn btn-secondary" style="width: 100%;">
+                            🔄 Restart Gateway
+                        </button>
+                    </div>
+                    <div id="restart-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- E-book Distribution Automation -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        <span class="status-dot {% if ebook_stats.pipeline_ready %}status-online{% else %}status-offline{% endif %}"></span>
+                        E-book Distribution
+                    </h2>
+                    <button onclick="runEbookAutomation()" class="btn btn-primary">Run Pipeline</button>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row">
+                        <span class="metric-label">Pipeline</span>
+                        <span class="metric-value {% if ebook_stats.pipeline_ready %}success{% else %}danger{% endif %}">
+                            {% if ebook_stats.pipeline_ready %}Ready{% else %}Missing{% endif %}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Latest Build</span>
+                        <span class="metric-value" style="font-size: 0.875rem;">{{ ebook_stats.latest_build }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Core / Founder / Institution (KB)</span>
+                        <span class="metric-value">{{ ebook_stats.core_zip_kb }} / {{ ebook_stats.founder_zip_kb }} / {{ ebook_stats.institution_zip_kb }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Checkout Copy</span>
+                        <span class="metric-value {% if ebook_stats.checkout_copy %}success{% else %}warning{% endif %}">
+                            {% if ebook_stats.checkout_copy %}Generated{% else %}Missing{% endif %}
+                        </span>
+                    </div>
+                    <div class="quick-links">
+                        <a href="file:///Users/AI-OPS/Desktop/the_open_source_student/launch-output/checkout-copy.md" class="btn btn-secondary" target="_blank">Checkout Copy</a>
+                    </div>
+                    <div id="ebook-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- Create Task -->
+                        <div>
+                            <div class="section-title">Create Task</div>
+                            <form id="task-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <input type="text" id="task-title" placeholder="Task title..." style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                <select id="task-assignee" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                    <option value="Nick">Nick</option>
+                                    <option value="Burt">Burt</option>
+                                </select>
+                                <input type="date" id="task-due" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                <button type="button" onclick="createTask()" class="btn btn-primary">Create Task</button>
+                            </form>
+                            <div id="task-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
+                        </div>
+                        
+                        <!-- Add Contact -->
+                        <div>
+                            <div class="section-title">Add Contact</div>
+                            <form id="contact-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <input type="text" id="contact-name" placeholder="Name..." style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                <input type="text" id="contact-org" placeholder="Organization..." style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                <select id="contact-type" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                    <option value="Personal Network">Personal Network</option>
+                                    <option value="Board Candidate">Board Candidate</option>
+                                    <option value="Foundation Contact">Foundation Contact</option>
+                                    <option value="Academic Contact">Academic Contact</option>
+                                </select>
+                                <button type="button" onclick="addContact()" class="btn btn-primary">Add Contact</button>
+                            </form>
+                            <div id="contact-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
+                        </div>
+                        
+                        <!-- Send Telegram -->
+                        <div>
+                            <div class="section-title">Send Telegram</div>
+                            <form id="telegram-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <div style="font-size: 0.75rem; color: #64748b; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                                    To: <strong style="color: #94a3b8;">Nick</strong> (this chat)
+                                </div>
+                                <textarea id="telegram-message" placeholder="Type your message..." rows="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; resize: vertical;"></textarea>
+                                <button type="button" onclick="sendTelegram()" class="btn btn-primary">Send Message</button>
+                            </form>
+                            <div id="telegram-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Grant Deadline Countdown -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-header">
+                    <h2>Grant Deadlines</h2>
+                </div>
+                <div class="card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="background: {% if grant_deadlines.knight_days < 14 %}rgba(239, 68, 68, 0.1){% else %}rgba(245, 158, 11, 0.1){% endif %}; border: 1px solid {% if grant_deadlines.knight_days < 14 %}#ef4444{% else %}#f59e0b{% endif %}; border-radius: 8px; padding: 1rem;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">Knight Foundation</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: {% if grant_deadlines.knight_days < 14 %}#ef4444{% else %}#f59e0b{% endif %};">{{ grant_deadlines.knight_days or '12' }}</div>
+                            <div style="font-size: 0.875rem; color: #94a3b8;">days remaining</div>
+                            <div style="font-size: 0.75rem; margin-top: 0.5rem;">Follow-up due: Mar 1</div>
+                        </div>
+                        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">Trust for Civic Life</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #3b82f6;">{{ grant_deadlines.trust_days or '26' }}</div>
+                            <div style="font-size: 0.875rem; color: #94a3b8;">days remaining</div>
+                            <div style="font-size: 0.75rem; margin-top: 0.5rem;">Application due: Mar 15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-header">
+                    <h2>Recent Activity</h2>
+                </div>
+                <div class="card-body">
+                    <div class="section-title">Today</div>
+                    {% for activity in recent_activity %}
+                    <div class="activity-item">
+                        <div>{{ activity.message }}</div>
+                        <div class="activity-time">{{ activity.time }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function runCouncil() {
+            fetch('/api/run-council', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    alert('Council analysis complete! Check Telegram for report.');
+                    location.reload();
+                })
+                .catch(e => alert('Error running council: ' + e));
+        }
+        
+        function checkEmail(account) {
+            const statusDiv = document.getElementById('email-status');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Checking ' + account + '...';
+            statusDiv.style.color = '#f59e0b';
+            
+            fetch('/api/check-email/' + account, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        let msg = '✅ Found ' + data.unread + ' unread emails';
+                        if (data.emails && data.emails.length > 0) {
+                            msg += ':<br>' + data.emails.map(e => '• ' + e).join('<br>');
+                        }
+                        statusDiv.innerHTML = msg;
+                        statusDiv.style.color = '#10b981';
+                    } else {
+                        statusDiv.innerHTML = '❌ Error: ' + (data.message || 'Unknown error');
+                        statusDiv.style.color = '#ef4444';
+                    }
+                })
+                .catch(e => {
+                    statusDiv.innerHTML = '❌ Network error: ' + e.message;
+                    statusDiv.style.color = '#ef4444';
+                });
+        }
+        
+        function confirmGatewayRestart() {
+            if (confirm('⚠️ WARNING: Restarting the Gateway will:\n\n• Disconnect all active sessions\n• Interrupt any running tasks\n• Require 10-30 seconds to restart\n\nAre you sure you want to proceed?')) {
+                const statusDiv = document.getElementById('restart-status');
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '🔄 Sending restart command...';
+                statusDiv.style.color = '#f59e0b';
+                
+                fetch('/api/restart-gateway', { method: 'POST' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            statusDiv.innerHTML = '✅ Restart initiated. Page will refresh in 15 seconds...';
+                            statusDiv.style.color = '#10b981';
+                            setTimeout(() => location.reload(), 15000);
+                        } else {
+                            statusDiv.innerHTML = '❌ Error: ' + (data.message || 'Unknown error');
+                            statusDiv.style.color = '#ef4444';
+                        }
+                    })
+                    .catch(e => {
+                        statusDiv.innerHTML = '❌ Network error: ' + e.message;
+                        statusDiv.style.color = '#ef4444';
+                    });
+            }
+        }
+        
+        // Quick Actions Functions
+        function createTask() {
+            const title = document.getElementById('task-title').value;
+            const assignee = document.getElementById('task-assignee').value;
+            const due = document.getElementById('task-due').value;
+            const statusDiv = document.getElementById('task-status');
+            
+            if (!title) {
+                statusDiv.innerHTML = '❌ Title required';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Creating...';
+            statusDiv.style.color = '#f59e0b';
+            
+            fetch('/api/task/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, assigned_to: assignee, due_date: due })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusDiv.innerHTML = '✅ Task created!';
+                    statusDiv.style.color = '#10b981';
+                    document.getElementById('task-form').reset();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    statusDiv.innerHTML = '❌ Error: ' + data.message;
+                    statusDiv.style.color = '#ef4444';
+                }
+            })
+            .catch(e => {
+                statusDiv.innerHTML = '❌ Network error';
+                statusDiv.style.color = '#ef4444';
+            });
+        }
+        
+        function addContact() {
+            const name = document.getElementById('contact-name').value;
+            const org = document.getElementById('contact-org').value;
+            const type = document.getElementById('contact-type').value;
+            const statusDiv = document.getElementById('contact-status');
+            
+            if (!name) {
+                statusDiv.innerHTML = '❌ Name required';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Adding...';
+            statusDiv.style.color = '#f59e0b';
+            
+            fetch('/api/crm/add-contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, organization: org, contact_type: type })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusDiv.innerHTML = '✅ Contact added!';
+                    statusDiv.style.color = '#10b981';
+                    document.getElementById('contact-form').reset();
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    statusDiv.innerHTML = '❌ Error: ' + data.message;
+                    statusDiv.style.color = '#ef4444';
+                }
+            })
+            .catch(e => {
+                statusDiv.innerHTML = '❌ Network error';
+                statusDiv.style.color = '#ef4444';
+            });
+        }
+        
+        function sendTelegram() {
+            const message = document.getElementById('telegram-message').value;
+            const statusDiv = document.getElementById('telegram-status');
+            
+            if (!message) {
+                statusDiv.innerHTML = '❌ Message required';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Sending...';
+            statusDiv.style.color = '#f59e0b';
+            
+            fetch('/api/telegram/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusDiv.innerHTML = '✅ Message sent!';
+                    statusDiv.style.color = '#10b981';
+                    document.getElementById('telegram-form').reset();
+                } else {
+                    statusDiv.innerHTML = '❌ Error: ' + data.message;
+                    statusDiv.style.color = '#ef4444';
+                }
+            })
+            .catch(e => {
+                statusDiv.innerHTML = '❌ Network error';
+                statusDiv.style.color = '#ef4444';
+            });
+        }
+        
+        function runEbookAutomation() {
+            const statusDiv = document.getElementById('ebook-status');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Running full e-book automation pipeline...';
+            statusDiv.style.color = '#f59e0b';
+
+            fetch('/api/ebook/run', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        statusDiv.innerHTML = `✅ Complete. Latest build: ${data.latest_build}`;
+                        statusDiv.style.color = '#10b981';
+                        setTimeout(() => location.reload(), 1200);
+                    } else {
+                        statusDiv.innerHTML = '❌ ' + (data.message || 'Pipeline failed');
+                        statusDiv.style.color = '#ef4444';
+                    }
+                })
+                .catch(e => {
+                    statusDiv.innerHTML = '❌ Network error: ' + e.message;
+                    statusDiv.style.color = '#ef4444';
+                });
+        }
+
+        // Auto-refresh every 60 seconds
+        setInterval(() => location.reload(), 60000);
+    </script>
+</body>
+</html>
