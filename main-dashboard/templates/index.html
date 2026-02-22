@@ -739,21 +739,40 @@
                 .catch(e => alert('Error running council: ' + e));
         }
         
+        function escapeHtml(str) {
+            return String(str || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;');
+        }
+
         function checkEmail(account) {
             const statusDiv = document.getElementById('email-status');
             statusDiv.style.display = 'block';
             statusDiv.innerHTML = '🔄 Checking ' + account + '...';
             statusDiv.style.color = '#f59e0b';
-            
+
             fetch('/api/check-email/' + account, { method: 'POST' })
                 .then(r => r.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        let msg = '✅ Found ' + data.unread + ' unread emails';
+                        let html = `✅ Found ${data.unread} unread emails`;
                         if (data.emails && data.emails.length > 0) {
-                            msg += ':<br>' + data.emails.map(e => '• ' + e).join('<br>');
+                            html += '<div style="margin-top:8px">';
+                            html += data.emails.map(e => {
+                                const subject = escapeHtml(e.subject || '(no subject)');
+                                const from = escapeHtml(e.from || 'Unknown');
+                                const date = escapeHtml(e.date || '');
+                                const id = encodeURIComponent(e.id);
+                                return `<div style="margin:6px 0; padding:6px; border:1px solid #334155; border-radius:6px;">
+                                    <div style="font-weight:600;">${subject}</div>
+                                    <div style="color:#94a3b8;">${from} · ${date}</div>
+                                    <button class="btn btn-secondary" style="margin-top:6px; font-size:0.75rem; padding:0.25rem 0.5rem;" onclick="readEmail('${account}','${id}')">Open</button>
+                                </div>`;
+                            }).join('');
+                            html += '</div>';
                         }
-                        statusDiv.innerHTML = msg;
+                        statusDiv.innerHTML = html;
                         statusDiv.style.color = '#10b981';
                     } else {
                         statusDiv.innerHTML = '❌ Error: ' + (data.message || 'Unknown error');
@@ -763,6 +782,25 @@
                 .catch(e => {
                     statusDiv.innerHTML = '❌ Network error: ' + e.message;
                     statusDiv.style.color = '#ef4444';
+                });
+        }
+
+        function readEmail(account, emailId) {
+            const statusDiv = document.getElementById('email-status');
+            statusDiv.innerHTML += '<div style="margin-top:8px; color:#f59e0b;">🔄 Opening email...</div>';
+
+            fetch(`/api/read-email/${account}/${emailId}`, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const body = escapeHtml(data.body || '(empty)').replaceAll('\n', '<br>');
+                        statusDiv.innerHTML += `<div style="margin-top:8px; padding:8px; border:1px solid #334155; border-radius:6px; max-height:260px; overflow:auto; color:#cbd5e1;">${body}</div>`;
+                    } else {
+                        statusDiv.innerHTML += `<div style="margin-top:8px; color:#ef4444;">❌ ${escapeHtml(data.message || 'Failed to open email')}</div>`;
+                    }
+                })
+                .catch(e => {
+                    statusDiv.innerHTML += `<div style="margin-top:8px; color:#ef4444;">❌ ${escapeHtml(e.message)}</div>`;
                 });
         }
         

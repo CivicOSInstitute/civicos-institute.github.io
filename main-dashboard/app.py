@@ -488,6 +488,38 @@ def run_ebook_pipeline():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/api/read-email/<account>/<email_id>', methods=['POST'])
+def read_email(account, email_id):
+    """Read a specific email for account via bridge API."""
+    if account not in ['nick', 'burt']:
+        return jsonify({'status': 'error', 'message': 'Invalid account'}), 400
+
+    try:
+        bridge_url = 'http://host.docker.internal:18080/email/read'
+        payload = {
+            'account': account,
+            'id': email_id
+        }
+
+        req = urllib.request.Request(
+            bridge_url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+
+        response = urllib.request.urlopen(req, timeout=30)
+        result = json.loads(response.read().decode('utf-8'))
+
+        if result.get('status') == 'success':
+            return jsonify(result)
+        return jsonify({'status': 'error', 'message': result.get('message', 'Unknown error')}), 500
+
+    except urllib.error.URLError as e:
+        return jsonify({'status': 'error', 'message': f'Bridge API unreachable: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/api/telegram/send', methods=['POST'])
 def telegram_send():
     """Send Telegram message via bridge API."""
