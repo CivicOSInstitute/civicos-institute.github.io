@@ -1,0 +1,9 @@
+{
+  "last_updated": "2026-02-22T15:57:00-05:00",
+  "units_sold": 0,
+  "channels": [
+    {"name": "Gumroad", "revenue": 0, "units": 0, "conversion": "0%"},
+    {"name": "Stripe Checkout", "revenue": 0, "units": 0, "conversion": "0%"},
+    {"name": "Direct/Manual", "revenue": 0, "units": 0, "conversion": "0%"}
+  ]
+}

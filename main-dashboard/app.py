@@ -8,6 +8,7 @@ from flask import Flask, render_template, jsonify, request
 import sqlite3
 import json
 from datetime import datetime, date
+import csv
 from pathlib import Path
 import urllib.request
 import urllib.error
@@ -26,6 +27,8 @@ SERVICES = {
 
 EBOOK_SCRIPTS = Path('/root/.openclaw/workspace/the_open_source_student_distribution/scripts')
 EBOOK_OUTPUT = Path('/root/Desktop/the_open_source_student/launch-output')
+REVENUE_CSV = Path('/root/.openclaw/workspace/civicos-revenue-tracker.csv')
+DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/distribution_metrics.json')
 
 def check_service(name, config):
     """Check if a service is online."""
@@ -298,6 +301,48 @@ def get_ebook_stats():
             'output_path': ''
         }
 
+def get_distribution_stats():
+    """Get distribution/revenue analytics for ebook operations."""
+    stats = {
+        'total_revenue': 0.0,
+        'units_sold': 0,
+        'orders': 0,
+        'aov': 0.0,
+        'channels': [],
+        'last_updated': 'Unknown'
+    }
+
+    try:
+        if REVENUE_CSV.exists():
+            with open(REVENUE_CSV, newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    amount_raw = (row.get('Amount') or '0').replace('$', '').replace(',', '').strip()
+                    try:
+                        amount = float(amount_raw)
+                    except Exception:
+                        amount = 0.0
+                    category = (row.get('Category') or '').strip().lower()
+                    if category == 'revenue':
+                        stats['total_revenue'] += amount
+                        stats['orders'] += 1 if amount > 0 else 0
+
+            if stats['orders'] > 0:
+                stats['aov'] = round(stats['total_revenue'] / stats['orders'], 2)
+
+        if DIST_METRICS_JSON.exists():
+            extra = json.loads(DIST_METRICS_JSON.read_text())
+            stats['units_sold'] = int(extra.get('units_sold', stats['units_sold']))
+            stats['channels'] = extra.get('channels', [])
+            stats['last_updated'] = extra.get('last_updated', stats['last_updated'])
+
+        stats['total_revenue'] = round(stats['total_revenue'], 2)
+        return stats
+    except Exception as e:
+        print(f"Error getting distribution stats: {e}")
+        return stats
+
+
 def get_alerts():
     """Generate alerts based on system state."""
     alerts = []
@@ -349,6 +394,7 @@ def index():
     gateway_stats = get_gateway_stats()
     email_stats = get_email_stats()
     ebook_stats = get_ebook_stats()
+    distribution_stats = get_distribution_stats()
     
     # Calculate grant deadlines
     from datetime import datetime
@@ -372,8 +418,21 @@ def index():
                          gateway_stats=gateway_stats,
                          email_stats=email_stats,
                          ebook_stats=ebook_stats,
+                         distribution_stats=distribution_stats,
                          grant_deadlines=grant_deadlines,
                          now=datetime.now())
+
+@app.route('/distribution')
+def distribution_dashboard():
+    """Expanded ebook distribution analytics page."""
+    return render_template('distribution.html',
+                           dist=get_distribution_stats(),
+                           ebook=get_ebook_stats(),
+                           now=datetime.now())
+
+@app.route('/api/distribution/stats')
+def api_distribution_stats():
+    return jsonify(get_distribution_stats())
 
 @app.route('/api/status')
 def api_status():
