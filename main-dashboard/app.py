@@ -264,7 +264,10 @@ def get_ebook_stats():
     try:
         latest_dir = None
         if EBOOK_OUTPUT.exists():
-            candidates = [p for p in EBOOK_OUTPUT.iterdir() if p.is_dir()]
+            candidates = [
+                p for p in EBOOK_OUTPUT.iterdir()
+                if p.is_dir() and p.name[:8].isdigit() and '-' in p.name
+            ]
             if candidates:
                 latest_dir = sorted(candidates, key=lambda p: p.name, reverse=True)[0]
 
