@@ -520,6 +520,50 @@ def read_email(account, email_id):
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/api/telegram/chats', methods=['GET'])
+def telegram_chats():
+    """List Telegram chats from bridge API."""
+    try:
+        bridge_url = 'http://host.docker.internal:18080/telegram/chats'
+        response = urllib.request.urlopen(bridge_url, timeout=20)
+        result = json.loads(response.read().decode('utf-8'))
+        if result.get('status') == 'success':
+            return jsonify(result)
+        return jsonify({'status': 'error', 'message': result.get('message', 'Unknown error')}), 500
+    except urllib.error.URLError as e:
+        return jsonify({'status': 'error', 'message': f'Bridge API unreachable: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/telegram/history', methods=['POST'])
+def telegram_history():
+    """Get recent Telegram messages for selected chat."""
+    data = request.get_json() or {}
+    chat_id = str(data.get('chat_id', '')).strip()
+    limit = int(data.get('limit', 6))
+
+    if not chat_id:
+        return jsonify({'status': 'error', 'message': 'chat_id required'}), 400
+
+    try:
+        bridge_url = 'http://host.docker.internal:18080/telegram/history'
+        payload = {'chat_id': chat_id, 'limit': limit}
+        req = urllib.request.Request(
+            bridge_url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        response = urllib.request.urlopen(req, timeout=20)
+        result = json.loads(response.read().decode('utf-8'))
+        if result.get('status') == 'success':
+            return jsonify(result)
+        return jsonify({'status': 'error', 'message': result.get('message', 'Unknown error')}), 500
+    except urllib.error.URLError as e:
+        return jsonify({'status': 'error', 'message': f'Bridge API unreachable: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/api/telegram/send', methods=['POST'])
 def telegram_send():
     """Send Telegram message via bridge API."""
@@ -550,7 +594,7 @@ def telegram_send():
         result = json.loads(response.read().decode('utf-8'))
         
         if result.get('status') == 'success':
-            return jsonify({'status': 'success', 'message': 'Message sent to Nick'})
+            return jsonify({'status': 'success', 'message': 'Message sent'})
         else:
             return jsonify({'status': 'error', 'message': result.get('message', 'Unknown error')}), 500
             

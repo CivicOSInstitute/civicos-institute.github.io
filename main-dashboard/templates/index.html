@@ -672,12 +672,13 @@
                         
                         <!-- Send Telegram -->
                         <div>
-                            <div class="section-title">Send Telegram</div>
+                            <div class="section-title">Telegram</div>
                             <form id="telegram-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="font-size: 0.75rem; color: #64748b; display: flex; align-items: center; gap: 0.5rem;">
-                                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
-                                    To: <strong style="color: #94a3b8;">Nick</strong> (this chat)
+                                <div style="display:flex; gap:0.5rem;">
+                                    <select id="telegram-chat-select" onchange="loadTelegramHistory()" style="flex:1; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;"></select>
+                                    <button type="button" onclick="loadTelegramChats()" class="btn btn-secondary">Refresh</button>
                                 </div>
+                                <div id="telegram-history" style="max-height:180px; overflow:auto; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; color:#cbd5e1;"></div>
                                 <textarea id="telegram-message" placeholder="Type your message..." rows="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; resize: vertical;"></textarea>
                                 <button type="button" onclick="sendTelegram()" class="btn btn-primary">Send Message</button>
                             </form>
@@ -911,32 +912,98 @@
             });
         }
         
-        function sendTelegram() {
-            const message = document.getElementById('telegram-message').value;
+        function renderTelegramHistory(messages) {
+            const box = document.getElementById('telegram-history');
+            if (!messages || messages.length === 0) {
+                box.innerHTML = '<span style="color:#64748b;">No messages yet for this chat.</span>';
+                return;
+            }
+            box.innerHTML = messages.map(m => {
+                const dir = m.dir === 'out' ? 'You' : (m.from || 'Them');
+                const color = m.dir === 'out' ? '#93c5fd' : '#86efac';
+                const text = escapeHtml(m.text || '');
+                return `<div style="margin-bottom:8px;"><span style="color:${color}; font-weight:600;">${dir}:</span> ${text}</div>`;
+            }).join('');
+        }
+
+        function loadTelegramHistory() {
+            const select = document.getElementById('telegram-chat-select');
+            const chatId = select.value;
+            if (!chatId) {
+                renderTelegramHistory([]);
+                return;
+            }
+            fetch('/api/telegram/history', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, limit: 6 })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') renderTelegramHistory(data.messages || []);
+            });
+        }
+
+        function loadTelegramChats() {
+            const select = document.getElementById('telegram-chat-select');
             const statusDiv = document.getElementById('telegram-status');
-            
+            fetch('/api/telegram/chats')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status !== 'success') {
+                        statusDiv.style.display = 'block';
+                        statusDiv.style.color = '#ef4444';
+                        statusDiv.innerHTML = '❌ ' + (data.message || 'Could not load chats');
+                        return;
+                    }
+                    const chats = data.chats || [];
+                    select.innerHTML = chats.map(c => `<option value="${c.chat_id}">${escapeHtml(c.title)} (${c.chat_id})</option>`).join('');
+                    if (!chats.length) {
+                        select.innerHTML = '<option value="">No chats found yet</option>';
+                    }
+                    loadTelegramHistory();
+                })
+                .catch(e => {
+                    statusDiv.style.display = 'block';
+                    statusDiv.style.color = '#ef4444';
+                    statusDiv.innerHTML = '❌ Network error loading chats';
+                });
+        }
+
+        function sendTelegram() {
+            const message = document.getElementById('telegram-message').value.trim();
+            const chatId = document.getElementById('telegram-chat-select').value;
+            const statusDiv = document.getElementById('telegram-status');
+
+            if (!chatId) {
+                statusDiv.innerHTML = '❌ Select a chat first';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.style.display = 'block';
+                return;
+            }
             if (!message) {
                 statusDiv.innerHTML = '❌ Message required';
                 statusDiv.style.color = '#ef4444';
                 statusDiv.style.display = 'block';
                 return;
             }
-            
+
             statusDiv.style.display = 'block';
             statusDiv.innerHTML = '🔄 Sending...';
             statusDiv.style.color = '#f59e0b';
-            
+
             fetch('/api/telegram/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ chat_id: chatId, message })
             })
             .then(r => r.json())
             .then(data => {
                 if (data.status === 'success') {
                     statusDiv.innerHTML = '✅ Message sent!';
                     statusDiv.style.color = '#10b981';
-                    document.getElementById('telegram-form').reset();
+                    document.getElementById('telegram-message').value = '';
+                    loadTelegramHistory();
                 } else {
                     statusDiv.innerHTML = '❌ Error: ' + data.message;
                     statusDiv.style.color = '#ef4444';
@@ -971,6 +1038,9 @@
                     statusDiv.style.color = '#ef4444';
                 });
         }
+
+        // Initial data loads
+        loadTelegramChats();
 
         // Auto-refresh every 60 seconds
         setInterval(() => location.reload(), 60000);
