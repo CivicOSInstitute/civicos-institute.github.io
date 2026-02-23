@@ -1,0 +1,541 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=2716IUeCIQo",
+  "title": "Playwright MCP: How AI Agents Can Control Your Browser",
+  "uploader": "Playwright",
+  "duration": 142,
+  "webpage_url": "https://www.youtube.com/watch?v=2716IUeCIQo",
+  "description": "Discover Microsoft Playwright MCP, the revolutionary browser automation tool that enables AI agents to interact with websites without screenshots or visual models. In this video, I explain what the Model Context Protocol (MCP) is and how the Playwright MCP works through structured accessibility data, and demonstrate a complete workflow with VS Code in agent mode by opening GitHub, logging in, and starring a repo\n\nPlaywright MCP is perfect for web navigation, form filling, data extraction, and AI-assisted browser tasks. It represents the next generation of browser automation that's specifically designed for Large Language Models.\n\nIn this video I am using VS Code Insiders. To install I go to the readme and press the vs code insiders button and it adds the server to VS Code with just one click.  \n\nCheck out these 2 videos for installation tips:\nInstall in VS Code: https://youtu.be/cifdyJkKs04\nInstall in Claude Desktop: https://youtu.be/jQjj3hD0hx4\n\n\ud83d\udcbb GitHub Repository: https://github.com/microsoft/playwright-mcp\nCheck the readme for more info.\n\n#PlaywrightMCP #AIAutomation #WebAutomation #GitHub #VSCode #AIDevelopment #Playwright #Microsoft",
+  "caption_file": "/Users/AI-OPS/.openclaw/workspace/generated/youtube_scan/playwright_mcp/video.en.vtt",
+  "entries": [
+    {
+      "start": "00:00:02.230",
+      "end": "00:00:02.240",
+      "text": "If you've been following the latest in"
+    },
+    {
+      "start": "00:00:02.240",
+      "end": "00:00:05.510",
+      "text": "If you've been following the latest in AI and automation, you'll love this. The"
+    },
+    {
+      "start": "00:00:05.510",
+      "end": "00:00:05.520",
+      "text": "AI and automation, you'll love this. The"
+    },
+    {
+      "start": "00:00:05.520",
+      "end": "00:00:06.909",
+      "text": "AI and automation, you'll love this. The Playright"
+    },
+    {
+      "start": "00:00:06.909",
+      "end": "00:00:06.919",
+      "text": "Playright"
+    },
+    {
+      "start": "00:00:06.919",
+      "end": "00:00:10.270",
+      "text": "Playright MCP. So, what exactly is the Playright"
+    },
+    {
+      "start": "00:00:10.270",
+      "end": "00:00:10.280",
+      "text": "MCP. So, what exactly is the Playright"
+    },
+    {
+      "start": "00:00:10.280",
+      "end": "00:00:13.350",
+      "text": "MCP. So, what exactly is the Playright MCP? MCP stands for model context"
+    },
+    {
+      "start": "00:00:13.350",
+      "end": "00:00:13.360",
+      "text": "MCP? MCP stands for model context"
+    },
+    {
+      "start": "00:00:13.360",
+      "end": "00:00:16.150",
+      "text": "MCP? MCP stands for model context protocol and it's essentially a server"
+    },
+    {
+      "start": "00:00:16.150",
+      "end": "00:00:16.160",
+      "text": "protocol and it's essentially a server"
+    },
+    {
+      "start": "00:00:16.160",
+      "end": "00:00:18.109",
+      "text": "protocol and it's essentially a server that provides browser automation"
+    },
+    {
+      "start": "00:00:18.109",
+      "end": "00:00:18.119",
+      "text": "that provides browser automation"
+    },
+    {
+      "start": "00:00:18.119",
+      "end": "00:00:20.070",
+      "text": "that provides browser automation capabilities using the Playright"
+    },
+    {
+      "start": "00:00:20.070",
+      "end": "00:00:20.080",
+      "text": "capabilities using the Playright"
+    },
+    {
+      "start": "00:00:20.080",
+      "end": "00:00:21.830",
+      "text": "capabilities using the Playright framework."
+    },
+    {
+      "start": "00:00:21.830",
+      "end": "00:00:21.840",
+      "text": "framework."
+    },
+    {
+      "start": "00:00:21.840",
+      "end": "00:00:24.310",
+      "text": "framework. It enables large language models like"
+    },
+    {
+      "start": "00:00:24.310",
+      "end": "00:00:24.320",
+      "text": "It enables large language models like"
+    },
+    {
+      "start": "00:00:24.320",
+      "end": "00:00:27.509",
+      "text": "It enables large language models like Open AI or Claude to interact with web"
+    },
+    {
+      "start": "00:00:27.509",
+      "end": "00:00:27.519",
+      "text": "Open AI or Claude to interact with web"
+    },
+    {
+      "start": "00:00:27.519",
+      "end": "00:00:30.429",
+      "text": "Open AI or Claude to interact with web pages through structured accessibility"
+    },
+    {
+      "start": "00:00:30.429",
+      "end": "00:00:30.439",
+      "text": "pages through structured accessibility"
+    },
+    {
+      "start": "00:00:30.439",
+      "end": "00:00:33.190",
+      "text": "pages through structured accessibility snapshots, completely bypassing the need"
+    },
+    {
+      "start": "00:00:33.190",
+      "end": "00:00:33.200",
+      "text": "snapshots, completely bypassing the need"
+    },
+    {
+      "start": "00:00:33.200",
+      "end": "00:00:35.950",
+      "text": "snapshots, completely bypassing the need for screenshots or visually tuned"
+    },
+    {
+      "start": "00:00:35.950",
+      "end": "00:00:35.960",
+      "text": "for screenshots or visually tuned"
+    },
+    {
+      "start": "00:00:35.960",
+      "end": "00:00:39.510",
+      "text": "for screenshots or visually tuned models. Think of it as giving AI models"
+    },
+    {
+      "start": "00:00:39.510",
+      "end": "00:00:39.520",
+      "text": "models. Think of it as giving AI models"
+    },
+    {
+      "start": "00:00:39.520",
+      "end": "00:00:42.150",
+      "text": "models. Think of it as giving AI models the ability to see and interact with web"
+    },
+    {
+      "start": "00:00:42.150",
+      "end": "00:00:42.160",
+      "text": "the ability to see and interact with web"
+    },
+    {
+      "start": "00:00:42.160",
+      "end": "00:00:43.990",
+      "text": "the ability to see and interact with web pages."
+    },
+    {
+      "start": "00:00:43.990",
+      "end": "00:00:44.000",
+      "text": "pages."
+    },
+    {
+      "start": "00:00:44.000",
+      "end": "00:00:46.950",
+      "text": "pages. That means you can browse, click, type,"
+    },
+    {
+      "start": "00:00:46.950",
+      "end": "00:00:46.960",
+      "text": "That means you can browse, click, type,"
+    },
+    {
+      "start": "00:00:46.960",
+      "end": "00:00:49.750",
+      "text": "That means you can browse, click, type, upload files, take a browser snapshot,"
+    },
+    {
+      "start": "00:00:49.750",
+      "end": "00:00:49.760",
+      "text": "upload files, take a browser snapshot,"
+    },
+    {
+      "start": "00:00:49.760",
+      "end": "00:00:52.910",
+      "text": "upload files, take a browser snapshot, and so much more. Let's dive into a"
+    },
+    {
+      "start": "00:00:52.910",
+      "end": "00:00:52.920",
+      "text": "and so much more. Let's dive into a"
+    },
+    {
+      "start": "00:00:52.920",
+      "end": "00:00:56.229",
+      "text": "and so much more. Let's dive into a demo. Let's go to the Playright MCP repo"
+    },
+    {
+      "start": "00:00:56.229",
+      "end": "00:00:56.239",
+      "text": "demo. Let's go to the Playright MCP repo"
+    },
+    {
+      "start": "00:00:56.239",
+      "end": "00:00:59.270",
+      "text": "demo. Let's go to the Playright MCP repo and start it. Copilot will help me"
+    },
+    {
+      "start": "00:00:59.270",
+      "end": "00:00:59.280",
+      "text": "and start it. Copilot will help me"
+    },
+    {
+      "start": "00:00:59.280",
+      "end": "00:01:01.430",
+      "text": "and start it. Copilot will help me navigate using the browser navigate tool"
+    },
+    {
+      "start": "00:01:01.430",
+      "end": "00:01:01.440",
+      "text": "navigate using the browser navigate tool"
+    },
+    {
+      "start": "00:01:01.440",
+      "end": "00:01:02.189",
+      "text": "navigate using the browser navigate tool from"
+    },
+    {
+      "start": "00:01:02.189",
+      "end": "00:01:02.199",
+      "text": "from"
+    },
+    {
+      "start": "00:01:02.199",
+      "end": "00:01:04.549",
+      "text": "from Playright. See how it opens a browser"
+    },
+    {
+      "start": "00:01:04.549",
+      "end": "00:01:04.559",
+      "text": "Playright. See how it opens a browser"
+    },
+    {
+      "start": "00:01:04.559",
+      "end": "00:01:06.830",
+      "text": "Playright. See how it opens a browser and navigates to the page I"
+    },
+    {
+      "start": "00:01:06.830",
+      "end": "00:01:06.840",
+      "text": "and navigates to the page I"
+    },
+    {
+      "start": "00:01:06.840",
+      "end": "00:01:09.510",
+      "text": "and navigates to the page I want. Now, see how it noticed that I"
+    },
+    {
+      "start": "00:01:09.510",
+      "end": "00:01:09.520",
+      "text": "want. Now, see how it noticed that I"
+    },
+    {
+      "start": "00:01:09.520",
+      "end": "00:01:11.590",
+      "text": "want. Now, see how it noticed that I need to be signed into GitHub in order"
+    },
+    {
+      "start": "00:01:11.590",
+      "end": "00:01:11.600",
+      "text": "need to be signed into GitHub in order"
+    },
+    {
+      "start": "00:01:11.600",
+      "end": "00:01:14.789",
+      "text": "need to be signed into GitHub in order to start it. So it runs browser click to"
+    },
+    {
+      "start": "00:01:14.789",
+      "end": "00:01:14.799",
+      "text": "to start it. So it runs browser click to"
+    },
+    {
+      "start": "00:01:14.799",
+      "end": "00:01:17.270",
+      "text": "to start it. So it runs browser click to click the signin button and then checks"
+    },
+    {
+      "start": "00:01:17.270",
+      "end": "00:01:17.280",
+      "text": "click the signin button and then checks"
+    },
+    {
+      "start": "00:01:17.280",
+      "end": "00:01:19.749",
+      "text": "click the signin button and then checks the current page to see the login form"
+    },
+    {
+      "start": "00:01:19.749",
+      "end": "00:01:19.759",
+      "text": "the current page to see the login form"
+    },
+    {
+      "start": "00:01:19.759",
+      "end": "00:01:23.310",
+      "text": "the current page to see the login form using the browser snapshot tool from"
+    },
+    {
+      "start": "00:01:23.310",
+      "end": "00:01:23.320",
+      "text": "using the browser snapshot tool from"
+    },
+    {
+      "start": "00:01:23.320",
+      "end": "00:01:25.749",
+      "text": "using the browser snapshot tool from playright. It knows we need a username"
+    },
+    {
+      "start": "00:01:25.749",
+      "end": "00:01:25.759",
+      "text": "playright. It knows we need a username"
+    },
+    {
+      "start": "00:01:25.759",
+      "end": "00:01:28.350",
+      "text": "playright. It knows we need a username or email address and a"
+    },
+    {
+      "start": "00:01:28.350",
+      "end": "00:01:28.360",
+      "text": "or email address and a"
+    },
+    {
+      "start": "00:01:28.360",
+      "end": "00:01:30.950",
+      "text": "or email address and a password. It tells us it does not"
+    },
+    {
+      "start": "00:01:30.950",
+      "end": "00:01:30.960",
+      "text": "password. It tells us it does not"
+    },
+    {
+      "start": "00:01:30.960",
+      "end": "00:01:33.429",
+      "text": "password. It tells us it does not recommend we share passwords with"
+    },
+    {
+      "start": "00:01:33.429",
+      "end": "00:01:33.439",
+      "text": "recommend we share passwords with"
+    },
+    {
+      "start": "00:01:33.439",
+      "end": "00:01:36.510",
+      "text": "recommend we share passwords with co-pilot or AI assistance for security"
+    },
+    {
+      "start": "00:01:36.510",
+      "end": "00:01:36.520",
+      "text": "co-pilot or AI assistance for security"
+    },
+    {
+      "start": "00:01:36.520",
+      "end": "00:01:39.990",
+      "text": "co-pilot or AI assistance for security reasons. So let's not do that."
+    },
+    {
+      "start": "00:01:39.990",
+      "end": "00:01:40.000",
+      "text": "reasons. So let's not do that."
+    },
+    {
+      "start": "00:01:40.000",
+      "end": "00:01:42.390",
+      "text": "reasons. So let's not do that. But as this is a browser, I can simply"
+    },
+    {
+      "start": "00:01:42.390",
+      "end": "00:01:42.400",
+      "text": "But as this is a browser, I can simply"
+    },
+    {
+      "start": "00:01:42.400",
+      "end": "00:01:45.069",
+      "text": "But as this is a browser, I can simply just click on it myself and paste in my"
+    },
+    {
+      "start": "00:01:45.069",
+      "end": "00:01:45.079",
+      "text": "just click on it myself and paste in my"
+    },
+    {
+      "start": "00:01:45.079",
+      "end": "00:01:47.590",
+      "text": "just click on it myself and paste in my credentials and open the mobile for two"
+    },
+    {
+      "start": "00:01:47.590",
+      "end": "00:01:47.600",
+      "text": "credentials and open the mobile for two"
+    },
+    {
+      "start": "00:01:47.600",
+      "end": "00:01:49.389",
+      "text": "credentials and open the mobile for two factor"
+    },
+    {
+      "start": "00:01:49.389",
+      "end": "00:01:49.399",
+      "text": "factor"
+    },
+    {
+      "start": "00:01:49.399",
+      "end": "00:01:53.310",
+      "text": "factor out. And now we can tell it to star the"
+    },
+    {
+      "start": "00:01:53.310",
+      "end": "00:01:53.320",
+      "text": "out. And now we can tell it to star the"
+    },
+    {
+      "start": "00:01:53.320",
+      "end": "00:01:56.109",
+      "text": "out. And now we can tell it to star the repo. And wait for"
+    },
+    {
+      "start": "00:01:56.109",
+      "end": "00:01:56.119",
+      "text": "repo. And wait for"
+    },
+    {
+      "start": "00:01:56.119",
+      "end": "00:01:59.709",
+      "text": "repo. And wait for it. Tada. We have another"
+    },
+    {
+      "start": "00:01:59.709",
+      "end": "00:01:59.719",
+      "text": "it. Tada. We have another"
+    },
+    {
+      "start": "00:01:59.719",
+      "end": "00:02:02.389",
+      "text": "it. Tada. We have another star. And there you have it. That's the"
+    },
+    {
+      "start": "00:02:02.389",
+      "end": "00:02:02.399",
+      "text": "star. And there you have it. That's the"
+    },
+    {
+      "start": "00:02:02.399",
+      "end": "00:02:05.030",
+      "text": "star. And there you have it. That's the Playright MCP. This technology"
+    },
+    {
+      "start": "00:02:05.030",
+      "end": "00:02:05.040",
+      "text": "Playright MCP. This technology"
+    },
+    {
+      "start": "00:02:05.040",
+      "end": "00:02:07.749",
+      "text": "Playright MCP. This technology represents a significant advancement in"
+    },
+    {
+      "start": "00:02:07.749",
+      "end": "00:02:07.759",
+      "text": "represents a significant advancement in"
+    },
+    {
+      "start": "00:02:07.759",
+      "end": "00:02:11.229",
+      "text": "represents a significant advancement in how AI agents can interact with web"
+    },
+    {
+      "start": "00:02:11.229",
+      "end": "00:02:11.239",
+      "text": "how AI agents can interact with web"
+    },
+    {
+      "start": "00:02:11.239",
+      "end": "00:02:13.350",
+      "text": "how AI agents can interact with web interfaces. So, what will you build with"
+    },
+    {
+      "start": "00:02:13.350",
+      "end": "00:02:13.360",
+      "text": "interfaces. So, what will you build with"
+    },
+    {
+      "start": "00:02:13.360",
+      "end": "00:02:15.830",
+      "text": "interfaces. So, what will you build with the Playright MCP? Drop a comment below"
+    },
+    {
+      "start": "00:02:15.830",
+      "end": "00:02:15.840",
+      "text": "the Playright MCP? Drop a comment below"
+    },
+    {
+      "start": "00:02:15.840",
+      "end": "00:02:18.309",
+      "text": "the Playright MCP? Drop a comment below with your ideas or questions. And don't"
+    },
+    {
+      "start": "00:02:18.309",
+      "end": "00:02:18.319",
+      "text": "with your ideas or questions. And don't"
+    },
+    {
+      "start": "00:02:18.319",
+      "end": "00:02:20.390",
+      "text": "with your ideas or questions. And don't forget to give us a star. Until next"
+    },
+    {
+      "start": "00:02:20.390",
+      "end": "00:02:20.400",
+      "text": "forget to give us a star. Until next"
+    },
+    {
+      "start": "00:02:20.400",
+      "end": "00:02:23.520",
+      "text": "forget to give us a star. Until next time, happy coding."
+    }
+  ]
+}

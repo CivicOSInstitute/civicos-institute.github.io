@@ -1,0 +1,5301 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=LV6Juz0xcrY",
+  "title": "OpenClaw Use Cases that are Actually Helpful! (ClawdBot)",
+  "uploader": "Duncan Rogoff | AI Automation",
+  "duration": 989,
+  "webpage_url": "https://www.youtube.com/watch?v=LV6Juz0xcrY",
+  "description": "More new leads + 1500 followers + ALL my resources\n\ud83d\udc49 https://www.skool.com/buildroom/\n\nSummary \u2935\ufe0f\nLearn how to set up OpenClaw the RIGHT way \u2014 not just install it, but actually configure a team of AI agents that run your business on autopilot. I spent $200+ stress testing this so you don't have to.\n\nThe AI Agent Dream Team FREE!\n\ud83d\udc49 https://www.notion.so/The-Ultimate-Guide-to-Multi-Agent-Systems-308f259c0f178157ad65e4f994b2ede1\n\n\u23f1\ufe0f Video Timestamps:\n00:00 - How to set up OpenClaw AI agents\n01:10 - How to plan your agent system\n02:06 - How to use different LLMs per task\n03:31 - How to switch Claude Max vs API\n04:30 - How to use the Figure It Out directive\n05:28 - How to structure agent infrastructure\n06:31 - How to build an orchestrator agent\n07:02 - How to configure soul and tools files\n09:46 - How to set up identity and memory files\n11:19 - How to connect Telegram to OpenClaw\n12:08 - How to automate a daily morning briefing\n14:10 - How to track progress with cron jobs\n15:02 - How to run weekly trend analysis\n16:03 - How to build your most impactful cron job\n16:27 - How to get the free prompt library",
+  "caption_file": "/Users/AI-OPS/.openclaw/workspace/generated/youtube_scan/openclaw_use_cases/video.en.vtt",
+  "entries": [
+    {
+      "start": "00:00:02.710",
+      "end": "00:00:02.720",
+      "text": "OpenClaw is the most powerful AI agent"
+    },
+    {
+      "start": "00:00:02.720",
+      "end": "00:00:04.470",
+      "text": "OpenClaw is the most powerful AI agent framework in the world right now and"
+    },
+    {
+      "start": "00:00:04.470",
+      "end": "00:00:04.480",
+      "text": "framework in the world right now and"
+    },
+    {
+      "start": "00:00:04.480",
+      "end": "00:00:06.550",
+      "text": "framework in the world right now and it's about to replace your entire"
+    },
+    {
+      "start": "00:00:06.550",
+      "end": "00:00:06.560",
+      "text": "it's about to replace your entire"
+    },
+    {
+      "start": "00:00:06.560",
+      "end": "00:00:08.470",
+      "text": "it's about to replace your entire workflow. While everyone else is still"
+    },
+    {
+      "start": "00:00:08.470",
+      "end": "00:00:08.480",
+      "text": "workflow. While everyone else is still"
+    },
+    {
+      "start": "00:00:08.480",
+      "end": "00:00:10.709",
+      "text": "workflow. While everyone else is still prompting chat GPT one message at a"
+    },
+    {
+      "start": "00:00:10.709",
+      "end": "00:00:10.719",
+      "text": "prompting chat GPT one message at a"
+    },
+    {
+      "start": "00:00:10.719",
+      "end": "00:00:12.790",
+      "text": "prompting chat GPT one message at a time, you could be running a specialized"
+    },
+    {
+      "start": "00:00:12.790",
+      "end": "00:00:12.800",
+      "text": "time, you could be running a specialized"
+    },
+    {
+      "start": "00:00:12.800",
+      "end": "00:00:14.950",
+      "text": "time, you could be running a specialized team of AI agents that work for you"
+    },
+    {
+      "start": "00:00:14.950",
+      "end": "00:00:14.960",
+      "text": "team of AI agents that work for you"
+    },
+    {
+      "start": "00:00:14.960",
+      "end": "00:00:17.510",
+      "text": "team of AI agents that work for you 24/7, remember everything, and cost"
+    },
+    {
+      "start": "00:00:17.510",
+      "end": "00:00:17.520",
+      "text": "24/7, remember everything, and cost"
+    },
+    {
+      "start": "00:00:17.520",
+      "end": "00:00:19.590",
+      "text": "24/7, remember everything, and cost significantly less than a full-time"
+    },
+    {
+      "start": "00:00:19.590",
+      "end": "00:00:19.600",
+      "text": "significantly less than a full-time"
+    },
+    {
+      "start": "00:00:19.600",
+      "end": "00:00:21.429",
+      "text": "significantly less than a full-time employee to operate. The problem is"
+    },
+    {
+      "start": "00:00:21.429",
+      "end": "00:00:21.439",
+      "text": "employee to operate. The problem is"
+    },
+    {
+      "start": "00:00:21.439",
+      "end": "00:00:23.269",
+      "text": "employee to operate. The problem is there are a lot of tutorials out there"
+    },
+    {
+      "start": "00:00:23.269",
+      "end": "00:00:23.279",
+      "text": "there are a lot of tutorials out there"
+    },
+    {
+      "start": "00:00:23.279",
+      "end": "00:00:25.269",
+      "text": "there are a lot of tutorials out there showing you how to set up Open Claw on a"
+    },
+    {
+      "start": "00:00:25.269",
+      "end": "00:00:25.279",
+      "text": "showing you how to set up Open Claw on a"
+    },
+    {
+      "start": "00:00:25.279",
+      "end": "00:00:27.589",
+      "text": "showing you how to set up Open Claw on a Mac Mini or VPS, but nobody's showing"
+    },
+    {
+      "start": "00:00:27.589",
+      "end": "00:00:27.599",
+      "text": "Mac Mini or VPS, but nobody's showing"
+    },
+    {
+      "start": "00:00:27.599",
+      "end": "00:00:29.429",
+      "text": "Mac Mini or VPS, but nobody's showing you how to actually get it to do"
+    },
+    {
+      "start": "00:00:29.429",
+      "end": "00:00:29.439",
+      "text": "you how to actually get it to do"
+    },
+    {
+      "start": "00:00:29.439",
+      "end": "00:00:32.150",
+      "text": "you how to actually get it to do anything. I spent over $200 in the last"
+    },
+    {
+      "start": "00:00:32.150",
+      "end": "00:00:32.160",
+      "text": "anything. I spent over $200 in the last"
+    },
+    {
+      "start": "00:00:32.160",
+      "end": "00:00:34.549",
+      "text": "anything. I spent over $200 in the last 48 hours stress testing the system so"
+    },
+    {
+      "start": "00:00:34.549",
+      "end": "00:00:34.559",
+      "text": "48 hours stress testing the system so"
+    },
+    {
+      "start": "00:00:34.559",
+      "end": "00:00:36.310",
+      "text": "48 hours stress testing the system so you don't have to. In this video, I'm"
+    },
+    {
+      "start": "00:00:36.310",
+      "end": "00:00:36.320",
+      "text": "you don't have to. In this video, I'm"
+    },
+    {
+      "start": "00:00:36.320",
+      "end": "00:00:37.750",
+      "text": "you don't have to. In this video, I'm going to show you how to set up the chat"
+    },
+    {
+      "start": "00:00:37.750",
+      "end": "00:00:37.760",
+      "text": "going to show you how to set up the chat"
+    },
+    {
+      "start": "00:00:37.760",
+      "end": "00:00:39.430",
+      "text": "going to show you how to set up the chat model so you don't break the bank, how"
+    },
+    {
+      "start": "00:00:39.430",
+      "end": "00:00:39.440",
+      "text": "model so you don't break the bank, how"
+    },
+    {
+      "start": "00:00:39.440",
+      "end": "00:00:41.510",
+      "text": "model so you don't break the bank, how to deploy a self-healing team of AI"
+    },
+    {
+      "start": "00:00:41.510",
+      "end": "00:00:41.520",
+      "text": "to deploy a self-healing team of AI"
+    },
+    {
+      "start": "00:00:41.520",
+      "end": "00:00:43.270",
+      "text": "to deploy a self-healing team of AI agents that communicate with each other,"
+    },
+    {
+      "start": "00:00:43.270",
+      "end": "00:00:43.280",
+      "text": "agents that communicate with each other,"
+    },
+    {
+      "start": "00:00:43.280",
+      "end": "00:00:44.790",
+      "text": "agents that communicate with each other, and how to set up the infrastructure"
+    },
+    {
+      "start": "00:00:44.790",
+      "end": "00:00:44.800",
+      "text": "and how to set up the infrastructure"
+    },
+    {
+      "start": "00:00:44.800",
+      "end": "00:00:47.110",
+      "text": "and how to set up the infrastructure that lets your AI run on autopilot. And"
+    },
+    {
+      "start": "00:00:47.110",
+      "end": "00:00:47.120",
+      "text": "that lets your AI run on autopilot. And"
+    },
+    {
+      "start": "00:00:47.120",
+      "end": "00:00:48.790",
+      "text": "that lets your AI run on autopilot. And if we haven't met yet, my name is Duncan"
+    },
+    {
+      "start": "00:00:48.790",
+      "end": "00:00:48.800",
+      "text": "if we haven't met yet, my name is Duncan"
+    },
+    {
+      "start": "00:00:48.800",
+      "end": "00:00:50.630",
+      "text": "if we haven't met yet, my name is Duncan Rogoff. I'm a former art director for"
+    },
+    {
+      "start": "00:00:50.630",
+      "end": "00:00:50.640",
+      "text": "Rogoff. I'm a former art director for"
+    },
+    {
+      "start": "00:00:50.640",
+      "end": "00:00:52.229",
+      "text": "Rogoff. I'm a former art director for brands like Apple, PlayStation, and"
+    },
+    {
+      "start": "00:00:52.229",
+      "end": "00:00:52.239",
+      "text": "brands like Apple, PlayStation, and"
+    },
+    {
+      "start": "00:00:52.239",
+      "end": "00:00:54.389",
+      "text": "brands like Apple, PlayStation, and Nissan. And I now run a six-figure AI"
+    },
+    {
+      "start": "00:00:54.389",
+      "end": "00:00:54.399",
+      "text": "Nissan. And I now run a six-figure AI"
+    },
+    {
+      "start": "00:00:54.399",
+      "end": "00:00:56.389",
+      "text": "Nissan. And I now run a six-figure AI agency. In under 12 months, I've grown a"
+    },
+    {
+      "start": "00:00:56.389",
+      "end": "00:00:56.399",
+      "text": "agency. In under 12 months, I've grown a"
+    },
+    {
+      "start": "00:00:56.399",
+      "end": "00:00:58.869",
+      "text": "agency. In under 12 months, I've grown a following of over 110,000 people, and I"
+    },
+    {
+      "start": "00:00:58.869",
+      "end": "00:00:58.879",
+      "text": "following of over 110,000 people, and I"
+    },
+    {
+      "start": "00:00:58.879",
+      "end": "00:01:00.389",
+      "text": "following of over 110,000 people, and I lead a community called the Buildroom"
+    },
+    {
+      "start": "00:01:00.389",
+      "end": "00:01:00.399",
+      "text": "lead a community called the Buildroom"
+    },
+    {
+      "start": "00:01:00.399",
+      "end": "00:01:02.470",
+      "text": "lead a community called the Buildroom where more than 2,000 are already using"
+    },
+    {
+      "start": "00:01:02.470",
+      "end": "00:01:02.480",
+      "text": "where more than 2,000 are already using"
+    },
+    {
+      "start": "00:01:02.480",
+      "end": "00:01:04.390",
+      "text": "where more than 2,000 are already using AI to grow their audience and generate"
+    },
+    {
+      "start": "00:01:04.390",
+      "end": "00:01:04.400",
+      "text": "AI to grow their audience and generate"
+    },
+    {
+      "start": "00:01:04.400",
+      "end": "00:01:06.230",
+      "text": "AI to grow their audience and generate leads for their business in under 3"
+    },
+    {
+      "start": "00:01:06.230",
+      "end": "00:01:06.240",
+      "text": "leads for their business in under 3"
+    },
+    {
+      "start": "00:01:06.240",
+      "end": "00:01:08.710",
+      "text": "leads for their business in under 3 hours per week. So, focus in, close all"
+    },
+    {
+      "start": "00:01:08.710",
+      "end": "00:01:08.720",
+      "text": "hours per week. So, focus in, close all"
+    },
+    {
+      "start": "00:01:08.720",
+      "end": "00:01:10.950",
+      "text": "hours per week. So, focus in, close all your tabs, and let's build. So, here we"
+    },
+    {
+      "start": "00:01:10.950",
+      "end": "00:01:10.960",
+      "text": "your tabs, and let's build. So, here we"
+    },
+    {
+      "start": "00:01:10.960",
+      "end": "00:01:12.950",
+      "text": "your tabs, and let's build. So, here we are inside of OpenClaw, and it's not"
+    },
+    {
+      "start": "00:01:12.950",
+      "end": "00:01:12.960",
+      "text": "are inside of OpenClaw, and it's not"
+    },
+    {
+      "start": "00:01:12.960",
+      "end": "00:01:15.270",
+      "text": "are inside of OpenClaw, and it's not always the sexiest to look at, but today"
+    },
+    {
+      "start": "00:01:15.270",
+      "end": "00:01:15.280",
+      "text": "always the sexiest to look at, but today"
+    },
+    {
+      "start": "00:01:15.280",
+      "end": "00:01:17.429",
+      "text": "always the sexiest to look at, but today I really want to cover like the most"
+    },
+    {
+      "start": "00:01:17.429",
+      "end": "00:01:17.439",
+      "text": "I really want to cover like the most"
+    },
+    {
+      "start": "00:01:17.439",
+      "end": "00:01:19.270",
+      "text": "I really want to cover like the most impactful things that I've set up that"
+    },
+    {
+      "start": "00:01:19.270",
+      "end": "00:01:19.280",
+      "text": "impactful things that I've set up that"
+    },
+    {
+      "start": "00:01:19.280",
+      "end": "00:01:20.870",
+      "text": "impactful things that I've set up that actually help me run my business. These"
+    },
+    {
+      "start": "00:01:20.870",
+      "end": "00:01:20.880",
+      "text": "actually help me run my business. These"
+    },
+    {
+      "start": "00:01:20.880",
+      "end": "00:01:22.310",
+      "text": "actually help me run my business. These are a couple things like communicating"
+    },
+    {
+      "start": "00:01:22.310",
+      "end": "00:01:22.320",
+      "text": "are a couple things like communicating"
+    },
+    {
+      "start": "00:01:22.320",
+      "end": "00:01:23.990",
+      "text": "are a couple things like communicating with it, using Telegram, setting up"
+    },
+    {
+      "start": "00:01:23.990",
+      "end": "00:01:24.000",
+      "text": "with it, using Telegram, setting up"
+    },
+    {
+      "start": "00:01:24.000",
+      "end": "00:01:26.070",
+      "text": "with it, using Telegram, setting up different LLM models to handle different"
+    },
+    {
+      "start": "00:01:26.070",
+      "end": "00:01:26.080",
+      "text": "different LLM models to handle different"
+    },
+    {
+      "start": "00:01:26.080",
+      "end": "00:01:28.230",
+      "text": "different LLM models to handle different tasks so I can save on cost, like using"
+    },
+    {
+      "start": "00:01:28.230",
+      "end": "00:01:28.240",
+      "text": "tasks so I can save on cost, like using"
+    },
+    {
+      "start": "00:01:28.240",
+      "end": "00:01:30.630",
+      "text": "tasks so I can save on cost, like using cron job to just tackle tasks like a"
+    },
+    {
+      "start": "00:01:30.630",
+      "end": "00:01:30.640",
+      "text": "cron job to just tackle tasks like a"
+    },
+    {
+      "start": "00:01:30.640",
+      "end": "00:01:32.630",
+      "text": "cron job to just tackle tasks like a daily morning briefing or saving this to"
+    },
+    {
+      "start": "00:01:32.630",
+      "end": "00:01:32.640",
+      "text": "daily morning briefing or saving this to"
+    },
+    {
+      "start": "00:01:32.640",
+      "end": "00:01:34.390",
+      "text": "daily morning briefing or saving this to GitHub or things like that. And then a"
+    },
+    {
+      "start": "00:01:34.390",
+      "end": "00:01:34.400",
+      "text": "GitHub or things like that. And then a"
+    },
+    {
+      "start": "00:01:34.400",
+      "end": "00:01:36.469",
+      "text": "GitHub or things like that. And then a breakdown of how I've set up my AI agent"
+    },
+    {
+      "start": "00:01:36.469",
+      "end": "00:01:36.479",
+      "text": "breakdown of how I've set up my AI agent"
+    },
+    {
+      "start": "00:01:36.479",
+      "end": "00:01:38.230",
+      "text": "breakdown of how I've set up my AI agent orchestras"
+    },
+    {
+      "start": "00:01:38.230",
+      "end": "00:01:38.240",
+      "text": "orchestras"
+    },
+    {
+      "start": "00:01:38.240",
+      "end": "00:01:39.830",
+      "text": "orchestras we have the orchestrator agent that"
+    },
+    {
+      "start": "00:01:39.830",
+      "end": "00:01:39.840",
+      "text": "we have the orchestrator agent that"
+    },
+    {
+      "start": "00:01:39.840",
+      "end": "00:01:41.350",
+      "text": "we have the orchestrator agent that communicates with all the other agents"
+    },
+    {
+      "start": "00:01:41.350",
+      "end": "00:01:41.360",
+      "text": "communicates with all the other agents"
+    },
+    {
+      "start": "00:01:41.360",
+      "end": "00:01:42.870",
+      "text": "communicates with all the other agents which really allows us to be as"
+    },
+    {
+      "start": "00:01:42.870",
+      "end": "00:01:42.880",
+      "text": "which really allows us to be as"
+    },
+    {
+      "start": "00:01:42.880",
+      "end": "00:01:44.710",
+      "text": "which really allows us to be as efficient as we possibly can be. I'll"
+    },
+    {
+      "start": "00:01:44.710",
+      "end": "00:01:44.720",
+      "text": "efficient as we possibly can be. I'll"
+    },
+    {
+      "start": "00:01:44.720",
+      "end": "00:01:46.389",
+      "text": "efficient as we possibly can be. I'll probably bounce back and forth between"
+    },
+    {
+      "start": "00:01:46.389",
+      "end": "00:01:46.399",
+      "text": "probably bounce back and forth between"
+    },
+    {
+      "start": "00:01:46.399",
+      "end": "00:01:48.389",
+      "text": "probably bounce back and forth between openclaw and some slides I have prepared"
+    },
+    {
+      "start": "00:01:48.389",
+      "end": "00:01:48.399",
+      "text": "openclaw and some slides I have prepared"
+    },
+    {
+      "start": "00:01:48.399",
+      "end": "00:01:50.069",
+      "text": "openclaw and some slides I have prepared because like I said openclaw isn't the"
+    },
+    {
+      "start": "00:01:50.069",
+      "end": "00:01:50.079",
+      "text": "because like I said openclaw isn't the"
+    },
+    {
+      "start": "00:01:50.079",
+      "end": "00:01:51.510",
+      "text": "because like I said openclaw isn't the prettiest to look at, but I do want you"
+    },
+    {
+      "start": "00:01:51.510",
+      "end": "00:01:51.520",
+      "text": "prettiest to look at, but I do want you"
+    },
+    {
+      "start": "00:01:51.520",
+      "end": "00:01:52.950",
+      "text": "prettiest to look at, but I do want you to understand where everything lives."
+    },
+    {
+      "start": "00:01:52.950",
+      "end": "00:01:52.960",
+      "text": "to understand where everything lives."
+    },
+    {
+      "start": "00:01:52.960",
+      "end": "00:01:55.030",
+      "text": "to understand where everything lives. Now when you first get into openclaw, it"
+    },
+    {
+      "start": "00:01:55.030",
+      "end": "00:01:55.040",
+      "text": "Now when you first get into openclaw, it"
+    },
+    {
+      "start": "00:01:55.040",
+      "end": "00:01:57.429",
+      "text": "Now when you first get into openclaw, it is essentially a baby. It knows nothing."
+    },
+    {
+      "start": "00:01:57.429",
+      "end": "00:01:57.439",
+      "text": "is essentially a baby. It knows nothing."
+    },
+    {
+      "start": "00:01:57.439",
+      "end": "00:01:59.429",
+      "text": "is essentially a baby. It knows nothing. So it is really up to you to configure"
+    },
+    {
+      "start": "00:01:59.429",
+      "end": "00:01:59.439",
+      "text": "So it is really up to you to configure"
+    },
+    {
+      "start": "00:01:59.439",
+      "end": "00:02:00.870",
+      "text": "So it is really up to you to configure this the right way and there's not a lot"
+    },
+    {
+      "start": "00:02:00.870",
+      "end": "00:02:00.880",
+      "text": "this the right way and there's not a lot"
+    },
+    {
+      "start": "00:02:00.880",
+      "end": "00:02:02.230",
+      "text": "this the right way and there's not a lot of information out there on how to do"
+    },
+    {
+      "start": "00:02:02.230",
+      "end": "00:02:02.240",
+      "text": "of information out there on how to do"
+    },
+    {
+      "start": "00:02:02.240",
+      "end": "00:02:03.590",
+      "text": "of information out there on how to do it. So there are a couple things that"
+    },
+    {
+      "start": "00:02:03.590",
+      "end": "00:02:03.600",
+      "text": "it. So there are a couple things that"
+    },
+    {
+      "start": "00:02:03.600",
+      "end": "00:02:05.030",
+      "text": "it. So there are a couple things that I've learned that have actually been"
+    },
+    {
+      "start": "00:02:05.030",
+      "end": "00:02:05.040",
+      "text": "I've learned that have actually been"
+    },
+    {
+      "start": "00:02:05.040",
+      "end": "00:02:07.429",
+      "text": "I've learned that have actually been really really impactful for me. So the"
+    },
+    {
+      "start": "00:02:07.429",
+      "end": "00:02:07.439",
+      "text": "really really impactful for me. So the"
+    },
+    {
+      "start": "00:02:07.439",
+      "end": "00:02:09.430",
+      "text": "really really impactful for me. So the very first thing that is really helpful"
+    },
+    {
+      "start": "00:02:09.430",
+      "end": "00:02:09.440",
+      "text": "very first thing that is really helpful"
+    },
+    {
+      "start": "00:02:09.440",
+      "end": "00:02:11.750",
+      "text": "very first thing that is really helpful is actually setting up different LLM"
+    },
+    {
+      "start": "00:02:11.750",
+      "end": "00:02:11.760",
+      "text": "is actually setting up different LLM"
+    },
+    {
+      "start": "00:02:11.760",
+      "end": "00:02:14.150",
+      "text": "is actually setting up different LLM models for different tasks. So let me"
+    },
+    {
+      "start": "00:02:14.150",
+      "end": "00:02:14.160",
+      "text": "models for different tasks. So let me"
+    },
+    {
+      "start": "00:02:14.160",
+      "end": "00:02:15.910",
+      "text": "models for different tasks. So let me just show you what I mean. Can you tell"
+    },
+    {
+      "start": "00:02:15.910",
+      "end": "00:02:15.920",
+      "text": "just show you what I mean. Can you tell"
+    },
+    {
+      "start": "00:02:15.920",
+      "end": "00:02:18.390",
+      "text": "just show you what I mean. Can you tell me which LLM models we are using and for"
+    },
+    {
+      "start": "00:02:18.390",
+      "end": "00:02:18.400",
+      "text": "me which LLM models we are using and for"
+    },
+    {
+      "start": "00:02:18.400",
+      "end": "00:02:20.470",
+      "text": "me which LLM models we are using and for what tasks? So now I can just"
+    },
+    {
+      "start": "00:02:20.470",
+      "end": "00:02:20.480",
+      "text": "what tasks? So now I can just"
+    },
+    {
+      "start": "00:02:20.480",
+      "end": "00:02:23.190",
+      "text": "what tasks? So now I can just communicate with Open Claw directly here"
+    },
+    {
+      "start": "00:02:23.190",
+      "end": "00:02:23.200",
+      "text": "communicate with Open Claw directly here"
+    },
+    {
+      "start": "00:02:23.200",
+      "end": "00:02:25.110",
+      "text": "communicate with Open Claw directly here in the chat in the browser and basically"
+    },
+    {
+      "start": "00:02:25.110",
+      "end": "00:02:25.120",
+      "text": "in the chat in the browser and basically"
+    },
+    {
+      "start": "00:02:25.120",
+      "end": "00:02:27.350",
+      "text": "in the chat in the browser and basically it's showing me that now I've actually"
+    },
+    {
+      "start": "00:02:27.350",
+      "end": "00:02:27.360",
+      "text": "it's showing me that now I've actually"
+    },
+    {
+      "start": "00:02:27.360",
+      "end": "00:02:29.510",
+      "text": "it's showing me that now I've actually switched between a couple of different"
+    },
+    {
+      "start": "00:02:29.510",
+      "end": "00:02:29.520",
+      "text": "switched between a couple of different"
+    },
+    {
+      "start": "00:02:29.520",
+      "end": "00:02:31.350",
+      "text": "switched between a couple of different models depending on the complexity."
+    },
+    {
+      "start": "00:02:31.350",
+      "end": "00:02:31.360",
+      "text": "models depending on the complexity."
+    },
+    {
+      "start": "00:02:31.360",
+      "end": "00:02:33.030",
+      "text": "models depending on the complexity. Right? So for here we can say the"
+    },
+    {
+      "start": "00:02:33.030",
+      "end": "00:02:33.040",
+      "text": "Right? So for here we can say the"
+    },
+    {
+      "start": "00:02:33.040",
+      "end": "00:02:34.790",
+      "text": "Right? So for here we can say the default for everyday task we're using"
+    },
+    {
+      "start": "00:02:34.790",
+      "end": "00:02:34.800",
+      "text": "default for everyday task we're using"
+    },
+    {
+      "start": "00:02:34.800",
+      "end": "00:02:37.030",
+      "text": "default for everyday task we're using Gemini 3 or Flash preview which like"
+    },
+    {
+      "start": "00:02:37.030",
+      "end": "00:02:37.040",
+      "text": "Gemini 3 or Flash preview which like"
+    },
+    {
+      "start": "00:02:37.040",
+      "end": "00:02:39.509",
+      "text": "Gemini 3 or Flash preview which like gives me a 90% cost reduction. So when"
+    },
+    {
+      "start": "00:02:39.509",
+      "end": "00:02:39.519",
+      "text": "gives me a 90% cost reduction. So when"
+    },
+    {
+      "start": "00:02:39.519",
+      "end": "00:02:41.110",
+      "text": "gives me a 90% cost reduction. So when I'm just chatting back and forth with"
+    },
+    {
+      "start": "00:02:41.110",
+      "end": "00:02:41.120",
+      "text": "I'm just chatting back and forth with"
+    },
+    {
+      "start": "00:02:41.120",
+      "end": "00:02:43.350",
+      "text": "I'm just chatting back and forth with the agent itself it's using Gemini which"
+    },
+    {
+      "start": "00:02:43.350",
+      "end": "00:02:43.360",
+      "text": "the agent itself it's using Gemini which"
+    },
+    {
+      "start": "00:02:43.360",
+      "end": "00:02:45.750",
+      "text": "the agent itself it's using Gemini which is super super cheap to use. Then from"
+    },
+    {
+      "start": "00:02:45.750",
+      "end": "00:02:45.760",
+      "text": "is super super cheap to use. Then from"
+    },
+    {
+      "start": "00:02:45.760",
+      "end": "00:02:48.550",
+      "text": "is super super cheap to use. Then from there for any of the content sub agents"
+    },
+    {
+      "start": "00:02:48.550",
+      "end": "00:02:48.560",
+      "text": "there for any of the content sub agents"
+    },
+    {
+      "start": "00:02:48.560",
+      "end": "00:02:50.710",
+      "text": "there for any of the content sub agents we're using like a step up model Claude"
+    },
+    {
+      "start": "00:02:50.710",
+      "end": "00:02:50.720",
+      "text": "we're using like a step up model Claude"
+    },
+    {
+      "start": "00:02:50.720",
+      "end": "00:02:53.350",
+      "text": "we're using like a step up model Claude Sonnet 4.5 which is like a really great"
+    },
+    {
+      "start": "00:02:53.350",
+      "end": "00:02:53.360",
+      "text": "Sonnet 4.5 which is like a really great"
+    },
+    {
+      "start": "00:02:53.360",
+      "end": "00:02:55.270",
+      "text": "Sonnet 4.5 which is like a really great model we're using for lead magnet and"
+    },
+    {
+      "start": "00:02:55.270",
+      "end": "00:02:55.280",
+      "text": "model we're using for lead magnet and"
+    },
+    {
+      "start": "00:02:55.280",
+      "end": "00:02:56.869",
+      "text": "model we're using for lead magnet and writing and our LinkedIn post because"
+    },
+    {
+      "start": "00:02:56.869",
+      "end": "00:02:56.879",
+      "text": "writing and our LinkedIn post because"
+    },
+    {
+      "start": "00:02:56.879",
+      "end": "00:02:59.030",
+      "text": "writing and our LinkedIn post because Claude is super super good at writing."
+    },
+    {
+      "start": "00:02:59.030",
+      "end": "00:02:59.040",
+      "text": "Claude is super super good at writing."
+    },
+    {
+      "start": "00:02:59.040",
+      "end": "00:03:00.470",
+      "text": "Claude is super super good at writing. And then for the most expert layer,"
+    },
+    {
+      "start": "00:03:00.470",
+      "end": "00:03:00.480",
+      "text": "And then for the most expert layer,"
+    },
+    {
+      "start": "00:03:00.480",
+      "end": "00:03:02.149",
+      "text": "And then for the most expert layer, we're switching dynamically to Claude"
+    },
+    {
+      "start": "00:03:02.149",
+      "end": "00:03:02.159",
+      "text": "we're switching dynamically to Claude"
+    },
+    {
+      "start": "00:03:02.159",
+      "end": "00:03:04.550",
+      "text": "we're switching dynamically to Claude Opus 4.6, which is the latest anthropic"
+    },
+    {
+      "start": "00:03:04.550",
+      "end": "00:03:04.560",
+      "text": "Opus 4.6, which is the latest anthropic"
+    },
+    {
+      "start": "00:03:04.560",
+      "end": "00:03:06.229",
+      "text": "Opus 4.6, which is the latest anthropic model. It's the most expensive to use,"
+    },
+    {
+      "start": "00:03:06.229",
+      "end": "00:03:06.239",
+      "text": "model. It's the most expensive to use,"
+    },
+    {
+      "start": "00:03:06.239",
+      "end": "00:03:07.910",
+      "text": "model. It's the most expensive to use, but it's the best at complex reasoning"
+    },
+    {
+      "start": "00:03:07.910",
+      "end": "00:03:07.920",
+      "text": "but it's the best at complex reasoning"
+    },
+    {
+      "start": "00:03:07.920",
+      "end": "00:03:09.990",
+      "text": "but it's the best at complex reasoning or complex tasks like coding or"
+    },
+    {
+      "start": "00:03:09.990",
+      "end": "00:03:10.000",
+      "text": "or complex tasks like coding or"
+    },
+    {
+      "start": "00:03:10.000",
+      "end": "00:03:11.430",
+      "text": "or complex tasks like coding or automation builds or any sort of"
+    },
+    {
+      "start": "00:03:11.430",
+      "end": "00:03:11.440",
+      "text": "automation builds or any sort of"
+    },
+    {
+      "start": "00:03:11.440",
+      "end": "00:03:13.430",
+      "text": "automation builds or any sort of multi-step reasoning. And so basically,"
+    },
+    {
+      "start": "00:03:13.430",
+      "end": "00:03:13.440",
+      "text": "multi-step reasoning. And so basically,"
+    },
+    {
+      "start": "00:03:13.440",
+      "end": "00:03:16.229",
+      "text": "multi-step reasoning. And so basically, you can just talk to OpenClaw like it's"
+    },
+    {
+      "start": "00:03:16.229",
+      "end": "00:03:16.239",
+      "text": "you can just talk to OpenClaw like it's"
+    },
+    {
+      "start": "00:03:16.239",
+      "end": "00:03:18.149",
+      "text": "you can just talk to OpenClaw like it's a smart assistant and tell it to figure"
+    },
+    {
+      "start": "00:03:18.149",
+      "end": "00:03:18.159",
+      "text": "a smart assistant and tell it to figure"
+    },
+    {
+      "start": "00:03:18.159",
+      "end": "00:03:20.070",
+      "text": "a smart assistant and tell it to figure it out. Like you can just say to it"
+    },
+    {
+      "start": "00:03:20.070",
+      "end": "00:03:20.080",
+      "text": "it out. Like you can just say to it"
+    },
+    {
+      "start": "00:03:20.080",
+      "end": "00:03:21.670",
+      "text": "it out. Like you can just say to it things like, \"Hey, I want you to set up"
+    },
+    {
+      "start": "00:03:21.670",
+      "end": "00:03:21.680",
+      "text": "things like, \"Hey, I want you to set up"
+    },
+    {
+      "start": "00:03:21.680",
+      "end": "00:03:23.270",
+      "text": "things like, \"Hey, I want you to set up different LLM models for different"
+    },
+    {
+      "start": "00:03:23.270",
+      "end": "00:03:23.280",
+      "text": "different LLM models for different"
+    },
+    {
+      "start": "00:03:23.280",
+      "end": "00:03:25.430",
+      "text": "different LLM models for different tasks. Use Gemini for this, Sonnet for"
+    },
+    {
+      "start": "00:03:25.430",
+      "end": "00:03:25.440",
+      "text": "tasks. Use Gemini for this, Sonnet for"
+    },
+    {
+      "start": "00:03:25.440",
+      "end": "00:03:26.949",
+      "text": "tasks. Use Gemini for this, Sonnet for that, and Claude Opus for this.\" And"
+    },
+    {
+      "start": "00:03:26.949",
+      "end": "00:03:26.959",
+      "text": "that, and Claude Opus for this.\" And"
+    },
+    {
+      "start": "00:03:26.959",
+      "end": "00:03:28.390",
+      "text": "that, and Claude Opus for this.\" And then that way you can actually save on"
+    },
+    {
+      "start": "00:03:28.390",
+      "end": "00:03:28.400",
+      "text": "then that way you can actually save on"
+    },
+    {
+      "start": "00:03:28.400",
+      "end": "00:03:30.070",
+      "text": "then that way you can actually save on cost instead of relying on heavier and"
+    },
+    {
+      "start": "00:03:30.070",
+      "end": "00:03:30.080",
+      "text": "cost instead of relying on heavier and"
+    },
+    {
+      "start": "00:03:30.080",
+      "end": "00:03:31.509",
+      "text": "cost instead of relying on heavier and expensive models for everything. One"
+    },
+    {
+      "start": "00:03:31.509",
+      "end": "00:03:31.519",
+      "text": "expensive models for everything. One"
+    },
+    {
+      "start": "00:03:31.519",
+      "end": "00:03:33.509",
+      "text": "expensive models for everything. One other super valuable setup hack is"
+    },
+    {
+      "start": "00:03:33.509",
+      "end": "00:03:33.519",
+      "text": "other super valuable setup hack is"
+    },
+    {
+      "start": "00:03:33.519",
+      "end": "00:03:35.670",
+      "text": "other super valuable setup hack is switching between your Claude Max plan"
+    },
+    {
+      "start": "00:03:35.670",
+      "end": "00:03:35.680",
+      "text": "switching between your Claude Max plan"
+    },
+    {
+      "start": "00:03:35.680",
+      "end": "00:03:37.990",
+      "text": "switching between your Claude Max plan and the API like dynamically and"
+    },
+    {
+      "start": "00:03:37.990",
+      "end": "00:03:38.000",
+      "text": "and the API like dynamically and"
+    },
+    {
+      "start": "00:03:38.000",
+      "end": "00:03:40.149",
+      "text": "and the API like dynamically and intelligently. Can you tell me how we"
+    },
+    {
+      "start": "00:03:40.149",
+      "end": "00:03:40.159",
+      "text": "intelligently. Can you tell me how we"
+    },
+    {
+      "start": "00:03:40.159",
+      "end": "00:03:41.830",
+      "text": "intelligently. Can you tell me how we are intelligently switching between the"
+    },
+    {
+      "start": "00:03:41.830",
+      "end": "00:03:41.840",
+      "text": "are intelligently switching between the"
+    },
+    {
+      "start": "00:03:41.840",
+      "end": "00:03:44.390",
+      "text": "are intelligently switching between the Cloud Max and the API? So basically"
+    },
+    {
+      "start": "00:03:44.390",
+      "end": "00:03:44.400",
+      "text": "Cloud Max and the API? So basically"
+    },
+    {
+      "start": "00:03:44.400",
+      "end": "00:03:45.670",
+      "text": "Cloud Max and the API? So basically there has been like a lot of chatter"
+    },
+    {
+      "start": "00:03:45.670",
+      "end": "00:03:45.680",
+      "text": "there has been like a lot of chatter"
+    },
+    {
+      "start": "00:03:45.680",
+      "end": "00:03:48.630",
+      "text": "there has been like a lot of chatter right now about how Quad or Anthropic is"
+    },
+    {
+      "start": "00:03:48.630",
+      "end": "00:03:48.640",
+      "text": "right now about how Quad or Anthropic is"
+    },
+    {
+      "start": "00:03:48.640",
+      "end": "00:03:50.949",
+      "text": "right now about how Quad or Anthropic is banning people who are using the Claude"
+    },
+    {
+      "start": "00:03:50.949",
+      "end": "00:03:50.959",
+      "text": "banning people who are using the Claude"
+    },
+    {
+      "start": "00:03:50.959",
+      "end": "00:03:52.710",
+      "text": "banning people who are using the Claude Max subscription in OpenClaw because"
+    },
+    {
+      "start": "00:03:52.710",
+      "end": "00:03:52.720",
+      "text": "Max subscription in OpenClaw because"
+    },
+    {
+      "start": "00:03:52.720",
+      "end": "00:03:54.470",
+      "text": "Max subscription in OpenClaw because it's just kind of like racking up the"
+    },
+    {
+      "start": "00:03:54.470",
+      "end": "00:03:54.480",
+      "text": "it's just kind of like racking up the"
+    },
+    {
+      "start": "00:03:54.480",
+      "end": "00:03:56.710",
+      "text": "it's just kind of like racking up the credit so to speak. But we basically are"
+    },
+    {
+      "start": "00:03:56.710",
+      "end": "00:03:56.720",
+      "text": "credit so to speak. But we basically are"
+    },
+    {
+      "start": "00:03:56.720",
+      "end": "00:03:58.789",
+      "text": "credit so to speak. But we basically are able to integrate a system that will"
+    },
+    {
+      "start": "00:03:58.789",
+      "end": "00:03:58.799",
+      "text": "able to integrate a system that will"
+    },
+    {
+      "start": "00:03:58.799",
+      "end": "00:04:00.630",
+      "text": "able to integrate a system that will dynamically switch between the two. So"
+    },
+    {
+      "start": "00:04:00.630",
+      "end": "00:04:00.640",
+      "text": "dynamically switch between the two. So"
+    },
+    {
+      "start": "00:04:00.640",
+      "end": "00:04:02.309",
+      "text": "dynamically switch between the two. So as you start to hit rate limits on your"
+    },
+    {
+      "start": "00:04:02.309",
+      "end": "00:04:02.319",
+      "text": "as you start to hit rate limits on your"
+    },
+    {
+      "start": "00:04:02.319",
+      "end": "00:04:04.229",
+      "text": "as you start to hit rate limits on your Quad Max plan, it'll dynamically switch"
+    },
+    {
+      "start": "00:04:04.229",
+      "end": "00:04:04.239",
+      "text": "Quad Max plan, it'll dynamically switch"
+    },
+    {
+      "start": "00:04:04.239",
+      "end": "00:04:06.869",
+      "text": "Quad Max plan, it'll dynamically switch over to the API when needed. So this is"
+    },
+    {
+      "start": "00:04:06.869",
+      "end": "00:04:06.879",
+      "text": "over to the API when needed. So this is"
+    },
+    {
+      "start": "00:04:06.879",
+      "end": "00:04:07.910",
+      "text": "over to the API when needed. So this is essentially how it's doing it."
+    },
+    {
+      "start": "00:04:07.910",
+      "end": "00:04:07.920",
+      "text": "essentially how it's doing it."
+    },
+    {
+      "start": "00:04:07.920",
+      "end": "00:04:09.750",
+      "text": "essentially how it's doing it. Basically, it just uses the Quad Max"
+    },
+    {
+      "start": "00:04:09.750",
+      "end": "00:04:09.760",
+      "text": "Basically, it just uses the Quad Max"
+    },
+    {
+      "start": "00:04:09.760",
+      "end": "00:04:11.190",
+      "text": "Basically, it just uses the Quad Max plan first. Right now, I'm just paying"
+    },
+    {
+      "start": "00:04:11.190",
+      "end": "00:04:11.200",
+      "text": "plan first. Right now, I'm just paying"
+    },
+    {
+      "start": "00:04:11.200",
+      "end": "00:04:13.030",
+      "text": "plan first. Right now, I'm just paying $100 a month cuz I'm not ramping this up"
+    },
+    {
+      "start": "00:04:13.030",
+      "end": "00:04:13.040",
+      "text": "$100 a month cuz I'm not ramping this up"
+    },
+    {
+      "start": "00:04:13.040",
+      "end": "00:04:14.949",
+      "text": "$100 a month cuz I'm not ramping this up like crazy. And then once you start to"
+    },
+    {
+      "start": "00:04:14.949",
+      "end": "00:04:14.959",
+      "text": "like crazy. And then once you start to"
+    },
+    {
+      "start": "00:04:14.959",
+      "end": "00:04:16.150",
+      "text": "like crazy. And then once you start to kind of like hit those rate limits,"
+    },
+    {
+      "start": "00:04:16.150",
+      "end": "00:04:16.160",
+      "text": "kind of like hit those rate limits,"
+    },
+    {
+      "start": "00:04:16.160",
+      "end": "00:04:17.830",
+      "text": "kind of like hit those rate limits, it'll switch over to the API because the"
+    },
+    {
+      "start": "00:04:17.830",
+      "end": "00:04:17.840",
+      "text": "it'll switch over to the API because the"
+    },
+    {
+      "start": "00:04:17.840",
+      "end": "00:04:19.830",
+      "text": "it'll switch over to the API because the API does end up actually being really"
+    },
+    {
+      "start": "00:04:19.830",
+      "end": "00:04:19.840",
+      "text": "API does end up actually being really"
+    },
+    {
+      "start": "00:04:19.840",
+      "end": "00:04:21.830",
+      "text": "API does end up actually being really expensive if you're only using that. If"
+    },
+    {
+      "start": "00:04:21.830",
+      "end": "00:04:21.840",
+      "text": "expensive if you're only using that. If"
+    },
+    {
+      "start": "00:04:21.840",
+      "end": "00:04:23.670",
+      "text": "expensive if you're only using that. If you need to know how to get access to"
+    },
+    {
+      "start": "00:04:23.670",
+      "end": "00:04:23.680",
+      "text": "you need to know how to get access to"
+    },
+    {
+      "start": "00:04:23.680",
+      "end": "00:04:25.909",
+      "text": "you need to know how to get access to your max plan on OpenClaw, literally"
+    },
+    {
+      "start": "00:04:25.909",
+      "end": "00:04:25.919",
+      "text": "your max plan on OpenClaw, literally"
+    },
+    {
+      "start": "00:04:25.919",
+      "end": "00:04:27.590",
+      "text": "your max plan on OpenClaw, literally just ask. It walked me through the setup"
+    },
+    {
+      "start": "00:04:27.590",
+      "end": "00:04:27.600",
+      "text": "just ask. It walked me through the setup"
+    },
+    {
+      "start": "00:04:27.600",
+      "end": "00:04:29.909",
+      "text": "just ask. It walked me through the setup and how to get my Quad Max API key in"
+    },
+    {
+      "start": "00:04:29.909",
+      "end": "00:04:29.919",
+      "text": "and how to get my Quad Max API key in"
+    },
+    {
+      "start": "00:04:29.919",
+      "end": "00:04:31.510",
+      "text": "and how to get my Quad Max API key in like two seconds. The next is a"
+    },
+    {
+      "start": "00:04:31.510",
+      "end": "00:04:31.520",
+      "text": "like two seconds. The next is a"
+    },
+    {
+      "start": "00:04:31.520",
+      "end": "00:04:33.350",
+      "text": "like two seconds. The next is a directive that I actually got from a"
+    },
+    {
+      "start": "00:04:33.350",
+      "end": "00:04:33.360",
+      "text": "directive that I actually got from a"
+    },
+    {
+      "start": "00:04:33.360",
+      "end": "00:04:35.189",
+      "text": "directive that I actually got from a friend. Can you tell me about the figure"
+    },
+    {
+      "start": "00:04:35.189",
+      "end": "00:04:35.199",
+      "text": "friend. Can you tell me about the figure"
+    },
+    {
+      "start": "00:04:35.199",
+      "end": "00:04:37.430",
+      "text": "friend. Can you tell me about the figure it out directive? So basically, this is"
+    },
+    {
+      "start": "00:04:37.430",
+      "end": "00:04:37.440",
+      "text": "it out directive? So basically, this is"
+    },
+    {
+      "start": "00:04:37.440",
+      "end": "00:04:40.070",
+      "text": "it out directive? So basically, this is just like an instruction to OpenClaw to"
+    },
+    {
+      "start": "00:04:40.070",
+      "end": "00:04:40.080",
+      "text": "just like an instruction to OpenClaw to"
+    },
+    {
+      "start": "00:04:40.080",
+      "end": "00:04:42.150",
+      "text": "just like an instruction to OpenClaw to basically just like be smart, figure it"
+    },
+    {
+      "start": "00:04:42.150",
+      "end": "00:04:42.160",
+      "text": "basically just like be smart, figure it"
+    },
+    {
+      "start": "00:04:42.160",
+      "end": "00:04:44.230",
+      "text": "basically just like be smart, figure it out. If I ask you to do something, just"
+    },
+    {
+      "start": "00:04:44.230",
+      "end": "00:04:44.240",
+      "text": "out. If I ask you to do something, just"
+    },
+    {
+      "start": "00:04:44.240",
+      "end": "00:04:45.990",
+      "text": "out. If I ask you to do something, just like handle it. So I don't have to have"
+    },
+    {
+      "start": "00:04:45.990",
+      "end": "00:04:46.000",
+      "text": "like handle it. So I don't have to have"
+    },
+    {
+      "start": "00:04:46.000",
+      "end": "00:04:48.550",
+      "text": "like handle it. So I don't have to have this constant like back and forth with"
+    },
+    {
+      "start": "00:04:48.550",
+      "end": "00:04:48.560",
+      "text": "this constant like back and forth with"
+    },
+    {
+      "start": "00:04:48.560",
+      "end": "00:04:50.469",
+      "text": "this constant like back and forth with OpenClaw to actually execute on"
+    },
+    {
+      "start": "00:04:50.469",
+      "end": "00:04:50.479",
+      "text": "OpenClaw to actually execute on"
+    },
+    {
+      "start": "00:04:50.479",
+      "end": "00:04:52.230",
+      "text": "OpenClaw to actually execute on something. You can see here it's the"
+    },
+    {
+      "start": "00:04:52.230",
+      "end": "00:04:52.240",
+      "text": "something. You can see here it's the"
+    },
+    {
+      "start": "00:04:52.240",
+      "end": "00:04:54.390",
+      "text": "something. You can see here it's the core operator philosophy. Basically, I"
+    },
+    {
+      "start": "00:04:54.390",
+      "end": "00:04:54.400",
+      "text": "core operator philosophy. Basically, I"
+    },
+    {
+      "start": "00:04:54.400",
+      "end": "00:04:56.629",
+      "text": "core operator philosophy. Basically, I can't is not vocabulary. If I don't know"
+    },
+    {
+      "start": "00:04:56.629",
+      "end": "00:04:56.639",
+      "text": "can't is not vocabulary. If I don't know"
+    },
+    {
+      "start": "00:04:56.639",
+      "end": "00:04:58.790",
+      "text": "can't is not vocabulary. If I don't know something, learn it now. So, this way"
+    },
+    {
+      "start": "00:04:58.790",
+      "end": "00:04:58.800",
+      "text": "something, learn it now. So, this way"
+    },
+    {
+      "start": "00:04:58.800",
+      "end": "00:05:01.189",
+      "text": "something, learn it now. So, this way I'm not constantly having to like baby"
+    },
+    {
+      "start": "00:05:01.189",
+      "end": "00:05:01.199",
+      "text": "I'm not constantly having to like baby"
+    },
+    {
+      "start": "00:05:01.199",
+      "end": "00:05:02.950",
+      "text": "I'm not constantly having to like baby open claw. It's just going to go out if"
+    },
+    {
+      "start": "00:05:02.950",
+      "end": "00:05:02.960",
+      "text": "open claw. It's just going to go out if"
+    },
+    {
+      "start": "00:05:02.960",
+      "end": "00:05:04.469",
+      "text": "open claw. It's just going to go out if it doesn't know how to solve a problem."
+    },
+    {
+      "start": "00:05:04.469",
+      "end": "00:05:04.479",
+      "text": "it doesn't know how to solve a problem."
+    },
+    {
+      "start": "00:05:04.479",
+      "end": "00:05:06.070",
+      "text": "it doesn't know how to solve a problem. It's going to research the internet and"
+    },
+    {
+      "start": "00:05:06.070",
+      "end": "00:05:06.080",
+      "text": "It's going to research the internet and"
+    },
+    {
+      "start": "00:05:06.080",
+      "end": "00:05:07.670",
+      "text": "It's going to research the internet and figure out how to solve something. It's"
+    },
+    {
+      "start": "00:05:07.670",
+      "end": "00:05:07.680",
+      "text": "figure out how to solve something. It's"
+    },
+    {
+      "start": "00:05:07.680",
+      "end": "00:05:09.350",
+      "text": "figure out how to solve something. It's going to search for docs or tutorials."
+    },
+    {
+      "start": "00:05:09.350",
+      "end": "00:05:09.360",
+      "text": "going to search for docs or tutorials."
+    },
+    {
+      "start": "00:05:09.360",
+      "end": "00:05:10.710",
+      "text": "going to search for docs or tutorials. It's going to reverse engineer stuff."
+    },
+    {
+      "start": "00:05:10.710",
+      "end": "00:05:10.720",
+      "text": "It's going to reverse engineer stuff."
+    },
+    {
+      "start": "00:05:10.720",
+      "end": "00:05:12.710",
+      "text": "It's going to reverse engineer stuff. It's going to look at APIs, right? It's"
+    },
+    {
+      "start": "00:05:12.710",
+      "end": "00:05:12.720",
+      "text": "It's going to look at APIs, right? It's"
+    },
+    {
+      "start": "00:05:12.720",
+      "end": "00:05:14.710",
+      "text": "It's going to look at APIs, right? It's going to try multiple approaches to"
+    },
+    {
+      "start": "00:05:14.710",
+      "end": "00:05:14.720",
+      "text": "going to try multiple approaches to"
+    },
+    {
+      "start": "00:05:14.720",
+      "end": "00:05:16.790",
+      "text": "going to try multiple approaches to actually solve the problem first before"
+    },
+    {
+      "start": "00:05:16.790",
+      "end": "00:05:16.800",
+      "text": "actually solve the problem first before"
+    },
+    {
+      "start": "00:05:16.800",
+      "end": "00:05:18.629",
+      "text": "actually solve the problem first before coming to me and asking me questions."
+    },
+    {
+      "start": "00:05:18.629",
+      "end": "00:05:18.639",
+      "text": "coming to me and asking me questions."
+    },
+    {
+      "start": "00:05:18.639",
+      "end": "00:05:20.150",
+      "text": "coming to me and asking me questions. That way I don't have to hold his hand"
+    },
+    {
+      "start": "00:05:20.150",
+      "end": "00:05:20.160",
+      "text": "That way I don't have to hold his hand"
+    },
+    {
+      "start": "00:05:20.160",
+      "end": "00:05:21.830",
+      "text": "That way I don't have to hold his hand through everything. So if you want just"
+    },
+    {
+      "start": "00:05:21.830",
+      "end": "00:05:21.840",
+      "text": "through everything. So if you want just"
+    },
+    {
+      "start": "00:05:21.840",
+      "end": "00:05:23.670",
+      "text": "through everything. So if you want just pause this, take a screenshot here, drop"
+    },
+    {
+      "start": "00:05:23.670",
+      "end": "00:05:23.680",
+      "text": "pause this, take a screenshot here, drop"
+    },
+    {
+      "start": "00:05:23.680",
+      "end": "00:05:25.510",
+      "text": "pause this, take a screenshot here, drop it into openclaw and say, \"Hey, like"
+    },
+    {
+      "start": "00:05:25.510",
+      "end": "00:05:25.520",
+      "text": "it into openclaw and say, \"Hey, like"
+    },
+    {
+      "start": "00:05:25.520",
+      "end": "00:05:27.029",
+      "text": "it into openclaw and say, \"Hey, like this is how I want you to behave.\" This"
+    },
+    {
+      "start": "00:05:27.029",
+      "end": "00:05:27.039",
+      "text": "this is how I want you to behave.\" This"
+    },
+    {
+      "start": "00:05:27.039",
+      "end": "00:05:29.110",
+      "text": "this is how I want you to behave.\" This has actually saved me a lot of time. So"
+    },
+    {
+      "start": "00:05:29.110",
+      "end": "00:05:29.120",
+      "text": "has actually saved me a lot of time. So"
+    },
+    {
+      "start": "00:05:29.120",
+      "end": "00:05:30.629",
+      "text": "has actually saved me a lot of time. So now the next thing to understand is"
+    },
+    {
+      "start": "00:05:30.629",
+      "end": "00:05:30.639",
+      "text": "now the next thing to understand is"
+    },
+    {
+      "start": "00:05:30.639",
+      "end": "00:05:32.870",
+      "text": "now the next thing to understand is basically the agents infrastructure."
+    },
+    {
+      "start": "00:05:32.870",
+      "end": "00:05:32.880",
+      "text": "basically the agents infrastructure."
+    },
+    {
+      "start": "00:05:32.880",
+      "end": "00:05:35.110",
+      "text": "basically the agents infrastructure. This is kind of like having OpenClaw act"
+    },
+    {
+      "start": "00:05:35.110",
+      "end": "00:05:35.120",
+      "text": "This is kind of like having OpenClaw act"
+    },
+    {
+      "start": "00:05:35.120",
+      "end": "00:05:37.189",
+      "text": "This is kind of like having OpenClaw act as like a different team of sub agents."
+    },
+    {
+      "start": "00:05:37.189",
+      "end": "00:05:37.199",
+      "text": "as like a different team of sub agents."
+    },
+    {
+      "start": "00:05:37.199",
+      "end": "00:05:38.870",
+      "text": "as like a different team of sub agents. And this will allow you to save on costs"
+    },
+    {
+      "start": "00:05:38.870",
+      "end": "00:05:38.880",
+      "text": "And this will allow you to save on costs"
+    },
+    {
+      "start": "00:05:38.880",
+      "end": "00:05:40.550",
+      "text": "And this will allow you to save on costs and be as efficient as possible. Cuz"
+    },
+    {
+      "start": "00:05:40.550",
+      "end": "00:05:40.560",
+      "text": "and be as efficient as possible. Cuz"
+    },
+    {
+      "start": "00:05:40.560",
+      "end": "00:05:41.830",
+      "text": "and be as efficient as possible. Cuz what I was finding is that if you're"
+    },
+    {
+      "start": "00:05:41.830",
+      "end": "00:05:41.840",
+      "text": "what I was finding is that if you're"
+    },
+    {
+      "start": "00:05:41.840",
+      "end": "00:05:43.350",
+      "text": "what I was finding is that if you're just doing everything with a single"
+    },
+    {
+      "start": "00:05:43.350",
+      "end": "00:05:43.360",
+      "text": "just doing everything with a single"
+    },
+    {
+      "start": "00:05:43.360",
+      "end": "00:05:45.590",
+      "text": "just doing everything with a single agent in the main chat, it gets really"
+    },
+    {
+      "start": "00:05:45.590",
+      "end": "00:05:45.600",
+      "text": "agent in the main chat, it gets really"
+    },
+    {
+      "start": "00:05:45.600",
+      "end": "00:05:47.590",
+      "text": "agent in the main chat, it gets really bloated really quickly. it tends to"
+    },
+    {
+      "start": "00:05:47.590",
+      "end": "00:05:47.600",
+      "text": "bloated really quickly. it tends to"
+    },
+    {
+      "start": "00:05:47.600",
+      "end": "00:05:49.270",
+      "text": "bloated really quickly. it tends to drift or hallucinate. You're constantly"
+    },
+    {
+      "start": "00:05:49.270",
+      "end": "00:05:49.280",
+      "text": "drift or hallucinate. You're constantly"
+    },
+    {
+      "start": "00:05:49.280",
+      "end": "00:05:51.670",
+      "text": "drift or hallucinate. You're constantly having to like restart the chat new. Oh,"
+    },
+    {
+      "start": "00:05:51.670",
+      "end": "00:05:51.680",
+      "text": "having to like restart the chat new. Oh,"
+    },
+    {
+      "start": "00:05:51.680",
+      "end": "00:05:53.270",
+      "text": "having to like restart the chat new. Oh, one thing that's also helpful in the"
+    },
+    {
+      "start": "00:05:53.270",
+      "end": "00:05:53.280",
+      "text": "one thing that's also helpful in the"
+    },
+    {
+      "start": "00:05:53.280",
+      "end": "00:05:55.430",
+      "text": "one thing that's also helpful in the chat. If you just type slash new, you"
+    },
+    {
+      "start": "00:05:55.430",
+      "end": "00:05:55.440",
+      "text": "chat. If you just type slash new, you"
+    },
+    {
+      "start": "00:05:55.440",
+      "end": "00:05:57.110",
+      "text": "chat. If you just type slash new, you can basically start a new session. It'll"
+    },
+    {
+      "start": "00:05:57.110",
+      "end": "00:05:57.120",
+      "text": "can basically start a new session. It'll"
+    },
+    {
+      "start": "00:05:57.120",
+      "end": "00:05:58.790",
+      "text": "can basically start a new session. It'll clear the memory or the cache and"
+    },
+    {
+      "start": "00:05:58.790",
+      "end": "00:05:58.800",
+      "text": "clear the memory or the cache and"
+    },
+    {
+      "start": "00:05:58.800",
+      "end": "00:06:00.469",
+      "text": "clear the memory or the cache and basically gets rid of all the previous"
+    },
+    {
+      "start": "00:06:00.469",
+      "end": "00:06:00.479",
+      "text": "basically gets rid of all the previous"
+    },
+    {
+      "start": "00:06:00.479",
+      "end": "00:06:02.150",
+      "text": "basically gets rid of all the previous context. So that way you don't have kind"
+    },
+    {
+      "start": "00:06:02.150",
+      "end": "00:06:02.160",
+      "text": "context. So that way you don't have kind"
+    },
+    {
+      "start": "00:06:02.160",
+      "end": "00:06:03.830",
+      "text": "context. So that way you don't have kind of that bloat and that drift happening."
+    },
+    {
+      "start": "00:06:03.830",
+      "end": "00:06:03.840",
+      "text": "of that bloat and that drift happening."
+    },
+    {
+      "start": "00:06:03.840",
+      "end": "00:06:05.350",
+      "text": "of that bloat and that drift happening. There is a really clear sort of"
+    },
+    {
+      "start": "00:06:05.350",
+      "end": "00:06:05.360",
+      "text": "There is a really clear sort of"
+    },
+    {
+      "start": "00:06:05.360",
+      "end": "00:06:06.870",
+      "text": "There is a really clear sort of orchestrator pattern that's been"
+    },
+    {
+      "start": "00:06:06.870",
+      "end": "00:06:06.880",
+      "text": "orchestrator pattern that's been"
+    },
+    {
+      "start": "00:06:06.880",
+      "end": "00:06:08.710",
+      "text": "orchestrator pattern that's been developed with all of these AI agents in"
+    },
+    {
+      "start": "00:06:08.710",
+      "end": "00:06:08.720",
+      "text": "developed with all of these AI agents in"
+    },
+    {
+      "start": "00:06:08.720",
+      "end": "00:06:09.909",
+      "text": "developed with all of these AI agents in general where you have kind of like the"
+    },
+    {
+      "start": "00:06:09.909",
+      "end": "00:06:09.919",
+      "text": "general where you have kind of like the"
+    },
+    {
+      "start": "00:06:09.919",
+      "end": "00:06:11.670",
+      "text": "general where you have kind of like the orchestrator at the top level and then"
+    },
+    {
+      "start": "00:06:11.670",
+      "end": "00:06:11.680",
+      "text": "orchestrator at the top level and then"
+    },
+    {
+      "start": "00:06:11.680",
+      "end": "00:06:13.430",
+      "text": "orchestrator at the top level and then it speaks to all of the other agents"
+    },
+    {
+      "start": "00:06:13.430",
+      "end": "00:06:13.440",
+      "text": "it speaks to all of the other agents"
+    },
+    {
+      "start": "00:06:13.440",
+      "end": "00:06:14.950",
+      "text": "it speaks to all of the other agents beneath it and tells them how to"
+    },
+    {
+      "start": "00:06:14.950",
+      "end": "00:06:14.960",
+      "text": "beneath it and tells them how to"
+    },
+    {
+      "start": "00:06:14.960",
+      "end": "00:06:17.029",
+      "text": "beneath it and tells them how to communicate with each other. I put"
+    },
+    {
+      "start": "00:06:17.029",
+      "end": "00:06:17.039",
+      "text": "communicate with each other. I put"
+    },
+    {
+      "start": "00:06:17.039",
+      "end": "00:06:19.189",
+      "text": "communicate with each other. I put together this little guide about the"
+    },
+    {
+      "start": "00:06:19.189",
+      "end": "00:06:19.199",
+      "text": "together this little guide about the"
+    },
+    {
+      "start": "00:06:19.199",
+      "end": "00:06:20.550",
+      "text": "together this little guide about the ultimate guide to just multi- aent"
+    },
+    {
+      "start": "00:06:20.550",
+      "end": "00:06:20.560",
+      "text": "ultimate guide to just multi- aent"
+    },
+    {
+      "start": "00:06:20.560",
+      "end": "00:06:22.550",
+      "text": "ultimate guide to just multi- aent systems like how to set these up, how to"
+    },
+    {
+      "start": "00:06:22.550",
+      "end": "00:06:22.560",
+      "text": "systems like how to set these up, how to"
+    },
+    {
+      "start": "00:06:22.560",
+      "end": "00:06:24.950",
+      "text": "systems like how to set these up, how to design like a sub agent, especially for"
+    },
+    {
+      "start": "00:06:24.950",
+      "end": "00:06:24.960",
+      "text": "design like a sub agent, especially for"
+    },
+    {
+      "start": "00:06:24.960",
+      "end": "00:06:27.350",
+      "text": "design like a sub agent, especially for OpenClaw using the soul.md file. I'll"
+    },
+    {
+      "start": "00:06:27.350",
+      "end": "00:06:27.360",
+      "text": "OpenClaw using the soul.md file. I'll"
+    },
+    {
+      "start": "00:06:27.360",
+      "end": "00:06:28.629",
+      "text": "OpenClaw using the soul.md file. I'll leave a link in the description where"
+    },
+    {
+      "start": "00:06:28.629",
+      "end": "00:06:28.639",
+      "text": "leave a link in the description where"
+    },
+    {
+      "start": "00:06:28.639",
+      "end": "00:06:30.469",
+      "text": "leave a link in the description where you can just get that totally free so"
+    },
+    {
+      "start": "00:06:30.469",
+      "end": "00:06:30.479",
+      "text": "you can just get that totally free so"
+    },
+    {
+      "start": "00:06:30.479",
+      "end": "00:06:32.629",
+      "text": "you can just get that totally free so you can have access to this. The most"
+    },
+    {
+      "start": "00:06:32.629",
+      "end": "00:06:32.639",
+      "text": "you can have access to this. The most"
+    },
+    {
+      "start": "00:06:32.639",
+      "end": "00:06:34.309",
+      "text": "you can have access to this. The most important thing inside of these agents"
+    },
+    {
+      "start": "00:06:34.309",
+      "end": "00:06:34.319",
+      "text": "important thing inside of these agents"
+    },
+    {
+      "start": "00:06:34.319",
+      "end": "00:06:36.390",
+      "text": "important thing inside of these agents to pay attention to is these files. So,"
+    },
+    {
+      "start": "00:06:36.390",
+      "end": "00:06:36.400",
+      "text": "to pay attention to is these files. So,"
+    },
+    {
+      "start": "00:06:36.400",
+      "end": "00:06:38.150",
+      "text": "to pay attention to is these files. So, there's an agent soul tools file. I'm"
+    },
+    {
+      "start": "00:06:38.150",
+      "end": "00:06:38.160",
+      "text": "there's an agent soul tools file. I'm"
+    },
+    {
+      "start": "00:06:38.160",
+      "end": "00:06:39.350",
+      "text": "there's an agent soul tools file. I'm going to walk you through what each one"
+    },
+    {
+      "start": "00:06:39.350",
+      "end": "00:06:39.360",
+      "text": "going to walk you through what each one"
+    },
+    {
+      "start": "00:06:39.360",
+      "end": "00:06:41.430",
+      "text": "going to walk you through what each one of those is so you understand. And"
+    },
+    {
+      "start": "00:06:41.430",
+      "end": "00:06:41.440",
+      "text": "of those is so you understand. And"
+    },
+    {
+      "start": "00:06:41.440",
+      "end": "00:06:43.749",
+      "text": "of those is so you understand. And basically, I found that not every agent"
+    },
+    {
+      "start": "00:06:43.749",
+      "end": "00:06:43.759",
+      "text": "basically, I found that not every agent"
+    },
+    {
+      "start": "00:06:43.759",
+      "end": "00:06:46.230",
+      "text": "basically, I found that not every agent needs all of these files. Basically, you"
+    },
+    {
+      "start": "00:06:46.230",
+      "end": "00:06:46.240",
+      "text": "needs all of these files. Basically, you"
+    },
+    {
+      "start": "00:06:46.240",
+      "end": "00:06:48.309",
+      "text": "needs all of these files. Basically, you have me. I just have my Duncan agent as"
+    },
+    {
+      "start": "00:06:48.309",
+      "end": "00:06:48.319",
+      "text": "have me. I just have my Duncan agent as"
+    },
+    {
+      "start": "00:06:48.319",
+      "end": "00:06:50.469",
+      "text": "have me. I just have my Duncan agent as the main agent. And this has access to"
+    },
+    {
+      "start": "00:06:50.469",
+      "end": "00:06:50.479",
+      "text": "the main agent. And this has access to"
+    },
+    {
+      "start": "00:06:50.479",
+      "end": "00:06:52.710",
+      "text": "the main agent. And this has access to everything. And then it just essentially"
+    },
+    {
+      "start": "00:06:52.710",
+      "end": "00:06:52.720",
+      "text": "everything. And then it just essentially"
+    },
+    {
+      "start": "00:06:52.720",
+      "end": "00:06:55.029",
+      "text": "everything. And then it just essentially provides all of the sub agents with the"
+    },
+    {
+      "start": "00:06:55.029",
+      "end": "00:06:55.039",
+      "text": "provides all of the sub agents with the"
+    },
+    {
+      "start": "00:06:55.039",
+      "end": "00:06:56.950",
+      "text": "provides all of the sub agents with the context that they need and nothing else."
+    },
+    {
+      "start": "00:06:56.950",
+      "end": "00:06:56.960",
+      "text": "context that they need and nothing else."
+    },
+    {
+      "start": "00:06:56.960",
+      "end": "00:06:58.790",
+      "text": "context that they need and nothing else. So again, you're not sending extra"
+    },
+    {
+      "start": "00:06:58.790",
+      "end": "00:06:58.800",
+      "text": "So again, you're not sending extra"
+    },
+    {
+      "start": "00:06:58.800",
+      "end": "00:07:01.350",
+      "text": "So again, you're not sending extra tokens to the LLMs to process. You're"
+    },
+    {
+      "start": "00:07:01.350",
+      "end": "00:07:01.360",
+      "text": "tokens to the LLMs to process. You're"
+    },
+    {
+      "start": "00:07:01.360",
+      "end": "00:07:03.589",
+      "text": "tokens to the LLMs to process. You're only sending exactly what it needs. So"
+    },
+    {
+      "start": "00:07:03.589",
+      "end": "00:07:03.599",
+      "text": "only sending exactly what it needs. So"
+    },
+    {
+      "start": "00:07:03.599",
+      "end": "00:07:06.150",
+      "text": "only sending exactly what it needs. So first is the soul.md file. This is the"
+    },
+    {
+      "start": "00:07:06.150",
+      "end": "00:07:06.160",
+      "text": "first is the soul.md file. This is the"
+    },
+    {
+      "start": "00:07:06.160",
+      "end": "00:07:07.909",
+      "text": "first is the soul.md file. This is the brain. This is the agents identity and"
+    },
+    {
+      "start": "00:07:07.909",
+      "end": "00:07:07.919",
+      "text": "brain. This is the agents identity and"
+    },
+    {
+      "start": "00:07:07.919",
+      "end": "00:07:09.749",
+      "text": "brain. This is the agents identity and the core instructions. It defines who it"
+    },
+    {
+      "start": "00:07:09.749",
+      "end": "00:07:09.759",
+      "text": "the core instructions. It defines who it"
+    },
+    {
+      "start": "00:07:09.759",
+      "end": "00:07:11.749",
+      "text": "the core instructions. It defines who it is, how it behaves, and crucial"
+    },
+    {
+      "start": "00:07:11.749",
+      "end": "00:07:11.759",
+      "text": "is, how it behaves, and crucial"
+    },
+    {
+      "start": "00:07:11.759",
+      "end": "00:07:13.510",
+      "text": "is, how it behaves, and crucial behavioral boundaries. So like what to"
+    },
+    {
+      "start": "00:07:13.510",
+      "end": "00:07:13.520",
+      "text": "behavioral boundaries. So like what to"
+    },
+    {
+      "start": "00:07:13.520",
+      "end": "00:07:15.749",
+      "text": "behavioral boundaries. So like what to do and what not to do. So if we come in"
+    },
+    {
+      "start": "00:07:15.749",
+      "end": "00:07:15.759",
+      "text": "do and what not to do. So if we come in"
+    },
+    {
+      "start": "00:07:15.759",
+      "end": "00:07:17.830",
+      "text": "do and what not to do. So if we come in here to the solemn MD file here, this is"
+    },
+    {
+      "start": "00:07:17.830",
+      "end": "00:07:17.840",
+      "text": "here to the solemn MD file here, this is"
+    },
+    {
+      "start": "00:07:17.840",
+      "end": "00:07:19.749",
+      "text": "here to the solemn MD file here, this is just for my main agent, right? You're a"
+    },
+    {
+      "start": "00:07:19.749",
+      "end": "00:07:19.759",
+      "text": "just for my main agent, right? You're a"
+    },
+    {
+      "start": "00:07:19.759",
+      "end": "00:07:21.749",
+      "text": "just for my main agent, right? You're a Duncan's orchestrator agent. You do not"
+    },
+    {
+      "start": "00:07:21.749",
+      "end": "00:07:21.759",
+      "text": "Duncan's orchestrator agent. You do not"
+    },
+    {
+      "start": "00:07:21.759",
+      "end": "00:07:23.909",
+      "text": "Duncan's orchestrator agent. You do not execute tasks yourself. You route them."
+    },
+    {
+      "start": "00:07:23.909",
+      "end": "00:07:23.919",
+      "text": "execute tasks yourself. You route them."
+    },
+    {
+      "start": "00:07:23.919",
+      "end": "00:07:25.990",
+      "text": "execute tasks yourself. You route them. So you're a task router and coordinator."
+    },
+    {
+      "start": "00:07:25.990",
+      "end": "00:07:26.000",
+      "text": "So you're a task router and coordinator."
+    },
+    {
+      "start": "00:07:26.000",
+      "end": "00:07:27.909",
+      "text": "So you're a task router and coordinator. You basically need to identify which sub"
+    },
+    {
+      "start": "00:07:27.909",
+      "end": "00:07:27.919",
+      "text": "You basically need to identify which sub"
+    },
+    {
+      "start": "00:07:27.919",
+      "end": "00:07:29.670",
+      "text": "You basically need to identify which sub agent should handle the task. You should"
+    },
+    {
+      "start": "00:07:29.670",
+      "end": "00:07:29.680",
+      "text": "agent should handle the task. You should"
+    },
+    {
+      "start": "00:07:29.680",
+      "end": "00:07:31.350",
+      "text": "agent should handle the task. You should spawn that sub agent with a clear"
+    },
+    {
+      "start": "00:07:31.350",
+      "end": "00:07:31.360",
+      "text": "spawn that sub agent with a clear"
+    },
+    {
+      "start": "00:07:31.360",
+      "end": "00:07:32.790",
+      "text": "spawn that sub agent with a clear complete task description and then"
+    },
+    {
+      "start": "00:07:32.790",
+      "end": "00:07:32.800",
+      "text": "complete task description and then"
+    },
+    {
+      "start": "00:07:32.800",
+      "end": "00:07:34.230",
+      "text": "complete task description and then report back the results when they"
+    },
+    {
+      "start": "00:07:34.230",
+      "end": "00:07:34.240",
+      "text": "report back the results when they"
+    },
+    {
+      "start": "00:07:34.240",
+      "end": "00:07:36.070",
+      "text": "report back the results when they arrive. So again, it's this two-way"
+    },
+    {
+      "start": "00:07:36.070",
+      "end": "00:07:36.080",
+      "text": "arrive. So again, it's this two-way"
+    },
+    {
+      "start": "00:07:36.080",
+      "end": "00:07:37.670",
+      "text": "arrive. So again, it's this two-way communication between the orchestrator"
+    },
+    {
+      "start": "00:07:37.670",
+      "end": "00:07:37.680",
+      "text": "communication between the orchestrator"
+    },
+    {
+      "start": "00:07:37.680",
+      "end": "00:07:39.110",
+      "text": "communication between the orchestrator and then the agents that live beneath"
+    },
+    {
+      "start": "00:07:39.110",
+      "end": "00:07:39.120",
+      "text": "and then the agents that live beneath"
+    },
+    {
+      "start": "00:07:39.120",
+      "end": "00:07:40.629",
+      "text": "and then the agents that live beneath it. These are the tasks that we expect"
+    },
+    {
+      "start": "00:07:40.629",
+      "end": "00:07:40.639",
+      "text": "it. These are the tasks that we expect"
+    },
+    {
+      "start": "00:07:40.639",
+      "end": "00:07:42.390",
+      "text": "it. These are the tasks that we expect it to delegate. And then these are the"
+    },
+    {
+      "start": "00:07:42.390",
+      "end": "00:07:42.400",
+      "text": "it to delegate. And then these are the"
+    },
+    {
+      "start": "00:07:42.400",
+      "end": "00:07:43.909",
+      "text": "it to delegate. And then these are the kind of tasks that we expect the agent"
+    },
+    {
+      "start": "00:07:43.909",
+      "end": "00:07:43.919",
+      "text": "kind of tasks that we expect the agent"
+    },
+    {
+      "start": "00:07:43.919",
+      "end": "00:07:45.830",
+      "text": "kind of tasks that we expect the agent just to handle itself without having to"
+    },
+    {
+      "start": "00:07:45.830",
+      "end": "00:07:45.840",
+      "text": "just to handle itself without having to"
+    },
+    {
+      "start": "00:07:45.840",
+      "end": "00:07:47.830",
+      "text": "just to handle itself without having to call a sub agent. Inside the community,"
+    },
+    {
+      "start": "00:07:47.830",
+      "end": "00:07:47.840",
+      "text": "call a sub agent. Inside the community,"
+    },
+    {
+      "start": "00:07:47.840",
+      "end": "00:07:50.230",
+      "text": "call a sub agent. Inside the community, I do have this AI agent dream team stack"
+    },
+    {
+      "start": "00:07:50.230",
+      "end": "00:07:50.240",
+      "text": "I do have this AI agent dream team stack"
+    },
+    {
+      "start": "00:07:50.240",
+      "end": "00:07:51.589",
+      "text": "I do have this AI agent dream team stack which comes set with all of these"
+    },
+    {
+      "start": "00:07:51.589",
+      "end": "00:07:51.599",
+      "text": "which comes set with all of these"
+    },
+    {
+      "start": "00:07:51.599",
+      "end": "00:07:53.029",
+      "text": "which comes set with all of these prompts for an orchestrator, a"
+    },
+    {
+      "start": "00:07:53.029",
+      "end": "00:07:53.039",
+      "text": "prompts for an orchestrator, a"
+    },
+    {
+      "start": "00:07:53.039",
+      "end": "00:07:54.629",
+      "text": "prompts for an orchestrator, a researcher, writer, chief of staff, and"
+    },
+    {
+      "start": "00:07:54.629",
+      "end": "00:07:54.639",
+      "text": "researcher, writer, chief of staff, and"
+    },
+    {
+      "start": "00:07:54.639",
+      "end": "00:07:56.550",
+      "text": "researcher, writer, chief of staff, and a builder to do code and things for you."
+    },
+    {
+      "start": "00:07:56.550",
+      "end": "00:07:56.560",
+      "text": "a builder to do code and things for you."
+    },
+    {
+      "start": "00:07:56.560",
+      "end": "00:07:58.230",
+      "text": "a builder to do code and things for you. It comes with a prompt and so basically"
+    },
+    {
+      "start": "00:07:58.230",
+      "end": "00:07:58.240",
+      "text": "It comes with a prompt and so basically"
+    },
+    {
+      "start": "00:07:58.240",
+      "end": "00:07:59.830",
+      "text": "It comes with a prompt and so basically you could just come down here and copy"
+    },
+    {
+      "start": "00:07:59.830",
+      "end": "00:07:59.840",
+      "text": "you could just come down here and copy"
+    },
+    {
+      "start": "00:07:59.840",
+      "end": "00:08:02.230",
+      "text": "you could just come down here and copy this entire prompt into openclaw and"
+    },
+    {
+      "start": "00:08:02.230",
+      "end": "00:08:02.240",
+      "text": "this entire prompt into openclaw and"
+    },
+    {
+      "start": "00:08:02.240",
+      "end": "00:08:03.749",
+      "text": "this entire prompt into openclaw and it'll set up this entire agent"
+    },
+    {
+      "start": "00:08:03.749",
+      "end": "00:08:03.759",
+      "text": "it'll set up this entire agent"
+    },
+    {
+      "start": "00:08:03.759",
+      "end": "00:08:05.589",
+      "text": "it'll set up this entire agent architecture for you. And so the next"
+    },
+    {
+      "start": "00:08:05.589",
+      "end": "00:08:05.599",
+      "text": "architecture for you. And so the next"
+    },
+    {
+      "start": "00:08:05.599",
+      "end": "00:08:07.909",
+      "text": "architecture for you. And so the next file to understand is this agents.md"
+    },
+    {
+      "start": "00:08:07.909",
+      "end": "00:08:07.919",
+      "text": "file to understand is this agents.md"
+    },
+    {
+      "start": "00:08:07.919",
+      "end": "00:08:09.909",
+      "text": "file to understand is this agents.md file. This is the directory of all of"
+    },
+    {
+      "start": "00:08:09.909",
+      "end": "00:08:09.919",
+      "text": "file. This is the directory of all of"
+    },
+    {
+      "start": "00:08:09.919",
+      "end": "00:08:11.830",
+      "text": "file. This is the directory of all of the sub aents that we create. And so it"
+    },
+    {
+      "start": "00:08:11.830",
+      "end": "00:08:11.840",
+      "text": "the sub aents that we create. And so it"
+    },
+    {
+      "start": "00:08:11.840",
+      "end": "00:08:13.589",
+      "text": "the sub aents that we create. And so it lists each of the sub aents and the"
+    },
+    {
+      "start": "00:08:13.589",
+      "end": "00:08:13.599",
+      "text": "lists each of the sub aents and the"
+    },
+    {
+      "start": "00:08:13.599",
+      "end": "00:08:15.430",
+      "text": "lists each of the sub aents and the specific roles and their strength. So"
+    },
+    {
+      "start": "00:08:15.430",
+      "end": "00:08:15.440",
+      "text": "specific roles and their strength. So"
+    },
+    {
+      "start": "00:08:15.440",
+      "end": "00:08:17.270",
+      "text": "specific roles and their strength. So this is an example of the type of file"
+    },
+    {
+      "start": "00:08:17.270",
+      "end": "00:08:17.280",
+      "text": "this is an example of the type of file"
+    },
+    {
+      "start": "00:08:17.280",
+      "end": "00:08:19.589",
+      "text": "this is an example of the type of file that only your orchestrator agent needs."
+    },
+    {
+      "start": "00:08:19.589",
+      "end": "00:08:19.599",
+      "text": "that only your orchestrator agent needs."
+    },
+    {
+      "start": "00:08:19.599",
+      "end": "00:08:21.189",
+      "text": "that only your orchestrator agent needs. It basically goes ahead and it just"
+    },
+    {
+      "start": "00:08:21.189",
+      "end": "00:08:21.199",
+      "text": "It basically goes ahead and it just"
+    },
+    {
+      "start": "00:08:21.199",
+      "end": "00:08:23.830",
+      "text": "It basically goes ahead and it just describes each of the sub aents. And so"
+    },
+    {
+      "start": "00:08:23.830",
+      "end": "00:08:23.840",
+      "text": "describes each of the sub aents. And so"
+    },
+    {
+      "start": "00:08:23.840",
+      "end": "00:08:25.510",
+      "text": "describes each of the sub aents. And so basically the orchestrator needs to"
+    },
+    {
+      "start": "00:08:25.510",
+      "end": "00:08:25.520",
+      "text": "basically the orchestrator needs to"
+    },
+    {
+      "start": "00:08:25.520",
+      "end": "00:08:27.350",
+      "text": "basically the orchestrator needs to understand what each of the sub aents"
+    },
+    {
+      "start": "00:08:27.350",
+      "end": "00:08:27.360",
+      "text": "understand what each of the sub aents"
+    },
+    {
+      "start": "00:08:27.360",
+      "end": "00:08:28.469",
+      "text": "understand what each of the sub aents are like something that creates"
+    },
+    {
+      "start": "00:08:28.469",
+      "end": "00:08:28.479",
+      "text": "are like something that creates"
+    },
+    {
+      "start": "00:08:28.479",
+      "end": "00:08:29.990",
+      "text": "are like something that creates Instagram and Tik Tok carousels,"
+    },
+    {
+      "start": "00:08:29.990",
+      "end": "00:08:30.000",
+      "text": "Instagram and Tik Tok carousels,"
+    },
+    {
+      "start": "00:08:30.000",
+      "end": "00:08:31.270",
+      "text": "Instagram and Tik Tok carousels, something that writes Twitter threads,"
+    },
+    {
+      "start": "00:08:31.270",
+      "end": "00:08:31.280",
+      "text": "something that writes Twitter threads,"
+    },
+    {
+      "start": "00:08:31.280",
+      "end": "00:08:33.350",
+      "text": "something that writes Twitter threads, something that generates images or like"
+    },
+    {
+      "start": "00:08:33.350",
+      "end": "00:08:33.360",
+      "text": "something that generates images or like"
+    },
+    {
+      "start": "00:08:33.360",
+      "end": "00:08:35.110",
+      "text": "something that generates images or like basically creates lead magnets for me,"
+    },
+    {
+      "start": "00:08:35.110",
+      "end": "00:08:35.120",
+      "text": "basically creates lead magnets for me,"
+    },
+    {
+      "start": "00:08:35.120",
+      "end": "00:08:36.790",
+      "text": "basically creates lead magnets for me, right? So it's really clear what each of"
+    },
+    {
+      "start": "00:08:36.790",
+      "end": "00:08:36.800",
+      "text": "right? So it's really clear what each of"
+    },
+    {
+      "start": "00:08:36.800",
+      "end": "00:08:38.949",
+      "text": "right? So it's really clear what each of the sub aents do. So the orchestrator"
+    },
+    {
+      "start": "00:08:38.949",
+      "end": "00:08:38.959",
+      "text": "the sub aents do. So the orchestrator"
+    },
+    {
+      "start": "00:08:38.959",
+      "end": "00:08:40.709",
+      "text": "the sub aents do. So the orchestrator understands which agents to call for"
+    },
+    {
+      "start": "00:08:40.709",
+      "end": "00:08:40.719",
+      "text": "understands which agents to call for"
+    },
+    {
+      "start": "00:08:40.719",
+      "end": "00:08:42.310",
+      "text": "understands which agents to call for what task. But this is a really good"
+    },
+    {
+      "start": "00:08:42.310",
+      "end": "00:08:42.320",
+      "text": "what task. But this is a really good"
+    },
+    {
+      "start": "00:08:42.320",
+      "end": "00:08:44.550",
+      "text": "what task. But this is a really good example like inside of like my carousel"
+    },
+    {
+      "start": "00:08:44.550",
+      "end": "00:08:44.560",
+      "text": "example like inside of like my carousel"
+    },
+    {
+      "start": "00:08:44.560",
+      "end": "00:08:47.110",
+      "text": "example like inside of like my carousel creator, there is no agents.md file"
+    },
+    {
+      "start": "00:08:47.110",
+      "end": "00:08:47.120",
+      "text": "creator, there is no agents.md file"
+    },
+    {
+      "start": "00:08:47.120",
+      "end": "00:08:48.870",
+      "text": "creator, there is no agents.md file because the carousel creator doesn't"
+    },
+    {
+      "start": "00:08:48.870",
+      "end": "00:08:48.880",
+      "text": "because the carousel creator doesn't"
+    },
+    {
+      "start": "00:08:48.880",
+      "end": "00:08:51.110",
+      "text": "because the carousel creator doesn't need to understand the agents around it"
+    },
+    {
+      "start": "00:08:51.110",
+      "end": "00:08:51.120",
+      "text": "need to understand the agents around it"
+    },
+    {
+      "start": "00:08:51.120",
+      "end": "00:08:52.310",
+      "text": "need to understand the agents around it because that's a job for the"
+    },
+    {
+      "start": "00:08:52.310",
+      "end": "00:08:52.320",
+      "text": "because that's a job for the"
+    },
+    {
+      "start": "00:08:52.320",
+      "end": "00:08:54.230",
+      "text": "because that's a job for the orchestrator. So we're not sending"
+    },
+    {
+      "start": "00:08:54.230",
+      "end": "00:08:54.240",
+      "text": "orchestrator. So we're not sending"
+    },
+    {
+      "start": "00:08:54.240",
+      "end": "00:08:56.070",
+      "text": "orchestrator. So we're not sending additional context that the sub agent"
+    },
+    {
+      "start": "00:08:56.070",
+      "end": "00:08:56.080",
+      "text": "additional context that the sub agent"
+    },
+    {
+      "start": "00:08:56.080",
+      "end": "00:08:57.829",
+      "text": "additional context that the sub agent doesn't need. The next file you need to"
+    },
+    {
+      "start": "00:08:57.829",
+      "end": "00:08:57.839",
+      "text": "doesn't need. The next file you need to"
+    },
+    {
+      "start": "00:08:57.839",
+      "end": "00:08:59.750",
+      "text": "doesn't need. The next file you need to understand is this tools file. And this"
+    },
+    {
+      "start": "00:08:59.750",
+      "end": "00:08:59.760",
+      "text": "understand is this tools file. And this"
+    },
+    {
+      "start": "00:08:59.760",
+      "end": "00:09:01.350",
+      "text": "understand is this tools file. And this is just basically anything that your"
+    },
+    {
+      "start": "00:09:01.350",
+      "end": "00:09:01.360",
+      "text": "is just basically anything that your"
+    },
+    {
+      "start": "00:09:01.360",
+      "end": "00:09:04.310",
+      "text": "is just basically anything that your agent needs to execute on its task. So"
+    },
+    {
+      "start": "00:09:04.310",
+      "end": "00:09:04.320",
+      "text": "agent needs to execute on its task. So"
+    },
+    {
+      "start": "00:09:04.320",
+      "end": "00:09:05.990",
+      "text": "agent needs to execute on its task. So it doesn't need access to things like"
+    },
+    {
+      "start": "00:09:05.990",
+      "end": "00:09:06.000",
+      "text": "it doesn't need access to things like"
+    },
+    {
+      "start": "00:09:06.000",
+      "end": "00:09:08.630",
+      "text": "it doesn't need access to things like GitHub or NADN. For me, I gave the"
+    },
+    {
+      "start": "00:09:08.630",
+      "end": "00:09:08.640",
+      "text": "GitHub or NADN. For me, I gave the"
+    },
+    {
+      "start": "00:09:08.640",
+      "end": "00:09:10.630",
+      "text": "GitHub or NADN. For me, I gave the carousel creator access to like images"
+    },
+    {
+      "start": "00:09:10.630",
+      "end": "00:09:10.640",
+      "text": "carousel creator access to like images"
+    },
+    {
+      "start": "00:09:10.640",
+      "end": "00:09:12.550",
+      "text": "carousel creator access to like images of me so that it knows what I look like."
+    },
+    {
+      "start": "00:09:12.550",
+      "end": "00:09:12.560",
+      "text": "of me so that it knows what I look like."
+    },
+    {
+      "start": "00:09:12.560",
+      "end": "00:09:14.550",
+      "text": "of me so that it knows what I look like. So therefore can pass my image to Nano"
+    },
+    {
+      "start": "00:09:14.550",
+      "end": "00:09:14.560",
+      "text": "So therefore can pass my image to Nano"
+    },
+    {
+      "start": "00:09:14.560",
+      "end": "00:09:16.790",
+      "text": "So therefore can pass my image to Nano Banana to generate images. And then any"
+    },
+    {
+      "start": "00:09:16.790",
+      "end": "00:09:16.800",
+      "text": "Banana to generate images. And then any"
+    },
+    {
+      "start": "00:09:16.800",
+      "end": "00:09:18.550",
+      "text": "Banana to generate images. And then any information about the process itself,"
+    },
+    {
+      "start": "00:09:18.550",
+      "end": "00:09:18.560",
+      "text": "information about the process itself,"
+    },
+    {
+      "start": "00:09:18.560",
+      "end": "00:09:20.230",
+      "text": "information about the process itself, right? Do we have a specific structure"
+    },
+    {
+      "start": "00:09:20.230",
+      "end": "00:09:20.240",
+      "text": "right? Do we have a specific structure"
+    },
+    {
+      "start": "00:09:20.240",
+      "end": "00:09:22.310",
+      "text": "right? Do we have a specific structure for in my case like this set of slides,"
+    },
+    {
+      "start": "00:09:22.310",
+      "end": "00:09:22.320",
+      "text": "for in my case like this set of slides,"
+    },
+    {
+      "start": "00:09:22.320",
+      "end": "00:09:24.150",
+      "text": "for in my case like this set of slides, right? And then here I give it access to"
+    },
+    {
+      "start": "00:09:24.150",
+      "end": "00:09:24.160",
+      "text": "right? And then here I give it access to"
+    },
+    {
+      "start": "00:09:24.160",
+      "end": "00:09:25.990",
+      "text": "right? And then here I give it access to notion so that it can connect to notion."
+    },
+    {
+      "start": "00:09:25.990",
+      "end": "00:09:26.000",
+      "text": "notion so that it can connect to notion."
+    },
+    {
+      "start": "00:09:26.000",
+      "end": "00:09:27.829",
+      "text": "notion so that it can connect to notion. And once it's done creating a carousel,"
+    },
+    {
+      "start": "00:09:27.829",
+      "end": "00:09:27.839",
+      "text": "And once it's done creating a carousel,"
+    },
+    {
+      "start": "00:09:27.839",
+      "end": "00:09:29.430",
+      "text": "And once it's done creating a carousel, it can basically save it inside of"
+    },
+    {
+      "start": "00:09:29.430",
+      "end": "00:09:29.440",
+      "text": "it can basically save it inside of"
+    },
+    {
+      "start": "00:09:29.440",
+      "end": "00:09:31.030",
+      "text": "it can basically save it inside of notion for me so that I can have access"
+    },
+    {
+      "start": "00:09:31.030",
+      "end": "00:09:31.040",
+      "text": "notion for me so that I can have access"
+    },
+    {
+      "start": "00:09:31.040",
+      "end": "00:09:33.030",
+      "text": "notion for me so that I can have access to it and review it. There is a file in"
+    },
+    {
+      "start": "00:09:33.030",
+      "end": "00:09:33.040",
+      "text": "to it and review it. There is a file in"
+    },
+    {
+      "start": "00:09:33.040",
+      "end": "00:09:34.949",
+      "text": "to it and review it. There is a file in there called identity MD. I don't really"
+    },
+    {
+      "start": "00:09:34.949",
+      "end": "00:09:34.959",
+      "text": "there called identity MD. I don't really"
+    },
+    {
+      "start": "00:09:34.959",
+      "end": "00:09:36.630",
+      "text": "there called identity MD. I don't really use it too much, but if you want your"
+    },
+    {
+      "start": "00:09:36.630",
+      "end": "00:09:36.640",
+      "text": "use it too much, but if you want your"
+    },
+    {
+      "start": "00:09:36.640",
+      "end": "00:09:38.470",
+      "text": "use it too much, but if you want your agent to have like a specific identity"
+    },
+    {
+      "start": "00:09:38.470",
+      "end": "00:09:38.480",
+      "text": "agent to have like a specific identity"
+    },
+    {
+      "start": "00:09:38.480",
+      "end": "00:09:40.630",
+      "text": "agent to have like a specific identity or behave a certain way or have certain"
+    },
+    {
+      "start": "00:09:40.630",
+      "end": "00:09:40.640",
+      "text": "or behave a certain way or have certain"
+    },
+    {
+      "start": "00:09:40.640",
+      "end": "00:09:42.550",
+      "text": "or behave a certain way or have certain properties or characteristics, this is"
+    },
+    {
+      "start": "00:09:42.550",
+      "end": "00:09:42.560",
+      "text": "properties or characteristics, this is"
+    },
+    {
+      "start": "00:09:42.560",
+      "end": "00:09:43.990",
+      "text": "properties or characteristics, this is where you would create that information."
+    },
+    {
+      "start": "00:09:43.990",
+      "end": "00:09:44.000",
+      "text": "where you would create that information."
+    },
+    {
+      "start": "00:09:44.000",
+      "end": "00:09:45.670",
+      "text": "where you would create that information. And again, you can always tell OpenClaw"
+    },
+    {
+      "start": "00:09:45.670",
+      "end": "00:09:45.680",
+      "text": "And again, you can always tell OpenClaw"
+    },
+    {
+      "start": "00:09:45.680",
+      "end": "00:09:47.990",
+      "text": "And again, you can always tell OpenClaw to create it for itself. The user.md"
+    },
+    {
+      "start": "00:09:47.990",
+      "end": "00:09:48.000",
+      "text": "to create it for itself. The user.md"
+    },
+    {
+      "start": "00:09:48.000",
+      "end": "00:09:49.910",
+      "text": "to create it for itself. The user.md file is everything about you, the"
+    },
+    {
+      "start": "00:09:49.910",
+      "end": "00:09:49.920",
+      "text": "file is everything about you, the"
+    },
+    {
+      "start": "00:09:49.920",
+      "end": "00:09:51.990",
+      "text": "file is everything about you, the operator, the founder, whatever it is,"
+    },
+    {
+      "start": "00:09:51.990",
+      "end": "00:09:52.000",
+      "text": "operator, the founder, whatever it is,"
+    },
+    {
+      "start": "00:09:52.000",
+      "end": "00:09:53.590",
+      "text": "operator, the founder, whatever it is, right? So, this is everything about you."
+    },
+    {
+      "start": "00:09:53.590",
+      "end": "00:09:53.600",
+      "text": "right? So, this is everything about you."
+    },
+    {
+      "start": "00:09:53.600",
+      "end": "00:09:55.110",
+      "text": "right? So, this is everything about you. So, the agent will read this to"
+    },
+    {
+      "start": "00:09:55.110",
+      "end": "00:09:55.120",
+      "text": "So, the agent will read this to"
+    },
+    {
+      "start": "00:09:55.120",
+      "end": "00:09:56.230",
+      "text": "So, the agent will read this to understand like how it should"
+    },
+    {
+      "start": "00:09:56.230",
+      "end": "00:09:56.240",
+      "text": "understand like how it should"
+    },
+    {
+      "start": "00:09:56.240",
+      "end": "00:09:57.750",
+      "text": "understand like how it should communicate or how it should behave or"
+    },
+    {
+      "start": "00:09:57.750",
+      "end": "00:09:57.760",
+      "text": "communicate or how it should behave or"
+    },
+    {
+      "start": "00:09:57.760",
+      "end": "00:09:59.269",
+      "text": "communicate or how it should behave or how it should write or things like that."
+    },
+    {
+      "start": "00:09:59.269",
+      "end": "00:09:59.279",
+      "text": "how it should write or things like that."
+    },
+    {
+      "start": "00:09:59.279",
+      "end": "00:10:00.949",
+      "text": "how it should write or things like that. And the last one that is arguably one of"
+    },
+    {
+      "start": "00:10:00.949",
+      "end": "00:10:00.959",
+      "text": "And the last one that is arguably one of"
+    },
+    {
+      "start": "00:10:00.959",
+      "end": "00:10:03.350",
+      "text": "And the last one that is arguably one of the most important is memory.md. This is"
+    },
+    {
+      "start": "00:10:03.350",
+      "end": "00:10:03.360",
+      "text": "the most important is memory.md. This is"
+    },
+    {
+      "start": "00:10:03.360",
+      "end": "00:10:05.269",
+      "text": "the most important is memory.md. This is like the long-term knowledge. So this"
+    },
+    {
+      "start": "00:10:05.269",
+      "end": "00:10:05.279",
+      "text": "like the long-term knowledge. So this"
+    },
+    {
+      "start": "00:10:05.279",
+      "end": "00:10:07.190",
+      "text": "like the long-term knowledge. So this will actually get updated automatically"
+    },
+    {
+      "start": "00:10:07.190",
+      "end": "00:10:07.200",
+      "text": "will actually get updated automatically"
+    },
+    {
+      "start": "00:10:07.200",
+      "end": "00:10:09.590",
+      "text": "will actually get updated automatically by openclaw the more you interact with"
+    },
+    {
+      "start": "00:10:09.590",
+      "end": "00:10:09.600",
+      "text": "by openclaw the more you interact with"
+    },
+    {
+      "start": "00:10:09.600",
+      "end": "00:10:11.110",
+      "text": "by openclaw the more you interact with the system and the more information it"
+    },
+    {
+      "start": "00:10:11.110",
+      "end": "00:10:11.120",
+      "text": "the system and the more information it"
+    },
+    {
+      "start": "00:10:11.120",
+      "end": "00:10:12.949",
+      "text": "the system and the more information it has about you and your processes and the"
+    },
+    {
+      "start": "00:10:12.949",
+      "end": "00:10:12.959",
+      "text": "has about you and your processes and the"
+    },
+    {
+      "start": "00:10:12.959",
+      "end": "00:10:14.630",
+      "text": "has about you and your processes and the way that you like to work. So we can see"
+    },
+    {
+      "start": "00:10:14.630",
+      "end": "00:10:14.640",
+      "text": "way that you like to work. So we can see"
+    },
+    {
+      "start": "00:10:14.640",
+      "end": "00:10:16.470",
+      "text": "way that you like to work. So we can see here that this has a ton and ton of"
+    },
+    {
+      "start": "00:10:16.470",
+      "end": "00:10:16.480",
+      "text": "here that this has a ton and ton of"
+    },
+    {
+      "start": "00:10:16.480",
+      "end": "00:10:18.389",
+      "text": "here that this has a ton and ton of information about me like the technical"
+    },
+    {
+      "start": "00:10:18.389",
+      "end": "00:10:18.399",
+      "text": "information about me like the technical"
+    },
+    {
+      "start": "00:10:18.399",
+      "end": "00:10:19.670",
+      "text": "information about me like the technical stack that I like to use some"
+    },
+    {
+      "start": "00:10:19.670",
+      "end": "00:10:19.680",
+      "text": "stack that I like to use some"
+    },
+    {
+      "start": "00:10:19.680",
+      "end": "00:10:21.269",
+      "text": "stack that I like to use some information about my philosophy and"
+    },
+    {
+      "start": "00:10:21.269",
+      "end": "00:10:21.279",
+      "text": "information about my philosophy and"
+    },
+    {
+      "start": "00:10:21.279",
+      "end": "00:10:22.870",
+      "text": "information about my philosophy and things like that who I collaborate with"
+    },
+    {
+      "start": "00:10:22.870",
+      "end": "00:10:22.880",
+      "text": "things like that who I collaborate with"
+    },
+    {
+      "start": "00:10:22.880",
+      "end": "00:10:24.870",
+      "text": "things like that who I collaborate with all of my social proof how I like to"
+    },
+    {
+      "start": "00:10:24.870",
+      "end": "00:10:24.880",
+      "text": "all of my social proof how I like to"
+    },
+    {
+      "start": "00:10:24.880",
+      "end": "00:10:26.230",
+      "text": "all of my social proof how I like to operate all of these things. These are"
+    },
+    {
+      "start": "00:10:26.230",
+      "end": "00:10:26.240",
+      "text": "operate all of these things. These are"
+    },
+    {
+      "start": "00:10:26.240",
+      "end": "00:10:27.990",
+      "text": "operate all of these things. These are super super detailed. But if we come"
+    },
+    {
+      "start": "00:10:27.990",
+      "end": "00:10:28.000",
+      "text": "super super detailed. But if we come"
+    },
+    {
+      "start": "00:10:28.000",
+      "end": "00:10:29.670",
+      "text": "super super detailed. But if we come down here like into the carousel, you"
+    },
+    {
+      "start": "00:10:29.670",
+      "end": "00:10:29.680",
+      "text": "down here like into the carousel, you"
+    },
+    {
+      "start": "00:10:29.680",
+      "end": "00:10:31.990",
+      "text": "down here like into the carousel, you can see I don't have the memory in here"
+    },
+    {
+      "start": "00:10:31.990",
+      "end": "00:10:32.000",
+      "text": "can see I don't have the memory in here"
+    },
+    {
+      "start": "00:10:32.000",
+      "end": "00:10:33.670",
+      "text": "can see I don't have the memory in here because I'm leaving it up to the"
+    },
+    {
+      "start": "00:10:33.670",
+      "end": "00:10:33.680",
+      "text": "because I'm leaving it up to the"
+    },
+    {
+      "start": "00:10:33.680",
+      "end": "00:10:36.069",
+      "text": "because I'm leaving it up to the orchestrator to decide which pieces of"
+    },
+    {
+      "start": "00:10:36.069",
+      "end": "00:10:36.079",
+      "text": "orchestrator to decide which pieces of"
+    },
+    {
+      "start": "00:10:36.079",
+      "end": "00:10:38.230",
+      "text": "orchestrator to decide which pieces of information should get passed to any of"
+    },
+    {
+      "start": "00:10:38.230",
+      "end": "00:10:38.240",
+      "text": "information should get passed to any of"
+    },
+    {
+      "start": "00:10:38.240",
+      "end": "00:10:40.069",
+      "text": "information should get passed to any of the sub agents. So again, we're not"
+    },
+    {
+      "start": "00:10:40.069",
+      "end": "00:10:40.079",
+      "text": "the sub agents. So again, we're not"
+    },
+    {
+      "start": "00:10:40.079",
+      "end": "00:10:41.910",
+      "text": "the sub agents. So again, we're not overloading the system. If you're trying"
+    },
+    {
+      "start": "00:10:41.910",
+      "end": "00:10:41.920",
+      "text": "overloading the system. If you're trying"
+    },
+    {
+      "start": "00:10:41.920",
+      "end": "00:10:43.670",
+      "text": "overloading the system. If you're trying to figure out how you can create all of"
+    },
+    {
+      "start": "00:10:43.670",
+      "end": "00:10:43.680",
+      "text": "to figure out how you can create all of"
+    },
+    {
+      "start": "00:10:43.680",
+      "end": "00:10:45.430",
+      "text": "to figure out how you can create all of that information easily, I have this"
+    },
+    {
+      "start": "00:10:45.430",
+      "end": "00:10:45.440",
+      "text": "that information easily, I have this"
+    },
+    {
+      "start": "00:10:45.440",
+      "end": "00:10:47.509",
+      "text": "that information easily, I have this great prompt which is to create a data"
+    },
+    {
+      "start": "00:10:47.509",
+      "end": "00:10:47.519",
+      "text": "great prompt which is to create a data"
+    },
+    {
+      "start": "00:10:47.519",
+      "end": "00:10:49.829",
+      "text": "great prompt which is to create a data packet of information about yourself. If"
+    },
+    {
+      "start": "00:10:49.829",
+      "end": "00:10:49.839",
+      "text": "packet of information about yourself. If"
+    },
+    {
+      "start": "00:10:49.839",
+      "end": "00:10:51.110",
+      "text": "packet of information about yourself. If you've been talking with Claude or if"
+    },
+    {
+      "start": "00:10:51.110",
+      "end": "00:10:51.120",
+      "text": "you've been talking with Claude or if"
+    },
+    {
+      "start": "00:10:51.120",
+      "end": "00:10:52.870",
+      "text": "you've been talking with Claude or if you've been talking with Chatbt, you"
+    },
+    {
+      "start": "00:10:52.870",
+      "end": "00:10:52.880",
+      "text": "you've been talking with Chatbt, you"
+    },
+    {
+      "start": "00:10:52.880",
+      "end": "00:10:54.790",
+      "text": "you've been talking with Chatbt, you would just come over to one of those"
+    },
+    {
+      "start": "00:10:54.790",
+      "end": "00:10:54.800",
+      "text": "would just come over to one of those"
+    },
+    {
+      "start": "00:10:54.800",
+      "end": "00:10:56.710",
+      "text": "would just come over to one of those LLMs and paste this in and you're just"
+    },
+    {
+      "start": "00:10:56.710",
+      "end": "00:10:56.720",
+      "text": "LLMs and paste this in and you're just"
+    },
+    {
+      "start": "00:10:56.720",
+      "end": "00:10:59.269",
+      "text": "LLMs and paste this in and you're just going to get basically a giant PDF full"
+    },
+    {
+      "start": "00:10:59.269",
+      "end": "00:10:59.279",
+      "text": "going to get basically a giant PDF full"
+    },
+    {
+      "start": "00:10:59.279",
+      "end": "00:11:00.949",
+      "text": "going to get basically a giant PDF full of information about your business, the"
+    },
+    {
+      "start": "00:11:00.949",
+      "end": "00:11:00.959",
+      "text": "of information about your business, the"
+    },
+    {
+      "start": "00:11:00.959",
+      "end": "00:11:02.389",
+      "text": "of information about your business, the projects you've worked on, your goals,"
+    },
+    {
+      "start": "00:11:02.389",
+      "end": "00:11:02.399",
+      "text": "projects you've worked on, your goals,"
+    },
+    {
+      "start": "00:11:02.399",
+      "end": "00:11:03.670",
+      "text": "projects you've worked on, your goals, your communication style, and things"
+    },
+    {
+      "start": "00:11:03.670",
+      "end": "00:11:03.680",
+      "text": "your communication style, and things"
+    },
+    {
+      "start": "00:11:03.680",
+      "end": "00:11:05.269",
+      "text": "your communication style, and things like that. And you can just copy and"
+    },
+    {
+      "start": "00:11:05.269",
+      "end": "00:11:05.279",
+      "text": "like that. And you can just copy and"
+    },
+    {
+      "start": "00:11:05.279",
+      "end": "00:11:07.269",
+      "text": "like that. And you can just copy and paste that information into OpenCL and"
+    },
+    {
+      "start": "00:11:07.269",
+      "end": "00:11:07.279",
+      "text": "paste that information into OpenCL and"
+    },
+    {
+      "start": "00:11:07.279",
+      "end": "00:11:08.870",
+      "text": "paste that information into OpenCL and say, \"Hey, here's everything you need to"
+    },
+    {
+      "start": "00:11:08.870",
+      "end": "00:11:08.880",
+      "text": "say, \"Hey, here's everything you need to"
+    },
+    {
+      "start": "00:11:08.880",
+      "end": "00:11:10.550",
+      "text": "say, \"Hey, here's everything you need to know about me. What should we do with"
+    },
+    {
+      "start": "00:11:10.550",
+      "end": "00:11:10.560",
+      "text": "know about me. What should we do with"
+    },
+    {
+      "start": "00:11:10.560",
+      "end": "00:11:12.630",
+      "text": "know about me. What should we do with this?\" So setting up these agents the"
+    },
+    {
+      "start": "00:11:12.630",
+      "end": "00:11:12.640",
+      "text": "this?\" So setting up these agents the"
+    },
+    {
+      "start": "00:11:12.640",
+      "end": "00:11:14.790",
+      "text": "this?\" So setting up these agents the right way in the beginning is extremely"
+    },
+    {
+      "start": "00:11:14.790",
+      "end": "00:11:14.800",
+      "text": "right way in the beginning is extremely"
+    },
+    {
+      "start": "00:11:14.800",
+      "end": "00:11:16.630",
+      "text": "right way in the beginning is extremely impactful to the efficiency of your"
+    },
+    {
+      "start": "00:11:16.630",
+      "end": "00:11:16.640",
+      "text": "impactful to the efficiency of your"
+    },
+    {
+      "start": "00:11:16.640",
+      "end": "00:11:18.389",
+      "text": "impactful to the efficiency of your system and it's going to save you so"
+    },
+    {
+      "start": "00:11:18.389",
+      "end": "00:11:18.399",
+      "text": "system and it's going to save you so"
+    },
+    {
+      "start": "00:11:18.399",
+      "end": "00:11:20.069",
+      "text": "system and it's going to save you so much headache in the long run. Before I"
+    },
+    {
+      "start": "00:11:20.069",
+      "end": "00:11:20.079",
+      "text": "much headache in the long run. Before I"
+    },
+    {
+      "start": "00:11:20.079",
+      "end": "00:11:21.829",
+      "text": "much headache in the long run. Before I show you the jobs that I have OpenClaw"
+    },
+    {
+      "start": "00:11:21.829",
+      "end": "00:11:21.839",
+      "text": "show you the jobs that I have OpenClaw"
+    },
+    {
+      "start": "00:11:21.839",
+      "end": "00:11:23.509",
+      "text": "show you the jobs that I have OpenClaw doing for me automatically, one of the"
+    },
+    {
+      "start": "00:11:23.509",
+      "end": "00:11:23.519",
+      "text": "doing for me automatically, one of the"
+    },
+    {
+      "start": "00:11:23.519",
+      "end": "00:11:25.030",
+      "text": "doing for me automatically, one of the first things you should do is set it up"
+    },
+    {
+      "start": "00:11:25.030",
+      "end": "00:11:25.040",
+      "text": "first things you should do is set it up"
+    },
+    {
+      "start": "00:11:25.040",
+      "end": "00:11:26.949",
+      "text": "first things you should do is set it up to communicate with you via Telegram or"
+    },
+    {
+      "start": "00:11:26.949",
+      "end": "00:11:26.959",
+      "text": "to communicate with you via Telegram or"
+    },
+    {
+      "start": "00:11:26.959",
+      "end": "00:11:28.470",
+      "text": "to communicate with you via Telegram or WhatsApp. So that way you can take this"
+    },
+    {
+      "start": "00:11:28.470",
+      "end": "00:11:28.480",
+      "text": "WhatsApp. So that way you can take this"
+    },
+    {
+      "start": "00:11:28.480",
+      "end": "00:11:30.870",
+      "text": "WhatsApp. So that way you can take this on the go. So I was actually out this"
+    },
+    {
+      "start": "00:11:30.870",
+      "end": "00:11:30.880",
+      "text": "on the go. So I was actually out this"
+    },
+    {
+      "start": "00:11:30.880",
+      "end": "00:11:33.030",
+      "text": "on the go. So I was actually out this morning and I was texting with OpenClaw"
+    },
+    {
+      "start": "00:11:33.030",
+      "end": "00:11:33.040",
+      "text": "morning and I was texting with OpenClaw"
+    },
+    {
+      "start": "00:11:33.040",
+      "end": "00:11:34.949",
+      "text": "morning and I was texting with OpenClaw and I was asking it to create that kind"
+    },
+    {
+      "start": "00:11:34.949",
+      "end": "00:11:34.959",
+      "text": "and I was asking it to create that kind"
+    },
+    {
+      "start": "00:11:34.959",
+      "end": "00:11:37.269",
+      "text": "and I was asking it to create that kind of AI dream team starter pack for all of"
+    },
+    {
+      "start": "00:11:37.269",
+      "end": "00:11:37.279",
+      "text": "of AI dream team starter pack for all of"
+    },
+    {
+      "start": "00:11:37.279",
+      "end": "00:11:39.269",
+      "text": "of AI dream team starter pack for all of you guys. So basically, you can see here"
+    },
+    {
+      "start": "00:11:39.269",
+      "end": "00:11:39.279",
+      "text": "you guys. So basically, you can see here"
+    },
+    {
+      "start": "00:11:39.279",
+      "end": "00:11:41.430",
+      "text": "you guys. So basically, you can see here I just had it say, can you create one"
+    },
+    {
+      "start": "00:11:41.430",
+      "end": "00:11:41.440",
+      "text": "I just had it say, can you create one"
+    },
+    {
+      "start": "00:11:41.440",
+      "end": "00:11:42.870",
+      "text": "I just had it say, can you create one thorough master prompt that would"
+    },
+    {
+      "start": "00:11:42.870",
+      "end": "00:11:42.880",
+      "text": "thorough master prompt that would"
+    },
+    {
+      "start": "00:11:42.880",
+      "end": "00:11:44.630",
+      "text": "thorough master prompt that would instantly deploy and set up a team of"
+    },
+    {
+      "start": "00:11:44.630",
+      "end": "00:11:44.640",
+      "text": "instantly deploy and set up a team of"
+    },
+    {
+      "start": "00:11:44.640",
+      "end": "00:11:46.230",
+      "text": "instantly deploy and set up a team of powerful agents for anyone? And then"
+    },
+    {
+      "start": "00:11:46.230",
+      "end": "00:11:46.240",
+      "text": "powerful agents for anyone? And then"
+    },
+    {
+      "start": "00:11:46.240",
+      "end": "00:11:47.990",
+      "text": "powerful agents for anyone? And then said, hey, I love this idea. A starter"
+    },
+    {
+      "start": "00:11:47.990",
+      "end": "00:11:48.000",
+      "text": "said, hey, I love this idea. A starter"
+    },
+    {
+      "start": "00:11:48.000",
+      "end": "00:11:49.829",
+      "text": "said, hey, I love this idea. A starter team can deploy. Here are the four sub"
+    },
+    {
+      "start": "00:11:49.829",
+      "end": "00:11:49.839",
+      "text": "team can deploy. Here are the four sub"
+    },
+    {
+      "start": "00:11:49.839",
+      "end": "00:11:51.430",
+      "text": "team can deploy. Here are the four sub agents, the researcher, the writer, the"
+    },
+    {
+      "start": "00:11:51.430",
+      "end": "00:11:51.440",
+      "text": "agents, the researcher, the writer, the"
+    },
+    {
+      "start": "00:11:51.440",
+      "end": "00:11:53.350",
+      "text": "agents, the researcher, the writer, the chief of staff, and the builder. They do"
+    },
+    {
+      "start": "00:11:53.350",
+      "end": "00:11:53.360",
+      "text": "chief of staff, and the builder. They do"
+    },
+    {
+      "start": "00:11:53.360",
+      "end": "00:11:54.630",
+      "text": "chief of staff, and the builder. They do all of this. And basically what it went"
+    },
+    {
+      "start": "00:11:54.630",
+      "end": "00:11:54.640",
+      "text": "all of this. And basically what it went"
+    },
+    {
+      "start": "00:11:54.640",
+      "end": "00:11:56.790",
+      "text": "all of this. And basically what it went ahead and did is it created this entire"
+    },
+    {
+      "start": "00:11:56.790",
+      "end": "00:11:56.800",
+      "text": "ahead and did is it created this entire"
+    },
+    {
+      "start": "00:11:56.800",
+      "end": "00:11:58.790",
+      "text": "ahead and did is it created this entire document for me in notion. I didn't"
+    },
+    {
+      "start": "00:11:58.790",
+      "end": "00:11:58.800",
+      "text": "document for me in notion. I didn't"
+    },
+    {
+      "start": "00:11:58.800",
+      "end": "00:12:00.389",
+      "text": "document for me in notion. I didn't write this. I didn't type this in. It"
+    },
+    {
+      "start": "00:12:00.389",
+      "end": "00:12:00.399",
+      "text": "write this. I didn't type this in. It"
+    },
+    {
+      "start": "00:12:00.399",
+      "end": "00:12:02.710",
+      "text": "write this. I didn't type this in. It figured it out. It organized this. It"
+    },
+    {
+      "start": "00:12:02.710",
+      "end": "00:12:02.720",
+      "text": "figured it out. It organized this. It"
+    },
+    {
+      "start": "00:12:02.720",
+      "end": "00:12:04.310",
+      "text": "figured it out. It organized this. It did all the design. It created this"
+    },
+    {
+      "start": "00:12:04.310",
+      "end": "00:12:04.320",
+      "text": "did all the design. It created this"
+    },
+    {
+      "start": "00:12:04.320",
+      "end": "00:12:06.230",
+      "text": "did all the design. It created this prompt for me and for you guys. It's"
+    },
+    {
+      "start": "00:12:06.230",
+      "end": "00:12:06.240",
+      "text": "prompt for me and for you guys. It's"
+    },
+    {
+      "start": "00:12:06.240",
+      "end": "00:12:08.550",
+      "text": "prompt for me and for you guys. It's just a massive, massive timesaver. So,"
+    },
+    {
+      "start": "00:12:08.550",
+      "end": "00:12:08.560",
+      "text": "just a massive, massive timesaver. So,"
+    },
+    {
+      "start": "00:12:08.560",
+      "end": "00:12:10.230",
+      "text": "just a massive, massive timesaver. So, the other way I like to use this for my"
+    },
+    {
+      "start": "00:12:10.230",
+      "end": "00:12:10.240",
+      "text": "the other way I like to use this for my"
+    },
+    {
+      "start": "00:12:10.240",
+      "end": "00:12:11.910",
+      "text": "the other way I like to use this for my business is there are a couple of what"
+    },
+    {
+      "start": "00:12:11.910",
+      "end": "00:12:11.920",
+      "text": "business is there are a couple of what"
+    },
+    {
+      "start": "00:12:11.920",
+      "end": "00:12:13.590",
+      "text": "business is there are a couple of what are called cron jobs and they're called"
+    },
+    {
+      "start": "00:12:13.590",
+      "end": "00:12:13.600",
+      "text": "are called cron jobs and they're called"
+    },
+    {
+      "start": "00:12:13.600",
+      "end": "00:12:14.710",
+      "text": "are called cron jobs and they're called cron because it has to do with, you"
+    },
+    {
+      "start": "00:12:14.710",
+      "end": "00:12:14.720",
+      "text": "cron because it has to do with, you"
+    },
+    {
+      "start": "00:12:14.720",
+      "end": "00:12:16.550",
+      "text": "cron because it has to do with, you know, chronological or time. These are"
+    },
+    {
+      "start": "00:12:16.550",
+      "end": "00:12:16.560",
+      "text": "know, chronological or time. These are"
+    },
+    {
+      "start": "00:12:16.560",
+      "end": "00:12:18.310",
+      "text": "know, chronological or time. These are basically just jobs that will run on a"
+    },
+    {
+      "start": "00:12:18.310",
+      "end": "00:12:18.320",
+      "text": "basically just jobs that will run on a"
+    },
+    {
+      "start": "00:12:18.320",
+      "end": "00:12:19.750",
+      "text": "basically just jobs that will run on a schedule. And this is generally like"
+    },
+    {
+      "start": "00:12:19.750",
+      "end": "00:12:19.760",
+      "text": "schedule. And this is generally like"
+    },
+    {
+      "start": "00:12:19.760",
+      "end": "00:12:21.829",
+      "text": "schedule. And this is generally like pretty ugly to look at, but you can just"
+    },
+    {
+      "start": "00:12:21.829",
+      "end": "00:12:21.839",
+      "text": "pretty ugly to look at, but you can just"
+    },
+    {
+      "start": "00:12:21.839",
+      "end": "00:12:23.750",
+      "text": "pretty ugly to look at, but you can just talk to openclaw and say, \"Hey, I need"
+    },
+    {
+      "start": "00:12:23.750",
+      "end": "00:12:23.760",
+      "text": "talk to openclaw and say, \"Hey, I need"
+    },
+    {
+      "start": "00:12:23.760",
+      "end": "00:12:25.670",
+      "text": "talk to openclaw and say, \"Hey, I need something that does xyz.\" One of the"
+    },
+    {
+      "start": "00:12:25.670",
+      "end": "00:12:25.680",
+      "text": "something that does xyz.\" One of the"
+    },
+    {
+      "start": "00:12:25.680",
+      "end": "00:12:27.110",
+      "text": "something that does xyz.\" One of the first things I had it build was this"
+    },
+    {
+      "start": "00:12:27.110",
+      "end": "00:12:27.120",
+      "text": "first things I had it build was this"
+    },
+    {
+      "start": "00:12:27.120",
+      "end": "00:12:29.030",
+      "text": "first things I had it build was this idea of a morning briefing. So, every"
+    },
+    {
+      "start": "00:12:29.030",
+      "end": "00:12:29.040",
+      "text": "idea of a morning briefing. So, every"
+    },
+    {
+      "start": "00:12:29.040",
+      "end": "00:12:30.949",
+      "text": "idea of a morning briefing. So, every day when I wake up, I actually have a"
+    },
+    {
+      "start": "00:12:30.949",
+      "end": "00:12:30.959",
+      "text": "day when I wake up, I actually have a"
+    },
+    {
+      "start": "00:12:30.959",
+      "end": "00:12:33.110",
+      "text": "day when I wake up, I actually have a message inside of Telegram. It looks"
+    },
+    {
+      "start": "00:12:33.110",
+      "end": "00:12:33.120",
+      "text": "message inside of Telegram. It looks"
+    },
+    {
+      "start": "00:12:33.120",
+      "end": "00:12:35.110",
+      "text": "message inside of Telegram. It looks like this. It basically gives me"
+    },
+    {
+      "start": "00:12:35.110",
+      "end": "00:12:35.120",
+      "text": "like this. It basically gives me"
+    },
+    {
+      "start": "00:12:35.120",
+      "end": "00:12:36.629",
+      "text": "like this. It basically gives me yesterday's progress like what we"
+    },
+    {
+      "start": "00:12:36.629",
+      "end": "00:12:36.639",
+      "text": "yesterday's progress like what we"
+    },
+    {
+      "start": "00:12:36.639",
+      "end": "00:12:38.230",
+      "text": "yesterday's progress like what we accomplished yesterday, what we have to"
+    },
+    {
+      "start": "00:12:38.230",
+      "end": "00:12:38.240",
+      "text": "accomplished yesterday, what we have to"
+    },
+    {
+      "start": "00:12:38.240",
+      "end": "00:12:40.389",
+      "text": "accomplished yesterday, what we have to prioritize today, anything like any"
+    },
+    {
+      "start": "00:12:40.389",
+      "end": "00:12:40.399",
+      "text": "prioritize today, anything like any"
+    },
+    {
+      "start": "00:12:40.399",
+      "end": "00:12:41.990",
+      "text": "prioritize today, anything like any pending decisions, like any feedback"
+    },
+    {
+      "start": "00:12:41.990",
+      "end": "00:12:42.000",
+      "text": "pending decisions, like any feedback"
+    },
+    {
+      "start": "00:12:42.000",
+      "end": "00:12:43.670",
+      "text": "pending decisions, like any feedback that it needs from me and then it"
+    },
+    {
+      "start": "00:12:43.670",
+      "end": "00:12:43.680",
+      "text": "that it needs from me and then it"
+    },
+    {
+      "start": "00:12:43.680",
+      "end": "00:12:45.030",
+      "text": "that it needs from me and then it basically just sends this to Telegram."
+    },
+    {
+      "start": "00:12:45.030",
+      "end": "00:12:45.040",
+      "text": "basically just sends this to Telegram."
+    },
+    {
+      "start": "00:12:45.040",
+      "end": "00:12:46.629",
+      "text": "basically just sends this to Telegram. So you can see here that it says here's"
+    },
+    {
+      "start": "00:12:46.629",
+      "end": "00:12:46.639",
+      "text": "So you can see here that it says here's"
+    },
+    {
+      "start": "00:12:46.639",
+      "end": "00:12:48.470",
+      "text": "So you can see here that it says here's the top three today. I should post a new"
+    },
+    {
+      "start": "00:12:48.470",
+      "end": "00:12:48.480",
+      "text": "the top three today. I should post a new"
+    },
+    {
+      "start": "00:12:48.480",
+      "end": "00:12:50.629",
+      "text": "the top three today. I should post a new carousel to Tik Tok or Instagram. I"
+    },
+    {
+      "start": "00:12:50.629",
+      "end": "00:12:50.639",
+      "text": "carousel to Tik Tok or Instagram. I"
+    },
+    {
+      "start": "00:12:50.639",
+      "end": "00:12:52.230",
+      "text": "carousel to Tik Tok or Instagram. I should write a new Twitter thread and I"
+    },
+    {
+      "start": "00:12:52.230",
+      "end": "00:12:52.240",
+      "text": "should write a new Twitter thread and I"
+    },
+    {
+      "start": "00:12:52.240",
+      "end": "00:12:53.590",
+      "text": "should write a new Twitter thread and I should basically just test the setup"
+    },
+    {
+      "start": "00:12:53.590",
+      "end": "00:12:53.600",
+      "text": "should basically just test the setup"
+    },
+    {
+      "start": "00:12:53.600",
+      "end": "00:12:55.430",
+      "text": "should basically just test the setup guide end to end. Here are the tasks."
+    },
+    {
+      "start": "00:12:55.430",
+      "end": "00:12:55.440",
+      "text": "guide end to end. Here are the tasks."
+    },
+    {
+      "start": "00:12:55.440",
+      "end": "00:12:57.110",
+      "text": "guide end to end. Here are the tasks. These are open clause tasks. It's going"
+    },
+    {
+      "start": "00:12:57.110",
+      "end": "00:12:57.120",
+      "text": "These are open clause tasks. It's going"
+    },
+    {
+      "start": "00:12:57.120",
+      "end": "00:12:59.269",
+      "text": "These are open clause tasks. It's going to monitor Twitter for any auto replies."
+    },
+    {
+      "start": "00:12:59.269",
+      "end": "00:12:59.279",
+      "text": "to monitor Twitter for any auto replies."
+    },
+    {
+      "start": "00:12:59.279",
+      "end": "00:13:01.030",
+      "text": "to monitor Twitter for any auto replies. And so basically if I have lead magnet"
+    },
+    {
+      "start": "00:13:01.030",
+      "end": "00:13:01.040",
+      "text": "And so basically if I have lead magnet"
+    },
+    {
+      "start": "00:13:01.040",
+      "end": "00:13:02.790",
+      "text": "And so basically if I have lead magnet posts on Twitter, it's going to"
+    },
+    {
+      "start": "00:13:02.790",
+      "end": "00:13:02.800",
+      "text": "posts on Twitter, it's going to"
+    },
+    {
+      "start": "00:13:02.800",
+      "end": "00:13:04.470",
+      "text": "posts on Twitter, it's going to recognize when somebody like comments"
+    },
+    {
+      "start": "00:13:04.470",
+      "end": "00:13:04.480",
+      "text": "recognize when somebody like comments"
+    },
+    {
+      "start": "00:13:04.480",
+      "end": "00:13:06.790",
+      "text": "recognize when somebody like comments the word AI and it's automatically going"
+    },
+    {
+      "start": "00:13:06.790",
+      "end": "00:13:06.800",
+      "text": "the word AI and it's automatically going"
+    },
+    {
+      "start": "00:13:06.800",
+      "end": "00:13:08.710",
+      "text": "the word AI and it's automatically going to DM them for me and send them whatever"
+    },
+    {
+      "start": "00:13:08.710",
+      "end": "00:13:08.720",
+      "text": "to DM them for me and send them whatever"
+    },
+    {
+      "start": "00:13:08.720",
+      "end": "00:13:10.310",
+      "text": "to DM them for me and send them whatever the lead magnet is. And so here the"
+    },
+    {
+      "start": "00:13:10.310",
+      "end": "00:13:10.320",
+      "text": "the lead magnet is. And so here the"
+    },
+    {
+      "start": "00:13:10.320",
+      "end": "00:13:11.910",
+      "text": "the lead magnet is. And so here the quick decision section is basically"
+    },
+    {
+      "start": "00:13:11.910",
+      "end": "00:13:11.920",
+      "text": "quick decision section is basically"
+    },
+    {
+      "start": "00:13:11.920",
+      "end": "00:13:13.509",
+      "text": "quick decision section is basically feedback that it needs for me like yes"
+    },
+    {
+      "start": "00:13:13.509",
+      "end": "00:13:13.519",
+      "text": "feedback that it needs for me like yes"
+    },
+    {
+      "start": "00:13:13.519",
+      "end": "00:13:15.350",
+      "text": "feedback that it needs for me like yes or no. Do I want to add a hosting or"
+    },
+    {
+      "start": "00:13:15.350",
+      "end": "00:13:15.360",
+      "text": "or no. Do I want to add a hosting or"
+    },
+    {
+      "start": "00:13:15.360",
+      "end": "00:13:16.949",
+      "text": "or no. Do I want to add a hosting or affiliate link to my setup guide? Like"
+    },
+    {
+      "start": "00:13:16.949",
+      "end": "00:13:16.959",
+      "text": "affiliate link to my setup guide? Like"
+    },
+    {
+      "start": "00:13:16.959",
+      "end": "00:13:18.470",
+      "text": "affiliate link to my setup guide? Like yeah, for sure let's do that. Do I want"
+    },
+    {
+      "start": "00:13:18.470",
+      "end": "00:13:18.480",
+      "text": "yeah, for sure let's do that. Do I want"
+    },
+    {
+      "start": "00:13:18.480",
+      "end": "00:13:20.470",
+      "text": "yeah, for sure let's do that. Do I want to ship a Twitter thread today or do I"
+    },
+    {
+      "start": "00:13:20.470",
+      "end": "00:13:20.480",
+      "text": "to ship a Twitter thread today or do I"
+    },
+    {
+      "start": "00:13:20.480",
+      "end": "00:13:21.670",
+      "text": "to ship a Twitter thread today or do I want to wait for something else to be"
+    },
+    {
+      "start": "00:13:21.670",
+      "end": "00:13:21.680",
+      "text": "want to wait for something else to be"
+    },
+    {
+      "start": "00:13:21.680",
+      "end": "00:13:23.509",
+      "text": "want to wait for something else to be done? Right? And then I also had it just"
+    },
+    {
+      "start": "00:13:23.509",
+      "end": "00:13:23.519",
+      "text": "done? Right? And then I also had it just"
+    },
+    {
+      "start": "00:13:23.519",
+      "end": "00:13:25.269",
+      "text": "done? Right? And then I also had it just like give me ideas like based off the"
+    },
+    {
+      "start": "00:13:25.269",
+      "end": "00:13:25.279",
+      "text": "like give me ideas like based off the"
+    },
+    {
+      "start": "00:13:25.279",
+      "end": "00:13:26.550",
+      "text": "like give me ideas like based off the conversations we've been having, what"
+    },
+    {
+      "start": "00:13:26.550",
+      "end": "00:13:26.560",
+      "text": "conversations we've been having, what"
+    },
+    {
+      "start": "00:13:26.560",
+      "end": "00:13:27.990",
+      "text": "conversations we've been having, what we've been building, like here are some"
+    },
+    {
+      "start": "00:13:27.990",
+      "end": "00:13:28.000",
+      "text": "we've been building, like here are some"
+    },
+    {
+      "start": "00:13:28.000",
+      "end": "00:13:29.829",
+      "text": "we've been building, like here are some growth ideas to help the business grow,"
+    },
+    {
+      "start": "00:13:29.829",
+      "end": "00:13:29.839",
+      "text": "growth ideas to help the business grow,"
+    },
+    {
+      "start": "00:13:29.839",
+      "end": "00:13:31.590",
+      "text": "growth ideas to help the business grow, help the community grow, all of those"
+    },
+    {
+      "start": "00:13:31.590",
+      "end": "00:13:31.600",
+      "text": "help the community grow, all of those"
+    },
+    {
+      "start": "00:13:31.600",
+      "end": "00:13:33.350",
+      "text": "help the community grow, all of those good things. So, do I want to create a"
+    },
+    {
+      "start": "00:13:33.350",
+      "end": "00:13:33.360",
+      "text": "good things. So, do I want to create a"
+    },
+    {
+      "start": "00:13:33.360",
+      "end": "00:13:35.030",
+      "text": "good things. So, do I want to create a quality control miniourse for the build"
+    },
+    {
+      "start": "00:13:35.030",
+      "end": "00:13:35.040",
+      "text": "quality control miniourse for the build"
+    },
+    {
+      "start": "00:13:35.040",
+      "end": "00:13:36.710",
+      "text": "quality control miniourse for the build room? Do I want to turn the open claw"
+    },
+    {
+      "start": "00:13:36.710",
+      "end": "00:13:36.720",
+      "text": "room? Do I want to turn the open claw"
+    },
+    {
+      "start": "00:13:36.720",
+      "end": "00:13:38.550",
+      "text": "room? Do I want to turn the open claw setup into a YouTube tutorial series"
+    },
+    {
+      "start": "00:13:38.550",
+      "end": "00:13:38.560",
+      "text": "setup into a YouTube tutorial series"
+    },
+    {
+      "start": "00:13:38.560",
+      "end": "00:13:40.389",
+      "text": "setup into a YouTube tutorial series like we're doing right now? Do I want to"
+    },
+    {
+      "start": "00:13:40.389",
+      "end": "00:13:40.399",
+      "text": "like we're doing right now? Do I want to"
+    },
+    {
+      "start": "00:13:40.399",
+      "end": "00:13:41.910",
+      "text": "like we're doing right now? Do I want to cross-promote the comment content"
+    },
+    {
+      "start": "00:13:41.910",
+      "end": "00:13:41.920",
+      "text": "cross-promote the comment content"
+    },
+    {
+      "start": "00:13:41.920",
+      "end": "00:13:43.350",
+      "text": "cross-promote the comment content engine, which is basically like a little"
+    },
+    {
+      "start": "00:13:43.350",
+      "end": "00:13:43.360",
+      "text": "engine, which is basically like a little"
+    },
+    {
+      "start": "00:13:43.360",
+      "end": "00:13:45.110",
+      "text": "engine, which is basically like a little micro SAS app I built the other day?"
+    },
+    {
+      "start": "00:13:45.110",
+      "end": "00:13:45.120",
+      "text": "micro SAS app I built the other day?"
+    },
+    {
+      "start": "00:13:45.120",
+      "end": "00:13:46.949",
+      "text": "micro SAS app I built the other day? Pretty cool. So, this will just run"
+    },
+    {
+      "start": "00:13:46.949",
+      "end": "00:13:46.959",
+      "text": "Pretty cool. So, this will just run"
+    },
+    {
+      "start": "00:13:46.959",
+      "end": "00:13:48.949",
+      "text": "Pretty cool. So, this will just run every day at 7 a.m. So, if there's like"
+    },
+    {
+      "start": "00:13:48.949",
+      "end": "00:13:48.959",
+      "text": "every day at 7 a.m. So, if there's like"
+    },
+    {
+      "start": "00:13:48.959",
+      "end": "00:13:50.710",
+      "text": "every day at 7 a.m. So, if there's like a structure that you want for this, just"
+    },
+    {
+      "start": "00:13:50.710",
+      "end": "00:13:50.720",
+      "text": "a structure that you want for this, just"
+    },
+    {
+      "start": "00:13:50.720",
+      "end": "00:13:52.629",
+      "text": "a structure that you want for this, just tell Open Call, hey, I want a daily"
+    },
+    {
+      "start": "00:13:52.629",
+      "end": "00:13:52.639",
+      "text": "tell Open Call, hey, I want a daily"
+    },
+    {
+      "start": "00:13:52.639",
+      "end": "00:13:54.790",
+      "text": "tell Open Call, hey, I want a daily morning briefing at 7 a.m. Send me these"
+    },
+    {
+      "start": "00:13:54.790",
+      "end": "00:13:54.800",
+      "text": "morning briefing at 7 a.m. Send me these"
+    },
+    {
+      "start": "00:13:54.800",
+      "end": "00:13:56.550",
+      "text": "morning briefing at 7 a.m. Send me these things. On the flip side, I had it"
+    },
+    {
+      "start": "00:13:56.550",
+      "end": "00:13:56.560",
+      "text": "things. On the flip side, I had it"
+    },
+    {
+      "start": "00:13:56.560",
+      "end": "00:13:58.069",
+      "text": "things. On the flip side, I had it actually create this midnight daily"
+    },
+    {
+      "start": "00:13:58.069",
+      "end": "00:13:58.079",
+      "text": "actually create this midnight daily"
+    },
+    {
+      "start": "00:13:58.079",
+      "end": "00:13:59.269",
+      "text": "actually create this midnight daily tracker. It's basically just going to"
+    },
+    {
+      "start": "00:13:59.269",
+      "end": "00:13:59.279",
+      "text": "tracker. It's basically just going to"
+    },
+    {
+      "start": "00:13:59.279",
+      "end": "00:14:01.030",
+      "text": "tracker. It's basically just going to review what we did for that day, and"
+    },
+    {
+      "start": "00:14:01.030",
+      "end": "00:14:01.040",
+      "text": "review what we did for that day, and"
+    },
+    {
+      "start": "00:14:01.040",
+      "end": "00:14:02.470",
+      "text": "review what we did for that day, and it's just going to log everything in"
+    },
+    {
+      "start": "00:14:02.470",
+      "end": "00:14:02.480",
+      "text": "it's just going to log everything in"
+    },
+    {
+      "start": "00:14:02.480",
+      "end": "00:14:04.230",
+      "text": "it's just going to log everything in notion for me. So, that way I just have"
+    },
+    {
+      "start": "00:14:04.230",
+      "end": "00:14:04.240",
+      "text": "notion for me. So, that way I just have"
+    },
+    {
+      "start": "00:14:04.240",
+      "end": "00:14:05.990",
+      "text": "notion for me. So, that way I just have something to reflect back on. I can use"
+    },
+    {
+      "start": "00:14:05.990",
+      "end": "00:14:06.000",
+      "text": "something to reflect back on. I can use"
+    },
+    {
+      "start": "00:14:06.000",
+      "end": "00:14:07.509",
+      "text": "something to reflect back on. I can use this for content. I can use this for"
+    },
+    {
+      "start": "00:14:07.509",
+      "end": "00:14:07.519",
+      "text": "this for content. I can use this for"
+    },
+    {
+      "start": "00:14:07.519",
+      "end": "00:14:08.870",
+      "text": "this for content. I can use this for marketing. It's just for my kind of"
+    },
+    {
+      "start": "00:14:08.870",
+      "end": "00:14:08.880",
+      "text": "marketing. It's just for my kind of"
+    },
+    {
+      "start": "00:14:08.880",
+      "end": "00:14:10.710",
+      "text": "marketing. It's just for my kind of keeping to understand what we've done."
+    },
+    {
+      "start": "00:14:10.710",
+      "end": "00:14:10.720",
+      "text": "keeping to understand what we've done."
+    },
+    {
+      "start": "00:14:10.720",
+      "end": "00:14:11.990",
+      "text": "keeping to understand what we've done. So you can see here we can see like"
+    },
+    {
+      "start": "00:14:11.990",
+      "end": "00:14:12.000",
+      "text": "So you can see here we can see like"
+    },
+    {
+      "start": "00:14:12.000",
+      "end": "00:14:13.430",
+      "text": "So you can see here we can see like here's what we accomplished like cost"
+    },
+    {
+      "start": "00:14:13.430",
+      "end": "00:14:13.440",
+      "text": "here's what we accomplished like cost"
+    },
+    {
+      "start": "00:14:13.440",
+      "end": "00:14:15.350",
+      "text": "here's what we accomplished like cost optimization strategy for Tik Tok"
+    },
+    {
+      "start": "00:14:15.350",
+      "end": "00:14:15.360",
+      "text": "optimization strategy for Tik Tok"
+    },
+    {
+      "start": "00:14:15.360",
+      "end": "00:14:17.350",
+      "text": "optimization strategy for Tik Tok carousels, content brief, here are the"
+    },
+    {
+      "start": "00:14:17.350",
+      "end": "00:14:17.360",
+      "text": "carousels, content brief, here are the"
+    },
+    {
+      "start": "00:14:17.360",
+      "end": "00:14:18.949",
+      "text": "carousels, content brief, here are the key decisions that we made about like"
+    },
+    {
+      "start": "00:14:18.949",
+      "end": "00:14:18.959",
+      "text": "key decisions that we made about like"
+    },
+    {
+      "start": "00:14:18.959",
+      "end": "00:14:20.870",
+      "text": "key decisions that we made about like aesthetics and my brand, right? And"
+    },
+    {
+      "start": "00:14:20.870",
+      "end": "00:14:20.880",
+      "text": "aesthetics and my brand, right? And"
+    },
+    {
+      "start": "00:14:20.880",
+      "end": "00:14:22.310",
+      "text": "aesthetics and my brand, right? And here's what's kind of in progress or"
+    },
+    {
+      "start": "00:14:22.310",
+      "end": "00:14:22.320",
+      "text": "here's what's kind of in progress or"
+    },
+    {
+      "start": "00:14:22.320",
+      "end": "00:14:23.829",
+      "text": "here's what's kind of in progress or what's blocked. Here are all the skills"
+    },
+    {
+      "start": "00:14:23.829",
+      "end": "00:14:23.839",
+      "text": "what's blocked. Here are all the skills"
+    },
+    {
+      "start": "00:14:23.839",
+      "end": "00:14:25.430",
+      "text": "what's blocked. Here are all the skills and files that we created. And so again,"
+    },
+    {
+      "start": "00:14:25.430",
+      "end": "00:14:25.440",
+      "text": "and files that we created. And so again,"
+    },
+    {
+      "start": "00:14:25.440",
+      "end": "00:14:26.790",
+      "text": "and files that we created. And so again, this is just a way for me to keep track"
+    },
+    {
+      "start": "00:14:26.790",
+      "end": "00:14:26.800",
+      "text": "this is just a way for me to keep track"
+    },
+    {
+      "start": "00:14:26.800",
+      "end": "00:14:28.150",
+      "text": "this is just a way for me to keep track of everything that we've been building."
+    },
+    {
+      "start": "00:14:28.150",
+      "end": "00:14:28.160",
+      "text": "of everything that we've been building."
+    },
+    {
+      "start": "00:14:28.160",
+      "end": "00:14:29.750",
+      "text": "of everything that we've been building. This one's honestly a lifesaver. You can"
+    },
+    {
+      "start": "00:14:29.750",
+      "end": "00:14:29.760",
+      "text": "This one's honestly a lifesaver. You can"
+    },
+    {
+      "start": "00:14:29.760",
+      "end": "00:14:31.670",
+      "text": "This one's honestly a lifesaver. You can just create a repository on GitHub and"
+    },
+    {
+      "start": "00:14:31.670",
+      "end": "00:14:31.680",
+      "text": "just create a repository on GitHub and"
+    },
+    {
+      "start": "00:14:31.680",
+      "end": "00:14:33.350",
+      "text": "just create a repository on GitHub and you can just say, \"Hey, OpenCaw, I need"
+    },
+    {
+      "start": "00:14:33.350",
+      "end": "00:14:33.360",
+      "text": "you can just say, \"Hey, OpenCaw, I need"
+    },
+    {
+      "start": "00:14:33.360",
+      "end": "00:14:35.350",
+      "text": "you can just say, \"Hey, OpenCaw, I need you to back up all of our code into"
+    },
+    {
+      "start": "00:14:35.350",
+      "end": "00:14:35.360",
+      "text": "you to back up all of our code into"
+    },
+    {
+      "start": "00:14:35.360",
+      "end": "00:14:37.910",
+      "text": "you to back up all of our code into GitHub every day.\" And so this way all"
+    },
+    {
+      "start": "00:14:37.910",
+      "end": "00:14:37.920",
+      "text": "GitHub every day.\" And so this way all"
+    },
+    {
+      "start": "00:14:37.920",
+      "end": "00:14:39.670",
+      "text": "GitHub every day.\" And so this way all of your configuration files, your memory"
+    },
+    {
+      "start": "00:14:39.670",
+      "end": "00:14:39.680",
+      "text": "of your configuration files, your memory"
+    },
+    {
+      "start": "00:14:39.680",
+      "end": "00:14:41.269",
+      "text": "of your configuration files, your memory scripts, everything is just pushed to"
+    },
+    {
+      "start": "00:14:41.269",
+      "end": "00:14:41.279",
+      "text": "scripts, everything is just pushed to"
+    },
+    {
+      "start": "00:14:41.279",
+      "end": "00:14:42.710",
+      "text": "scripts, everything is just pushed to GitHub. So that way if anything breaks"
+    },
+    {
+      "start": "00:14:42.710",
+      "end": "00:14:42.720",
+      "text": "GitHub. So that way if anything breaks"
+    },
+    {
+      "start": "00:14:42.720",
+      "end": "00:14:44.150",
+      "text": "GitHub. So that way if anything breaks or you're just running into problems,"
+    },
+    {
+      "start": "00:14:44.150",
+      "end": "00:14:44.160",
+      "text": "or you're just running into problems,"
+    },
+    {
+      "start": "00:14:44.160",
+      "end": "00:14:46.310",
+      "text": "or you're just running into problems, you can instantly roll it back to the"
+    },
+    {
+      "start": "00:14:46.310",
+      "end": "00:14:46.320",
+      "text": "you can instantly roll it back to the"
+    },
+    {
+      "start": "00:14:46.320",
+      "end": "00:14:48.470",
+      "text": "you can instantly roll it back to the repository. So to a working state. If"
+    },
+    {
+      "start": "00:14:48.470",
+      "end": "00:14:48.480",
+      "text": "repository. So to a working state. If"
+    },
+    {
+      "start": "00:14:48.480",
+      "end": "00:14:50.310",
+      "text": "repository. So to a working state. If you want access to my AI Dream Team"
+    },
+    {
+      "start": "00:14:50.310",
+      "end": "00:14:50.320",
+      "text": "you want access to my AI Dream Team"
+    },
+    {
+      "start": "00:14:50.320",
+      "end": "00:14:52.550",
+      "text": "you want access to my AI Dream Team prompt library and autopilot stack, it's"
+    },
+    {
+      "start": "00:14:52.550",
+      "end": "00:14:52.560",
+      "text": "prompt library and autopilot stack, it's"
+    },
+    {
+      "start": "00:14:52.560",
+      "end": "00:14:54.150",
+      "text": "prompt library and autopilot stack, it's inside the buildroom. All you have to do"
+    },
+    {
+      "start": "00:14:54.150",
+      "end": "00:14:54.160",
+      "text": "inside the buildroom. All you have to do"
+    },
+    {
+      "start": "00:14:54.160",
+      "end": "00:14:55.829",
+      "text": "inside the buildroom. All you have to do is come into the lesson, open this up,"
+    },
+    {
+      "start": "00:14:55.829",
+      "end": "00:14:55.839",
+      "text": "is come into the lesson, open this up,"
+    },
+    {
+      "start": "00:14:55.839",
+      "end": "00:14:57.750",
+      "text": "is come into the lesson, open this up, and I give you ready to deploy, copy,"
+    },
+    {
+      "start": "00:14:57.750",
+      "end": "00:14:57.760",
+      "text": "and I give you ready to deploy, copy,"
+    },
+    {
+      "start": "00:14:57.760",
+      "end": "00:14:59.509",
+      "text": "and I give you ready to deploy, copy, and paste prompts so you can set up all"
+    },
+    {
+      "start": "00:14:59.509",
+      "end": "00:14:59.519",
+      "text": "and paste prompts so you can set up all"
+    },
+    {
+      "start": "00:14:59.519",
+      "end": "00:15:01.430",
+      "text": "and paste prompts so you can set up all of these agents and cron jobs just like"
+    },
+    {
+      "start": "00:15:01.430",
+      "end": "00:15:01.440",
+      "text": "of these agents and cron jobs just like"
+    },
+    {
+      "start": "00:15:01.440",
+      "end": "00:15:03.350",
+      "text": "of these agents and cron jobs just like I have. All right, back to it. And"
+    },
+    {
+      "start": "00:15:03.350",
+      "end": "00:15:03.360",
+      "text": "I have. All right, back to it. And"
+    },
+    {
+      "start": "00:15:03.360",
+      "end": "00:15:05.910",
+      "text": "I have. All right, back to it. And arguably the most impactful cron job I"
+    },
+    {
+      "start": "00:15:05.910",
+      "end": "00:15:05.920",
+      "text": "arguably the most impactful cron job I"
+    },
+    {
+      "start": "00:15:05.920",
+      "end": "00:15:08.150",
+      "text": "arguably the most impactful cron job I have set to run every week. It is this"
+    },
+    {
+      "start": "00:15:08.150",
+      "end": "00:15:08.160",
+      "text": "have set to run every week. It is this"
+    },
+    {
+      "start": "00:15:08.160",
+      "end": "00:15:10.629",
+      "text": "have set to run every week. It is this weekly trends analysis report. It's"
+    },
+    {
+      "start": "00:15:10.629",
+      "end": "00:15:10.639",
+      "text": "weekly trends analysis report. It's"
+    },
+    {
+      "start": "00:15:10.639",
+      "end": "00:15:12.069",
+      "text": "weekly trends analysis report. It's basically going to look at Reddit,"
+    },
+    {
+      "start": "00:15:12.069",
+      "end": "00:15:12.079",
+      "text": "basically going to look at Reddit,"
+    },
+    {
+      "start": "00:15:12.079",
+      "end": "00:15:14.389",
+      "text": "basically going to look at Reddit, YouTube, and X to figure out what people"
+    },
+    {
+      "start": "00:15:14.389",
+      "end": "00:15:14.399",
+      "text": "YouTube, and X to figure out what people"
+    },
+    {
+      "start": "00:15:14.399",
+      "end": "00:15:15.829",
+      "text": "YouTube, and X to figure out what people are actually talking about based off of"
+    },
+    {
+      "start": "00:15:15.829",
+      "end": "00:15:15.839",
+      "text": "are actually talking about based off of"
+    },
+    {
+      "start": "00:15:15.839",
+      "end": "00:15:17.590",
+      "text": "are actually talking about based off of kind of some keywords, my audience, my"
+    },
+    {
+      "start": "00:15:17.590",
+      "end": "00:15:17.600",
+      "text": "kind of some keywords, my audience, my"
+    },
+    {
+      "start": "00:15:17.600",
+      "end": "00:15:19.350",
+      "text": "kind of some keywords, my audience, my ICP, their pain points, and things like"
+    },
+    {
+      "start": "00:15:19.350",
+      "end": "00:15:19.360",
+      "text": "ICP, their pain points, and things like"
+    },
+    {
+      "start": "00:15:19.360",
+      "end": "00:15:21.509",
+      "text": "ICP, their pain points, and things like that. And so gives me like a top pick"
+    },
+    {
+      "start": "00:15:21.509",
+      "end": "00:15:21.519",
+      "text": "that. And so gives me like a top pick"
+    },
+    {
+      "start": "00:15:21.519",
+      "end": "00:15:23.430",
+      "text": "that. And so gives me like a top pick like content idea number one. I gave"
+    },
+    {
+      "start": "00:15:23.430",
+      "end": "00:15:23.440",
+      "text": "like content idea number one. I gave"
+    },
+    {
+      "start": "00:15:23.440",
+      "end": "00:15:25.350",
+      "text": "like content idea number one. I gave Open Claw full access to my consulting"
+    },
+    {
+      "start": "00:15:25.350",
+      "end": "00:15:25.360",
+      "text": "Open Claw full access to my consulting"
+    },
+    {
+      "start": "00:15:25.360",
+      "end": "00:15:27.189",
+      "text": "Open Claw full access to my consulting business. Basically, OpenClaw is the"
+    },
+    {
+      "start": "00:15:27.189",
+      "end": "00:15:27.199",
+      "text": "business. Basically, OpenClaw is the"
+    },
+    {
+      "start": "00:15:27.199",
+      "end": "00:15:29.030",
+      "text": "business. Basically, OpenClaw is the viral moment right now, which is why I'm"
+    },
+    {
+      "start": "00:15:29.030",
+      "end": "00:15:29.040",
+      "text": "viral moment right now, which is why I'm"
+    },
+    {
+      "start": "00:15:29.040",
+      "end": "00:15:31.269",
+      "text": "viral moment right now, which is why I'm talking about it in this video. It gives"
+    },
+    {
+      "start": "00:15:31.269",
+      "end": "00:15:31.279",
+      "text": "talking about it in this video. It gives"
+    },
+    {
+      "start": "00:15:31.279",
+      "end": "00:15:33.509",
+      "text": "talking about it in this video. It gives me a full execution strategy. It gives"
+    },
+    {
+      "start": "00:15:33.509",
+      "end": "00:15:33.519",
+      "text": "me a full execution strategy. It gives"
+    },
+    {
+      "start": "00:15:33.519",
+      "end": "00:15:35.910",
+      "text": "me a full execution strategy. It gives me more content ideas based off of kind"
+    },
+    {
+      "start": "00:15:35.910",
+      "end": "00:15:35.920",
+      "text": "me more content ideas based off of kind"
+    },
+    {
+      "start": "00:15:35.920",
+      "end": "00:15:37.350",
+      "text": "me more content ideas based off of kind of the findings from the different"
+    },
+    {
+      "start": "00:15:37.350",
+      "end": "00:15:37.360",
+      "text": "of the findings from the different"
+    },
+    {
+      "start": "00:15:37.360",
+      "end": "00:15:39.350",
+      "text": "of the findings from the different channels. Gives me some opportunities to"
+    },
+    {
+      "start": "00:15:39.350",
+      "end": "00:15:39.360",
+      "text": "channels. Gives me some opportunities to"
+    },
+    {
+      "start": "00:15:39.360",
+      "end": "00:15:41.189",
+      "text": "channels. Gives me some opportunities to create different lead magnets for my"
+    },
+    {
+      "start": "00:15:41.189",
+      "end": "00:15:41.199",
+      "text": "create different lead magnets for my"
+    },
+    {
+      "start": "00:15:41.199",
+      "end": "00:15:42.870",
+      "text": "create different lead magnets for my audience. So again, I can send this"
+    },
+    {
+      "start": "00:15:42.870",
+      "end": "00:15:42.880",
+      "text": "audience. So again, I can send this"
+    },
+    {
+      "start": "00:15:42.880",
+      "end": "00:15:45.030",
+      "text": "audience. So again, I can send this information to my lead magnet sub agent"
+    },
+    {
+      "start": "00:15:45.030",
+      "end": "00:15:45.040",
+      "text": "information to my lead magnet sub agent"
+    },
+    {
+      "start": "00:15:45.040",
+      "end": "00:15:46.629",
+      "text": "information to my lead magnet sub agent to create them for me. And it's going to"
+    },
+    {
+      "start": "00:15:46.629",
+      "end": "00:15:46.639",
+      "text": "to create them for me. And it's going to"
+    },
+    {
+      "start": "00:15:46.639",
+      "end": "00:15:48.710",
+      "text": "to create them for me. And it's going to go ahead and rank all this content for"
+    },
+    {
+      "start": "00:15:48.710",
+      "end": "00:15:48.720",
+      "text": "go ahead and rank all this content for"
+    },
+    {
+      "start": "00:15:48.720",
+      "end": "00:15:50.310",
+      "text": "go ahead and rank all this content for me. It's going to break it down by"
+    },
+    {
+      "start": "00:15:50.310",
+      "end": "00:15:50.320",
+      "text": "me. It's going to break it down by"
+    },
+    {
+      "start": "00:15:50.320",
+      "end": "00:15:51.670",
+      "text": "me. It's going to break it down by different platforms like different"
+    },
+    {
+      "start": "00:15:51.670",
+      "end": "00:15:51.680",
+      "text": "different platforms like different"
+    },
+    {
+      "start": "00:15:51.680",
+      "end": "00:15:53.350",
+      "text": "different platforms like different platforms, LinkedIn posts, YouTube"
+    },
+    {
+      "start": "00:15:53.350",
+      "end": "00:15:53.360",
+      "text": "platforms, LinkedIn posts, YouTube"
+    },
+    {
+      "start": "00:15:53.360",
+      "end": "00:15:55.509",
+      "text": "platforms, LinkedIn posts, YouTube videos, short form videos, any like"
+    },
+    {
+      "start": "00:15:55.509",
+      "end": "00:15:55.519",
+      "text": "videos, short form videos, any like"
+    },
+    {
+      "start": "00:15:55.519",
+      "end": "00:15:57.189",
+      "text": "videos, short form videos, any like audience language that I can like kind"
+    },
+    {
+      "start": "00:15:57.189",
+      "end": "00:15:57.199",
+      "text": "audience language that I can like kind"
+    },
+    {
+      "start": "00:15:57.199",
+      "end": "00:15:59.269",
+      "text": "audience language that I can like kind of pull in, right? any pain points and"
+    },
+    {
+      "start": "00:15:59.269",
+      "end": "00:15:59.279",
+      "text": "of pull in, right? any pain points and"
+    },
+    {
+      "start": "00:15:59.279",
+      "end": "00:16:01.030",
+      "text": "of pull in, right? any pain points and objections that I can really hit on so"
+    },
+    {
+      "start": "00:16:01.030",
+      "end": "00:16:01.040",
+      "text": "objections that I can really hit on so"
+    },
+    {
+      "start": "00:16:01.040",
+      "end": "00:16:02.550",
+      "text": "objections that I can really hit on so that I'm speaking directly to my"
+    },
+    {
+      "start": "00:16:02.550",
+      "end": "00:16:02.560",
+      "text": "that I'm speaking directly to my"
+    },
+    {
+      "start": "00:16:02.560",
+      "end": "00:16:04.310",
+      "text": "that I'm speaking directly to my audience's frustrations. And so this is"
+    },
+    {
+      "start": "00:16:04.310",
+      "end": "00:16:04.320",
+      "text": "audience's frustrations. And so this is"
+    },
+    {
+      "start": "00:16:04.320",
+      "end": "00:16:06.230",
+      "text": "audience's frustrations. And so this is probably one of the most impactful"
+    },
+    {
+      "start": "00:16:06.230",
+      "end": "00:16:06.240",
+      "text": "probably one of the most impactful"
+    },
+    {
+      "start": "00:16:06.240",
+      "end": "00:16:08.069",
+      "text": "probably one of the most impactful things that I have created. And then at"
+    },
+    {
+      "start": "00:16:08.069",
+      "end": "00:16:08.079",
+      "text": "things that I have created. And then at"
+    },
+    {
+      "start": "00:16:08.079",
+      "end": "00:16:09.749",
+      "text": "things that I have created. And then at the bottom, it just kind of links to all"
+    },
+    {
+      "start": "00:16:09.749",
+      "end": "00:16:09.759",
+      "text": "the bottom, it just kind of links to all"
+    },
+    {
+      "start": "00:16:09.759",
+      "end": "00:16:11.350",
+      "text": "the bottom, it just kind of links to all the sources that it pulled from. If you"
+    },
+    {
+      "start": "00:16:11.350",
+      "end": "00:16:11.360",
+      "text": "the sources that it pulled from. If you"
+    },
+    {
+      "start": "00:16:11.360",
+      "end": "00:16:12.710",
+      "text": "the sources that it pulled from. If you want to get access to any of the prompts"
+    },
+    {
+      "start": "00:16:12.710",
+      "end": "00:16:12.720",
+      "text": "want to get access to any of the prompts"
+    },
+    {
+      "start": "00:16:12.720",
+      "end": "00:16:14.629",
+      "text": "want to get access to any of the prompts that we use today or learn how to build"
+    },
+    {
+      "start": "00:16:14.629",
+      "end": "00:16:14.639",
+      "text": "that we use today or learn how to build"
+    },
+    {
+      "start": "00:16:14.639",
+      "end": "00:16:16.550",
+      "text": "that we use today or learn how to build a highly profitable personal brand using"
+    },
+    {
+      "start": "00:16:16.550",
+      "end": "00:16:16.560",
+      "text": "a highly profitable personal brand using"
+    },
+    {
+      "start": "00:16:16.560",
+      "end": "00:16:17.990",
+      "text": "a highly profitable personal brand using AI, just check the link in the"
+    },
+    {
+      "start": "00:16:17.990",
+      "end": "00:16:18.000",
+      "text": "AI, just check the link in the"
+    },
+    {
+      "start": "00:16:18.000",
+      "end": "00:16:19.430",
+      "text": "AI, just check the link in the description to join thousands of other"
+    },
+    {
+      "start": "00:16:19.430",
+      "end": "00:16:19.440",
+      "text": "description to join thousands of other"
+    },
+    {
+      "start": "00:16:19.440",
+      "end": "00:16:21.269",
+      "text": "description to join thousands of other people inside the buildroom. If you"
+    },
+    {
+      "start": "00:16:21.269",
+      "end": "00:16:21.279",
+      "text": "people inside the buildroom. If you"
+    },
+    {
+      "start": "00:16:21.279",
+      "end": "00:16:23.269",
+      "text": "people inside the buildroom. If you think open claw is cool, just check out"
+    },
+    {
+      "start": "00:16:23.269",
+      "end": "00:16:23.279",
+      "text": "think open claw is cool, just check out"
+    },
+    {
+      "start": "00:16:23.279",
+      "end": "00:16:25.990",
+      "text": "think open claw is cool, just check out this video up here of 63 insane use"
+    },
+    {
+      "start": "00:16:25.990",
+      "end": "00:16:26.000",
+      "text": "this video up here of 63 insane use"
+    },
+    {
+      "start": "00:16:26.000",
+      "end": "00:16:29.600",
+      "text": "this video up here of 63 insane use cases that other people are doing."
+    }
+  ]
+}

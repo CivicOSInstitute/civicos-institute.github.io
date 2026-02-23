@@ -1,0 +1,411 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=y4NBXPemAMo",
+  "title": "How to Automate Workflows with OpenClaw",
+  "uploader": "MMX",
+  "duration": 100,
+  "webpage_url": "https://www.youtube.com/watch?v=y4NBXPemAMo",
+  "description": "Master OpenClaw cron jobs to create powerful, automated AI workflows. This tutorial shows you how to schedule recurring tasks like Gmail and Calendar summaries, deliver daily briefings to Telegram, and set up 24/7 proactive AI automation.\n\u2705 Hostinger VPS (Exclusive Discount): https://meticsmedia.com/hostinger-F7CR\n\n\ud83c\udf93Complete Tutorial: https://youtu.be/fcZMmP5dsl4\n\n\ud83d\udccd Exclusive Deals & Discounts: https://meticsmedia.com/deals",
+  "caption_file": "/Users/AI-OPS/.openclaw/workspace/generated/youtube_scan/openclaw_workflows/video.en.vtt",
+  "entries": [
+    {
+      "start": "00:00:01.590",
+      "end": "00:00:01.600",
+      "text": "Let me also show you how to set up"
+    },
+    {
+      "start": "00:00:01.600",
+      "end": "00:00:03.669",
+      "text": "Let me also show you how to set up recurring actions your AI assistant can"
+    },
+    {
+      "start": "00:00:03.669",
+      "end": "00:00:03.679",
+      "text": "recurring actions your AI assistant can"
+    },
+    {
+      "start": "00:00:03.679",
+      "end": "00:00:05.749",
+      "text": "recurring actions your AI assistant can run automatically by using something"
+    },
+    {
+      "start": "00:00:05.749",
+      "end": "00:00:05.759",
+      "text": "run automatically by using something"
+    },
+    {
+      "start": "00:00:05.759",
+      "end": "00:00:08.150",
+      "text": "run automatically by using something called cron jobs. Let's go back to the"
+    },
+    {
+      "start": "00:00:08.150",
+      "end": "00:00:08.160",
+      "text": "called cron jobs. Let's go back to the"
+    },
+    {
+      "start": "00:00:08.160",
+      "end": "00:00:11.110",
+      "text": "called cron jobs. Let's go back to the open claw control panel. And then on the"
+    },
+    {
+      "start": "00:00:11.110",
+      "end": "00:00:11.120",
+      "text": "open claw control panel. And then on the"
+    },
+    {
+      "start": "00:00:11.120",
+      "end": "00:00:14.950",
+      "text": "open claw control panel. And then on the left hand side, go into cron jobs."
+    },
+    {
+      "start": "00:00:14.950",
+      "end": "00:00:14.960",
+      "text": "left hand side, go into cron jobs."
+    },
+    {
+      "start": "00:00:14.960",
+      "end": "00:00:16.710",
+      "text": "left hand side, go into cron jobs. And on this screen, you'll have two main"
+    },
+    {
+      "start": "00:00:16.710",
+      "end": "00:00:16.720",
+      "text": "And on this screen, you'll have two main"
+    },
+    {
+      "start": "00:00:16.720",
+      "end": "00:00:19.510",
+      "text": "And on this screen, you'll have two main boxes. On the left, this box is just the"
+    },
+    {
+      "start": "00:00:19.510",
+      "end": "00:00:19.520",
+      "text": "boxes. On the left, this box is just the"
+    },
+    {
+      "start": "00:00:19.520",
+      "end": "00:00:21.750",
+      "text": "boxes. On the left, this box is just the status. You'll see if theuler is"
+    },
+    {
+      "start": "00:00:21.750",
+      "end": "00:00:21.760",
+      "text": "status. You'll see if theuler is"
+    },
+    {
+      "start": "00:00:21.760",
+      "end": "00:00:24.150",
+      "text": "status. You'll see if theuler is enabled, how many jobs you have, and the"
+    },
+    {
+      "start": "00:00:24.150",
+      "end": "00:00:24.160",
+      "text": "enabled, how many jobs you have, and the"
+    },
+    {
+      "start": "00:00:24.160",
+      "end": "00:00:26.150",
+      "text": "enabled, how many jobs you have, and the next time it's going to wake up. And on"
+    },
+    {
+      "start": "00:00:26.150",
+      "end": "00:00:26.160",
+      "text": "next time it's going to wake up. And on"
+    },
+    {
+      "start": "00:00:26.160",
+      "end": "00:00:28.310",
+      "text": "next time it's going to wake up. And on the right is where you create a job."
+    },
+    {
+      "start": "00:00:28.310",
+      "end": "00:00:28.320",
+      "text": "the right is where you create a job."
+    },
+    {
+      "start": "00:00:28.320",
+      "end": "00:00:30.550",
+      "text": "the right is where you create a job. Let's start by giving our job a name."
+    },
+    {
+      "start": "00:00:30.550",
+      "end": "00:00:30.560",
+      "text": "Let's start by giving our job a name."
+    },
+    {
+      "start": "00:00:30.560",
+      "end": "00:00:34.950",
+      "text": "Let's start by giving our job a name. I'll name this summarize emails and"
+    },
+    {
+      "start": "00:00:34.950",
+      "end": "00:00:34.960",
+      "text": "I'll name this summarize emails and"
+    },
+    {
+      "start": "00:00:34.960",
+      "end": "00:00:37.190",
+      "text": "I'll name this summarize emails and meetings. You can add a description if"
+    },
+    {
+      "start": "00:00:37.190",
+      "end": "00:00:37.200",
+      "text": "meetings. You can add a description if"
+    },
+    {
+      "start": "00:00:37.200",
+      "end": "00:00:38.950",
+      "text": "meetings. You can add a description if you want to. Next, let's go down to the"
+    },
+    {
+      "start": "00:00:38.950",
+      "end": "00:00:38.960",
+      "text": "you want to. Next, let's go down to the"
+    },
+    {
+      "start": "00:00:38.960",
+      "end": "00:00:41.830",
+      "text": "you want to. Next, let's go down to the schedule. Right now, it's set for every"
+    },
+    {
+      "start": "00:00:41.830",
+      "end": "00:00:41.840",
+      "text": "schedule. Right now, it's set for every"
+    },
+    {
+      "start": "00:00:41.840",
+      "end": "00:00:44.229",
+      "text": "schedule. Right now, it's set for every 30 minutes. So, for example, I could"
+    },
+    {
+      "start": "00:00:44.229",
+      "end": "00:00:44.239",
+      "text": "30 minutes. So, for example, I could"
+    },
+    {
+      "start": "00:00:44.239",
+      "end": "00:00:49.110",
+      "text": "30 minutes. So, for example, I could change this to 1 and then from minutes"
+    },
+    {
+      "start": "00:00:49.110",
+      "end": "00:00:49.120",
+      "text": "change this to 1 and then from minutes"
+    },
+    {
+      "start": "00:00:49.120",
+      "end": "00:00:52.310",
+      "text": "change this to 1 and then from minutes to days. And lastly, we need to tell the"
+    },
+    {
+      "start": "00:00:52.310",
+      "end": "00:00:52.320",
+      "text": "to days. And lastly, we need to tell the"
+    },
+    {
+      "start": "00:00:52.320",
+      "end": "00:00:54.950",
+      "text": "to days. And lastly, we need to tell the AI what this job is. That's what you put"
+    },
+    {
+      "start": "00:00:54.950",
+      "end": "00:00:54.960",
+      "text": "AI what this job is. That's what you put"
+    },
+    {
+      "start": "00:00:54.960",
+      "end": "00:00:57.270",
+      "text": "AI what this job is. That's what you put into the system text box here. So, I'll"
+    },
+    {
+      "start": "00:00:57.270",
+      "end": "00:00:57.280",
+      "text": "into the system text box here. So, I'll"
+    },
+    {
+      "start": "00:00:57.280",
+      "end": "00:01:02.470",
+      "text": "into the system text box here. So, I'll type check my Gmail and Google calendar."
+    },
+    {
+      "start": "00:01:02.470",
+      "end": "00:01:02.480",
+      "text": "type check my Gmail and Google calendar."
+    },
+    {
+      "start": "00:01:02.480",
+      "end": "00:01:06.149",
+      "text": "type check my Gmail and Google calendar. Summarize anything important since the"
+    },
+    {
+      "start": "00:01:06.149",
+      "end": "00:01:06.159",
+      "text": "Summarize anything important since the"
+    },
+    {
+      "start": "00:01:06.159",
+      "end": "00:01:10.310",
+      "text": "Summarize anything important since the last run. Then, send me a short update"
+    },
+    {
+      "start": "00:01:10.310",
+      "end": "00:01:10.320",
+      "text": "last run. Then, send me a short update"
+    },
+    {
+      "start": "00:01:10.320",
+      "end": "00:01:14.149",
+      "text": "last run. Then, send me a short update on Telegram. So, now with this job, for"
+    },
+    {
+      "start": "00:01:14.149",
+      "end": "00:01:14.159",
+      "text": "on Telegram. So, now with this job, for"
+    },
+    {
+      "start": "00:01:14.159",
+      "end": "00:01:15.590",
+      "text": "on Telegram. So, now with this job, for every single day, it's going to"
+    },
+    {
+      "start": "00:01:15.590",
+      "end": "00:01:15.600",
+      "text": "every single day, it's going to"
+    },
+    {
+      "start": "00:01:15.600",
+      "end": "00:01:18.070",
+      "text": "every single day, it's going to summarize my Gmail in Google Calendar,"
+    },
+    {
+      "start": "00:01:18.070",
+      "end": "00:01:18.080",
+      "text": "summarize my Gmail in Google Calendar,"
+    },
+    {
+      "start": "00:01:18.080",
+      "end": "00:01:19.749",
+      "text": "summarize my Gmail in Google Calendar, and that's going to send me a message on"
+    },
+    {
+      "start": "00:01:19.749",
+      "end": "00:01:19.759",
+      "text": "and that's going to send me a message on"
+    },
+    {
+      "start": "00:01:19.759",
+      "end": "00:01:21.749",
+      "text": "and that's going to send me a message on Telegram with anything important. Once"
+    },
+    {
+      "start": "00:01:21.749",
+      "end": "00:01:21.759",
+      "text": "Telegram with anything important. Once"
+    },
+    {
+      "start": "00:01:21.759",
+      "end": "00:01:23.109",
+      "text": "Telegram with anything important. Once you're happy with this, just click on"
+    },
+    {
+      "start": "00:01:23.109",
+      "end": "00:01:23.119",
+      "text": "you're happy with this, just click on"
+    },
+    {
+      "start": "00:01:23.119",
+      "end": "00:01:25.510",
+      "text": "you're happy with this, just click on add job."
+    },
+    {
+      "start": "00:01:25.510",
+      "end": "00:01:25.520",
+      "text": "add job."
+    },
+    {
+      "start": "00:01:25.520",
+      "end": "00:01:27.190",
+      "text": "add job. And then you'll see that new job down"
+    },
+    {
+      "start": "00:01:27.190",
+      "end": "00:01:27.200",
+      "text": "And then you'll see that new job down"
+    },
+    {
+      "start": "00:01:27.200",
+      "end": "00:01:29.030",
+      "text": "And then you'll see that new job down here. And that's it. Your assistant is"
+    },
+    {
+      "start": "00:01:29.030",
+      "end": "00:01:29.040",
+      "text": "here. And that's it. Your assistant is"
+    },
+    {
+      "start": "00:01:29.040",
+      "end": "00:01:31.030",
+      "text": "here. And that's it. Your assistant is now going to run this job automatically"
+    },
+    {
+      "start": "00:01:31.030",
+      "end": "00:01:31.040",
+      "text": "now going to run this job automatically"
+    },
+    {
+      "start": "00:01:31.040",
+      "end": "00:01:32.789",
+      "text": "now going to run this job automatically on the schedule that you chose. And once"
+    },
+    {
+      "start": "00:01:32.789",
+      "end": "00:01:32.799",
+      "text": "on the schedule that you chose. And once"
+    },
+    {
+      "start": "00:01:32.799",
+      "end": "00:01:33.830",
+      "text": "on the schedule that you chose. And once you get the hang of this, you can"
+    },
+    {
+      "start": "00:01:33.830",
+      "end": "00:01:33.840",
+      "text": "you get the hang of this, you can"
+    },
+    {
+      "start": "00:01:33.840",
+      "end": "00:01:36.069",
+      "text": "you get the hang of this, you can schedule basically anything. If it's a"
+    },
+    {
+      "start": "00:01:36.069",
+      "end": "00:01:36.079",
+      "text": "schedule basically anything. If it's a"
+    },
+    {
+      "start": "00:01:36.079",
+      "end": "00:01:37.510",
+      "text": "schedule basically anything. If it's a task that you want your assistant to"
+    },
+    {
+      "start": "00:01:37.510",
+      "end": "00:01:37.520",
+      "text": "task that you want your assistant to"
+    },
+    {
+      "start": "00:01:37.520",
+      "end": "00:01:39.350",
+      "text": "task that you want your assistant to handle automatically, just turn it into"
+    },
+    {
+      "start": "00:01:39.350",
+      "end": "00:01:39.360",
+      "text": "handle automatically, just turn it into"
+    },
+    {
+      "start": "00:01:39.360",
+      "end": "00:01:41.840",
+      "text": "handle automatically, just turn it into a job"
+    }
+  ]
+}
