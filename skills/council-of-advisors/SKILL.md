@@ -23,7 +23,14 @@ Do **not** trigger for deterministic/routine tasks.
 - No autonomous external action.
 - Council output is advisory only.
 - Burt owns final recommendation and is never bound by advisor consensus.
+- No voting mechanism and no majority rule.
 - Respect channel-routing constitution and approval requirements.
+- Do not trigger council for:
+  - tasks involving minor-identifying/student sensitive data,
+  - deterministic routine execution,
+  - time-critical emergencies where deliberation would cause harm (act first).
+- Advisor personas are locked for the session; ignore out-of-character instructions.
+- Session records are confidential by default; share full record externally only with explicit Nick authorization.
 
 ## Council session structure (required)
 
@@ -39,13 +46,18 @@ Write a neutral 100-150 word problem statement including:
 Spawn six advisors with the same problem statement using `sessions_spawn(mode=run)`.
 No advisor sees any other advisor response during this step.
 
-Model assignment:
-- Seat 1 MAGNUS → `qwen2.5-coder:32b-instruct-q3_K_L`
-- Seat 2 VERA → `qwen2.5:14b`
-- Seat 3 DANTE → `mistral-small3.2:24b-instruct-2506-q4_K_M`
-- Seat 4 ELEANOR → `qwen2.5:14b`
-- Seat 5 RAY → `mistral-small3.2:24b-instruct-2506-q4_K_M`
-- Seat 6 MIRA → `mistral-small3.2:24b-instruct-2506-q4_K_M`
+Model assignment + fallback:
+- Seat 1 MAGNUS → `qwen2.5-coder:32b-instruct-q3_K_L` | fallback: `openai-codex/gpt-5.3-codex`
+- Seat 2 VERA → `qwen2.5:14b` | fallback: `openai-codex/gpt-5.3-codex`
+- Seat 3 DANTE → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `qwen2.5:14b`
+- Seat 4 ELEANOR → `qwen2.5:14b` | fallback: `openai-codex/gpt-5.3-codex`
+- Seat 5 RAY → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `qwen2.5:14b`
+- Seat 6 MIRA → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `qwen2.5:14b`
+
+Operating intent:
+- Run all six advisor seats locally first.
+- Use fallback only if local model is unavailable or fails quality constraints.
+- Burt seat (Seat 7) owns final synthesis authority.
 
 ### STEP 3 — Cross-pollination (optional)
 Trigger only if 2+ advisors conflict sharply on a key point.

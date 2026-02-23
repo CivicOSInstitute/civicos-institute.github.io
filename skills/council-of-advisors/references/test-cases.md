@@ -1,38 +1,28 @@
 # Council of Advisors — Test Cases & Eval
 
-## Test Case 1: Strategic fork
-Prompt: "Convene the council on whether CivicOS should prioritize grant writing automation or board recruitment automation for the next 30 days."
-Pass criteria:
-- All 6 advisor seats represented distinctly.
-- At least 2 disagreements surfaced.
-- Final Burt recommendation includes 3 concrete next actions.
+## Should-trigger test cases
+1. "I'm trying to decide between applying for a $50K grant with a 2-week deadline that's only 60% aligned to our mission, or waiting for a better opportunity next quarter. Convene the council."
+2. "We've been offered a partnership with an edtech company that wants to co-brand our AI literacy curriculum. They'd fund our pilot but their product collects student usage data. I can't decide. Council?"
+3. "The council — I need perspective. We're thinking about pivoting from school-based programs to a train-the-trainer model to scale faster. My gut says yes but I want this stress-tested."
+4. "Get me multiple perspectives on whether we should publicly criticize a competitor nonprofit's AI literacy program that we think is teaching kids to trust AI uncritically."
+5. "I keep coming back to the same two options for our fundraising strategy and I don't love either of them. What would the council say?"
+6. "I feel like I'm missing something obvious about why our Discord community isn't growing despite consistent posting. Call a council session."
 
-## Test Case 2: Ethical tension
-Prompt: "Council, advise on publishing AI education content that could be misused for shortcut learning."
-Pass criteria:
-- Ethical risks are explicit and non-generic.
-- Safeguards and mitigations included.
-- Recommendation is actionable and balanced.
-
-## Test Case 3: Irreversible decision
-Prompt: "Get me multiple perspectives on committing to a high-cost external vendor contract."
-Pass criteria:
-- Reversibility/risk called out.
-- Financial and governance viewpoints materially influence final recommendation.
-- Approval gate clearly identified.
-
-## Test Case 4: Non-trigger control
-Prompt: "Summarize this one-page status report."
-Pass criteria:
-- Skill should not trigger.
-- Routine execution proceeds without council spawn.
+## Should-NOT-trigger test cases
+1. "Draft an acknowledgment letter for the $500 donation from Sarah Chen."
+2. "What's the deadline for the MacArthur Foundation's next grant cycle?"
+3. "Post the AI literacy tip to LinkedIn."
+4. "How many donors lapsed this month?"
+5. "Fix the error in the social delivery script."
+6. "Schedule the board meeting reminder for next week."
 
 ## Evaluation checklist
-- Triggering: correct on/off behavior.
-- Independence: advisor outputs are not duplicates.
-- Session flow: all 5 steps executed in order.
-- Cross-pollination: only triggered on sharp conflict, one round max.
-- Synthesis quality: recommendation explicit, with what shifted / set aside.
+- Triggering: correct on/off behavior for all 12 tests.
+- Seat integrity: six advisor personas stay in character and distinct.
+- Flow integrity: all 5 steps executed in order.
+- Cross-pollination: max one round; only when sharp conflict exists.
+- Synthesis quality: explicit decision, what shifted, what was set aside.
+- Constraint compliance: no council for routine/deterministic/time-critical emergency paths.
 - Persistence: record saved to `./data/council/YYYY-MM-DD-[topic-slug].md`.
 - Delivery: full record to Burt direct; 100-word synthesis routed by channel matrix.
 - Operationality: next actions executable within 24h.
