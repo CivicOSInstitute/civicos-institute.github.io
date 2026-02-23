@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Tracker Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 2rem;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #94a3b8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: #60a5fa;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        
+        .metric-subtext {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+        
+        .metric-value.positive { color: #4ade80; }
+        .metric-value.negative { color: #f87171; }
+        .metric-value.warning { color: #fbbf24; }
+        
+        .section {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #f8fafc;
+        }
+        
+        .chart-container {
+            min-height: 400px;
+        }
+        
+        .quota-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .quota-item {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .quota-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quota-provider {
+            font-weight: 600;
+            color: #f8fafc;
+        }
+        
+        .quota-pct {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .quota-pct.good { color: #4ade80; }
+        .quota-pct.warning { color: #fbbf24; }
+        .quota-pct.danger { color: #f87171; }
+        
+        .progress-bar {
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .progress-fill.good { background: #4ade80; }
+        .progress-fill.warning { background: #fbbf24; }
+        .progress-fill.danger { background: #f87171; }
+        
+        .forecast-box {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .forecast-box.on-track {
+            border-left: 4px solid #4ade80;
+        }
+        
+        .forecast-box.at-risk {
+            border-left: 4px solid #f87171;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #60a5fa;
+            color: #0f172a;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🦞 Token Tracker Dashboard</h1>
+            <p>Local-first routing monitor: token/cost usage, provider mix, and budget health</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Forecast Banner -->
+        <div class="forecast-box {{ 'on-track' if forecast.on_track else 'at-risk' }}">
+            <h2>📊 Budget Forecast</h2>
+            <div class="metrics-grid">
+                <div>
+                    <div class="metric-label">Monthly Budget</div>
+                    <div class="metric-value">${{ "%.2f"|format(forecast.monthly_budget) }}</div>
+                </div>
+                <div>
+                    <div class="metric-label">Current Spend</div>
+                    <div class="metric-value {{ 'warning' if forecast.percent_used > 75 else 'positive' }}">${{ "%.2f"|format(forecast.current_spend) }}</div>
+                </div>
+                <div>
+                    <div class="metric-label">Remaining</div>
+                    <div class="metric-value">${{ "%.2f"|format(forecast.remaining) }}</div>
+                </div>
+                <div>
+                    <div class="metric-label">% Used</div>
+                    <div class="metric-value {{ 'warning' if forecast.percent_used > 75 else 'positive' }}">{{ "%.1f"|format(forecast.percent_used) }}%</div>
+                </div>
+                <div>
+                    <div class="metric-label">Days Left</div>
+                    <div class="metric-value">{{ forecast.days_remaining }}</div>
+                </div>
+                <div>
+                    <div class="metric-label">Recommended Daily</div>
+                    <div class="metric-value">${{ "%.2f"|format(forecast.recommended_daily) }}</div>
+                    <div class="metric-subtext">Avg: ${{ "%.2f"|format(forecast.avg_daily) }}/day</div>
+                </div>
+            </div>
+        </div>
+
+        {% if stats.local_share < local_target %}
+        <div class="section" style="border-left:4px solid #fbbf24;">
+            <h2>⚠️ Local-First Drift Detected</h2>
+            <p style="color:#cbd5e1;">Local share is below target. Route simple tasks (email triage, drafts, summaries) to local models first; escalate only when quality/risk requires API models.</p>
+        </div>
+        {% endif %}
+        
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Local Usage Share</div>
+                <div class="metric-value {{ 'positive' if stats.local_share >= local_target else 'warning' }}">{{ "%.1f"|format(stats.local_share) }}%</div>
+                <div class="metric-subtext">Target: {{ local_target }}% • Local/API calls: {{ stats.local_calls }}/{{ stats.api_calls }}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Today's Spend</div>
+                <div class="metric-value">${{ "%.4f"|format(today.cost) }}</div>
+                <div class="metric-subtext">{{ today.tokens|intcomma }} tokens • {{ today.calls }} calls</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">This Month</div>
+                <div class="metric-value">${{ "%.2f"|format(current_month.cost) }}</div>
+                <div class="metric-subtext">{{ current_month.tokens|intcomma }} tokens</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Top Model (30d)</div>
+                <div class="metric-value" style="font-size:1.2rem;">{{ top_model }}</div>
+                <div class="metric-subtext">30-day total: ${{ "%.2f"|format(stats.total_cost) }} • {{ stats.total_tokens|intcomma }} tokens</div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="grid-2">
+            <div class="section">
+                <h2>💰 Daily Cost Trend</h2>
+                <div id="daily-cost-chart" class="chart-container"></div>
+            </div>
+            <div class="section">
+                <h2>🔢 Daily Token Usage</h2>
+                <div id="daily-tokens-chart" class="chart-container"></div>
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <div class="section">
+                <h2>🏢 Cost by Provider</h2>
+                <div id="provider-chart" class="chart-container"></div>
+            </div>
+            <div class="section">
+                <h2>🤖 Top Models</h2>
+                <div id="model-chart" class="chart-container"></div>
+            </div>
+        </div>
+        
+        <!-- Quota Status -->
+        {% if quota_status %}
+        <div class="section">
+            <h2>📋 Quota Status</h2>
+            <div class="quota-grid">
+                {% for quota in quota_status %}
+                <div class="quota-item">
+                    <div class="quota-header">
+                        <span class="quota-provider">{{ quota.provider }}</span>
+                        <span class="quota-pct {{ 'good' if quota.daily_pct < 50 else 'warning' if quota.daily_pct < 80 else 'danger' }}">
+                            {{ "%.1f"|format(quota.daily_pct) }}%
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill {{ 'good' if quota.daily_pct < 50 else 'warning' if quota.daily_pct < 80 else 'danger' }}" 
+                             style="width: {{ quota.daily_pct }}%"></div>
+                    </div>
+                    <div class="metric-subtext" style="margin-top: 0.5rem;">
+                        {{ quota.daily_used|intcomma }} / {{ quota.daily_limit|intcomma }} tokens today
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <button class="refresh-btn" onclick="location.reload()">🔄</button>
+    
+    <script>
+        // Render charts
+        {% if daily_cost_chart != '{}' %}
+        Plotly.newPlot('daily-cost-chart', {{ daily_cost_chart|safe }}.data, {{ daily_cost_chart|safe }}.layout, {responsive: true});
+        {% endif %}
+        
+        {% if daily_tokens_chart != '{}' %}
+        Plotly.newPlot('daily-tokens-chart', {{ daily_tokens_chart|safe }}.data, {{ daily_tokens_chart|safe }}.layout, {responsive: true});
+        {% endif %}
+        
+        {% if provider_chart != '{}' %}
+        Plotly.newPlot('provider-chart', {{ provider_chart|safe }}.data, {{ provider_chart|safe }}.layout, {responsive: true});
+        {% endif %}
+        
+        {% if model_chart != '{}' %}
+        Plotly.newPlot('model-chart', {{ model_chart|safe }}.data, {{ model_chart|safe }}.layout, {responsive: true});
+        {% endif %}
+        
+        // Auto-refresh every 60 seconds
+        setTimeout(() => location.reload(), 60000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  token-dashboard:
+    build: .
+    container_name: token-dashboard
+    ports:
+      - "8081:8080"
+    volumes:
+      - ~/.openclaw/token-tracker:/data:ro
+    environment:
+      - DATA_DIR=/data
+      - FLASK_ENV=production
+    restart: unless-stopped

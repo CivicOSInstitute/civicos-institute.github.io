@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: token-dashboard-tailscale
+    volumes:
+      - /var/lib/tailscale:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=token-dashboard
+    command: sh -c "tailscaled --tun=userspace-networking & sleep 2 && tailscale up --authkey=$TS_AUTHKEY --hostname=token-dashboard && tailscale serve --bg --set-path=/ localhost:8080 && wait"
+    restart: unless-stopped
+    network_mode: service:token-dashboard
+    depends_on:
+      - token-dashboard
