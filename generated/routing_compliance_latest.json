@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-02-23T09:51:56",
+  "checks": [
+    {
+      "name": "social_sensitive_scan",
+      "status": "ok",
+      "matches": 0
+    },
+    {
+      "name": "automation_health_errors_present",
+      "status": "ok",
+      "errors": 1
+    }
+  ],
+  "violations": []
+}

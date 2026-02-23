@@ -9,6 +9,8 @@ OUT_DIR="generated"
 mkdir -p "$OUT_DIR"
 HEALTH_JSON="$OUT_DIR/automation_health.json"
 RUN_LOG="$OUT_DIR/ops_cycle_${TODAY}.log"
+STAMP=$(date +%Y%m%d_%H%M%S)
+HEALTH_SNAPSHOT="$OUT_DIR/automation_health_${STAMP}.json"
 
 # macOS-compatible ISO timestamp
 now_iso() { date -u +"%Y-%m-%dT%H:%M:%SZ"; }
@@ -70,6 +72,7 @@ TOTAL_SEC=$((END_TS - START_TS))
   echo "  ]"
   echo "}"
 } > "$HEALTH_JSON"
+cp "$HEALTH_JSON" "$HEALTH_SNAPSHOT"
 
 echo "[$(now_iso)] OPS CYCLE END :: total=${TOTAL_SEC}s" | tee -a "$RUN_LOG"
 echo "$HEALTH_JSON"

@@ -1,14 +1,14 @@
-[2026-02-23T12:12:51Z] OPS CYCLE BEGIN
-[2026-02-23T12:12:51Z] START auto_task_from_telegram :: python3 scripts/auto_task_from_telegram.py
+[2026-02-23T14:51:44Z] OPS CYCLE BEGIN
+[2026-02-23T14:51:44Z] START auto_task_from_telegram :: python3 scripts/auto_task_from_telegram.py
 Auto-task sync complete. created=0
-[2026-02-23T12:12:53Z] END   auto_task_from_telegram :: status=ok duration=2s
-[2026-02-23T12:12:53Z] START fetch_social_feeds :: python3 scripts/fetch_social_feeds.py
-/Users/AI-OPS/.openclaw/workspace/social_media/feeds/social_feed_snapshot_20260223_0712.md
+[2026-02-23T14:51:45Z] END   auto_task_from_telegram :: status=ok duration=1s
+[2026-02-23T14:51:45Z] START fetch_social_feeds :: python3 scripts/fetch_social_feeds.py
+/Users/AI-OPS/.openclaw/workspace/social_media/feeds/social_feed_snapshot_20260223_0951.md
 errors=2
-[2026-02-23T12:12:53Z] END   fetch_social_feeds :: status=error duration=0s
-[2026-02-23T12:12:53Z] START social_autopilot :: python3 scripts/social_autopilot.py
+[2026-02-23T14:51:46Z] END   fetch_social_feeds :: status=error duration=1s
+[2026-02-23T14:51:46Z] START social_autopilot :: python3 scripts/social_autopilot.py
 {
-  "generated_at": "2026-02-23T07:12:54",
+  "generated_at": "2026-02-23T09:51:46",
   "pack_json": "/Users/AI-OPS/.openclaw/workspace/social_media/queue/2026-02-23.json",
   "pack_md": "/Users/AI-OPS/.openclaw/workspace/social_media/queue/2026-02-23.md",
   "discord": {
@@ -36,10 +36,10 @@ errors=2
       }
     ]
   },
-  "delivery_log": "/Users/AI-OPS/.openclaw/workspace/generated/social_delivery_20260223_071305.json"
+  "delivery_log": "/Users/AI-OPS/.openclaw/workspace/generated/social_delivery_20260223_095156.json"
 }
-[2026-02-23T12:13:05Z] END   social_autopilot :: status=ok duration=12s
-[2026-02-23T12:13:05Z] START ops_morning_brief :: python3 scripts/ops_morning_brief.py
+[2026-02-23T14:51:56Z] END   social_autopilot :: status=ok duration=10s
+[2026-02-23T14:51:56Z] START ops_morning_brief :: python3 scripts/ops_morning_brief.py
 /Users/AI-OPS/.openclaw/workspace/generated/ops_morning_brief_2026-02-23.md
-[2026-02-23T12:13:05Z] END   ops_morning_brief :: status=ok duration=0s
-[2026-02-23T12:13:05Z] OPS CYCLE END :: total=14s
+[2026-02-23T14:51:56Z] END   ops_morning_brief :: status=ok duration=0s
+[2026-02-23T14:51:56Z] OPS CYCLE END :: total=12s
