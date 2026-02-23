@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publishing Ops Dashboard</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
+    .container { max-width:1100px; margin:0 auto; padding:24px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:12px; }
+    .card { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:14px; }
+    .label { color:#94a3b8; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+    .value { font-size:24px; font-weight:700; margin-top:6px; }
+    .muted { color:#94a3b8; font-size:13px; }
+    .btn { background:#2563eb; color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; display:inline-block; margin-right:8px; }
+    .status-ok { color:#22c55e; }
+    .status-warn { color:#f59e0b; }
+    ul { margin: 8px 0 0 18px; }
+    code { background:#0b1220; padding:2px 6px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div>
+        <h1 style="margin:0;">Publishing Ops</h1>
+        <div class="muted">Updated {{ now.strftime('%Y-%m-%d %H:%M') }}</div>
+      </div>
+      <div>
+        <a class="btn" href="https://kdp.amazon.com" target="_blank">Open KDP</a>
+        <a class="btn" href="https://authors.apple.com/" target="_blank">Open Apple Books</a>
+        <a class="btn" href="/">Command Center</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="label">Launch Readiness</div>
+        <div class="value {% if ops.readiness_score >= 75 %}status-ok{% else %}status-warn{% endif %}">{{ ops.readiness_score }}%</div>
+        <div class="muted">Score based on account completion + report imports</div>
+      </div>
+      <div class="card">
+        <div class="label">Amazon KDP</div>
+        <div class="value">{{ ops.amazon.account_status }}</div>
+        <div class="muted">Listing: {{ ops.amazon.listing_status }}{% if ops.amazon.asin %} · ASIN: {{ ops.amazon.asin }}{% endif %}</div>
+      </div>
+      <div class="card">
+        <div class="label">Apple Books</div>
+        <div class="value">{{ ops.apple.account_status }}</div>
+        <div class="muted">Listing: {{ ops.apple.listing_status }}{% if ops.apple.books_id %} · ID: {{ ops.apple.books_id }}{% endif %}</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <div class="label">Checklist</div>
+      <ul>
+        <li class="{% if ops.amazon.account_status != 'pending_owner_completion' %}status-ok{% else %}status-warn{% endif %}">Amazon account onboarding completed</li>
+        <li class="{% if ops.apple.account_status != 'pending_owner_completion' %}status-ok{% else %}status-warn{% endif %}">Apple Books onboarding completed</li>
+        <li class="{% if ops.imports.amazon_report %}status-ok{% else %}status-warn{% endif %}">Amazon report imported (<code>amazon_kdp_report.csv</code>)</li>
+        <li class="{% if ops.imports.apple_report %}status-ok{% else %}status-warn{% endif %}">Apple report imported (<code>apple_books_report.csv</code>)</li>
+      </ul>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <div class="label">Import Paths</div>
+      <div class="muted">Drop exports here to activate channel analytics:</div>
+      <ul>
+        <li><code>~/.openclaw/workspace/the_open_source_student_distribution/output/imports/amazon_kdp_report.csv</code></li>
+        <li><code>~/.openclaw/workspace/the_open_source_student_distribution/output/imports/apple_books_report.csv</code></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

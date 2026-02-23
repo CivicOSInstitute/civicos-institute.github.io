@@ -508,12 +508,59 @@ def distribution_dashboard():
                            finance=get_finance_stats(),
                            now=datetime.now())
 
+def get_publishing_ops_status():
+    status_file = Path('/root/.openclaw/workspace/the_open_source_student_distribution/platforms/PUBLISHING_ACCOUNT_STATUS.json')
+    imports_dir = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/imports')
+
+    data = {
+        'amazon': {'account_status': 'unknown', 'listing_status': 'unknown', 'asin': ''},
+        'apple': {'account_status': 'unknown', 'listing_status': 'unknown', 'books_id': ''},
+        'imports': {
+            'amazon_report': (imports_dir / 'amazon_kdp_report.csv').exists(),
+            'apple_report': (imports_dir / 'apple_books_report.csv').exists(),
+        },
+        'readiness_score': 0
+    }
+
+    try:
+        if status_file.exists():
+            raw = json.loads(status_file.read_text())
+            a = raw.get('amazon_kdp', {})
+            p = raw.get('apple_books', {})
+            data['amazon'] = {
+                'account_status': a.get('account_status', 'unknown'),
+                'listing_status': a.get('listing_status', 'unknown'),
+                'asin': a.get('asin', '')
+            }
+            data['apple'] = {
+                'account_status': p.get('account_status', 'unknown'),
+                'listing_status': p.get('listing_status', 'unknown'),
+                'books_id': p.get('books_id', '')
+            }
+
+        score = 0
+        if data['amazon']['account_status'] not in ('unknown', 'pending_owner_completion'): score += 25
+        if data['apple']['account_status'] not in ('unknown', 'pending_owner_completion'): score += 25
+        if data['imports']['amazon_report']: score += 25
+        if data['imports']['apple_report']: score += 25
+        data['readiness_score'] = score
+        return data
+    except Exception:
+        return data
+
 @app.route('/finance')
 def finance_dashboard():
     """Revenue and expenses dashboard."""
     return render_template('finance.html',
                            finance=get_finance_stats(),
                            dist=get_distribution_stats(),
+                           now=datetime.now())
+
+@app.route('/publishing-ops')
+def publishing_ops_dashboard():
+    """Publishing operations status for Amazon/Apple channels."""
+    return render_template('publishing_ops.html',
+                           ops=get_publishing_ops_status(),
                            now=datetime.now())
 
 @app.route('/api/distribution/stats')
@@ -523,6 +570,10 @@ def api_distribution_stats():
 @app.route('/api/finance/stats')
 def api_finance_stats():
     return jsonify(get_finance_stats())
+
+@app.route('/api/publishing-ops/stats')
+def api_publishing_ops_stats():
+    return jsonify(get_publishing_ops_status())
 
 @app.route('/api/status')
 def api_status():
