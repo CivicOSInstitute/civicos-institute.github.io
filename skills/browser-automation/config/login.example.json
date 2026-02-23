@@ -6,11 +6,16 @@
   "headless": false,
   "slowMo": 60,
   "timeoutMs": 60000,
+  "pauseForMfa": true,
+  "mfaCode": "",
   "outDir": "./artifacts",
   "storageStatePath": "./artifacts/storage-state.json",
   "selectors": {
     "username": ["input[name='email']", "input[type='email']"],
     "password": ["input[name='password']", "input[type='password']"],
-    "submit": ["button[type='submit']", "button:has-text('Sign in')"]
+    "submit": ["button[type='submit']", "button:has-text('Sign in')"],
+    "cookieAccept": ["button:has-text('Accept all')"],
+    "mfaCode": ["input[autocomplete='one-time-code']"],
+    "mfaVerify": ["button:has-text('Verify')"]
   }
 }

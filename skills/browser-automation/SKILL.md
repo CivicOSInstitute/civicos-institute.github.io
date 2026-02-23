@@ -9,12 +9,13 @@ Use this skill when an agent must interact with real websites like a human.
 
 ## Capabilities
 - Navigate and wait for rendered JS content
-- Login flows with credential selectors
+- Login flows with selector fallback maps (`config/selectors/common.json`)
 - Cookie/session persistence via `storageState`
 - OAuth redirect handling with success URL checks
 - Multi-step click/fill/wait workflows
 - Screenshot capture to local artifacts directory
 - Dynamic text scraping from rendered elements
+- MFA/captcha pause-resume hook (`pauseForMfa`)
 - Robust error handling (timeouts, missing elements, blocked flows)
 
 ## Required scripts

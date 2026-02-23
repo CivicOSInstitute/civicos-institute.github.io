@@ -1,0 +1,38 @@
+{
+  "login": {
+    "username": [
+      "input[name='email']",
+      "input[name='username']",
+      "input[type='email']",
+      "input[type='text']"
+    ],
+    "password": [
+      "input[name='password']",
+      "input[type='password']"
+    ],
+    "submit": [
+      "button[type='submit']",
+      "button:has-text('Sign in')",
+      "button:has-text('Log in')",
+      "button:has-text('Continue')"
+    ]
+  },
+  "mfa": {
+    "code_input": [
+      "input[name='code']",
+      "input[autocomplete='one-time-code']",
+      "input[type='tel']"
+    ],
+    "verify_button": [
+      "button:has-text('Verify')",
+      "button:has-text('Continue')"
+    ]
+  },
+  "cookie_banners": {
+    "accept": [
+      "button:has-text('Accept all')",
+      "button:has-text('Accept')",
+      "button:has-text('I agree')"
+    ]
+  }
+}

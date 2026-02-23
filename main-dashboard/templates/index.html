@@ -758,6 +758,18 @@
                             <div id="yt-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
                             <div id="yt-preview" style="margin-top: 0.5rem; max-height: 180px; overflow:auto; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; color:#cbd5e1; display:none;"></div>
                         </div>
+
+                        <!-- Browser Job Runner -->
+                        <div>
+                            <div class="section-title">Browser Job Runner (Playwright)</div>
+                            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                                <a href="file:///Users/AI-OPS/.openclaw/workspace/skills/browser-automation/config/login.example.json" class="btn btn-secondary" target="_blank">Open Login Config</a>
+                                <a href="file:///Users/AI-OPS/.openclaw/workspace/skills/browser-automation/config/task.example.json" class="btn btn-secondary" target="_blank">Open Task Config</a>
+                                <button type="button" onclick="navigator.clipboard.writeText('cd ~/.openclaw/workspace/skills/browser-automation && node scripts/login_flow.js config/login.example.json')" class="btn btn-primary">Copy Login Command</button>
+                                <button type="button" onclick="navigator.clipboard.writeText('cd ~/.openclaw/workspace/skills/browser-automation && node scripts/run_task.js config/task.example.json')" class="btn btn-primary">Copy Task Command</button>
+                            </div>
+                            <div style="margin-top: 0.5rem; font-size: 0.75rem; color:#94a3b8;">Use headed mode for auth/MFA, then run headless repeat jobs.</div>
+                        </div>
                     </div>
                 </div>
             </div>

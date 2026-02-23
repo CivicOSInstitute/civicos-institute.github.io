@@ -1,0 +1,16 @@
+{
+  "headless": false,
+  "slowMo": 40,
+  "outDir": "./artifacts",
+  "storageStatePath": "./artifacts/storage-state.json",
+  "steps": [
+    { "type": "goto", "url": "https://example.com/login" },
+    { "type": "wait", "selector": "form" },
+    { "type": "fill", "selector": "input[name='email']", "value": "user@example.com" },
+    { "type": "fill", "selector": "input[name='password']", "value": "secret" },
+    { "type": "click", "selector": "button[type='submit']" },
+    { "type": "wait", "selector": "h1" },
+    { "type": "screenshot", "name": "post-login.png", "fullPage": true },
+    { "type": "scrapeText", "selector": "h1", "key": "title" }
+  ]
+}
