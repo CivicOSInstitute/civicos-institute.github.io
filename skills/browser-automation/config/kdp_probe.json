@@ -1,0 +1,10 @@
+{
+  "headless": true,
+  "outDir": "/Users/AI-OPS/.openclaw/workspace/skills/browser-automation/artifacts",
+  "steps": [
+    {"type":"goto","url":"https://kdp.amazon.com/en_US/"},
+    {"type":"wait","ms":3000},
+    {"type":"screenshot","name":"kdp-probe.png","fullPage":true},
+    {"type":"scrapeText","selector":"body","key":"body"}
+  ]
+}
