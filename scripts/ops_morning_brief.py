@@ -10,6 +10,7 @@ TASK_DB = Path('/Users/AI-OPS/.openclaw/task-tracker/tasks.db')
 NEWS_JSON = BASE / 'website-news' / 'news.json'
 SOCIAL_QUEUE = BASE / 'social_media' / 'queue'
 OUT_DIR = BASE / 'generated'
+AUTOMATION_HEALTH = OUT_DIR / 'automation_health.json'
 
 
 def query_one(conn, sql, params=()):
@@ -90,7 +91,16 @@ def social_queue_status(today: str):
     }
 
 
-def build_checklist(task_stats, queue, news):
+def load_automation_health():
+    if not AUTOMATION_HEALTH.exists():
+        return None
+    try:
+        return json.loads(AUTOMATION_HEALTH.read_text())
+    except Exception:
+        return None
+
+
+def build_checklist(task_stats, queue, news, health):
     items = []
 
     if isinstance(task_stats, dict) and task_stats.get('overdue_open', 0) > 0:
@@ -108,13 +118,18 @@ def build_checklist(task_stats, queue, news):
     if news and news.get('title'):
         items.append("Use top news headline for one midday post and one outreach talking point.")
 
+    if health and isinstance(health, dict):
+        bad = [s for s in health.get('steps', []) if s.get('status') != 'ok']
+        if bad:
+            items.append(f"Fix failed automation steps first ({len(bad)} failing in last ops cycle).")
+
     if not items:
         items.append('No urgent blockers detected. Proceed with highest-impact strategic tasks.')
 
     return items
 
 
-def render_md(now, task_stats, news, queue, checklist):
+def render_md(now, task_stats, news, queue, checklist, health):
     lines = []
     lines.append(f"# Ops Morning Brief — {now.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append('')
@@ -131,6 +146,19 @@ def render_md(now, task_stats, news, queue, checklist):
 
     lines.append(f"- Social queue ready today: {'yes' if queue['today_json_exists'] else 'no'}")
     lines.append(f"- Social latest draft exists: {'yes' if queue['latest_exists'] else 'no'}")
+    lines.append('')
+
+    lines.append('## Automation Health (Last Ops Cycle)')
+    if health and isinstance(health, dict):
+        lines.append(f"- Last run total seconds: {health.get('total_seconds', 'n/a')}")
+        bad = [s for s in health.get('steps', []) if s.get('status') != 'ok']
+        if bad:
+            for s in bad:
+                lines.append(f"- ❌ {s.get('name')}: status={s.get('status')} ({s.get('seconds')}s)")
+        else:
+            lines.append('- ✅ All ops cycle steps succeeded in last run.')
+    else:
+        lines.append('- No automation health file found yet (`generated/automation_health.json`).')
     lines.append('')
 
     lines.append('## Top News Signal')
@@ -179,9 +207,10 @@ def main():
     task_stats = load_task_stats(today)
     news = load_news_headline()
     queue = social_queue_status(today)
-    checklist = build_checklist(task_stats, queue, news)
+    health = load_automation_health()
+    checklist = build_checklist(task_stats, queue, news, health)
 
-    md = render_md(now, task_stats, news, queue, checklist)
+    md = render_md(now, task_stats, news, queue, checklist, health)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = Path(args.out).resolve() if args.out else (OUT_DIR / f'ops_morning_brief_{today}.md')

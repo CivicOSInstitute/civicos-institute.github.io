@@ -7,11 +7,38 @@ const path = require('path');
 Generic task runner for navigate/click/fill/scrape/screenshot.
 Usage:
   node scripts/run_task.js config/task.example.json
+
+Added:
+- persistent context support (userDataDir + channel)
+- preflight steps: ensureUrlContains / ensureSelector / ensureLoggedIn
+- storageState save at end
 */
 
 async function runStep(page, step, out) {
   if (step.type === 'goto') {
     await page.goto(step.url, { waitUntil: step.waitUntil || 'domcontentloaded', timeout: step.timeoutMs || 60000 });
+    return;
+  }
+  if (step.type === 'ensureUrlContains') {
+    const u = page.url();
+    if (!u.includes(step.value)) throw new Error(`Preflight failed: URL missing '${step.value}' :: ${u}`);
+    return;
+  }
+  if (step.type === 'ensureSelector') {
+    const el = page.locator(step.selector).first();
+    await el.waitFor({ timeout: step.timeoutMs || 15000 });
+    return;
+  }
+  if (step.type === 'ensureLoggedIn') {
+    // If loggedOutSelector exists, fail if visible.
+    const lo = step.loggedOutSelector ? page.locator(step.loggedOutSelector).first() : null;
+    if (lo && await lo.count()) {
+      throw new Error(`Preflight failed: appears logged out (selector: ${step.loggedOutSelector})`);
+    }
+    // If loggedInSelector exists, require it.
+    if (step.loggedInSelector) {
+      await page.locator(step.loggedInSelector).first().waitFor({ timeout: step.timeoutMs || 15000 });
+    }
     return;
   }
   if (step.type === 'click') {
@@ -47,10 +74,20 @@ async function runStep(page, step, out) {
   const outDir = cfg.outDir || path.resolve(process.cwd(), 'artifacts');
   fs.mkdirSync(outDir, { recursive: true });
 
-  const browser = await chromium.launch({ headless: cfg.headless ?? true, slowMo: cfg.slowMo ?? 0 });
-  const context = await browser.newContext(cfg.storageStatePath ? { storageState: cfg.storageStatePath } : {});
-  const page = await context.newPage();
+  let browser = null;
+  let context = null;
+  if (cfg.userDataDir) {
+    context = await chromium.launchPersistentContext(cfg.userDataDir, {
+      headless: cfg.headless ?? true,
+      slowMo: cfg.slowMo ?? 0,
+      channel: cfg.channel || undefined
+    });
+  } else {
+    browser = await chromium.launch({ headless: cfg.headless ?? true, slowMo: cfg.slowMo ?? 0, channel: cfg.channel || undefined });
+    context = await browser.newContext(cfg.storageStatePath ? { storageState: cfg.storageStatePath } : {});
+  }
 
+  const page = context.pages()[0] || await context.newPage();
   const result = { ok: true, data: {}, screenshots: [], finalUrl: '' };
 
   try {
@@ -60,6 +97,12 @@ async function runStep(page, step, out) {
       if (r?.key) result.data[r.key] = r.value;
     }
     result.finalUrl = page.url();
+
+    if (cfg.saveStorageStatePath) {
+      await context.storageState({ path: cfg.saveStorageStatePath });
+      result.savedStorageStatePath = cfg.saveStorageStatePath;
+    }
+
     console.log(JSON.stringify(result, null, 2));
   } catch (e) {
     const failShot = path.join(outDir, `task-fail-${Date.now()}.png`);
@@ -67,6 +110,7 @@ async function runStep(page, step, out) {
     console.error(JSON.stringify({ ok: false, error: String(e), screenshot: failShot, finalUrl: page.url() }, null, 2));
     process.exitCode = 1;
   } finally {
-    await browser.close();
+    await context.close();
+    if (browser) await browser.close();
   }
 })();

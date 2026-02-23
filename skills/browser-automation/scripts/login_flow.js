@@ -7,6 +7,10 @@ const COMMON_SELECTORS_PATH = path.resolve(__dirname, '../config/selectors/commo
 /*
 Usage:
   node scripts/login_flow.js config/login.example.json
+
+Added:
+- persistent profile support via userDataDir/channel
+- optional preflight check: if already authenticated, skip credential input
 */
 
 function mergeSelectors(cfg) {
@@ -14,7 +18,7 @@ function mergeSelectors(cfg) {
   try {
     common = JSON.parse(fs.readFileSync(COMMON_SELECTORS_PATH, 'utf8'));
   } catch {}
-  const merged = {
+  return {
     username: [...(cfg?.selectors?.username || []), ...((common.login || {}).username || [])],
     password: [...(cfg?.selectors?.password || []), ...((common.login || {}).password || [])],
     submit: [...(cfg?.selectors?.submit || []), ...((common.login || {}).submit || [])],
@@ -22,7 +26,6 @@ function mergeSelectors(cfg) {
     mfaVerify: [...(cfg?.selectors?.mfaVerify || []), ...((common.mfa || {}).verify_button || [])],
     cookieAccept: [...(cfg?.selectors?.cookieAccept || []), ...((common.cookie_banners || {}).accept || [])],
   };
-  return merged;
 }
 
 async function tryFill(page, selectors, value) {
@@ -55,22 +58,41 @@ async function tryClick(page, selectors) {
   const storageStatePath = cfg.storageStatePath || path.join(outDir, 'storage-state.json');
   const selectors = mergeSelectors(cfg);
 
-  const browser = await chromium.launch({ headless: cfg.headless ?? false, slowMo: cfg.slowMo ?? 50 });
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  let context;
+  if (cfg.userDataDir) {
+    context = await chromium.launchPersistentContext(cfg.userDataDir, {
+      headless: cfg.headless ?? false,
+      slowMo: cfg.slowMo ?? 50,
+      channel: cfg.channel || undefined
+    });
+  } else {
+    const browser = await chromium.launch({ headless: cfg.headless ?? false, slowMo: cfg.slowMo ?? 50, channel: cfg.channel || undefined });
+    context = await browser.newContext();
+  }
+
+  const page = context.pages()[0] || await context.newPage();
 
   try {
     await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: cfg.timeoutMs ?? 60000 });
 
-    // handle cookie banner if present
-    await tryClick(page, selectors.cookieAccept);
+    // Optional preflight: already authenticated?
+    if (cfg.alreadyLoggedInSelector) {
+      const ok = page.locator(cfg.alreadyLoggedInSelector).first();
+      if (await ok.count()) {
+        await context.storageState({ path: storageStatePath });
+        const shot = path.join(outDir, `login-already-auth-${Date.now()}.png`);
+        await page.screenshot({ path: shot, fullPage: true }).catch(() => {});
+        console.log(JSON.stringify({ ok: true, already_logged_in: true, storageStatePath, screenshot: shot, url: page.url() }, null, 2));
+        await context.close();
+        return;
+      }
+    }
 
+    await tryClick(page, selectors.cookieAccept);
     await tryFill(page, selectors.username, cfg.username);
     await tryFill(page, selectors.password, cfg.password);
-
     await tryClick(page, selectors.submit);
 
-    // optional MFA pause/resume hook
     if (cfg.pauseForMfa) {
       const mfaShot = path.join(outDir, `mfa-prompt-${Date.now()}.png`);
       await page.screenshot({ path: mfaShot, fullPage: true }).catch(() => {});
@@ -84,14 +106,12 @@ async function tryClick(page, selectors) {
       }
     }
 
-    // handle OAuth / redirects by waiting on final URL pattern if provided
     if (cfg.successUrlContains) {
       await page.waitForURL(new RegExp(cfg.successUrlContains), { timeout: cfg.timeoutMs ?? 60000 });
     } else {
       await page.waitForLoadState('networkidle', { timeout: cfg.timeoutMs ?? 60000 });
     }
 
-    // cookie/session persistence
     await context.storageState({ path: storageStatePath });
 
     const shot = path.join(outDir, `login-success-${Date.now()}.png`);
@@ -103,6 +123,6 @@ async function tryClick(page, selectors) {
     console.error(JSON.stringify({ ok: false, error: String(e), screenshot: failShot, url: page.url() }, null, 2));
     process.exitCode = 1;
   } finally {
-    await browser.close();
+    await context.close();
   }
 })();
