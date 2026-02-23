@@ -25,44 +25,57 @@ Do **not** trigger for deterministic/routine tasks.
 - Burt owns final recommendation and is never bound by advisor consensus.
 - Respect channel-routing constitution and approval requirements.
 
-## Seven-seat protocol
+## Council session structure (required)
 
-1. **Frame**
-   - Produce a short decision brief:
-     - Problem statement
-     - Stakes and constraints
-     - Time horizon
-     - Decision options (if known)
-     - Unknowns/assumptions
+### STEP 1 — Problem framing (Burt)
+Write a neutral 100-150 word problem statement including:
+- Decision/problem definition
+- What has already been tried/considered
+- Fixed constraints
+- Burt's current leaning (explicit)
+- What help is needed (assumption challenge, options, stress test, ethics)
 
-2. **Seat Burt (initial view)**
-   - State current working recommendation and confidence level.
+### STEP 2 — Independent advisor responses
+Spawn six advisors with the same problem statement using `sessions_spawn(mode=run)`.
+No advisor sees any other advisor response during this step.
 
-3. **Spawn six advisors independently**
-   - Use `sessions_spawn(mode=run)` with one prompt per advisor persona.
-   - Give each advisor the same decision brief.
-   - Require independent response (no cross-talk).
-   - Required output schema from each advisor:
-     - Position
-     - Best argument
-     - Primary risk
-     - What would change my mind
-     - Recommended action in one line
+Model assignment:
+- Seat 1 MAGNUS → `qwen2.5-coder:32b-instruct-q3_K_L`
+- Seat 2 VERA → `qwen2.5:14b`
+- Seat 3 DANTE → `mistral-small3.2:24b-instruct-2506-q4_K_M`
+- Seat 4 ELEANOR → `qwen2.5:14b`
+- Seat 5 RAY → `mistral-small3.2:24b-instruct-2506-q4_K_M`
+- Seat 6 MIRA → `mistral-small3.2:24b-instruct-2506-q4_K_M`
 
-4. **Collect + compare**
-   - Build a matrix of convergences, divergences, and blind spots.
+### STEP 3 — Cross-pollination (optional)
+Trigger only if 2+ advisors conflict sharply on a key point.
+- One round max
+- One short clarification turn each (60-100 words)
+- This is clarification, not debate
 
-5. **Synthesize (Burt as 7th seat)**
-   - Provide final recommendation:
-     - Decision
-     - Why this over alternatives
-     - Risks + mitigations
-     - Immediate next 3 actions
-     - Approval requirement (if any)
+### STEP 4 — Burt synthesis (Seat 7)
+After reviewing all responses, output Burt's updated thinking:
+- What shifted
+- Most valuable perspective and why
+- Perspective set aside and why
+- Current recommendation/decision and reasoning
 
-6. **Route output**
-   - Route summary to correct channel per matrix.
-   - If human approval is needed, issue approval block with ID.
+### STEP 5 — Output delivery and persistence
+Produce a session record with this exact sectioning:
+- Header: COUNCIL OF ADVISORS — SESSION RECORD
+- Topic/date/convened by
+- Problem statement
+- Advisory perspectives (Seats 1-6)
+- Optional cross-pollination section
+- Seat 7 Burt synthesis
+- Footer: decision authority = Burt_Prime_Bot
+
+Persist record to:
+- `./data/council/YYYY-MM-DD-[topic-slug].md`
+
+Delivery rules:
+- Full session record → Burt_Prime_Bot direct
+- 100-word synthesis-only summary → routed domain channel per channel matrix
 
 ## Advisor seats (locked personas)
 

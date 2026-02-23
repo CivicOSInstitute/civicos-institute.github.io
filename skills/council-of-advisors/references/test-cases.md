@@ -30,5 +30,9 @@ Pass criteria:
 ## Evaluation checklist
 - Triggering: correct on/off behavior.
 - Independence: advisor outputs are not duplicates.
-- Synthesis quality: recommendation explicit, with risk + mitigation.
+- Session flow: all 5 steps executed in order.
+- Cross-pollination: only triggered on sharp conflict, one round max.
+- Synthesis quality: recommendation explicit, with what shifted / set aside.
+- Persistence: record saved to `./data/council/YYYY-MM-DD-[topic-slug].md`.
+- Delivery: full record to Burt direct; 100-word synthesis routed by channel matrix.
 - Operationality: next actions executable within 24h.
