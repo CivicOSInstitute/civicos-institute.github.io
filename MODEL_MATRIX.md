@@ -7,6 +7,13 @@ Updated: 2026-02-22
 ## Policy Goal
 Use **local models as much as practical** while preserving execution quality and speed for high-impact tasks.
 
+## API Gate (Active)
+Budget-conservation mode is active.
+- API usage requires explicit approval token: `APPROVE API [task-id]`
+- Non-critical tasks are local-only.
+- Emergency reserve policy: 8% emergency + 8% planned critical ops.
+- See: `generated/API_GATE_POLICY_ACTIVE.md`
+
 ## Current Constraints
 - Kimi tokens are constrained this week → do **not** use by default.
 - Use API models only when local models are likely to fail task quality/speed requirements.
