@@ -32,6 +32,7 @@ EXPENSES_CSV = Path('/root/.openclaw/workspace/civicos-financial-tracker.csv')
 DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/distribution_metrics.json')
 YT_SKILL_DIR = Path('/root/.openclaw/workspace/skills/youtube-summarizer')
 YT_ARTIFACTS_DIR = YT_SKILL_DIR / 'artifacts'
+BROWSER_SKILL_DIR = Path('/root/.openclaw/workspace/skills/browser-automation')
 
 def check_service(name, config):
     """Check if a service is online."""
@@ -804,6 +805,40 @@ def youtube_summarize():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/browser-job', methods=['POST'])
+def run_browser_job():
+    """Run browser automation jobs on host via bridge API."""
+    data = request.get_json() or {}
+    mode = (data.get('mode') or 'task').strip().lower()
+    cfg = data.get('config')
+
+    try:
+        bridge_url = 'http://host.docker.internal:18080/browser/job'
+        payload = {'mode': mode, 'config': cfg}
+        req = urllib.request.Request(
+            bridge_url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST'
+        )
+        response = urllib.request.urlopen(req, timeout=360)
+        result = json.loads(response.read().decode('utf-8'))
+        if result.get('status') == 'success':
+            return jsonify(result)
+        return jsonify({'status': 'error', 'message': result.get('message', 'Browser job failed')}), 500
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode('utf-8')
+            parsed = json.loads(body)
+            return jsonify({'status': 'error', 'message': parsed.get('message', str(e))}), 500
+        except Exception:
+            return jsonify({'status': 'error', 'message': str(e)}), 500
+    except urllib.error.URLError as e:
+        return jsonify({'status': 'error', 'message': f'Bridge API unreachable: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @app.route('/api/read-email/<account>/<email_id>', methods=['POST'])
 def read_email(account, email_id):
