@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicOS Social Feed Monitor</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f6f8fb;color:#1f2937;margin:0}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px;margin-bottom:16px}
+    h1{margin:0 0 8px;color:#0f3d91}
+    h2{margin:0 0 10px;color:#1f2937}
+    .muted{color:#6b7280;font-size:.92rem}
+    .ok{color:#0f766e;font-weight:600}
+    .warn{color:#b45309;font-weight:600}
+    code{background:#eef2ff;padding:2px 6px;border-radius:6px}
+    pre{white-space:pre-wrap;background:#0b1020;color:#d6deff;border-radius:10px;padding:14px;max-height:420px;overflow:auto}
+    a{color:#1d4ed8;text-decoration:none}
+    a:hover{text-decoration:underline}
+    ul{margin:8px 0 0 18px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>CivicOS Social Feed Monitor</h1>
+      <div class="muted">YouTube uses native RSS. X/Facebook currently depend on bridge feeds (best-effort).</div>
+    </div>
+
+    <div class="card">
+      <h2>Current Feed Sources</h2>
+      <ul>
+        <li><strong>YouTube (native):</strong> <code>https://www.youtube.com/feeds/videos.xml?channel_id=...</code> <span class="ok">recommended</span></li>
+        <li><strong>X:</strong> RSSHub bridge <span class="warn">may fail/403</span></li>
+        <li><strong>Facebook:</strong> RSSHub bridge <span class="warn">best-effort only</span></li>
+      </ul>
+      <p class="muted">Config file: <code>social_media/feeds/social_rss_sources.csv</code></p>
+      <p class="muted">Fetcher: <code>scripts/fetch_social_feeds.py</code></p>
+    </div>
+
+    <div class="card">
+      <h2>Latest Feed Snapshot</h2>
+      <div class="muted">Auto-loaded from <code>social_media/feeds/social_feed_latest.md</code></div>
+      <pre id="snapshot">Loading...</pre>
+    </div>
+  </div>
+
+  <script>
+    (async function () {
+      const target = document.getElementById('snapshot');
+      const candidates = [
+        '../social_media/feeds/social_feed_latest.md',
+        '/social_media/feeds/social_feed_latest.md',
+        'social_feed_latest.md'
+      ];
+      for (const p of candidates) {
+        try {
+          const r = await fetch(p, { cache: 'no-store' });
+          if (r.ok) {
+            target.textContent = await r.text();
+            return;
+          }
+        } catch (e) {}
+      }
+      target.textContent = 'Could not load social_feed_latest.md. Run: python3 scripts/fetch_social_feeds.py';
+    })();
+  </script>
+</body>
+</html>
