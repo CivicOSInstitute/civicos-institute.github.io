@@ -1,0 +1,12 @@
+{
+  "decision_id": "dec-20260223_162946",
+  "timestamp": "2026-02-23T16:29:46",
+  "context": "Memory hardening",
+  "chosen_option": "Implement 4 scripts",
+  "rejected_options": [
+    "Do nothing",
+    "manual only"
+  ],
+  "rationale": "Highest immediate impact",
+  "impact": ""
+}
