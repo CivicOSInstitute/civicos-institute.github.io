@@ -1,0 +1,14 @@
+{
+  "amazon_kdp": {
+    "account_status": "pending_owner_completion",
+    "listing_status": "not_started",
+    "asin": "",
+    "notes": "Owner must complete tax/bank/legal onboarding in KDP"
+  },
+  "apple_books": {
+    "account_status": "pending_owner_completion",
+    "listing_status": "not_started",
+    "books_id": "",
+    "notes": "Owner must complete agreements/tax/bank in Apple Books Connect"
+  }
+}

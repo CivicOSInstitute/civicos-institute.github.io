@@ -8,6 +8,10 @@ ROOT="$HOME/.openclaw/workspace/the_open_source_student_distribution/scripts"
 "$ROOT/generate_checkout_copy.sh"
 "$ROOT/generate_launch_content.sh"
 
+# Placeholder CSV-based syncs for marketplaces without direct API wiring yet
+"$ROOT/fetch_amazon_kdp_metrics.py" || true
+"$ROOT/fetch_apple_books_metrics.py" || true
+
 if [ -n "${LEMONSQUEEZY_API_KEY:-}" ]; then
   "$ROOT/fetch_lemonsqueezy_metrics.py" || true
 else

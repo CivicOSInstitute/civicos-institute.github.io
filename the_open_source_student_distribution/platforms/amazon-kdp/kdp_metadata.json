@@ -1,0 +1,22 @@
+{
+  "platform": "Amazon KDP",
+  "title": "The Open Source Student",
+  "subtitle": "Practical AI & Open-Source Skills for Real-World Execution",
+  "author": "Nick Cerbone",
+  "description": "The Open Source Student is a practical guide for learners, educators, and builders who want to apply AI and open-source tools in real workflows.",
+  "keywords": ["open source", "ai literacy", "digital skills", "student toolkit", "terminal skills", "workflow automation", "civicos"],
+  "categories": ["Education / Computers & Technology", "Computers / Software Development"],
+  "language": "en",
+  "rights": "worldwide",
+  "pricing": {
+    "usd": 19.0,
+    "royalty_plan": "70% (where eligible)"
+  },
+  "identifiers": {
+    "asin": ""
+  },
+  "assets": {
+    "epub": "../../output/latest/core.epub",
+    "cover": "../../output/latest/cover.jpg"
+  }
+}

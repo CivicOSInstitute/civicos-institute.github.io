@@ -50,6 +50,17 @@ source ~/.zshrc
 ~/.openclaw/workspace/the_open_source_student_distribution/scripts/run_all.sh
 ```
 
+## Amazon KDP + Apple Books placeholders (export-based)
+Until direct APIs are confirmed, drop report CSVs here:
+- `~/.openclaw/workspace/the_open_source_student_distribution/output/imports/amazon_kdp_report.csv`
+- `~/.openclaw/workspace/the_open_source_student_distribution/output/imports/apple_books_report.csv`
+
+Then run:
+```bash
+~/.openclaw/workspace/the_open_source_student_distribution/scripts/fetch_amazon_kdp_metrics.py
+~/.openclaw/workspace/the_open_source_student_distribution/scripts/fetch_apple_books_metrics.py
+```
+
 ## Optional: hourly refresh cron
 ```bash
 ( crontab -l 2>/dev/null; echo "15 * * * * source ~/.zshrc; ~/.openclaw/workspace/the_open_source_student_distribution/scripts/run_all.sh >/tmp/ebook-build.log 2>&1" ) | crontab -

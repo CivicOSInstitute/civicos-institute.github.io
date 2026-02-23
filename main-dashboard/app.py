@@ -359,6 +359,8 @@ def get_finance_stats():
         'expense_pending_total': 0.0,
         'payment_failed_total': 0.0,
         'lemon_revenue': 0.0,
+        'amazon_revenue': 0.0,
+        'apple_revenue': 0.0,
         'net': 0.0,
         'revenue_rows': 0,
         'expense_rows': 0,
@@ -397,13 +399,19 @@ def get_finance_stats():
         if DIST_METRICS_JSON.exists():
             dm = json.loads(DIST_METRICS_JSON.read_text())
             for ch in dm.get('channels', []):
-                if (ch.get('name') or '').lower().startswith('lemon squeezy'):
-                    try:
-                        stats['lemon_revenue'] = float(ch.get('revenue', 0) or 0)
-                    except Exception:
-                        pass
+                name = (ch.get('name') or '').lower()
+                try:
+                    rev = float(ch.get('revenue', 0) or 0)
+                except Exception:
+                    rev = 0.0
+                if name.startswith('lemon squeezy'):
+                    stats['lemon_revenue'] = rev
+                elif name.startswith('amazon kdp'):
+                    stats['amazon_revenue'] = rev
+                elif name.startswith('apple books'):
+                    stats['apple_revenue'] = rev
 
-        for k in ('revenue_total', 'expense_paid_total', 'expense_pending_total', 'payment_failed_total', 'lemon_revenue'):
+        for k in ('revenue_total', 'expense_paid_total', 'expense_pending_total', 'payment_failed_total', 'lemon_revenue', 'amazon_revenue', 'apple_revenue'):
             stats[k] = round(stats[k], 2)
         stats['net'] = round(stats['revenue_total'] - stats['expense_paid_total'], 2)
         return stats

@@ -1,0 +1,21 @@
+{
+  "platform": "Apple Books",
+  "title": "The Open Source Student",
+  "subtitle": "Practical AI & Open-Source Skills for Real-World Execution",
+  "author": "Nick Cerbone",
+  "description": "The Open Source Student delivers implementation-first training for modern digital capability using AI and open-source tools.",
+  "bisac": ["EDU000000", "COM000000"],
+  "language": "en-US",
+  "publication_date": "2026-02-22",
+  "rights": "worldwide",
+  "pricing": {
+    "usd": 19.0
+  },
+  "identifiers": {
+    "apple_books_id": ""
+  },
+  "assets": {
+    "epub": "../../output/latest/core.epub",
+    "cover": "../../output/latest/cover.jpg"
+  }
+}

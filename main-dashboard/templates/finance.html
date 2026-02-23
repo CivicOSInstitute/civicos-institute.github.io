@@ -48,6 +48,8 @@
         <tr><th>Expense rows</th><td>{{ finance.expense_rows }}</td></tr>
         <tr><th>Payment-failed amount (tracked)</th><td>${{ '%.2f'|format(finance.payment_failed_total or 0) }}</td></tr>
         <tr><th>Lemon Squeezy revenue</th><td>${{ '%.2f'|format(finance.lemon_revenue or 0) }}</td></tr>
+        <tr><th>Amazon KDP revenue</th><td>${{ '%.2f'|format(finance.amazon_revenue or 0) }}</td></tr>
+        <tr><th>Apple Books revenue</th><td>${{ '%.2f'|format(finance.apple_revenue or 0) }}</td></tr>
       </table>
       <div class="muted" style="margin-top:10px;">Data sources: civicos-revenue-tracker.csv, civicos-financial-tracker.csv, distribution_metrics.json</div>
     </div>
