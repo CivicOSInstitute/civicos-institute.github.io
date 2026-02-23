@@ -72,6 +72,20 @@ def summarize_video(video, out_base):
         return ''
 
 
+def summary_excerpt(summary_path):
+    if not summary_path:
+        return ''
+    p = pathlib.Path(summary_path)
+    if not p.exists():
+        return ''
+    txt = p.read_text(errors='ignore').splitlines()
+    lines = [ln.strip() for ln in txt if ln.strip() and not ln.startswith('#')]
+    if not lines:
+        return ''
+    out = lines[0]
+    return out[:180] + ('...' if len(out) > 180 else '')
+
+
 def main():
     cfg = load_json(CFG, {'channels': []})
     state = load_json(STATE, {'seen_video_ids': []})
@@ -79,6 +93,7 @@ def main():
 
     all_rows = []
     new_rows = []
+    channel_reports = []
     scan_limit = int(cfg.get('scan_limit_per_channel', 5))
 
     for ch in cfg.get('channels', []):
@@ -91,22 +106,27 @@ def main():
         try:
             vids = fetch_feed(cid)[:scan_limit]
         except Exception as e:
-            all_rows.append({'channel': name, 'error': str(e), 'videos': []})
+            channel_reports.append({'channel': name, 'channel_id': cid, 'status': 'error', 'error': str(e), 'new_count': 0, 'video_count': 0})
             continue
 
+        ch_new = 0
         rows = []
         for v in vids:
             is_new = v['video_id'] not in seen
             row = {
                 'channel': name,
+                'channel_id': cid,
                 **v,
                 'is_new': is_new,
-                'summary_path': ''
+                'summary_path': '',
+                'summary_excerpt': ''
             }
             rows.append(row)
             if is_new:
                 new_rows.append(row)
+                ch_new += 1
         all_rows.extend(rows)
+        channel_reports.append({'channel': name, 'channel_id': cid, 'status': 'ok', 'new_count': ch_new, 'video_count': len(rows)})
 
     # Summarize only a limited number of new videos per run
     if cfg.get('summarize_new_videos', True):
@@ -114,8 +134,16 @@ def main():
         for r in new_rows[:cap]:
             sp = summarize_video(r, OUT_DIR / 'summaries')
             r['summary_path'] = sp
+            r['summary_excerpt'] = summary_excerpt(sp)
 
-    # Persist seen IDs
+    # Backfill excerpt for existing summary files
+    for r in all_rows:
+        if not r.get('summary_path'):
+            p = OUT_DIR / 'summaries' / r['video_id'] / 'summary.md'
+            if p.exists():
+                r['summary_path'] = str(p)
+                r['summary_excerpt'] = summary_excerpt(str(p))
+
     for r in all_rows:
         vid = r.get('video_id')
         if vid:
@@ -130,7 +158,9 @@ def main():
     payload = {
         'updated_at': dt.datetime.now().isoformat(timespec='seconds'),
         'new_count': len(new_rows),
-        'videos': all_rows
+        'channel_count': len(channel_reports),
+        'channels': channel_reports,
+        'videos': sorted(all_rows, key=lambda x: x.get('published', ''), reverse=True)
     }
     DATA.write_text(json.dumps(payload, indent=2))
     print(str(DATA))

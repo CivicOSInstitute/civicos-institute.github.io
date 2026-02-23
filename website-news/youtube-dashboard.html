@@ -6,16 +6,20 @@
   <title>CivicOS YouTube Monitor</title>
   <style>
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f6f8fb;color:#1f2937;margin:0}
-    .wrap{max-width:1080px;margin:0 auto;padding:22px}
+    .wrap{max-width:1120px;margin:0 auto;padding:22px}
     .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px}
     h1{margin:0 0 6px;color:#0f3d91}
     .muted{color:#6b7280}
     .pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.8rem;background:#e0f2fe;color:#075985}
     .new{background:#dcfce7;color:#166534}
+    .err{background:#fee2e2;color:#991b1b}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .v{border:1px solid #e5e7eb;border-radius:10px;padding:12px}
     a{color:#1d4ed8;text-decoration:none}
     a:hover{text-decoration:underline}
+    select,input,button{padding:8px;border:1px solid #ddd;border-radius:8px}
+    button{cursor:pointer;background:#2563eb;color:white;border:none}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -23,23 +27,93 @@
   <div class="wrap">
     <div class="card">
       <h1>CivicOS YouTube Monitor</h1>
-      <div class="muted">RSS-based channel monitor + auto summaries for new videos.</div>
+      <div class="muted">RSS channel monitoring + auto summaries for new videos</div>
       <div class="muted">Config: <code>social_media/youtube_channels.json</code> | Runner: <code>python3 scripts/youtube_rss_monitor.py</code></div>
       <p id="meta" class="muted"></p>
     </div>
 
-    <div id="videos" class="grid"></div>
+    <div class="card">
+      <div class="controls">
+        <label for="channelFilter" class="muted">Channel</label>
+        <select id="channelFilter"><option value="all">All channels</option></select>
+        <label><input type="checkbox" id="newOnly" /> New only</label>
+        <button onclick="load()">Refresh</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Channel Status</h3>
+      <div id="channels" class="grid"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Videos</h3>
+      <div id="videos" class="grid"></div>
+    </div>
   </div>
 
   <script>
-    async function load() {
-      const target = document.getElementById('videos');
-      const meta = document.getElementById('meta');
-      const paths = [
-        '../generated/youtube_dashboard/videos.json',
-        '/generated/youtube_dashboard/videos.json'
-      ];
+    let _data = null;
 
+    function relSummaryPath(absPath) {
+      if (!absPath) return '';
+      return absPath.replace('/Users/AI-OPS/.openclaw/workspace', '..');
+    }
+
+    function render() {
+      if (!_data) return;
+      const channelSel = document.getElementById('channelFilter').value;
+      const newOnly = document.getElementById('newOnly').checked;
+
+      const channels = document.getElementById('channels');
+      channels.innerHTML = '';
+      (_data.channels || []).forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'v';
+        const badge = c.status === 'ok' ? `<span class='pill'>OK</span>` : `<span class='pill err'>ERROR</span>`;
+        d.innerHTML = `
+          ${badge}
+          <div><strong>${c.channel}</strong></div>
+          <div class='muted'>Videos scanned: ${c.video_count || 0}</div>
+          <div class='muted'>New this run: ${c.new_count || 0}</div>
+          ${c.error ? `<div class='muted'>Error: ${c.error}</div>` : ''}
+        `;
+        channels.appendChild(d);
+      });
+
+      const videos = document.getElementById('videos');
+      videos.innerHTML = '';
+      let rows = (_data.videos || []);
+      if (channelSel !== 'all') rows = rows.filter(v => v.channel === channelSel);
+      if (newOnly) rows = rows.filter(v => v.is_new);
+
+      rows.forEach(v => {
+        const d = document.createElement('div');
+        d.className = 'v';
+        const badge = v.is_new ? `<span class='pill new'>NEW</span>` : `<span class='pill'>Seen</span>`;
+        const summaryLink = v.summary_path ? `<a href='${relSummaryPath(v.summary_path)}' target='_blank'>Open summary</a>` : '';
+        const excerpt = v.summary_excerpt ? `<div class='muted'>Summary: ${v.summary_excerpt}</div>` : '';
+        d.innerHTML = `
+          ${badge}
+          <div><strong>${v.channel}</strong></div>
+          <div>${v.title || '(untitled)'}</div>
+          <div class='muted'>${v.published || ''}</div>
+          <div><a href='${v.url}' target='_blank'>Watch video</a> ${summaryLink ? '• ' + summaryLink : ''}</div>
+          ${excerpt}
+        `;
+        videos.appendChild(d);
+      });
+
+      if (!rows.length) {
+        videos.innerHTML = `<div class='muted'>No videos match current filters.</div>`;
+      }
+    }
+
+    async function load() {
+      const meta = document.getElementById('meta');
+      const channelFilter = document.getElementById('channelFilter');
+
+      const paths = ['../generated/youtube_dashboard/videos.json', '/generated/youtube_dashboard/videos.json'];
       let data = null;
       for (const p of paths) {
         try {
@@ -53,33 +127,28 @@
         return;
       }
 
-      meta.textContent = `Updated: ${data.updated_at} | New videos this run: ${data.new_count}`;
-      target.innerHTML = '';
+      _data = data;
+      meta.textContent = `Updated: ${data.updated_at} | Channels: ${data.channel_count || 0} | New videos: ${data.new_count || 0}`;
 
-      for (const v of data.videos || []) {
-        if (v.error) {
-          const d = document.createElement('div');
-          d.className = 'v';
-          d.innerHTML = `<strong>${v.channel}</strong><div class='muted'>Error: ${v.error}</div>`;
-          target.appendChild(d);
-          continue;
-        }
-        const d = document.createElement('div');
-        d.className = 'v';
-        const badge = v.is_new ? `<span class='pill new'>NEW</span>` : `<span class='pill'>Seen</span>`;
-        const summary = v.summary_path ? `<div><a href='${v.summary_path.replace('/Users/AI-OPS/.openclaw/workspace','..')}' target='_blank'>Open summary</a></div>` : '';
-        d.innerHTML = `
-          ${badge}
-          <div><strong>${v.channel}</strong></div>
-          <div>${v.title || '(untitled)'}</div>
-          <div class='muted'>${v.published || ''}</div>
-          <div><a href='${v.url}' target='_blank'>Watch video</a></div>
-          ${summary}
-        `;
-        target.appendChild(d);
-      }
+      // channel options
+      const current = channelFilter.value;
+      channelFilter.innerHTML = '<option value="all">All channels</option>';
+      (data.channels || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.channel;
+        opt.textContent = c.channel;
+        channelFilter.appendChild(opt);
+      });
+      if ([...channelFilter.options].some(o => o.value === current)) channelFilter.value = current;
+
+      render();
     }
-    load();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('channelFilter').addEventListener('change', render);
+      document.getElementById('newOnly').addEventListener('change', render);
+      load();
+    });
   </script>
 </body>
 </html>
