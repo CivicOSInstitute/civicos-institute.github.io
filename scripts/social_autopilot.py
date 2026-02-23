@@ -7,6 +7,7 @@ import urllib.parse
 import urllib.request
 import urllib.error
 import time
+import subprocess
 
 BASE = pathlib.Path('/Users/AI-OPS/.openclaw/workspace')
 CFG_PATH = BASE / 'social_media' / 'automation_config.json'
@@ -113,10 +114,21 @@ def get_discord_webhook(cmd):
 
 
 def post_once(webhook, text):
-    body = json.dumps({'content': text}).encode('utf-8')
-    req = urllib.request.Request(webhook, data=body, headers={'Content-Type': 'application/json'}, method='POST')
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return r.status
+    # Use curl to avoid Discord/Cloudflare bot challenges seen with urllib (HTTP 403 / code 1010)
+    payload = json.dumps({'content': text})
+    cmd = [
+        'curl', '-sS', '-o', '/tmp/discord_post_resp.txt', '-w', '%{http_code}',
+        '-H', 'Content-Type: application/json',
+        '-A', 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123 Safari/537.36',
+        '-d', payload,
+        webhook
+    ]
+    p = subprocess.run(cmd, capture_output=True, text=True, timeout=25)
+    code_txt = (p.stdout or '').strip()
+    try:
+        return int(code_txt)
+    except Exception:
+        raise RuntimeError(f'curl_failed: {p.stderr.strip() or code_txt}')
 
 
 def post_discord(pack, cfg, retries=2):

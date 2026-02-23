@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-02-23T10:19:47",
+  "pack_json": "/Users/AI-OPS/.openclaw/workspace/social_media/queue/2026-02-23.json",
+  "pack_md": "/Users/AI-OPS/.openclaw/workspace/social_media/queue/2026-02-23.md",
+  "discord": {
+    "status": "ok",
+    "sent": 3,
+    "total": 3,
+    "deliveries": [
+      {
+        "slot": "morning",
+        "ok": true,
+        "status_code": 204,
+        "error": ""
+      },
+      {
+        "slot": "midday",
+        "ok": true,
+        "status_code": 204,
+        "error": ""
+      },
+      {
+        "slot": "evening",
+        "ok": true,
+        "status_code": 204,
+        "error": ""
+      }
+    ]
+  }
+}
