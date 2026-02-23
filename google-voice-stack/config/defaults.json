@@ -1,0 +1,5 @@
+{
+  "maxThreads": 10,
+  "maxVoicemails": 10,
+  "storageState": ".gv_storage_state.json"
+}
