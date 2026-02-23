@@ -28,21 +28,22 @@ Modes:
 2. No donor data persistence beyond task scope except minimal queue artifacts.
 3. No individual donor data in Telegram bodies (first name + tier + queue ID only).
 4. No individual donor records to Gemini tier (absolute prohibition).
-5. Donor data processing: local models first; Codex only where explicitly assigned.
-6. If a record appears to identify a minor, stop processing and escalate.
-7. Read/write separation enforced where CRM supports split keys.
+5. **All donor information must be handled ONLY by local models (absolute rule).**
+6. No donor record fields are sent to cloud/API models under any circumstance.
+7. If a record appears to identify a minor, stop processing and escalate.
+8. Read/write separation enforced where CRM supports split keys.
 
-## Model assignment matrix
+## Model assignment matrix (local-only donor handling)
 | Operation | Model | Fallback |
 |---|---|---|
-| CRM query construction | Mistral Small local | Qwen 14B |
-| Donor record parsing/extraction | Qwen 14B local | Codex |
-| Ack drafting Tier 3/4 | Qwen 14B local | Codex |
-| Ack drafting Tier 1/2 | Qwen 14B local | Codex |
-| Lapse prevention drafts | Qwen 14B local | Codex |
-| Major gift briefing | Codex | Qwen 14B |
-| Portfolio dashboard aggregation | Qwen 14B local | Codex |
-| CRM write-back formatting | Mistral Small local | Qwen 14B |
+| CRM query construction | Mistral Small local | Qwen 14B local |
+| Donor record parsing/extraction | Qwen 14B local | Mistral Small local |
+| Ack drafting Tier 3/4 | Qwen 14B local | Mistral Small local |
+| Ack drafting Tier 1/2 | Qwen 14B local | Mistral Small local |
+| Lapse prevention drafts | Qwen 14B local | Mistral Small local |
+| Major gift briefing | Qwen 14B local | Mistral Small local |
+| Portfolio dashboard aggregation | Qwen 14B local | Mistral Small local |
+| CRM write-back formatting | Mistral Small local | Qwen 14B local |
 
 ## Mode 1 — Gift acknowledgment
 Trigger:

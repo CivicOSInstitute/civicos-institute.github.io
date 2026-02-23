@@ -27,5 +27,5 @@
 - Major gift briefing includes all 4 required sections.
 - Lapse windows calculated correctly from CRM data.
 - Audit log entries created for every read and attempted write.
-- Privacy rule enforced: no donor records to Gemini tier.
+- Privacy rule enforced: all donor records handled only by local models.
 - Telegram notifications contain no full donor record data.
