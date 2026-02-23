@@ -43,6 +43,8 @@ navigation:
     url: /research/
   - title: News
     url: /news.html
+  - title: Ebook
+    url: /ebook/
   - title: Contact
     url: /contact/
 
