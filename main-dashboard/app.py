@@ -33,6 +33,10 @@ DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_dist
 YT_SKILL_DIR = Path('/root/.openclaw/workspace/skills/youtube-summarizer')
 YT_ARTIFACTS_DIR = YT_SKILL_DIR / 'artifacts'
 BROWSER_SKILL_DIR = Path('/root/.openclaw/workspace/skills/browser-automation')
+COUNCIL_DATA_DIR = Path('/root/.openclaw/workspace/data/council')
+COUNCIL_ISSUES_DIR = COUNCIL_DATA_DIR / 'issues'
+COUNCIL_SESSIONS_DIR = COUNCIL_DATA_DIR
+COUNCIL_ISSUES_DIR.mkdir(parents=True, exist_ok=True)
 
 def check_service(name, config):
     """Check if a service is online."""
@@ -239,6 +243,43 @@ def get_council_stats():
     except Exception as e:
         print(f"Error getting council stats: {e}")
         return {}
+
+def get_council_issues(limit=20):
+    """Load queued council issues (pre-council summaries)."""
+    issues = []
+    try:
+        files = sorted(COUNCIL_ISSUES_DIR.glob('*.json'), reverse=True)
+        for f in files[:limit]:
+            try:
+                issues.append(json.loads(f.read_text()))
+            except Exception:
+                continue
+    except Exception as e:
+        print(f"Error loading council issues: {e}")
+    return issues
+
+
+def create_council_issue(topic, context):
+    """Create council issue intake record for dashboard visibility and later retrieval."""
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    slug = ''.join(c if c.isalnum() else '-' for c in (topic or 'untitled').lower()).strip('-')[:60] or 'untitled'
+    issue_id = f"council-{ts}-{slug[:24]}"
+    summary = (context or '').strip().replace('\n', ' ')
+    if len(summary) > 280:
+        summary = summary[:277] + '...'
+
+    payload = {
+        'id': issue_id,
+        'topic': topic,
+        'context': context,
+        'pre_council_summary': summary,
+        'created_at': datetime.now().isoformat(timespec='seconds'),
+        'status': 'queued'
+    }
+    out = COUNCIL_ISSUES_DIR / f"{issue_id}.json"
+    out.write_text(json.dumps(payload, indent=2))
+    return payload
+
 
 def get_recent_activity():
     """Get recent activity from logs and databases."""
@@ -534,6 +575,7 @@ def index():
     crm_stats = get_crm_stats()
     token_stats = get_token_stats()
     council_stats = get_council_stats()
+    council_issues = get_council_issues(limit=12)
     recent_activity = get_recent_activity()
     alerts = get_alerts()
     gateway_stats = get_gateway_stats()
@@ -558,6 +600,7 @@ def index():
                          crm_stats=crm_stats,
                          token_stats=token_stats,
                          council_stats=council_stats,
+                         council_issues=council_issues,
                          website_stats={'last_deploy': 'Unknown'},
                          recent_activity=recent_activity,
                          alerts=alerts,
@@ -655,17 +698,30 @@ def api_status():
 
 @app.route('/api/run-council', methods=['POST'])
 def run_council():
-    """Trigger council analysis."""
+    """Trigger council analysis with optional issue intake (topic/context)."""
     import subprocess
     try:
+        payload = request.get_json(silent=True) or {}
+        topic = (payload.get('topic') or '').strip() or 'Council session'
+        context = (payload.get('context') or '').strip()
+
+        issue = create_council_issue(topic, context)
+
+        # Keep council trigger lightweight; council script can read latest issue file if desired.
         subprocess.run(
             ['python3', '/Users/AI-OPS/.openclaw/workspace/advisory-council/council.py'],
             capture_output=True,
-            timeout=30
+            timeout=45
         )
-        return jsonify({'status': 'success'})
+        return jsonify({'status': 'success', 'issue': issue})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/api/council/issues')
+def api_council_issues():
+    """Return recent council issues for dashboard rendering."""
+    return jsonify({'items': get_council_issues(limit=20)})
 
 @app.route('/api/restart-gateway', methods=['POST'])
 def restart_gateway():

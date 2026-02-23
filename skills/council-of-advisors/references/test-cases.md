@@ -18,11 +18,15 @@
 
 ## Evaluation checklist
 - Triggering: correct on/off behavior for all 12 tests.
-- Seat integrity: six advisor personas stay in character and distinct.
+- Distinctness: six advisors produce genuinely distinct perspectives, not minor variants.
+- Magnus quality: surfaces a real implementation gap, not mere restatement.
+- Dante quality: presents a substantive adversarial case, not only clarifying questions.
 - Flow integrity: all 5 steps executed in order.
 - Cross-pollination: max one round; only when sharp conflict exists.
-- Synthesis quality: explicit decision, what shifted, what was set aside.
+- Synthesis quality: explicit decision, what shifted, and what was set aside.
+- Disagreement clarity: Burt explicitly states where and why he disagrees with at least one advisor when applicable.
 - Constraint compliance: no council for routine/deterministic/time-critical emergency paths.
-- Persistence: record saved to `./data/council/YYYY-MM-DD-[topic-slug].md`.
+- Persistence: record saved to `./data/council/YYYY-MM-DD-[topic-slug].md` and retrievable.
+- Readability: complete session output should be scannable in <= 5 minutes.
 - Delivery: full record to Burt direct; 100-word synthesis routed by channel matrix.
 - Operationality: next actions executable within 24h.

@@ -438,7 +438,7 @@
                         <span class="status-dot status-online"></span>
                         Advisory Council
                     </h2>
-                    <a href="#" class="btn btn-primary" onclick="runCouncil(); return false;">Run Analysis</a>
+                    <a href="#" class="btn btn-primary" onclick="runCouncil(); return false;">Convene Council</a>
                 </div>
                 <div class="card-body">
                     <div class="metric-row">
@@ -457,6 +457,34 @@
                         <span class="metric-label">Last Run</span>
                         <span class="metric-value" style="font-size: 0.875rem;">{{ council_stats.last_run or 'Never' }}</span>
                     </div>
+
+                    <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f0f0f0;">
+                        <div style="font-weight:600; margin-bottom:6px;">Bring an issue to Council</div>
+                        <input type="text" id="councilTopic" placeholder="Issue topic" style="width:100%; padding:8px; margin-bottom:6px; border:1px solid #ddd; border-radius:6px;" />
+                        <textarea id="councilContext" placeholder="Context, constraints, and what you've tried" style="width:100%; min-height:90px; padding:8px; border:1px solid #ddd; border-radius:6px;"></textarea>
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <a href="#" class="btn btn-primary" onclick="runCouncil(); return false;">Run Council on Issue</a>
+                            <a href="#" class="btn btn-secondary" onclick="loadCouncilIssues(); return false;">Refresh Issues</a>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f0f0f0;">
+                        <div style="font-weight:600; margin-bottom:6px;">Recent Council Issues (pre-council summary)</div>
+                        <div id="councilIssuesList" style="max-height: 220px; overflow:auto; font-size:0.9rem;">
+                            {% if council_issues and council_issues|length > 0 %}
+                                {% for issue in council_issues[:6] %}
+                                <div style="padding:6px 0; border-bottom:1px solid #f4f4f4;">
+                                    <div style="font-weight:600;">{{ issue.topic }}</div>
+                                    <div style="color:#666;">{{ issue.pre_council_summary }}</div>
+                                    <div style="color:#999; font-size:0.8rem;">{{ issue.created_at }} • {{ issue.status }}</div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div style="color:#777;">No council issues yet.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <div class="quick-links">
                         <a href="http://100.81.239.69:8083" class="btn btn-secondary" target="_blank">View CRM</a>
                     </div>
@@ -819,14 +847,52 @@
     
     <script>
         function runCouncil() {
-            fetch('/api/run-council', { method: 'POST' })
+            const topic = (document.getElementById('councilTopic')?.value || '').trim();
+            const context = (document.getElementById('councilContext')?.value || '').trim();
+            if (!topic) {
+                alert('Enter an issue topic first.');
+                return;
+            }
+
+            fetch('/api/run-council', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, context })
+            })
                 .then(r => r.json())
                 .then(data => {
-                    alert('Council analysis complete! Check Telegram for report.');
-                    location.reload();
+                    if (data.status !== 'success') {
+                        throw new Error(data.message || 'Unknown council error');
+                    }
+                    alert('Council queued and analysis started. Issue ID: ' + (data.issue?.id || 'n/a'));
+                    loadCouncilIssues();
                 })
                 .catch(e => alert('Error running council: ' + e));
         }
+
+        function loadCouncilIssues() {
+            fetch('/api/council/issues')
+                .then(r => r.json())
+                .then(data => {
+                    const box = document.getElementById('councilIssuesList');
+                    if (!box) return;
+                    const items = data.items || [];
+                    if (!items.length) {
+                        box.innerHTML = '<div style="color:#777;">No council issues yet.</div>';
+                        return;
+                    }
+                    box.innerHTML = items.slice(0, 8).map(i => `
+                        <div style="padding:6px 0; border-bottom:1px solid #f4f4f4;">
+                            <div style="font-weight:600;">${escapeHtml(i.topic || '')}</div>
+                            <div style="color:#666;">${escapeHtml(i.pre_council_summary || '')}</div>
+                            <div style="color:#999; font-size:0.8rem;">${escapeHtml(i.created_at || '')} • ${escapeHtml(i.status || '')}</div>
+                        </div>
+                    `).join('');
+                })
+                .catch(() => {});
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCouncilIssues);
         
         function escapeHtml(str) {
             return String(str || '')

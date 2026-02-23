@@ -85,6 +85,11 @@ Produce a session record with this exact sectioning:
 Persist record to:
 - `./data/council/YYYY-MM-DD-[topic-slug].md`
 
+Post-save memory behavior:
+- Council records are part of institutional memory and should be searchable for future related decisions.
+- If a similar topic appears later, reference prior key insight explicitly.
+- Update council trend telemetry by running `python3 scripts/council_trends.py` after session save.
+
 Delivery rules:
 - Full session record → Burt_Prime_Bot direct
 - 100-word synthesis-only summary → routed domain channel per channel matrix
