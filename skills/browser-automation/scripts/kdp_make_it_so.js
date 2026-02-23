@@ -120,7 +120,7 @@ async function shot(page, name){
       if (await btn.count()) { await btn.click().catch(()=>{}); await page.waitForTimeout(5000); break; }
     }
 
-    await fillByLabel(/List Price|USD|US\$/i, '19.00');
+    await fillByLabel(/List Price|USD|US\$/i, '179.00');
     await shot(page, 'kdp-pricing-before-publish');
 
     console.log('[kdp] Reached pricing/publish stage (best effort). Stopping before final Publish click.');
