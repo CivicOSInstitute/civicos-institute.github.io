@@ -8,6 +8,12 @@ ROOT="$HOME/.openclaw/workspace/the_open_source_student_distribution/scripts"
 "$ROOT/generate_checkout_copy.sh"
 "$ROOT/generate_launch_content.sh"
 
+if [ -n "${LEMONSQUEEZY_API_KEY:-}" ]; then
+  "$ROOT/fetch_lemonsqueezy_metrics.py" || true
+else
+  echo "INFO: LEMONSQUEEZY_API_KEY not set, skipping Lemon Squeezy sync"
+fi
+
 if [ -n "${STRIPE_SECRET_KEY:-}" ]; then
   "$ROOT/fetch_stripe_metrics.py" || true
 else

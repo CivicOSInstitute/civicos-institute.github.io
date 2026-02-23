@@ -19,6 +19,20 @@
 - Packages root: `~/Desktop/the_open_source_student/launch-output/<timestamp>/`
 - Checkout copy: `~/Desktop/the_open_source_student/launch-output/checkout-copy.md`
 
+## Lemon Squeezy live metrics setup (recommended now)
+1) Create API key in Lemon Squeezy dashboard and set env vars:
+```bash
+echo 'export LEMONSQUEEZY_API_KEY="lsq_..."' >> ~/.zshrc
+# Optional but recommended for cleaner metrics filter:
+echo 'export LEMONSQUEEZY_STORE_ID="12345"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+2) Test Lemon Squeezy sync:
+```bash
+~/.openclaw/workspace/the_open_source_student_distribution/scripts/fetch_lemonsqueezy_metrics.py
+```
+
 ## Stripe live metrics setup
 1) Export your Stripe secret key in shell profile:
 ```bash
@@ -31,7 +45,7 @@ source ~/.zshrc
 ~/.openclaw/workspace/the_open_source_student_distribution/scripts/fetch_stripe_metrics.py
 ```
 
-3) Run full pipeline (now includes Stripe sync when key is present):
+3) Run full pipeline (includes Lemon Squeezy + Stripe sync when keys are present):
 ```bash
 ~/.openclaw/workspace/the_open_source_student_distribution/scripts/run_all.sh
 ```
