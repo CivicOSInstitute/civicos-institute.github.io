@@ -356,6 +356,12 @@
                         </span>
                     </div>
                     <div class="metric-row">
+                        <span class="metric-label">Codex Remaining (5h / Daily)</span>
+                        <span class="metric-value {% if (token_stats.codex_5h_remaining is not none and token_stats.codex_5h_remaining < 25) or (token_stats.codex_daily_remaining is not none and token_stats.codex_daily_remaining < 25) %}warning{% else %}success{% endif %}">
+                            {% if token_stats.codex_5h_remaining is not none %}{{ token_stats.codex_5h_remaining }}% / {{ token_stats.codex_daily_remaining }}%{% else %}N/A{% endif %}
+                        </span>
+                    </div>
+                    <div class="metric-row">
                         <span class="metric-label">Today / Week / Month Spend</span>
                         <span class="metric-value">${{ "%.2f"|format(token_stats.today or 0) }} / ${{ "%.2f"|format(token_stats.week or 0) }} / ${{ "%.2f"|format(token_stats.month or 0) }}</span>
                     </div>

@@ -118,7 +118,10 @@ def get_token_stats():
         'total_calls': 0,
         'local_share': 0,
         'top_model': 'n/a',
-        'policy': 'Local-first'
+        'policy': 'Local-first',
+        'codex_5h_remaining': None,
+        'codex_daily_remaining': None,
+        'codex_mode': 'unavailable'
     }
 
     try:
@@ -183,6 +186,19 @@ def get_token_stats():
         stats['today'] = round(stats['today'], 2)
         stats['week'] = round(stats['week'], 2)
         stats['month'] = round(stats['month'], 2)
+
+        # Codex 5h/daily remaining from host bridge (estimated from sessions)
+        try:
+            bridge_url = 'http://host.docker.internal:18080/codex/usage'
+            with urllib.request.urlopen(bridge_url, timeout=8) as r:
+                cu = json.loads(r.read().decode('utf-8'))
+            if cu.get('status') == 'success':
+                stats['codex_5h_remaining'] = cu.get('five_hour', {}).get('remaining_pct')
+                stats['codex_daily_remaining'] = cu.get('daily', {}).get('remaining_pct')
+                stats['codex_mode'] = cu.get('mode', 'estimated')
+        except Exception:
+            pass
+
         return stats
 
     except Exception as e:
