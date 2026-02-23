@@ -28,6 +28,7 @@ SERVICES = {
 EBOOK_SCRIPTS = Path('/root/.openclaw/workspace/the_open_source_student_distribution/scripts')
 EBOOK_OUTPUT = Path('/root/Desktop/the_open_source_student/launch-output')
 REVENUE_CSV = Path('/root/.openclaw/workspace/civicos-revenue-tracker.csv')
+EXPENSES_CSV = Path('/root/.openclaw/workspace/civicos-financial-tracker.csv')
 DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/distribution_metrics.json')
 
 def check_service(name, config):
@@ -343,6 +344,74 @@ def get_distribution_stats():
         return stats
 
 
+def _parse_amount(raw):
+    try:
+        s = str(raw or '').replace('$', '').replace(',', '').strip()
+        return float(s)
+    except Exception:
+        return None
+
+
+def get_finance_stats():
+    stats = {
+        'revenue_total': 0.0,
+        'expense_paid_total': 0.0,
+        'expense_pending_total': 0.0,
+        'payment_failed_total': 0.0,
+        'lemon_revenue': 0.0,
+        'net': 0.0,
+        'revenue_rows': 0,
+        'expense_rows': 0,
+    }
+
+    try:
+        if REVENUE_CSV.exists():
+            with open(REVENUE_CSV, newline='') as f:
+                for row in csv.DictReader(f):
+                    amount = _parse_amount(row.get('Amount'))
+                    if amount is None:
+                        continue
+                    if (row.get('Category') or '').strip().lower() == 'revenue':
+                        stats['revenue_total'] += amount
+                        stats['revenue_rows'] += 1
+
+        if EXPENSES_CSV.exists():
+            with open(EXPENSES_CSV, newline='') as f:
+                for row in csv.DictReader(f):
+                    status = (row.get('Status') or '').strip().upper()
+                    amount = _parse_amount(row.get('Amount'))
+                    if amount is None:
+                        continue
+                    # ignore non-financial log rows
+                    if (row.get('Type') or '').strip().upper() == 'SCAN_LOG':
+                        continue
+
+                    stats['expense_rows'] += 1
+                    if status == 'PAID':
+                        stats['expense_paid_total'] += amount
+                    elif status == 'PENDING':
+                        stats['expense_pending_total'] += amount
+                    elif status == 'PAYMENT_FAILED':
+                        stats['payment_failed_total'] += amount
+
+        if DIST_METRICS_JSON.exists():
+            dm = json.loads(DIST_METRICS_JSON.read_text())
+            for ch in dm.get('channels', []):
+                if (ch.get('name') or '').lower().startswith('lemon squeezy'):
+                    try:
+                        stats['lemon_revenue'] = float(ch.get('revenue', 0) or 0)
+                    except Exception:
+                        pass
+
+        for k in ('revenue_total', 'expense_paid_total', 'expense_pending_total', 'payment_failed_total', 'lemon_revenue'):
+            stats[k] = round(stats[k], 2)
+        stats['net'] = round(stats['revenue_total'] - stats['expense_paid_total'], 2)
+        return stats
+    except Exception as e:
+        print(f"Error getting finance stats: {e}")
+        return stats
+
+
 def get_alerts():
     """Generate alerts based on system state."""
     alerts = []
@@ -428,11 +497,24 @@ def distribution_dashboard():
     return render_template('distribution.html',
                            dist=get_distribution_stats(),
                            ebook=get_ebook_stats(),
+                           finance=get_finance_stats(),
+                           now=datetime.now())
+
+@app.route('/finance')
+def finance_dashboard():
+    """Revenue and expenses dashboard."""
+    return render_template('finance.html',
+                           finance=get_finance_stats(),
+                           dist=get_distribution_stats(),
                            now=datetime.now())
 
 @app.route('/api/distribution/stats')
 def api_distribution_stats():
     return jsonify(get_distribution_stats())
+
+@app.route('/api/finance/stats')
+def api_finance_stats():
+    return jsonify(get_finance_stats())
 
 @app.route('/api/status')
 def api_status():

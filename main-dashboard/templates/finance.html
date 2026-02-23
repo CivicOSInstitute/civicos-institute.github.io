@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicOS Finance Dashboard</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
+    .container { max-width:1100px; margin:0 auto; padding:24px; }
+    .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; }
+    .card { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:14px; }
+    .label { color:#94a3b8; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+    .value { font-size:28px; font-weight:700; margin-top:6px; }
+    .good { color:#22c55e; }
+    .warn { color:#f59e0b; }
+    .bad { color:#ef4444; }
+    .muted { color:#94a3b8; font-size:13px; }
+    .btn { background:#2563eb; color:#fff; text-decoration:none; padding:8px 12px; border-radius:8px; }
+    table { width:100%; border-collapse: collapse; margin-top: 12px; }
+    th,td { border-bottom:1px solid #334155; padding:10px 8px; text-align:left; font-size:14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div>
+        <h1 style="margin:0;">Revenue & Expenses</h1>
+        <div class="muted">Updated {{ now.strftime('%Y-%m-%d %H:%M') }}</div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <a class="btn" href="/distribution">Distribution</a>
+        <a class="btn" href="/">Command Center</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><div class="label">Revenue (Tracked)</div><div class="value good">${{ '%.2f'|format(finance.revenue_total or 0) }}</div></div>
+      <div class="card"><div class="label">Expenses (Paid)</div><div class="value bad">${{ '%.2f'|format(finance.expense_paid_total or 0) }}</div></div>
+      <div class="card"><div class="label">Expenses (Pending)</div><div class="value warn">${{ '%.2f'|format(finance.expense_pending_total or 0) }}</div></div>
+      <div class="card"><div class="label">Net (Revenue - Paid)</div><div class="value {% if finance.net >= 0 %}good{% else %}bad{% endif %}">${{ '%.2f'|format(finance.net or 0) }}</div></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h3 style="margin-top:0;">Finance Detail</h3>
+      <table>
+        <tr><th>Revenue rows</th><td>{{ finance.revenue_rows }}</td></tr>
+        <tr><th>Expense rows</th><td>{{ finance.expense_rows }}</td></tr>
+        <tr><th>Payment-failed amount (tracked)</th><td>${{ '%.2f'|format(finance.payment_failed_total or 0) }}</td></tr>
+        <tr><th>Lemon Squeezy revenue</th><td>${{ '%.2f'|format(finance.lemon_revenue or 0) }}</td></tr>
+      </table>
+      <div class="muted" style="margin-top:10px;">Data sources: civicos-revenue-tracker.csv, civicos-financial-tracker.csv, distribution_metrics.json</div>
+    </div>
+  </div>
+</body>
+</html>
