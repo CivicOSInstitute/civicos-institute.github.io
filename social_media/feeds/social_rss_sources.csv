@@ -1,0 +1,5 @@
+platform,source,url,enabled,notes
+youtube,CivicOS_YouTube_Channel_ID,https://www.youtube.com/feeds/videos.xml?channel_id=REPLACE_WITH_CHANNEL_ID,false,Set official CivicOS YouTube channel ID
+x,NickCerbone1212,https://rsshub.app/x/user/NickCerbone1212,true,Unofficial bridge via RSSHub
+x,CivicOS,https://rsshub.app/x/user/CivicOS,true,Unofficial bridge via RSSHub
+facebook,CivicOS_Page,https://rsshub.app/facebook/page/REPLACE_WITH_PAGE_NAME,false,Set official Facebook page slug/name
