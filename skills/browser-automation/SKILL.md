@@ -1,53 +1,78 @@
 ---
 name: browser-automation
-description: Control a browser with Playwright/Puppeteer to log into websites, fill forms, take screenshots, and scrape dynamic content when API calls are not available or insufficient.
+description: Control a headless browser using Playwright to navigate URLs, authenticate to websites, click through multi-step flows, fill/submit forms, take screenshots, and scrape dynamic content when curl/API access is insufficient.
 ---
 
 # browser-automation
 
-## Use this skill for
-- Interactive website login flows
-- Form filling and submissions
-- Dynamic page scraping (JS-rendered content)
-- Screenshot capture for verification/evidence
-- Repetitive browser workflows
+Use this skill when an agent must interact with real websites like a human.
 
-## Workflow
+## Capabilities
+- Navigate and wait for rendered JS content
+- Login flows with credential selectors
+- Cookie/session persistence via `storageState`
+- OAuth redirect handling with success URL checks
+- Multi-step click/fill/wait workflows
+- Screenshot capture to local artifacts directory
+- Dynamic text scraping from rendered elements
+- Robust error handling (timeouts, missing elements, blocked flows)
 
-1. Confirm target site and objective (login/scrape/form/screenshot).
-2. Use Playwright first (preferred), Puppeteer fallback if required.
-3. Run headed mode for authentication/setup; headless for repeat tasks.
-4. Save session state (`storageState`) to avoid repeated login.
-5. Return structured output (JSON/text + screenshot paths).
+## Required scripts
+- `scripts/launch_browser.js` — browser sanity launch + screenshot
+- `scripts/login_flow.js` — reusable login/session capture helper
+- `scripts/run_task.js` — generic step runner (`goto/click/fill/wait/screenshot/scrapeText`)
+
+## Quick start
+
+```bash
+cd skills/browser-automation
+npm install playwright
+npx playwright install chromium
+```
+
+### 1) Validate browser stack
+```bash
+node scripts/launch_browser.js ./artifacts
+```
+
+### 2) Run login/session capture
+Edit `config/login.example.json` and run:
+```bash
+node scripts/login_flow.js config/login.example.json
+```
+
+### 3) Run a task flow
+Edit `config/task.example.json` and run:
+```bash
+node scripts/run_task.js config/task.example.json
+```
 
 ## Input contract
 - Required:
-  - target URL(s)
-  - task intent (login, scrape, fill, screenshot)
+  - Target URL(s)
+  - Task intent (login / form / scrape / screenshot)
 - Optional:
-  - selectors to target
-  - output path
-  - max pages / limits
+  - Selector list and fallback selectors
+  - `headless` mode toggle
+  - `storageStatePath`
+  - output directory
 
 ## Output contract
-- Action summary
-- Result payload (parsed values)
-- Artifacts (screenshots/files)
-- Errors with exact failing step and retry suggestion
+Return structured JSON including:
+- `ok`
+- `data` (scraped values)
+- `screenshots` (local file paths)
+- `finalUrl`
+- `error` with failing step details (if failed)
 
-## Standard commands
-
-```bash
-# install
-npm install playwright
-npx playwright install chromium
-
-# run script
-node scripts/run.js
-```
+## Error handling standards
+- On timeout: capture failure screenshot and return actionable selector/url details.
+- On missing element: include selector attempted and step type.
+- On OAuth/cookie expiry: re-run login flow and refresh storage state.
+- On captcha/MFA: pause automation and request human intervention.
 
 ## Edge cases
-- MFA/challenge pages: pause and request user input.
-- Anti-bot or captchas: switch to headed + manual assist.
-- Selector drift: use resilient role/text selectors and fallback chains.
-- Session expiry: re-authenticate and refresh storage state.
+- Dynamic DOM updates: prefer role/text selectors and explicit waits.
+- Redirect chains: use `waitForURL` with expected pattern.
+- Session loss: re-create `storageState` from login flow.
+- Anti-bot challenge: switch to headed mode + manual assist.

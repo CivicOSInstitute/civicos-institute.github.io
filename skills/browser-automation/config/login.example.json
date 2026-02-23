@@ -1,0 +1,16 @@
+{
+  "loginUrl": "https://example.com/login",
+  "username": "your_username",
+  "password": "your_password",
+  "successUrlContains": "dashboard",
+  "headless": false,
+  "slowMo": 60,
+  "timeoutMs": 60000,
+  "outDir": "./artifacts",
+  "storageStatePath": "./artifacts/storage-state.json",
+  "selectors": {
+    "username": ["input[name='email']", "input[type='email']"],
+    "password": ["input[name='password']", "input[type='password']"],
+    "submit": ["button[type='submit']", "button:has-text('Sign in')"]
+  }
+}

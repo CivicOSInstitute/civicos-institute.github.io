@@ -1,0 +1,12 @@
+{
+  "headless": true,
+  "slowMo": 0,
+  "outDir": "./artifacts",
+  "storageStatePath": "./artifacts/storage-state.json",
+  "steps": [
+    { "type": "goto", "url": "https://example.com/dashboard" },
+    { "type": "wait", "selector": "h1" },
+    { "type": "screenshot", "name": "dashboard.png", "fullPage": true },
+    { "type": "scrapeText", "selector": "h1", "key": "pageTitle" }
+  ]
+}
