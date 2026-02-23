@@ -35,6 +35,19 @@ python3 scripts/create_skill.py \
   --with-readme
 ```
 
+## Validate and package
+
+```bash
+python3 scripts/validate_skill.py ~/.openclaw/workspace/skills/stock-checker
+python3 scripts/package_skill.py ~/.openclaw/workspace/skills/stock-checker --out-dir ~/.openclaw/workspace/skills
+```
+
+One-command create + package:
+
+```bash
+bash scripts/create_and_package.sh "Stock Checker" "Check stock prices and summarize moves"
+```
+
 ## Input pattern
 
 - Skill name
