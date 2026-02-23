@@ -687,6 +687,17 @@
                             </form>
                             <div id="telegram-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
                         </div>
+
+                        <!-- YouTube Summarizer -->
+                        <div>
+                            <div class="section-title">YouTube Summarizer</div>
+                            <form id="yt-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                <input type="text" id="yt-url" placeholder="https://www.youtube.com/watch?v=..." style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;">
+                                <button type="button" onclick="runYouTubeSummarizer()" class="btn btn-primary">Summarize Video</button>
+                            </form>
+                            <div id="yt-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
+                            <div id="yt-preview" style="margin-top: 0.5rem; max-height: 180px; overflow:auto; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; color:#cbd5e1; display:none;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1018,6 +1029,48 @@
             });
         }
         
+        function runYouTubeSummarizer() {
+            const url = document.getElementById('yt-url').value.trim();
+            const statusDiv = document.getElementById('yt-status');
+            const previewDiv = document.getElementById('yt-preview');
+
+            if (!url) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.color = '#ef4444';
+                statusDiv.innerHTML = '❌ YouTube URL required';
+                return;
+            }
+
+            statusDiv.style.display = 'block';
+            statusDiv.style.color = '#f59e0b';
+            statusDiv.innerHTML = '🔄 Extracting transcript and generating summary...';
+            previewDiv.style.display = 'none';
+
+            fetch('/api/youtube-summarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    statusDiv.style.color = '#10b981';
+                    statusDiv.innerHTML = `✅ Summary ready: ${data.summary_path}`;
+                    if (data.preview) {
+                        previewDiv.style.display = 'block';
+                        previewDiv.innerText = data.preview;
+                    }
+                } else {
+                    statusDiv.style.color = '#ef4444';
+                    statusDiv.innerHTML = '❌ ' + (data.message || 'Summarization failed');
+                }
+            })
+            .catch(e => {
+                statusDiv.style.color = '#ef4444';
+                statusDiv.innerHTML = '❌ Network error: ' + e.message;
+            });
+        }
+
         function runEbookAutomation() {
             const statusDiv = document.getElementById('ebook-status');
             statusDiv.style.display = 'block';

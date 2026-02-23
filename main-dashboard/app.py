@@ -30,6 +30,8 @@ EBOOK_OUTPUT = Path('/root/Desktop/the_open_source_student/launch-output')
 REVENUE_CSV = Path('/root/.openclaw/workspace/civicos-revenue-tracker.csv')
 EXPENSES_CSV = Path('/root/.openclaw/workspace/civicos-financial-tracker.csv')
 DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/distribution_metrics.json')
+YT_SKILL_DIR = Path('/root/.openclaw/workspace/skills/youtube-summarizer')
+YT_ARTIFACTS_DIR = YT_SKILL_DIR / 'artifacts'
 
 def check_service(name, config):
     """Check if a service is online."""
@@ -685,6 +687,55 @@ def run_ebook_pipeline():
             })
 
         return jsonify({'status': 'error', 'message': result.stderr or result.stdout}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/youtube-summarize', methods=['POST'])
+def youtube_summarize():
+    """Run YouTube summarizer skill scripts for a given URL."""
+    import subprocess
+    data = request.get_json() or {}
+    url = (data.get('url') or '').strip()
+
+    if not url:
+        return jsonify({'status': 'error', 'message': 'YouTube URL required'}), 400
+
+    try:
+        extract_script = YT_SKILL_DIR / 'scripts' / 'extract_transcript.py'
+        summarize_script = YT_SKILL_DIR / 'scripts' / 'summarize_transcript.py'
+
+        if not extract_script.exists() or not summarize_script.exists():
+            return jsonify({'status': 'error', 'message': 'youtube-summarizer scripts missing'}), 404
+
+        YT_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+        transcript_path = YT_ARTIFACTS_DIR / 'transcript.json'
+        summary_path = YT_ARTIFACTS_DIR / 'summary.md'
+
+        p1 = subprocess.run(
+            ['python3', str(extract_script), '--url', url, '--out-dir', str(YT_ARTIFACTS_DIR)],
+            capture_output=True, text=True, timeout=240
+        )
+        if p1.returncode != 0:
+            return jsonify({'status': 'error', 'message': p1.stderr or p1.stdout or 'Transcript extraction failed'}), 500
+
+        p2 = subprocess.run(
+            ['python3', str(summarize_script), '--transcript', str(transcript_path), '--out', str(summary_path)],
+            capture_output=True, text=True, timeout=180
+        )
+        if p2.returncode != 0:
+            return jsonify({'status': 'error', 'message': p2.stderr or p2.stdout or 'Summary generation failed'}), 500
+
+        preview = ''
+        if summary_path.exists():
+            preview = summary_path.read_text()[:1400]
+
+        return jsonify({
+            'status': 'success',
+            'summary_path': str(summary_path),
+            'transcript_path': str(transcript_path),
+            'preview': preview
+        })
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
