@@ -67,12 +67,13 @@ Do **not** trigger for deterministic/routine tasks.
 ## Advisor seats (locked personas)
 
 Use the exact persona intents below (full prompts in references/advisor-prompts.md):
-- **Mission Guardian**: mission integrity, nonprofit purpose, public trust.
-- **Operations Realist**: execution feasibility, process risk, throughput.
-- **Financial Steward**: cost, downside, sustainability, budget discipline.
-- **Governance Counsel**: compliance, policy, board/legal exposure.
-- **Growth Strategist**: reach, adoption, compounding leverage.
-- **Skeptical Ethicist**: harms, second-order effects, reputational risk.
+- **MAGNUS** (Qwen Coder 32B): pragmatic execution realism.
+- **VERA** (Qwen 14B): systems effects and feedback loops.
+- **DANTE** (Mistral Small): adversarial challenge.
+- **ELEANOR** (Qwen 14B): ethics and values alignment.
+- **RAY** (Mistral Small): historical/cross-domain pattern recognition.
+- **MIRA** (Mistral Small): simplification and scope discipline.
+- **BURT**: orchestrator + final synthesis authority.
 
 ## Response format (to user)
 
