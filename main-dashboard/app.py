@@ -265,37 +265,31 @@ def get_recent_activity():
     return activities
 
 def get_gateway_stats():
-    """Get OpenClaw Gateway statistics."""
+    """Get OpenClaw Gateway statistics via host bridge API."""
+    stats = {
+        'version': 'OpenClaw',
+        'uptime': 'Unknown',
+        'status': 'Unknown',
+        'raw': ''
+    }
     try:
-        import subprocess
-        import re
-        
-        # Try to get version
-        result = subprocess.run(['openclaw', 'version'], capture_output=True, text=True, timeout=5)
-        version = result.stdout.strip() if result.returncode == 0 else 'Unknown'
-        
-        # Try to get status
-        result = subprocess.run(['openclaw', 'status'], capture_output=True, text=True, timeout=5)
-        status_output = result.stdout
-        
-        # Parse uptime if available
-        uptime = 'Unknown'
-        if 'uptime' in status_output.lower():
-            match = re.search(r'uptime[:\s]+(.+)', status_output, re.IGNORECASE)
-            if match:
-                uptime = match.group(1).strip()
-        
-        return {
-            'version': version,
-            'uptime': uptime,
-            'status': 'Running' if result.returncode == 0 else 'Error'
-        }
-    except:
-        return {
-            'version': 'Unknown',
-            'uptime': 'Unknown',
-            'status': 'Unknown'
-        }
+        bridge_url = 'http://host.docker.internal:18080/gateway/status'
+        response = urllib.request.urlopen(bridge_url, timeout=10)
+        result = json.loads(response.read().decode('utf-8'))
+
+        if result.get('status') == 'success':
+            g = (result.get('gateway_status') or 'unknown').lower()
+            if g == 'running':
+                stats['status'] = 'Running'
+            elif g == 'stopped':
+                stats['status'] = 'Stopped'
+            else:
+                stats['status'] = 'Unknown'
+            stats['raw'] = result.get('raw', '')
+        return stats
+    except Exception as e:
+        print(f"Error getting gateway stats: {e}")
+        return stats
 
 def get_email_stats():
     """Get email statistics from Himalaya via bridge API."""
@@ -545,6 +539,7 @@ def index():
     email_stats = get_email_stats()
     ebook_stats = get_ebook_stats()
     distribution_stats = get_distribution_stats()
+    finance_stats = get_finance_stats()
     
     # Calculate grant deadlines
     from datetime import datetime
@@ -569,6 +564,7 @@ def index():
                          email_stats=email_stats,
                          ebook_stats=ebook_stats,
                          distribution_stats=distribution_stats,
+                         finance_stats=finance_stats,
                          grant_deadlines=grant_deadlines,
                          now=datetime.now())
 
@@ -672,33 +668,32 @@ def run_council():
 
 @app.route('/api/restart-gateway', methods=['POST'])
 def restart_gateway():
-    """Restart OpenClaw Gateway."""
-    import subprocess
-    import threading
-    
-    def do_restart():
-        """Execute restart after a short delay to allow response to be sent."""
-        import time
-        time.sleep(2)
-        try:
-            # Use subprocess.Popen to avoid blocking
-            subprocess.Popen(
-                ['openclaw', 'gateway', 'restart'],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
-            )
-        except Exception as e:
-            print(f"Gateway restart error: {e}")
-    
-    # Start restart in background thread
-    restart_thread = threading.Thread(target=do_restart)
-    restart_thread.daemon = True
-    restart_thread.start()
-    
-    return jsonify({
-        'status': 'success',
-        'message': 'Gateway restart initiated. Service will be unavailable for 10-30 seconds.'
-    })
+    """Restart OpenClaw Gateway via host bridge API."""
+    try:
+        bridge_url = 'http://host.docker.internal:18080/gateway/restart'
+        req = urllib.request.Request(bridge_url, method='POST')
+        response = urllib.request.urlopen(req, timeout=12)
+        result = json.loads(response.read().decode('utf-8'))
+        if result.get('status') == 'success':
+            return jsonify({
+                'status': 'success',
+                'message': 'Gateway restart initiated. Polling for recovery...'
+            })
+        return jsonify({'status': 'error', 'message': result.get('message', 'Restart failed')}), 500
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/api/gateway/status')
+def api_gateway_status():
+    """Gateway health/status for frontend polling."""
+    try:
+        bridge_url = 'http://host.docker.internal:18080/gateway/status'
+        response = urllib.request.urlopen(bridge_url, timeout=10)
+        result = json.loads(response.read().decode('utf-8'))
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/check-email/<account>', methods=['POST'])
 def check_email(account):

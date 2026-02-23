@@ -269,6 +269,54 @@
         </div>
         {% endfor %}
         {% endif %}
+
+        <!-- Operations Cockpit (Mission-Critical) -->
+        <div class="grid" style="margin-bottom: 1.25rem;">
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="status-dot {% if gateway_stats.status == 'Running' %}status-online{% elif gateway_stats.status == 'Stopped' %}status-offline{% else %}status-warning{% endif %}"></span>Gateway</h2>
+                    <button id="gateway-restart-btn" onclick="confirmGatewayRestart()" class="btn btn-secondary">Restart</button>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row"><span class="metric-label">Status</span><span class="metric-value {% if gateway_stats.status == 'Running' %}success{% elif gateway_stats.status == 'Stopped' %}danger{% else %}warning{% endif %}">{{ gateway_stats.status }}</span></div>
+                    <div class="metric-row"><span class="metric-label">Version</span><span class="metric-value" style="font-size:0.85rem;">{{ gateway_stats.version or 'Unknown' }}</span></div>
+                    <div id="restart-status" style="margin-top: 0.6rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="status-dot status-online"></span>Codex Usage</h2>
+                    <a href="http://100.81.239.69:8081" class="btn btn-secondary" target="_blank">Expand</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row"><span class="metric-label">5h / Daily Remaining</span><span class="metric-value {% if (token_stats.codex_5h_remaining is not none and token_stats.codex_5h_remaining < 25) or (token_stats.codex_daily_remaining is not none and token_stats.codex_daily_remaining < 25) %}warning{% else %}success{% endif %}">{% if token_stats.codex_5h_remaining is not none %}{{ token_stats.codex_5h_remaining }}% / {{ token_stats.codex_daily_remaining }}%{% else %}N/A{% endif %}</span></div>
+                    <div class="metric-row"><span class="metric-label">Local Share</span><span class="metric-value {% if (token_stats.local_share or 0) >= 60 %}success{% else %}warning{% endif %}">{{ token_stats.local_share or 0 }}%</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="status-dot status-online"></span>Revenue Pulse</h2>
+                    <a href="/finance" class="btn btn-secondary" target="_blank">Expand</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row"><span class="metric-label">Revenue</span><span class="metric-value success">${{ "%.2f"|format((distribution_stats.total_revenue or 0)) }}</span></div>
+                    <div class="metric-row"><span class="metric-label">Net</span><span class="metric-value {% if (finance_stats.net or 0) >= 0 %}success{% else %}danger{% endif %}">${{ "%.2f"|format((finance_stats.net or 0)) }}</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="status-dot {% if (email_stats.unread or 0) > 0 %}status-warning{% else %}status-online{% endif %}"></span>Inbox + Comms</h2>
+                    <a href="#" onclick="checkEmail('nick');return false;" class="btn btn-secondary">Expand</a>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row"><span class="metric-label">Unread (Nick+Burt)</span><span class="metric-value {% if (email_stats.unread or 0) > 0 %}warning{% else %}success{% endif %}">{{ email_stats.unread or 0 }}</span></div>
+                    <div class="metric-row"><span class="metric-label">Telegram Panel</span><span class="metric-value" style="font-size:0.85rem;">Live</span></div>
+                </div>
+            </div>
+        </div>
         
         <div class="grid">
             <!-- Task Tracker -->
@@ -589,7 +637,7 @@
                 <div class="card-body">
                     <div class="metric-row">
                         <span class="metric-label">Gateway Status</span>
-                        <span class="metric-value success">Running</span>
+                        <span class="metric-value {% if gateway_stats.status == 'Running' %}success{% elif gateway_stats.status == 'Stopped' %}danger{% else %}warning{% endif %}">{{ gateway_stats.status }}</span>
                     </div>
                     <div class="metric-row">
                         <span class="metric-label">Uptime</span>
@@ -600,11 +648,9 @@
                         <span class="metric-value" style="font-size: 0.875rem;">{{ gateway_stats.version or 'Unknown' }}</span>
                     </div>
                     <div class="quick-links">
-                        <button onclick="confirmGatewayRestart()" class="btn btn-secondary" style="width: 100%;">
-                            🔄 Restart Gateway
-                        </button>
+                        <a href="/api/gateway/status" class="btn btn-secondary" target="_blank" style="width: 100%; justify-content:center;">View Raw Gateway Status</a>
                     </div>
-                    <div id="restart-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                    <div id="gateway-admin-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
                 </div>
             </div>
             
@@ -834,29 +880,62 @@
         }
         
         function confirmGatewayRestart() {
-            if (confirm('⚠️ WARNING: Restarting the Gateway will:\n\n• Disconnect all active sessions\n• Interrupt any running tasks\n• Require 10-30 seconds to restart\n\nAre you sure you want to proceed?')) {
-                const statusDiv = document.getElementById('restart-status');
-                statusDiv.style.display = 'block';
-                statusDiv.innerHTML = '🔄 Sending restart command...';
-                statusDiv.style.color = '#f59e0b';
-                
-                fetch('/api/restart-gateway', { method: 'POST' })
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            statusDiv.innerHTML = '✅ Restart initiated. Page will refresh in 15 seconds...';
-                            statusDiv.style.color = '#10b981';
-                            setTimeout(() => location.reload(), 15000);
-                        } else {
-                            statusDiv.innerHTML = '❌ Error: ' + (data.message || 'Unknown error');
-                            statusDiv.style.color = '#ef4444';
-                        }
-                    })
-                    .catch(e => {
-                        statusDiv.innerHTML = '❌ Network error: ' + e.message;
-                        statusDiv.style.color = '#ef4444';
-                    });
-            }
+            if (!confirm('⚠️ WARNING: Restarting the Gateway will:\n\n• Disconnect active sessions\n• Interrupt running tasks\n• Require ~10-45s recovery\n\nProceed?')) return;
+
+            const statusDiv = document.getElementById('restart-status');
+            const btn = document.getElementById('gateway-restart-btn');
+            if (btn) btn.disabled = true;
+
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔄 Sending restart command...';
+            statusDiv.style.color = '#f59e0b';
+
+            fetch('/api/restart-gateway', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status !== 'success') throw new Error(data.message || 'Restart failed');
+
+                    statusDiv.innerHTML = '⏳ Restart issued. Waiting for gateway to come back...';
+                    statusDiv.style.color = '#f59e0b';
+
+                    const start = Date.now();
+                    const maxMs = 90000;
+                    const poll = () => {
+                        fetch('/api/gateway/status')
+                            .then(r => r.json())
+                            .then(gs => {
+                                const isRunning = (gs.gateway_status || '').toLowerCase() === 'running';
+                                if (isRunning) {
+                                    statusDiv.innerHTML = '✅ Gateway is back online. Refreshing...';
+                                    statusDiv.style.color = '#10b981';
+                                    setTimeout(() => location.reload(), 800);
+                                    return;
+                                }
+                                if (Date.now() - start > maxMs) {
+                                    statusDiv.innerHTML = '⚠️ Restart timeout. Check /api/gateway/status';
+                                    statusDiv.style.color = '#f59e0b';
+                                    if (btn) btn.disabled = false;
+                                    return;
+                                }
+                                setTimeout(poll, 3000);
+                            })
+                            .catch(() => {
+                                if (Date.now() - start > maxMs) {
+                                    statusDiv.innerHTML = '⚠️ Unable to verify gateway state. Try refresh.';
+                                    statusDiv.style.color = '#f59e0b';
+                                    if (btn) btn.disabled = false;
+                                    return;
+                                }
+                                setTimeout(poll, 3000);
+                            });
+                    };
+                    setTimeout(poll, 2500);
+                })
+                .catch(e => {
+                    statusDiv.innerHTML = '❌ ' + e.message;
+                    statusDiv.style.color = '#ef4444';
+                    if (btn) btn.disabled = false;
+                });
         }
         
         // Quick Actions Functions
