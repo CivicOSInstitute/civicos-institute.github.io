@@ -11,6 +11,7 @@ from collections import defaultdict
 
 from flask import Flask, render_template, jsonify
 import plotly.graph_objs as go
+import urllib.request
 import plotly.utils
 import pandas as pd
 
@@ -37,6 +38,26 @@ def load_token_log():
                 if line.strip():
                     entries.append(json.loads(line))
     return entries
+
+def get_codex_limits():
+    """Fetch estimated Codex 5h/daily usage from host bridge API."""
+    try:
+        url = 'http://host.docker.internal:18080/codex/usage'
+        with urllib.request.urlopen(url, timeout=8) as r:
+            data = json.loads(r.read().decode())
+        if data.get('status') != 'success':
+            raise RuntimeError(data.get('message', 'unknown bridge error'))
+        return data
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': str(e),
+            'five_hour': {'remaining_pct': 0, 'used_pct': 0, 'used_tokens': 0, 'limit_tokens': 0, 'calls': 0},
+            'daily': {'remaining_pct': 0, 'used_pct': 0, 'used_tokens': 0, 'limit_tokens': 0, 'calls': 0},
+            'updated_at': None,
+            'mode': 'unavailable'
+        }
+
 
 def load_config():
     """Load config with budgets and quotas."""
@@ -282,6 +303,8 @@ def dashboard():
             'daily_pct': (provider_tokens_today / quota['daily_limit'] * 100) if quota.get('daily_limit') else 0
         })
     
+    codex_limits = get_codex_limits()
+
     return render_template('dashboard.html',
                          stats=stats,
                          today=today,
@@ -294,6 +317,7 @@ def dashboard():
                          quota_status=quota_status,
                          top_model=top_model,
                          local_target=70,
+                         codex_limits=codex_limits,
                          config=config)
 
 @app.route('/api/data')

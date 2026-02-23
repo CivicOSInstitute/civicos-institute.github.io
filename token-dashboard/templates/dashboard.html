@@ -274,6 +274,21 @@
                 <div class="metric-value" style="font-size:1.2rem;">{{ top_model }}</div>
                 <div class="metric-subtext">30-day total: ${{ "%.2f"|format(stats.total_cost) }} • {{ stats.total_tokens|intcomma }} tokens</div>
             </div>
+            <div class="metric-card">
+                <div class="metric-label">Codex Remaining (5h / Daily)</div>
+                {% if codex_limits.status == 'success' %}
+                <div class="metric-value {{ 'warning' if codex_limits.five_hour.remaining_pct < 25 or codex_limits.daily.remaining_pct < 25 else 'positive' }}">
+                    {{ "%.1f"|format(codex_limits.five_hour.remaining_pct) }}% / {{ "%.1f"|format(codex_limits.daily.remaining_pct) }}%
+                </div>
+                <div class="metric-subtext">
+                    5h: {{ codex_limits.five_hour.used_tokens|intcomma }}/{{ codex_limits.five_hour.limit_tokens|intcomma }} •
+                    Daily: {{ codex_limits.daily.used_tokens|intcomma }}/{{ codex_limits.daily.limit_tokens|intcomma }}
+                </div>
+                {% else %}
+                <div class="metric-value warning">N/A</div>
+                <div class="metric-subtext">Codex limits unavailable: {{ codex_limits.message }}</div>
+                {% endif %}
+            </div>
         </div>
         
         <!-- Charts -->
