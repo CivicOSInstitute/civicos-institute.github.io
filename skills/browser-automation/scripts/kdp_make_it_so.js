@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-const EPUB = '/Users/AI-OPS/Desktop/The_Open_Source_Student/launch-output/20260222-211926/core/Open-Source-Student-v1_3_3-FINAL-LOCKDOWN.epub';
+const EPUB = '/Users/AI-OPS/Desktop/The_Open_Source_Student/launch-output/20260222-211926/core/Open-Source-Student-v1_3_3-FINAL-LOCKDOWN-telegram.epub';
 const COVER = '/Users/AI-OPS/Desktop/The_Open_Source_Student/Internal Documents/Marketing/exports/CivicOS_Founders_Hardcover_v2_Cream_6x9.jpg';
 const outDir = '/Users/AI-OPS/.openclaw/workspace/skills/browser-automation/artifacts';
 fs.mkdirSync(outDir, { recursive: true });
