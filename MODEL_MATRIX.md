@@ -62,6 +62,16 @@ Escalate from local if any true:
 ## Operator Note
 When spawning sub-agents, pass `model` explicitly to enforce this matrix.
 
+## Empirical Local Profiles (2026-02-23)
+Benchmarked local Ollama models for speed + boundary behavior:
+- qwen2.5:14b: fastest balanced default (~13.32s avg on quick test set)
+- mistral-small3.2:24b-instruct-2506-q4_K_M: quality fallback (~24.78s avg)
+- qwen2.5-coder:32b-instruct-q3_K_L: coding specialist, slowest (~36.36s avg)
+
+Artifacts:
+- `generated/model_profiles_2026-02-23.json`
+- `generated/subagent_assignment_matrix_2026-02-23.md`
+
 ### Smart spawn helper
 Use:
 ```bash

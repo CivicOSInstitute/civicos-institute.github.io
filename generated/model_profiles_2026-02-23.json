@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-02-23T01:08:00-05:00",
+  "benchmark_notes": "Single-pass local benchmark using ollama run; warm-state variance possible. Metrics are directional for routing.",
+  "models": [
+    {
+      "name": "qwen2.5:14b",
+      "role": "Local generalist / fastest balanced default",
+      "speed_seconds": {
+        "simple_explain": 14.3,
+        "coding_micro": 17.13,
+        "boundary_current_events": 8.52,
+        "avg": 13.32
+      },
+      "strengths": [
+        "Fastest response among installed local models",
+        "Good instruction-following",
+        "Reliable safety boundary statement for no-live-web questions"
+      ],
+      "limits": [
+        "Lower coding depth than coder-specialized model",
+        "May need second-pass prompting for complex reasoning"
+      ],
+      "best_for": ["summaries", "drafts", "ops notes", "routine analysis", "first-pass research"],
+      "avoid_for": ["deep refactor planning under pressure", "highest-stakes final code without review"]
+    },
+    {
+      "name": "mistral-small3.2:24b-instruct-2506-q4_K_M",
+      "role": "Local quality fallback",
+      "speed_seconds": {
+        "simple_explain": 32.92,
+        "coding_micro": 24.97,
+        "boundary_current_events": 16.44,
+        "avg": 24.78
+      },
+      "strengths": [
+        "Good fluency and concise structure",
+        "Useful second-opinion model"
+      ],
+      "limits": [
+        "~1.9x slower than qwen2.5:14b average",
+        "Not significantly stronger for coding than qwen-coder"
+      ],
+      "best_for": ["second-pass rewrite", "alternative framing", "quality check"],
+      "avoid_for": ["high-throughput background batches"]
+    },
+    {
+      "name": "qwen2.5-coder:32b-instruct-q3_K_L",
+      "role": "Local coding specialist (slow)",
+      "speed_seconds": {
+        "simple_explain": 53.29,
+        "coding_micro": 32.82,
+        "boundary_current_events": 22.97,
+        "avg": 36.36
+      },
+      "strengths": [
+        "Best fit for multi-step code generation/reasoning locally",
+        "Strong code-oriented instruction adherence"
+      ],
+      "limits": [
+        "Slowest model (~2.7x slower than qwen2.5:14b)",
+        "Use selectively to avoid ops drag"
+      ],
+      "best_for": ["hard coding tasks", "bug triage", "refactor design", "code review prompts"],
+      "avoid_for": ["simple writing", "quick status updates", "high-volume queue tasks"]
+    }
+  ]
+}
