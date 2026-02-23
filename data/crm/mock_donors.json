@@ -1,0 +1,23 @@
+{
+  "donors": [
+    {
+      "id": "d-1001",
+      "first_name": "Alex",
+      "preferred_name": "Alex",
+      "email": "alex@example.org",
+      "last_gift_date": "2025-03-20",
+      "lifetime_giving": 1400,
+      "largest_gift": 750,
+      "recurring_overdue_days": 0
+    }
+  ],
+  "gifts": [
+    {
+      "crm_gift_id": "g-5001",
+      "donor_id": "d-1001",
+      "amount": 300,
+      "gift_date": "2026-02-23",
+      "acknowledgment_sent": false
+    }
+  ]
+}

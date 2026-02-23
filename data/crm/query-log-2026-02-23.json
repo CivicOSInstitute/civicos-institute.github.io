@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2026-02-23T13:36:48",
+    "mode": "ack",
+    "query": "new_unack_gifts",
+    "record_count": 1
+  },
+  {
+    "timestamp": "2026-02-23T13:36:48",
+    "mode": "lapse",
+    "query": "lapse_scan",
+    "record_count": 1
+  },
+  {
+    "timestamp": "2026-02-23T13:36:49",
+    "mode": "portfolio",
+    "query": "portfolio_aggregate",
+    "record_count": 2
+  }
+]

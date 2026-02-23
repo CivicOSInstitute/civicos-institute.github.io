@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-02-23T13:36:48",
+  "mode": "ack",
+  "count": 1,
+  "items": [
+    {
+      "queue_file": "(dry-run)",
+      "id": "ack-d-1001-2026-02-23",
+      "tier": 4,
+      "priority": "standard",
+      "first_name": "Alex",
+      "amount": 300
+    }
+  ]
+}
