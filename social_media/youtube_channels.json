@@ -1,0 +1,12 @@
+{
+  "channels": [
+    {
+      "name": "Matthew Berman",
+      "channel_id": "",
+      "enabled": false
+    }
+  ],
+  "scan_limit_per_channel": 5,
+  "summarize_new_videos": true,
+  "max_new_summaries_per_run": 3
+}

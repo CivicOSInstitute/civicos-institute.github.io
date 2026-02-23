@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CivicOS YouTube Monitor</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f6f8fb;color:#1f2937;margin:0}
+    .wrap{max-width:1080px;margin:0 auto;padding:22px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px}
+    h1{margin:0 0 6px;color:#0f3d91}
+    .muted{color:#6b7280}
+    .pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.8rem;background:#e0f2fe;color:#075985}
+    .new{background:#dcfce7;color:#166534}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .v{border:1px solid #e5e7eb;border-radius:10px;padding:12px}
+    a{color:#1d4ed8;text-decoration:none}
+    a:hover{text-decoration:underline}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>CivicOS YouTube Monitor</h1>
+      <div class="muted">RSS-based channel monitor + auto summaries for new videos.</div>
+      <div class="muted">Config: <code>social_media/youtube_channels.json</code> | Runner: <code>python3 scripts/youtube_rss_monitor.py</code></div>
+      <p id="meta" class="muted"></p>
+    </div>
+
+    <div id="videos" class="grid"></div>
+  </div>
+
+  <script>
+    async function load() {
+      const target = document.getElementById('videos');
+      const meta = document.getElementById('meta');
+      const paths = [
+        '../generated/youtube_dashboard/videos.json',
+        '/generated/youtube_dashboard/videos.json'
+      ];
+
+      let data = null;
+      for (const p of paths) {
+        try {
+          const r = await fetch(p, {cache: 'no-store'});
+          if (r.ok) { data = await r.json(); break; }
+        } catch {}
+      }
+
+      if (!data) {
+        meta.textContent = 'No dashboard data found yet. Run: python3 scripts/youtube_rss_monitor.py';
+        return;
+      }
+
+      meta.textContent = `Updated: ${data.updated_at} | New videos this run: ${data.new_count}`;
+      target.innerHTML = '';
+
+      for (const v of data.videos || []) {
+        if (v.error) {
+          const d = document.createElement('div');
+          d.className = 'v';
+          d.innerHTML = `<strong>${v.channel}</strong><div class='muted'>Error: ${v.error}</div>`;
+          target.appendChild(d);
+          continue;
+        }
+        const d = document.createElement('div');
+        d.className = 'v';
+        const badge = v.is_new ? `<span class='pill new'>NEW</span>` : `<span class='pill'>Seen</span>`;
+        const summary = v.summary_path ? `<div><a href='${v.summary_path.replace('/Users/AI-OPS/.openclaw/workspace','..')}' target='_blank'>Open summary</a></div>` : '';
+        d.innerHTML = `
+          ${badge}
+          <div><strong>${v.channel}</strong></div>
+          <div>${v.title || '(untitled)'}</div>
+          <div class='muted'>${v.published || ''}</div>
+          <div><a href='${v.url}' target='_blank'>Watch video</a></div>
+          ${summary}
+        `;
+        target.appendChild(d);
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
