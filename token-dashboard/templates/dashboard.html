@@ -313,6 +313,15 @@
                 <div id="model-chart" class="chart-container"></div>
             </div>
         </div>
+
+        <div class="section">
+            <h2>⏱️ Codex Hourly Usage (Last 24h)</h2>
+            <div class="metric-subtext" style="margin-bottom:8px;">
+                Last 5h: {{ codex_hourly.tokens_last_5h|intcomma }} tokens across {{ codex_hourly.calls_last_5h }} calls
+                • Estimated 5h window rollover: {{ codex_hourly.est_five_hour_reset_utc }}
+            </div>
+            <div id="codex-hourly-chart" class="chart-container"></div>
+        </div>
         
         <!-- Quota Status -->
         {% if quota_status %}
@@ -359,6 +368,10 @@
         
         {% if model_chart != '{}' %}
         Plotly.newPlot('model-chart', {{ model_chart|safe }}.data, {{ model_chart|safe }}.layout, {responsive: true});
+        {% endif %}
+
+        {% if codex_hourly_chart != '{}' %}
+        Plotly.newPlot('codex-hourly-chart', {{ codex_hourly_chart|safe }}.data, {{ codex_hourly_chart|safe }}.layout, {responsive: true});
         {% endif %}
         
         // Auto-refresh every 60 seconds

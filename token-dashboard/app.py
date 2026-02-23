@@ -67,6 +67,83 @@ def load_config():
             return json.load(f)
     return {'budget': {}, 'quotas': {}, 'pricing': {}}
 
+
+def get_codex_hourly_usage(entries, hours=24):
+    """Build hour-by-hour Codex usage and simple 5h window reset estimate."""
+    now = datetime.now(timezone.utc)
+    start = now - timedelta(hours=hours)
+
+    # Identify codex entries robustly
+    codex_entries = []
+    for e in entries:
+        ts = datetime.fromisoformat(e['timestamp'])
+        provider = (e.get('provider') or '').lower()
+        model = (e.get('model') or '').lower()
+        if ts < start:
+            continue
+        if 'codex' in model or provider == 'openai-codex':
+            codex_entries.append((ts, e))
+
+    # Build hourly buckets
+    buckets = []
+    for i in range(hours - 1, -1, -1):
+        h = (now - timedelta(hours=i)).replace(minute=0, second=0, microsecond=0)
+        buckets.append({'hour': h, 'tokens': 0, 'calls': 0})
+
+    for ts, e in codex_entries:
+        h = ts.replace(minute=0, second=0, microsecond=0)
+        for b in buckets:
+            if b['hour'] == h:
+                b['tokens'] += int(e.get('total_tokens', 0) or 0)
+                b['calls'] += 1
+                break
+
+    # Estimate 5h window rollover from earliest codex call in last 5h
+    five_hour_cut = now - timedelta(hours=5)
+    last5 = [ts for ts, _ in codex_entries if ts >= five_hour_cut]
+    if last5:
+        earliest = min(last5)
+        est_reset = earliest + timedelta(hours=5)
+    else:
+        est_reset = now
+
+    return {
+        'buckets': buckets,
+        'est_five_hour_reset_utc': est_reset.isoformat(),
+        'calls_last_5h': len(last5),
+        'tokens_last_5h': sum(int(e.get('total_tokens', 0) or 0) for ts, e in codex_entries if ts >= five_hour_cut)
+    }
+
+
+def create_codex_hourly_chart(codex_hourly, five_hour_limit_tokens=0):
+    """Create hour-by-hour Codex usage chart (tokens + % of 5h limit if available)."""
+    x = [b['hour'].strftime('%H:%M') for b in codex_hourly['buckets']]
+    tokens = [b['tokens'] for b in codex_hourly['buckets']]
+    calls = [b['calls'] for b in codex_hourly['buckets']]
+
+    if five_hour_limit_tokens and five_hour_limit_tokens > 0:
+        pct = [round((t / five_hour_limit_tokens) * 100, 2) for t in tokens]
+    else:
+        pct = [0 for _ in tokens]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=x, y=tokens, name='Codex tokens/hour', marker_color='#3b82f6'))
+    fig.add_trace(go.Scatter(x=x, y=pct, name='% of 5h limit/hour', yaxis='y2', mode='lines+markers', line=dict(color='#f59e0b')))
+
+    fig.update_layout(
+        margin=dict(l=10, r=10, t=10, b=10),
+        height=260,
+        showlegend=True,
+        legend=dict(orientation='h', y=1.15),
+        yaxis=dict(title='Tokens'),
+        yaxis2=dict(title='% of 5h limit', overlaying='y', side='right'),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color='#ffffff')
+    )
+
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
 def get_usage_stats(entries, days=30):
     """Calculate usage statistics (local-first aware)."""
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
@@ -304,6 +381,9 @@ def dashboard():
         })
     
     codex_limits = get_codex_limits()
+    five_hour_limit = ((codex_limits or {}).get('five_hour') or {}).get('limit_tokens', 0)
+    codex_hourly = get_codex_hourly_usage(entries, hours=24)
+    codex_hourly_chart = create_codex_hourly_chart(codex_hourly, five_hour_limit_tokens=five_hour_limit)
 
     return render_template('dashboard.html',
                          stats=stats,
@@ -318,6 +398,8 @@ def dashboard():
                          top_model=top_model,
                          local_target=70,
                          codex_limits=codex_limits,
+                         codex_hourly=codex_hourly,
+                         codex_hourly_chart=codex_hourly_chart,
                          config=config)
 
 @app.route('/api/data')
