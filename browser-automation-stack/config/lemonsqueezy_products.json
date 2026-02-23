@@ -1,0 +1,23 @@
+{
+  "storeName": "CivicOS Institute Boomstore",
+  "products": [
+    {
+      "name": "The Open Source Student — Core eBook",
+      "priceUsd": "19",
+      "description": "The Open Source Student is a practical digital guide that helps learners and educators build real-world AI and open-source skills through step-by-step workflows and implementation checklists. This Core edition includes the main book in PDF + EPUB plus a Student Setup Checklist.",
+      "slug": "open-source-student-core-ebook"
+    },
+    {
+      "name": "The Open Source Student — Founder Bundle",
+      "priceUsd": "49",
+      "description": "The Founder Bundle includes the full multi-format learning system for builders, educators, and operators who want implementation-ready assets. Includes PDF/EPUB/DOCX/HTML formats plus operational guides and the Founder Complete Edition package.",
+      "slug": "open-source-student-founder-bundle"
+    },
+    {
+      "name": "The Open Source Student — Team License (Up to 10 Seats)",
+      "priceUsd": "149",
+      "description": "Team/Institution license for up to 10 users, designed for schools, nonprofits, and workforce programs. Includes the Founder Bundle plus LMS-ready delivery assets (HTML + SCORM) for structured training environments.",
+      "slug": "open-source-student-team-license-10"
+    }
+  ]
+}

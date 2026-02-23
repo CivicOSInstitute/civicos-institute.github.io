@@ -1,0 +1,14 @@
+{
+  "name": "browser-automation-stack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright automation stack for CivicOS publishing ops",
+  "scripts": {
+    "setup": "npx playwright install chromium",
+    "login:ls": "node scripts/login_lemonsqueezy.js",
+    "create:ls": "node scripts/create_lemonsqueezy_products.js"
+  },
+  "dependencies": {
+    "playwright": "^1.53.0"
+  }
+}
