@@ -99,40 +99,95 @@ def get_crm_stats():
         return {}
 
 def get_token_stats():
-    """Get token usage statistics."""
+    """Get token usage statistics from token-tracker JSONL (current setup)."""
+    from datetime import timedelta, timezone
+
+    log_path = Path('/root/.openclaw/token-tracker/token_log.jsonl')
+    now = datetime.now(timezone.utc)
+    day_ago = now - timedelta(days=1)
+    week_ago = now - timedelta(days=7)
+    month_ago = now - timedelta(days=30)
+
+    stats = {
+        'today': 0.0,
+        'week': 0.0,
+        'month': 0.0,
+        'apis': 0,
+        'local_calls': 0,
+        'api_calls': 0,
+        'total_calls': 0,
+        'local_share': 0,
+        'top_model': 'n/a',
+        'policy': 'Local-first'
+    }
+
     try:
-        db_path = Path("/root/.openclaw/token-tracker/token_tracker.db")
-        conn = sqlite3.connect(str(db_path))
-        cursor = conn.cursor()
-        
-        # Today's spend
-        today = date.today().isoformat()
-        cursor.execute("SELECT SUM(cost) FROM token_usage WHERE date(timestamp) = ?", (today,))
-        today_spend = cursor.fetchone()[0] or 0
-        
-        # This week
-        cursor.execute("SELECT SUM(cost) FROM token_usage WHERE timestamp >= datetime('now', '-7 days')")
-        week_spend = cursor.fetchone()[0] or 0
-        
-        # This month
-        cursor.execute("SELECT SUM(cost) FROM token_usage WHERE timestamp >= datetime('now', '-30 days')")
-        month_spend = cursor.fetchone()[0] or 0
-        
-        # Active APIs
-        cursor.execute("SELECT COUNT(DISTINCT provider) FROM token_usage WHERE timestamp >= datetime('now', '-7 days')")
-        apis = cursor.fetchone()[0]
-        
-        conn.close()
-        
-        return {
-            'today': round(today_spend, 2),
-            'week': round(week_spend, 2),
-            'month': round(month_spend, 2),
-            'apis': apis
-        }
+        if not log_path.exists():
+            return stats
+
+        providers_api = set()
+        model_counts = {}
+
+        for line in log_path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                rec = json.loads(line)
+            except Exception:
+                continue
+
+            # timestamp parsing
+            ts_raw = rec.get('timestamp') or rec.get('ts')
+            ts = None
+            if ts_raw:
+                try:
+                    ts = datetime.fromisoformat(str(ts_raw).replace('Z', '+00:00'))
+                    if ts.tzinfo is None:
+                        ts = ts.replace(tzinfo=timezone.utc)
+                except Exception:
+                    ts = None
+            if ts is None:
+                ts = now
+
+            cost = rec.get('cost_usd', rec.get('cost', 0)) or 0
+            try:
+                cost = float(cost)
+            except Exception:
+                cost = 0.0
+
+            provider = str(rec.get('provider', 'unknown')).lower()
+            model = str(rec.get('model', 'unknown'))
+
+            stats['total_calls'] += 1
+            if provider in ('ollama', 'local'):
+                stats['local_calls'] += 1
+            else:
+                stats['api_calls'] += 1
+                providers_api.add(provider)
+
+            model_counts[model] = model_counts.get(model, 0) + 1
+
+            if ts >= day_ago:
+                stats['today'] += cost
+            if ts >= week_ago:
+                stats['week'] += cost
+            if ts >= month_ago:
+                stats['month'] += cost
+
+        stats['apis'] = len(providers_api)
+        if stats['total_calls'] > 0:
+            stats['local_share'] = round((stats['local_calls'] / stats['total_calls']) * 100)
+        if model_counts:
+            stats['top_model'] = max(model_counts, key=model_counts.get)
+
+        stats['today'] = round(stats['today'], 2)
+        stats['week'] = round(stats['week'], 2)
+        stats['month'] = round(stats['month'], 2)
+        return stats
+
     except Exception as e:
         print(f"Error getting token stats: {e}")
-        return {'today': 0, 'week': 0, 'month': 0, 'apis': 0}
+        return stats
 
 def get_council_stats():
     """Get advisory council stats from latest report."""

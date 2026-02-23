@@ -346,21 +346,29 @@
                 </div>
                 <div class="card-body">
                     <div class="metric-row">
-                        <span class="metric-label">Today's Spend</span>
-                        <span class="metric-value {% if token_stats.today > 5 %}warning{% else %}success{% endif %}">
-                            ${{ "%.2f"|format(token_stats.today or 0) }}
+                        <span class="metric-label">Policy</span>
+                        <span class="metric-value success" style="font-size:0.85rem;">{{ token_stats.policy or 'Local-first' }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Local Usage Share</span>
+                        <span class="metric-value {% if (token_stats.local_share or 0) >= 60 %}success{% else %}warning{% endif %}">
+                            {{ token_stats.local_share or 0 }}%
                         </span>
                     </div>
                     <div class="metric-row">
-                        <span class="metric-label">This Week</span>
-                        <span class="metric-value">${{ "%.2f"|format(token_stats.week or 0) }}</span>
+                        <span class="metric-label">Today / Week / Month Spend</span>
+                        <span class="metric-value">${{ "%.2f"|format(token_stats.today or 0) }} / ${{ "%.2f"|format(token_stats.week or 0) }} / ${{ "%.2f"|format(token_stats.month or 0) }}</span>
                     </div>
                     <div class="metric-row">
-                        <span class="metric-label">This Month</span>
-                        <span class="metric-value">${{ "%.2f"|format(token_stats.month or 0) }}</span>
+                        <span class="metric-label">Local Calls / API Calls</span>
+                        <span class="metric-value">{{ token_stats.local_calls or 0 }} / {{ token_stats.api_calls or 0 }}</span>
                     </div>
                     <div class="metric-row">
-                        <span class="metric-label">Active APIs</span>
+                        <span class="metric-label">Top Model</span>
+                        <span class="metric-value" style="font-size:0.82rem;">{{ token_stats.top_model or 'n/a' }}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Active API Providers</span>
                         <span class="metric-value">{{ token_stats.apis or 0 }}</span>
                     </div>
                     <div class="quick-links">
