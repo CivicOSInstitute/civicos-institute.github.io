@@ -1,0 +1,8 @@
+{
+  "site_url": "https://civicos-institute.org",
+  "ebook_url": "https://civicos-institute.org/ebook-promo",
+  "discord_webhook_cmd": "/Users/AI-OPS/.openclaw/scripts/get-discord-webhook.sh",
+  "x_intent_base": "https://x.com/intent/tweet",
+  "facebook_page_url": "https://facebook.com/CivicOSInstitute",
+  "discord_enabled": true
+}

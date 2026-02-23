@@ -1,0 +1,20 @@
+{
+  "date": "2026-02-23",
+  "posts": [
+    {
+      "slot": "morning",
+      "channel": "x/facebook/discord",
+      "text": "Founders Complete Edition is live: The Open Source Student \u2014 a unified, implementation-first guide to local AI literacy. Built for students, families, and educators.\n\nhttps://civicos-institute.org/ebook-promo\n\n#OpenSource #AIEducation #CivicOS"
+    },
+    {
+      "slot": "midday",
+      "channel": "x/facebook/discord",
+      "text": "Daily civic tech brief: practical AI + open infrastructure, minus hype.\n\nhttps://civicos-institute.org/news\n\n#GovTech #OpenSource #CivicOS"
+    },
+    {
+      "slot": "evening",
+      "channel": "x/facebook/discord",
+      "text": "Quick question for educators/parents/builders: What is the biggest blocker to responsible student AI adoption where you are?\n\nWe are building open curriculum + implementation systems to reduce friction.\nhttps://civicos-institute.org\n\n#EdTech #AIliteracy #CivicOS"
+    }
+  ]
+}
