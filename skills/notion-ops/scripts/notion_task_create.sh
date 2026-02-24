@@ -54,7 +54,7 @@ PAYLOAD=$(jq -n \
     Status: {status: {name: $status}},
     "Priority Level": {select: {name: $priority}},
     Channel: {select: {name: $channel}},
-    "Due Date": $due.date
+    "Due Date": $due
   }
 }')
 
