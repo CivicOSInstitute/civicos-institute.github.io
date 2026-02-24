@@ -16,6 +16,8 @@ Use this skill when you need to create or query CivicOS operations tasks in Noti
 
 - `scripts/notion_task_create.sh`
 - `scripts/notion_task_list.sh`
+- `scripts/notion_phase2_sync.py`
+- `scripts/notion_phase2_reconcile.sh`
 
 ## Workflow
 
@@ -45,6 +47,12 @@ List today queue:
 
 ```bash
 ./scripts/notion_task_list.sh --view today
+```
+
+Run Phase 2 sync (task dashboard -> Notion create/update):
+
+```bash
+./scripts/notion_phase2_reconcile.sh
 ```
 
 ## Edge cases
