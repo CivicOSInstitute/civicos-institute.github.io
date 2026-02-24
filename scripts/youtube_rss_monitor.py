@@ -28,6 +28,25 @@ def load_json(path, default):
         return default
 
 
+def resolve_channel_id(channel_url):
+    """Resolve channel_id from a channel URL/handle using yt-dlp."""
+    try:
+        p = subprocess.run(
+            ['yt-dlp', '--dump-single-json', '--flat-playlist', channel_url],
+            capture_output=True, text=True, timeout=35
+        )
+        if p.returncode == 0 and p.stdout.strip():
+            j = json.loads(p.stdout)
+            cid = (j.get('channel_id') or j.get('uploader_id') or '').strip()
+            return cid
+    except Exception:
+        pass
+
+    if '/channel/' in channel_url:
+        return channel_url.split('/channel/')[1].split('/')[0].split('?')[0]
+    return ''
+
+
 def fetch_feed(channel_id):
     url = f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}'
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -96,11 +115,19 @@ def main():
     channel_reports = []
     scan_limit = int(cfg.get('scan_limit_per_channel', 5))
 
+    cfg_dirty = False
     for ch in cfg.get('channels', []):
         if not ch.get('enabled'):
             continue
         cid = (ch.get('channel_id') or '').strip()
+        curl = (ch.get('channel_url') or '').strip()
+        if not cid and curl:
+            cid = resolve_channel_id(curl)
+            if cid:
+                ch['channel_id'] = cid
+                cfg_dirty = True
         if not cid:
+            channel_reports.append({'channel': ch.get('name') or 'unknown', 'channel_id': '', 'status': 'error', 'error': 'missing channel_id', 'new_count': 0, 'video_count': 0})
             continue
         name = ch.get('name') or cid
         try:
@@ -154,6 +181,9 @@ def main():
         'seen_video_ids': sorted(seen)
     }
     STATE.write_text(json.dumps(state_out, indent=2))
+
+    if cfg_dirty:
+        CFG.write_text(json.dumps(cfg, indent=2))
 
     payload = {
         'updated_at': dt.datetime.now().isoformat(timespec='seconds'),

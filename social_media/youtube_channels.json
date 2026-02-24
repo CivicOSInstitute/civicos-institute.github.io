@@ -1,10 +1,26 @@
 {
   "channels": [
-    {
-      "name": "Matthew Berman",
-      "channel_id": "",
-      "enabled": false
-    }
+    {"name": "Matt Wolfe", "channel_id": "", "channel_url": "https://www.youtube.com/@mreflow", "enabled": true},
+    {"name": "Matthew Berman", "channel_id": "", "channel_url": "https://www.youtube.com/@MatthewBerman", "enabled": true},
+    {"name": "AI Explained", "channel_id": "", "channel_url": "https://www.youtube.com/@AIExplained", "enabled": true},
+    {"name": "Yannic Kilcher", "channel_id": "", "channel_url": "https://www.youtube.com/@YannicKilcher", "enabled": true},
+    {"name": "Fireship", "channel_id": "", "channel_url": "https://www.youtube.com/@Fireship", "enabled": true},
+    {"name": "NetworkChuck", "channel_id": "", "channel_url": "https://www.youtube.com/@NetworkChuck", "enabled": true},
+    {"name": "Hugging Face", "channel_id": "", "channel_url": "https://www.youtube.com/@HuggingFace", "enabled": true},
+    {"name": "Linux Foundation", "channel_id": "", "channel_url": "https://www.youtube.com/@linuxfoundation", "enabled": true},
+    {"name": "Edutopia", "channel_id": "", "channel_url": "https://www.youtube.com/@edutopia", "enabled": true},
+    {"name": "Khan Academy", "channel_id": "", "channel_url": "https://www.youtube.com/@khanacademy", "enabled": true},
+    {"name": "Common Sense Education", "channel_id": "", "channel_url": "https://www.youtube.com/@CommonSenseEducation", "enabled": true},
+    {"name": "Brookings Institution", "channel_id": "", "channel_url": "https://www.youtube.com/@BrookingsInstitution", "enabled": true},
+    {"name": "CSIS", "channel_id": "", "channel_url": "https://www.youtube.com/@csisdc", "enabled": true},
+    {"name": "Council on Foreign Relations", "channel_id": "", "channel_url": "https://www.youtube.com/@CouncilonForeignRelations", "enabled": true},
+    {"name": "Stanford HAI", "channel_id": "", "channel_url": "https://www.youtube.com/@StanfordHAI", "enabled": true},
+    {"name": "Data & Society", "channel_id": "", "channel_url": "https://www.youtube.com/@datasociety", "enabled": true},
+    {"name": "TechSoup", "channel_id": "", "channel_url": "https://www.youtube.com/@TechSoupVideo", "enabled": true},
+    {"name": "This Week in Startups", "channel_id": "", "channel_url": "https://www.youtube.com/@ThisWeekInStartups", "enabled": true},
+    {"name": "This Week in AI", "channel_id": "", "channel_url": "https://www.youtube.com/@thisweekinai", "enabled": true},
+    {"name": "The Wes and Dylan Show", "channel_id": "", "channel_url": "https://www.youtube.com/results?search_query=wes+and+dylan+show", "enabled": true},
+    {"name": "Wes Roth", "channel_id": "", "channel_url": "https://www.youtube.com/@WesRoth", "enabled": true}
   ],
   "scan_limit_per_channel": 5,
   "summarize_new_videos": true,
