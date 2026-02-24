@@ -1,0 +1,23 @@
+KDP Font-Embedded Rebuild Report
+Date: 2026-02-24
+
+Source:
+- Markdown bundle: /Users/AI-OPS/Desktop/CivicOS_v1.3.3.4_COMPLETE_ARCHIVE_FINAL/01_Markdown_Source/CivicOS_v1.3.3.3_Markdown_BUNDLE_FINAL_ORDERED
+
+Target trim:
+- 8.25 x 11 in (594 x 792 pt)
+
+Generated outputs:
+- NO_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_NO_GUTTER_FONTEMBED.pdf
+- KDP_SOFTCOVER_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_SOFTCOVER_GUTTER_0.375in_FONTEMBED.pdf
+- KDP_HARDCOVER_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_HARDCOVER_GUTTER_0.5in_FONTEMBED.pdf
+
+Validation summary:
+- All outputs are 8.25 x 11 in.
+- Fonts are embedded/subsetted (pdffonts: emb=yes, sub=yes).
+- Producer: xdvipdfmx (via pandoc + tectonic).
+
+Important differences vs previous transformed-PDF variants:
+- These are true markdown reflow builds, not transformed A4 pages.
+- Pagination changed (NO_GUTTER: 160 pages, SOFTCOVER: 162 pages, HARDCOVER: 163 pages).
+- Some checkbox glyphs (U+25A1) were missing in current font set during TeX build and may need symbol substitution if exact checkbox visuals are required.
