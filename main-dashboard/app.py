@@ -25,15 +25,19 @@ SERVICES = {
     'searxng': {'url': 'http://100.81.239.69:8080', 'external': True}
 }
 
-EBOOK_SCRIPTS = Path('/root/.openclaw/workspace/the_open_source_student_distribution/scripts')
-EBOOK_OUTPUT = Path('/root/Desktop/the_open_source_student/launch-output')
-REVENUE_CSV = Path('/root/.openclaw/workspace/civicos-revenue-tracker.csv')
-EXPENSES_CSV = Path('/root/.openclaw/workspace/civicos-financial-tracker.csv')
-DIST_METRICS_JSON = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/distribution_metrics.json')
-YT_SKILL_DIR = Path('/root/.openclaw/workspace/skills/youtube-summarizer')
+HOME_DIR = Path.home()
+OPENCLAW_DIR = HOME_DIR / '.openclaw'
+WORKSPACE_DIR = OPENCLAW_DIR / 'workspace'
+
+EBOOK_SCRIPTS = WORKSPACE_DIR / 'the_open_source_student_distribution' / 'scripts'
+EBOOK_OUTPUT = HOME_DIR / 'Desktop' / 'the_open_source_student' / 'launch-output'
+REVENUE_CSV = WORKSPACE_DIR / 'civicos-revenue-tracker.csv'
+EXPENSES_CSV = WORKSPACE_DIR / 'civicos-financial-tracker.csv'
+DIST_METRICS_JSON = WORKSPACE_DIR / 'the_open_source_student_distribution' / 'output' / 'distribution_metrics.json'
+YT_SKILL_DIR = WORKSPACE_DIR / 'skills' / 'youtube-summarizer'
 YT_ARTIFACTS_DIR = YT_SKILL_DIR / 'artifacts'
-BROWSER_SKILL_DIR = Path('/root/.openclaw/workspace/skills/browser-automation')
-COUNCIL_DATA_DIR = Path('/root/.openclaw/workspace/data/council')
+BROWSER_SKILL_DIR = WORKSPACE_DIR / 'skills' / 'browser-automation'
+COUNCIL_DATA_DIR = WORKSPACE_DIR / 'data' / 'council'
 COUNCIL_ISSUES_DIR = COUNCIL_DATA_DIR / 'issues'
 COUNCIL_SESSIONS_DIR = COUNCIL_DATA_DIR
 COUNCIL_ISSUES_DIR.mkdir(parents=True, exist_ok=True)
@@ -53,7 +57,7 @@ def check_service(name, config):
 def get_task_stats():
     """Get task statistics from task tracker DB."""
     try:
-        db_path = Path("/root/.openclaw/task-tracker/tasks.db")
+        db_path = OPENCLAW_DIR / 'task-tracker' / 'tasks.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         
@@ -75,7 +79,7 @@ def get_task_stats():
 def get_crm_stats():
     """Get CRM statistics."""
     try:
-        db_path = Path("/root/.openclaw/civic-crm/crm.db")
+        db_path = OPENCLAW_DIR / 'civic-crm' / 'crm.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         
@@ -107,7 +111,7 @@ def get_token_stats():
     """Get token usage statistics from token-tracker JSONL (current setup)."""
     from datetime import timedelta, timezone
 
-    log_path = Path('/root/.openclaw/token-tracker/token_log.jsonl')
+    log_path = OPENCLAW_DIR / 'token-tracker' / 'token_log.jsonl'
     now = datetime.now(timezone.utc)
     day_ago = now - timedelta(days=1)
     week_ago = now - timedelta(days=7)
@@ -213,7 +217,7 @@ def get_token_stats():
 def get_council_stats():
     """Get advisory council stats from latest report."""
     try:
-        reports_dir = Path("/root/.openclaw/advisory-council/reports")
+        reports_dir = OPENCLAW_DIR / 'advisory-council' / 'reports'
         if not reports_dir.exists():
             return {}
         
@@ -287,7 +291,7 @@ def get_recent_activity():
     
     # Recent CRM contacts
     try:
-        db_path = Path("/root/.openclaw/civic-crm/crm.db")
+        db_path = OPENCLAW_DIR / 'civic-crm' / 'crm.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         cursor.execute("""
@@ -544,7 +548,7 @@ def get_alerts():
     
     # Check CRM for follow-ups
     try:
-        db_path = Path("/root/.openclaw/civic-crm/crm.db")
+        db_path = OPENCLAW_DIR / 'civic-crm' / 'crm.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         today = date.today().isoformat()
@@ -622,8 +626,8 @@ def distribution_dashboard():
                            now=datetime.now())
 
 def get_publishing_ops_status():
-    status_file = Path('/root/.openclaw/workspace/the_open_source_student_distribution/platforms/PUBLISHING_ACCOUNT_STATUS.json')
-    imports_dir = Path('/root/.openclaw/workspace/the_open_source_student_distribution/output/imports')
+    status_file = WORKSPACE_DIR / 'the_open_source_student_distribution' / 'platforms' / 'PUBLISHING_ACCOUNT_STATUS.json'
+    imports_dir = WORKSPACE_DIR / 'the_open_source_student_distribution' / 'output' / 'imports'
 
     data = {
         'amazon': {'account_status': 'unknown', 'listing_status': 'unknown', 'asin': ''},
@@ -1025,7 +1029,7 @@ def create_task():
     
     try:
         # Insert into task tracker database
-        db_path = Path("/root/.openclaw/task-tracker/tasks.db")
+        db_path = OPENCLAW_DIR / 'task-tracker' / 'tasks.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         
@@ -1055,7 +1059,7 @@ def add_contact():
     
     try:
         # Insert into CRM database
-        db_path = Path("/root/.openclaw/civic-crm/crm.db")
+        db_path = OPENCLAW_DIR / 'civic-crm' / 'crm.db'
         conn = sqlite3.connect(str(db_path))
         cursor = conn.cursor()
         
