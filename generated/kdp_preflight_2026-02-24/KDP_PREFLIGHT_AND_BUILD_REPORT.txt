@@ -1,0 +1,21 @@
+KDP Preflight + Build Report
+Generated: 2026-02-24T16:03:05.474133
+Source: /Users/AI-OPS/.openclaw/media/inbound/file_14---d0171df2-d3ef-4d51-a4dc-487be1dcb591.pdf
+Pages: 216
+
+Source page size: A4 (595.276 x 841.89 pt)
+Target trim: 8.25 x 11 in (594 x 792 pt)
+
+Outputs:
+- NO_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_NO_GUTTER.pdf
+- KDP_SOFTCOVER_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_SOFTCOVER_GUTTER_0.375in.pdf
+- KDP_HARDCOVER_GUTTER/CivicOS_v1.3.3.3_KDP_8.25x11_HARDCOVER_GUTTER_0.5in.pdf
+
+Method:
+- Content scaled to fit trim height/width without clipping.
+- Gutter variants keep same trim size but shift content outward per page parity.
+
+Notes:
+- Because source is A4, conversion to 8.25x11 is an adaptation (scaled + repositioned), not a true reflow.
+- Original font embedding status may persist from source design path.
+- 6x9 not generated; requires source re-layout for legibility.
