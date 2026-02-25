@@ -17,3 +17,4 @@ Boundaries:
 Social media subagent policy:
 - Any agent/subagent creating or editing social posts must read and follow:
   - /Users/AI-OPS/.openclaw/workspace/social_media/POSTING_GUARDRAILS.md
+  - /Users/AI-OPS/.openclaw/workspace/social_media/SUBAGENT_SOCIAL_RULEBOOK.md
