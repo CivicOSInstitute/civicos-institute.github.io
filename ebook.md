@@ -8,7 +8,9 @@ permalink: /ebook/
 
 **Unified all-in-one edition** for students, families, and educators building practical local AI capability with open-source tools.
 
-[**Buy on Amazon KDP**](https://kdp.amazon.com){: .button }
+[![The Open Source Student — Founders Complete Edition Cover](/assets/images/open-source-student-founders-cover.jpg)](https://www.amazon.com/dp/B0GQ5JM6LT)
+
+[**Buy on Amazon**](https://www.amazon.com/dp/B0GQ5JM6LT){: .button }
 
 ---
 
@@ -40,4 +42,4 @@ This Founders Complete Edition combines the CivicOS implementation system into o
 
 *The Open Source Student: Founders Complete Edition is the unified all-in-one release of the CivicOS educational series, combining conceptual foundations, hardware guidance, terminal confidence, structured setup, and rapid troubleshooting in one implementation-focused volume. Designed for students, families, and educators, it helps readers move from uncertainty to operational independence with free and open-source tools.*
 
-[**Get the Founders Edition**](https://kdp.amazon.com)
+[**Get the Founders Edition**](https://www.amazon.com/dp/B0GQ5JM6LT)
