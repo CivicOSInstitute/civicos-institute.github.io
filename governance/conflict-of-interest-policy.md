@@ -1,10 +1,10 @@
-# CIVICOS INSTITUTE
 ---
 layout: default
 title: Conflict of Interest Policy
 permalink: /governance/conflict-of-interest-policy/
 ---
 
+# CIVICOS INSTITUTE
 # CONFLICT OF INTEREST POLICY
 
 ## PURPOSE

@@ -86,6 +86,16 @@ Establishes how CivicOS Institute protects sensitive data, ensures privacy compl
 
 [View Data Privacy & Security Policy](/governance/data-privacy-security-policy/)
 
+### Current Governance Package (Desktop Source Alignment)
+The website governance set mirrors the current governance package maintained in our working folders:
+- Articles of Incorporation
+- Bylaws
+- Delegation of Authority Matrix
+- Conflict of Interest Policy
+- Document Retention Policy
+- IP & Licensing Policy
+- Data Privacy & Security Policy
+
 ---
 
 ## Board of Directors
@@ -96,9 +106,11 @@ Establishes how CivicOS Institute protects sensitive data, ensures privacy compl
 President & Founder  
 [Contact](mailto:NCerbone@civicos-institute.org)
 
+*Additional founding board seats are currently being filled.*
+
 **Board Composition Timeline:**
-- **February 2026:** Founding Board established (3 members)
-- **May 2026:** Target: Add independent Director #4
+- **February 2026:** Incorporation complete; board recruitment initiated
+- **May 2026:** Target: Add first independent Director
 - **December 2027:** Target: Expand to 5-member Board with independent majority
 
 [View Board Recruitment Process](/governance/board-recruitment/)
