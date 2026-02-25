@@ -37,11 +37,19 @@
 8. **Crash-safe queue file write**
    - Verify `queue.json.tmp` swaps atomically to `queue.json`.
 
+9. **Lock-file discipline**
+   - Create `queue.lock` manually and run `process-once`.
+   - Expect no new processing while lock exists.
+
+10. **Offline Ollama handling**
+   - Stop Ollama and run worker/process-once.
+   - Expect 3 retries with backoff, queue status `paused_ollama_offline`, pending items failed with error outputs.
+
 ## Output contract
 
-9. **Result schema completeness**
+11. **Result schema completeness**
    - Expect fields: `agent_id`, `calling_skill`, `model`, `status`, `result/error`, `duration_seconds`, `completed_at`.
 
-10. **Callback path honored**
+12. **Callback path honored**
    - Set custom callback path.
    - Expect result JSON at that exact path.

@@ -4,14 +4,14 @@ Sequential queue manager for local Ollama model calls so only one local agent ru
 
 ## Why it exists
 
-Parallel local model calls can saturate VRAM and stall sessions. This skill serializes requests from other skills (infrastructure layer).
+Parallel local model calls can saturate VRAM and stall sessions. This skill serializes requests from other skills.
 
 ## Quick start
 
 ```bash
 cd ~/.openclaw/workspace/skills/ollama-agent-queue
 
-# 1) enqueue a request
+# enqueue
 python3 scripts/queue_manager.py enqueue --payload-json '{
   "calling_skill":"diagnostic",
   "agent_id":"diag-001",
@@ -22,12 +22,29 @@ python3 scripts/queue_manager.py enqueue --payload-json '{
   "priority":"normal"
 }'
 
-# 2) process one item
+# process one item
 python3 scripts/queue_manager.py process-once
 
-# 3) inspect queue/result
+# status + result (caller polls result file)
 python3 scripts/queue_manager.py status
 cat data/agent-queue/results/diag-001.json
+```
+
+## Worker mode
+
+```bash
+python3 scripts/queue_manager.py worker --poll-seconds 2
+```
+
+- Uses `data/agent-queue/queue.lock` while active item is running.
+- Will not start next item until current call returns complete/timeout/error.
+
+## Controls
+
+```bash
+python3 scripts/queue_manager.py pause
+python3 scripts/queue_manager.py resume
+python3 scripts/queue_manager.py clear
 ```
 
 ## Validate/package
