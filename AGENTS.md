@@ -18,3 +18,10 @@ Social media subagent policy:
 - Any agent/subagent creating or editing social posts must read and follow:
   - /Users/AI-OPS/.openclaw/workspace/social_media/POSTING_GUARDRAILS.md
   - /Users/AI-OPS/.openclaw/workspace/social_media/SUBAGENT_SOCIAL_RULEBOOK.md
+
+Local model hard rule (non-negotiable):
+- Any task using a local model MUST route through:
+  - /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/integration_helper.py
+  - or /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/queue_manager.py
+- Direct calls to Ollama (e.g., `ollama run`, `http://localhost:11434/api/generate`) are prohibited outside the queue implementation itself.
+- If local queue execution fails, use approved API fallback path.
