@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Daily grant opportunity scan using local sources + local LLM (Ollama).
+Daily grant opportunity scan.
+Primary path: local Ollama queue (serialized via ollama-agent-queue).
+Fallback path: API model via `openclaw agent --local --agent main`.
 Outputs a markdown brief to generated/grants/.
 """
 
@@ -85,17 +87,70 @@ SOURCE TEXT:
 """.strip()
 
 
-def run_local_model(prompt: str, model: str = 'qwen2.5:14b') -> str:
+def run_local_model(prompt: str) -> str:
+    helper = WORKSPACE / 'skills' / 'ollama-agent-queue' / 'scripts' / 'integration_helper.py'
     proc = subprocess.run(
-        ['ollama', 'run', model],
-        input=prompt,
+        [
+            'python3', str(helper),
+            '--calling-skill', 'grant-daily-scan',
+            '--model', 'local/qwen-14b',
+            '--priority', 'high',
+            '--system-prompt', 'You are a precise grants analyst. Return only the requested markdown report.',
+            '--user-prompt', prompt,
+            '--max-tokens', '1400',
+            '--timeout-seconds', '420',
+            '--poll-seconds', '3',
+        ],
         text=True,
         capture_output=True,
-        timeout=240,
+        timeout=480,
     )
     if proc.returncode != 0:
-        raise RuntimeError(proc.stderr.strip() or 'ollama run failed')
-    return proc.stdout.strip()
+        raise RuntimeError(proc.stderr.strip() or proc.stdout.strip() or 'queue helper failed')
+
+    try:
+        payload = json.loads(proc.stdout.strip())
+    except Exception as e:
+        raise RuntimeError(f'queue result parse failed: {e}')
+
+    status = payload.get('status')
+    if status != 'complete':
+        raise RuntimeError(f'local queue returned status={status}')
+
+    result = (payload.get('result') or '').strip()
+    if not result:
+        raise RuntimeError('local queue returned empty result')
+    return result
+
+
+def run_api_fallback(prompt: str) -> str:
+    api_prompt = (
+        'Return only markdown using this exact structure: '\
+        '# Daily Grant Scan, ## Top Opportunities (max 8), ## Watchlist (max 8), '\
+        '## Fast Actions (next 24h), ## Notes.\\n\\n' + prompt
+    )
+    proc = subprocess.run(
+        [
+            'openclaw', 'agent', '--local', '--agent', 'main',
+            '--message', api_prompt,
+            '--json', '--timeout', '420'
+        ],
+        text=True,
+        capture_output=True,
+        timeout=500,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(proc.stderr.strip() or proc.stdout.strip() or 'api fallback failed')
+
+    try:
+        data = json.loads(proc.stdout)
+        text = data['payloads'][0]['text'].strip()
+    except Exception as e:
+        raise RuntimeError(f'api fallback parse failed: {e}')
+
+    if not text:
+        raise RuntimeError('api fallback returned empty text')
+    return text
 
 
 def main() -> int:
@@ -120,8 +175,17 @@ def main() -> int:
         prompt = build_prompt(snapshot)
         try:
             report = run_local_model(prompt)
-        except Exception as e:
-            report = f"# Daily Grant Scan\n\nLocal model run failed: {e}\n\nFetched sources: {len(pages)}"
+        except Exception as local_err:
+            try:
+                report = run_api_fallback(prompt)
+                report += f"\n\n## Model Routing\n- Primary: local queue (local/qwen-14b) failed\n- Fallback: API model succeeded\n- Primary error: {local_err}"
+            except Exception as api_err:
+                report = (
+                    "# Daily Grant Scan\n\n"
+                    f"Primary local queue failed: {local_err}\n\n"
+                    f"Fallback API model failed: {api_err}\n\n"
+                    f"Fetched sources: {len(pages)}"
+                )
 
     if errors:
         report += "\n\n## Fetch Errors\n" + "\n".join(
