@@ -47,6 +47,12 @@ python3 scripts/queue_manager.py resume
 python3 scripts/queue_manager.py clear
 ```
 
+## Calling convention for other skills
+
+1) Register request with `enqueue`.
+2) Poll callback result file until status is `complete|timeout|error`.
+3) After consuming result, caller deletes its own callback file to keep `results/` clean.
+
 ## Validate/package
 
 ```bash

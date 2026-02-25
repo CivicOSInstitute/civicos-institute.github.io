@@ -29,6 +29,22 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def parse_iso(ts: str) -> Optional[datetime]:
+    try:
+        if ts.endswith("Z"):
+            ts = ts[:-1] + "+00:00"
+        return datetime.fromisoformat(ts)
+    except Exception:
+        return None
+
+
+def age_seconds(ts: str) -> Optional[float]:
+    dt = parse_iso(ts)
+    if not dt:
+        return None
+    return (datetime.now(timezone.utc) - dt).total_seconds()
+
+
 @dataclass
 class QueuePaths:
     root: Path
@@ -64,6 +80,7 @@ class QueueManager:
             "pending": [],
             "completed_today": 0,
             "failed_today": 0,
+            "consecutive_resource_failures": 0,
             "last_updated": now_iso(),
         }
 
@@ -84,9 +101,8 @@ class QueueManager:
         os.replace(tmp, self.paths.queue_file)
 
     def _log(self, msg: str) -> None:
-        line = f"[{now_iso()}] {msg}\n"
         with (self.paths.logs_dir / "queue.log").open("a", encoding="utf-8") as f:
-            f.write(line)
+            f.write(f"[{now_iso()}] {msg}\n")
 
     def _emit_alert(self, channel: str, text: str) -> None:
         event = {"ts": now_iso(), "channel": channel, "message": text}
@@ -94,7 +110,6 @@ class QueueManager:
             f.write(json.dumps(event, ensure_ascii=False) + "\n")
         self._log(f"ALERT[{channel}] {text}")
 
-        # Optional external hook, e.g. OAQ_ALERT_CMD='python3 notify.py "{channel}" "{message}"'
         cmd_tpl = os.environ.get("OAQ_ALERT_CMD", "").strip()
         if cmd_tpl:
             cmd = cmd_tpl.format(channel=channel, message=text.replace('"', "'"))
@@ -102,6 +117,72 @@ class QueueManager:
                 subprocess.run(cmd, shell=True, check=False)
             except Exception:
                 pass
+
+    def _is_ollama_process_active(self) -> bool:
+        try:
+            out = subprocess.run(
+                ["pgrep", "-f", "ollama"], capture_output=True, text=True, check=False
+            )
+            return out.returncode == 0 and bool(out.stdout.strip())
+        except Exception:
+            return False
+
+    def _write_result(self, req: Dict[str, Any], payload: Dict[str, Any]) -> None:
+        cb = Path(req.get("callback") or self.paths.results_dir / f"{req.get('agent_id','unknown')}.json")
+        cb.parent.mkdir(parents=True, exist_ok=True)
+        with cb.open("w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2, ensure_ascii=False)
+
+    def _resolve_model(self, model_input: str) -> str:
+        return MODEL_MAP.get(model_input, model_input)
+
+    def _fetch_available_models(self, timeout: int = 10) -> List[str]:
+        req = urllib.request.Request("http://localhost:11434/api/tags", method="GET")
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        return [m.get("name", "") for m in data.get("models", []) if m.get("name")]
+
+    def _ollama_generate(
+        self,
+        model_name: str,
+        system_prompt: str,
+        user_prompt: str,
+        max_tokens: int,
+        timeout_seconds: int,
+    ) -> Tuple[bool, Dict[str, Any]]:
+        body = {
+            "model": model_name,
+            "system": system_prompt,
+            "prompt": user_prompt,
+            "stream": False,
+            "options": {"num_predict": max_tokens, "temperature": 0.7},
+        }
+        req = urllib.request.Request(
+            "http://localhost:11434/api/generate",
+            data=json.dumps(body).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=timeout_seconds) as resp:
+                parsed = json.loads(resp.read().decode("utf-8"))
+            return True, parsed
+        except urllib.error.HTTPError as e:
+            try:
+                detail = e.read().decode("utf-8", errors="replace")
+            except Exception:
+                detail = str(e)
+            return False, {"kind": "http", "status": e.code, "error": detail}
+        except urllib.error.URLError as e:
+            return False, {"kind": "connection", "error": str(e)}
+        except TimeoutError:
+            return False, {"kind": "timeout", "error": f"timeout_after_{timeout_seconds}s"}
+        except Exception as e:
+            return False, {"kind": "other", "error": str(e)}
+
+    def _is_resource_error(self, err_payload: Dict[str, Any]) -> bool:
+        text = json.dumps(err_payload, ensure_ascii=False).lower()
+        return ("503" in text) or ("out of memory" in text) or ("resource exhausted" in text)
 
     def enqueue(self, payload: Dict[str, Any]) -> None:
         required = ["calling_skill", "agent_id", "model", "system_prompt", "user_prompt", "max_tokens"]
@@ -169,64 +250,21 @@ class QueueManager:
         )
         return indexed[0][1]
 
-    def _write_result(self, req: Dict[str, Any], payload: Dict[str, Any]) -> None:
-        cb = Path(req.get("callback") or self.paths.results_dir / f"{req['agent_id']}.json")
-        cb.parent.mkdir(parents=True, exist_ok=True)
-        with cb.open("w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=2, ensure_ascii=False)
-
-    def _update_done(self, result_status: str) -> None:
-        state = self._read_state()
-        state["current_agent"] = None
-        if result_status == "complete":
-            state["completed_today"] = int(state.get("completed_today", 0)) + 1
-        else:
-            state["failed_today"] = int(state.get("failed_today", 0)) + 1
-
-        if not state.get("pending") and state.get("status") == "running":
-            state["status"] = "idle"
-        self._write_state(state)
-
-    def _resolve_model(self, model_input: str) -> str:
-        return MODEL_MAP.get(model_input, model_input)
-
-    def _fetch_available_models(self, timeout: int = 10) -> List[str]:
-        url = "http://localhost:11434/api/tags"
-        req = urllib.request.Request(url, method="GET")
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-        models = [m.get("name", "") for m in data.get("models", []) if m.get("name")]
-        return models
-
-    def _ollama_generate(
-        self,
-        model_name: str,
-        system_prompt: str,
-        user_prompt: str,
-        max_tokens: int,
-        timeout_seconds: int,
-    ) -> Tuple[bool, Dict[str, Any]]:
-        url = "http://localhost:11434/api/generate"
-        body = {
-            "model": model_name,
-            "system": system_prompt,
-            "prompt": user_prompt,
-            "stream": False,
-            "options": {"num_predict": max_tokens, "temperature": 0.7},
-        }
-        data = json.dumps(body).encode("utf-8")
-        req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
-
-        try:
-            with urllib.request.urlopen(req, timeout=timeout_seconds) as resp:
-                parsed = json.loads(resp.read().decode("utf-8"))
-            return True, parsed
-        except urllib.error.URLError as e:
-            return False, {"error": f"connection_error: {e}"}
-        except TimeoutError:
-            return False, {"error": f"timeout_after_{timeout_seconds}s"}
-        except Exception as e:
-            return False, {"error": str(e)}
+    def _maybe_alert_wait_time(self, req: Dict[str, Any]) -> None:
+        pr = str(req.get("priority", "normal")).lower()
+        wait = age_seconds(str(req.get("queued_at", "")))
+        if wait is None:
+            return
+        if pr == "urgent" and wait > 30:
+            self._emit_alert(
+                "architecture",
+                f"⚠️ Queue backlog: urgent item {req.get('agent_id')} waited {int(wait)}s (>30s)",
+            )
+        elif pr == "high" and wait > 120:
+            self._emit_alert(
+                "architecture",
+                f"⚠️ Queue backlog: high item {req.get('agent_id')} waited {int(wait)}s (>120s)",
+            )
 
     def _pause_offline_and_fail_pending(self, reason: str) -> None:
         state = self._read_state()
@@ -246,18 +284,57 @@ class QueueManager:
                 "completed_at": now_iso(),
             }
             self._write_result(req, fail)
-            st = self._read_state()
-            st["failed_today"] = int(st.get("failed_today", 0)) + 1
-            self._write_state(st)
+            s = self._read_state()
+            s["failed_today"] = int(s.get("failed_today", 0)) + 1
+            self._write_state(s)
 
         self._emit_alert(
             "direct",
             "🔴 Ollama server unreachable — agent queue paused. Restart Ollama and send RESUME QUEUE.",
         )
 
+    def _handle_stale_lock_if_needed(self) -> bool:
+        if not self.paths.lock_file.exists():
+            return False
+
+        mtime_age = time.time() - self.paths.lock_file.stat().st_mtime
+        if mtime_age <= 600:
+            return True
+
+        if self._is_ollama_process_active():
+            return True
+
+        # stale lock: clear lock + fail current_agent as timeout + resume
+        state = self._read_state()
+        cur = state.get("current_agent")
+        if cur:
+            timeout_result = {
+                "agent_id": cur.get("agent_id"),
+                "calling_skill": cur.get("calling_skill"),
+                "model": cur.get("model"),
+                "status": "timeout",
+                "error": "Agent exceeded timeout due to stale lock recovery",
+                "result": None,
+                "completed_at": now_iso(),
+            }
+            self._write_result(cur, timeout_result)
+            state["failed_today"] = int(state.get("failed_today", 0)) + 1
+            state["current_agent"] = None
+            state["status"] = "running"
+            self._write_state(state)
+
+        try:
+            self.paths.lock_file.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+        self._emit_alert("architecture", "⚠️ Stale lock file cleared — queue resumed")
+        self._log("STALE_LOCK cleared and queue resumed")
+        return False
+
     def process_once(self) -> Dict[str, Any]:
-        # lock discipline: if lock exists, do nothing
-        if self.paths.lock_file.exists():
+        # Respect/repair lock first
+        if self._handle_stale_lock_if_needed():
             return {"ok": True, "message": "locked"}
 
         state = self._read_state()
@@ -276,54 +353,55 @@ class QueueManager:
         if not nxt:
             return {"ok": True, "message": "queue_empty"}
 
-        # create lock + move to current_agent
+        self._maybe_alert_wait_time(nxt)
+
         self.paths.lock_file.write_text(now_iso(), encoding="utf-8")
         try:
             state = self._read_state()
             state["pending"] = [p for p in state.get("pending", []) if p.get("agent_id") != nxt.get("agent_id")]
-            state["current_agent"] = {
-                "agent_id": nxt["agent_id"],
-                "model": nxt["model"],
-                "calling_skill": nxt["calling_skill"],
-                "started_at": now_iso(),
-            }
+            # Keep full request in current_agent so stale-lock recovery can write callback
+            cur = dict(nxt)
+            cur["started_at"] = now_iso()
+            state["current_agent"] = cur
             state["status"] = "running"
             self._write_state(state)
-            self._log(f"START {nxt['agent_id']} model={nxt['model']}")
 
             requested_model = str(nxt.get("model", ""))
             resolved_model = self._resolve_model(requested_model)
 
-            # Ollama reachability + available model list check (3 retries, 10s backoff)
-            available: List[str] = []
+            # tags check with retries/backoff
+            models = []
             tags_ok = False
-            tags_err = ""
+            last_err = ""
             for i in range(3):
                 try:
-                    available = self._fetch_available_models(timeout=10)
+                    models = self._fetch_available_models(timeout=10)
                     tags_ok = True
                     break
                 except Exception as e:
-                    tags_err = str(e)
+                    last_err = str(e)
                     if i < 2:
                         time.sleep(10)
 
             if not tags_ok:
-                self._pause_offline_and_fail_pending(f"ollama_unreachable_after_retries: {tags_err}")
+                self._pause_offline_and_fail_pending(f"ollama_unreachable_after_retries: {last_err}")
                 fail = {
                     "agent_id": nxt.get("agent_id"),
                     "calling_skill": nxt.get("calling_skill"),
                     "model": requested_model,
                     "status": "error",
-                    "error": f"ollama_unreachable_after_retries: {tags_err}",
+                    "error": f"ollama_unreachable_after_retries: {last_err}",
                     "result": None,
                     "completed_at": now_iso(),
                 }
                 self._write_result(nxt, fail)
-                self._update_done("failed")
+                state = self._read_state()
+                state["failed_today"] = int(state.get("failed_today", 0)) + 1
+                state["current_agent"] = None
+                self._write_state(state)
                 return {"ok": False, "message": "ollama_unreachable", "agent_id": nxt.get("agent_id")}
 
-            if resolved_model not in available:
+            if resolved_model not in models:
                 fail = {
                     "agent_id": nxt.get("agent_id"),
                     "calling_skill": nxt.get("calling_skill"),
@@ -334,8 +412,13 @@ class QueueManager:
                     "completed_at": now_iso(),
                 }
                 self._write_result(nxt, fail)
-                self._update_done("failed")
-                self._log(f"FAIL {nxt['agent_id']} model_not_available={resolved_model}")
+                state = self._read_state()
+                state["failed_today"] = int(state.get("failed_today", 0)) + 1
+                state["consecutive_resource_failures"] = 0
+                state["current_agent"] = None
+                if not state.get("pending") and state.get("status") == "running":
+                    state["status"] = "idle"
+                self._write_state(state)
                 return {"ok": False, "message": "model_not_available", "agent_id": nxt.get("agent_id")}
 
             timeout_seconds = int(MODEL_TIMEOUTS.get(requested_model, 240))
@@ -349,9 +432,24 @@ class QueueManager:
             )
             duration = round(time.time() - t0, 2)
 
+            # Handle overload: 30s backoff + one retry
+            if (not ok) and self._is_resource_error(payload):
+                time.sleep(30)
+                t1 = time.time()
+                ok2, payload2 = self._ollama_generate(
+                    model_name=resolved_model,
+                    system_prompt=str(nxt.get("system_prompt", "")),
+                    user_prompt=str(nxt.get("user_prompt", "")),
+                    max_tokens=int(nxt.get("max_tokens", 500)),
+                    timeout_seconds=timeout_seconds,
+                )
+                duration = round(duration + (time.time() - t1), 2)
+                ok, payload = ok2, payload2
+
+            state = self._read_state()
+
             if not ok:
-                err = payload.get("error", "ollama_generate_failed")
-                if str(err).startswith("timeout_after_"):
+                if payload.get("kind") == "timeout" or "timeout_after_" in str(payload.get("error", "")):
                     result = {
                         "agent_id": nxt.get("agent_id"),
                         "calling_skill": nxt.get("calling_skill"),
@@ -366,20 +464,42 @@ class QueueManager:
                         "architecture",
                         f"⏱ Agent timeout: {nxt.get('agent_id')} ({requested_model}) exceeded {timeout_seconds}s — queue continuing",
                     )
+                    state["consecutive_resource_failures"] = 0
                 else:
                     result = {
                         "agent_id": nxt.get("agent_id"),
                         "calling_skill": nxt.get("calling_skill"),
                         "model": requested_model,
                         "status": "error",
-                        "error": str(err),
+                        "error": str(payload.get("error", "ollama_generate_failed")),
                         "result": None,
                         "duration_seconds": duration,
                         "completed_at": now_iso(),
                     }
+                    if self._is_resource_error(payload):
+                        state["consecutive_resource_failures"] = int(state.get("consecutive_resource_failures", 0)) + 1
+                        self._emit_alert(
+                            "architecture",
+                            f"⚠️ Ollama resource error: {nxt.get('agent_id')} ({requested_model}) — queue continuing",
+                        )
+                    else:
+                        state["consecutive_resource_failures"] = 0
+
                 self._write_result(nxt, result)
-                self._update_done("failed")
-                self._log(f"FAIL {nxt['agent_id']} error={err}")
+                state["failed_today"] = int(state.get("failed_today", 0)) + 1
+                state["current_agent"] = None
+
+                # pause if 3 consecutive resource failures
+                if int(state.get("consecutive_resource_failures", 0)) >= 3:
+                    state["status"] = "paused"
+                    self._emit_alert(
+                        "direct",
+                        "🔴 Queue paused after 3 consecutive Ollama resource failures. Investigate VRAM/load, then RESUME QUEUE.",
+                    )
+                elif not state.get("pending") and state.get("status") == "running":
+                    state["status"] = "idle"
+
+                self._write_state(state)
                 return {"ok": False, "message": result["status"], "agent_id": nxt.get("agent_id")}
 
             result = {
@@ -393,8 +513,12 @@ class QueueManager:
                 "completed_at": now_iso(),
             }
             self._write_result(nxt, result)
-            self._update_done("complete")
-            self._log(f"DONE {nxt['agent_id']} complete")
+            state["completed_today"] = int(state.get("completed_today", 0)) + 1
+            state["consecutive_resource_failures"] = 0
+            state["current_agent"] = None
+            if not state.get("pending") and state.get("status") == "running":
+                state["status"] = "idle"
+            self._write_state(state)
             return {"ok": True, "message": "complete", "agent_id": nxt.get("agent_id")}
 
         finally:
@@ -416,7 +540,6 @@ def parse_args() -> argparse.Namespace:
     sub.add_parser("pause")
     sub.add_parser("resume")
     sub.add_parser("clear")
-
     sub.add_parser("process-once")
 
     w = sub.add_parser("worker")
@@ -456,7 +579,14 @@ def main() -> int:
         if args.cmd == "worker":
             while True:
                 out = q.process_once()
-                if out.get("message") not in {"queue_empty", "idle", "running", "locked", "paused", "paused_ollama_offline"}:
+                if out.get("message") not in {
+                    "queue_empty",
+                    "idle",
+                    "running",
+                    "locked",
+                    "paused",
+                    "paused_ollama_offline",
+                }:
                     print(json.dumps(out, ensure_ascii=False), flush=True)
                 time.sleep(args.poll_seconds)
     except Exception as e:

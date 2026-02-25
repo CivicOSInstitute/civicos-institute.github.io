@@ -37,11 +37,11 @@ Provide a centralized sequential queue for local Ollama agent requests. The queu
 ## Core loop behavior (worker)
 
 Every ~2 seconds:
-1. If `queue.lock` exists, do nothing.
+1. If `queue.lock` exists, treat as active processing; if stale (>10 min) and no Ollama process is active, auto-clear stale lock and recover.
 2. If no pending items, set `queue.status = "idle"`.
 3. Else select next item by priority (`urgent > high > normal`) + FIFO.
 4. Create `queue.lock`, set `current_agent`, call Ollama `/api/generate` with `stream=false`.
-5. Block until complete/timeout/error.
+5. **Blocking execution:** do not move to next item until current item completes/timeouts/errors.
 6. Write callback result JSON.
 7. Clear `current_agent`, update counters, delete `queue.lock`.
 8. Continue loop.
@@ -54,6 +54,12 @@ Every ~2 seconds:
 
 Startup/model check uses Ollama tags (`/api/tags`). If requested model is unavailable, that item fails immediately and queue continues.
 
+## Priority and wait alerts
+
+- `urgent`: front of queue; if wait exceeds 30s, emit Architecture backlog alert.
+- `high`: ahead of normal; if wait exceeds 120s, emit Architecture backlog alert.
+- `normal`: FIFO, no wait alerting.
+
 ## Timeout policy
 
 - `local/mistral-small`: 120s
@@ -62,11 +68,27 @@ Startup/model check uses Ollama tags (`/api/tags`). If requested model is unavai
 
 On timeout, result is written with `status: "timeout"`, queue continues.
 
+## Resource-overload handling (503 / OOM)
+
+If Ollama returns resource-exhaustion style errors (`503`, `out of memory`, `resource exhausted`):
+1. Back off 30 seconds.
+2. Retry the same item once.
+3. If still failing: write error result, continue queue, emit Architecture alert.
+4. If 3 consecutive resource errors occur: pause queue and emit direct alert for manual intervention.
+
 ## Offline policy
 
 If Ollama is unreachable:
 - Retry tags check 3 times with 10s backoff.
 - If still failing: set queue status to `paused_ollama_offline`, fail pending items to callback files, emit alert event, and wait for manual `resume`.
+
+## Stale lock recovery
+
+If `queue.lock` is older than 10 minutes and no Ollama process is active:
+1. Clear lock file.
+2. Write timeout result for `current_agent`.
+3. Resume queue processing.
+4. Emit Architecture alert: `⚠️ Stale lock file cleared — queue resumed`.
 
 ## Commands
 
