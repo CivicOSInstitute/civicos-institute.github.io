@@ -20,8 +20,10 @@ Social media subagent policy:
   - /Users/AI-OPS/.openclaw/workspace/social_media/SUBAGENT_SOCIAL_RULEBOOK.md
 
 Local model hard rule (non-negotiable):
+- Local model usage is the default priority for all eligible tasks.
 - Any task using a local model MUST route through:
   - /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/integration_helper.py
   - or /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/queue_manager.py
 - Direct calls to Ollama (e.g., `ollama run`, `http://localhost:11434/api/generate`) are prohibited outside the queue implementation itself.
+- API models are fallback-only unless explicitly requested by the Director or required by local failure/capability gap.
 - If local queue execution fails, use approved API fallback path.
