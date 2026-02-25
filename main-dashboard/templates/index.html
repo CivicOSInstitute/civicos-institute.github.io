@@ -828,9 +828,13 @@
                                 </div>
                                 <div id="telegram-history" style="max-height:180px; overflow:auto; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; color:#cbd5e1;"></div>
                                 <textarea id="telegram-message" placeholder="Type your message..." rows="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; resize: vertical;"></textarea>
-                                <button type="button" onclick="sendTelegram()" class="btn btn-primary">Send Message</button>
+                                <div style="display:flex; gap:0.5rem;">
+                                    <button type="button" onclick="sendTelegram()" class="btn btn-primary" style="flex:1;">Send Message</button>
+                                    <button type="button" onclick="runTelegramDiagnostics()" class="btn btn-secondary" style="flex:1;">Diagnostics</button>
+                                </div>
                             </form>
                             <div id="telegram-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
+                            <div id="telegram-health" style="margin-top: 0.5rem; font-size: 0.75rem; color:#94a3b8;"></div>
                         </div>
 
                         <!-- YouTube Summarizer -->
@@ -1258,6 +1262,26 @@
                 statusDiv.style.color = '#ef4444';
             });
         }
+
+        function runTelegramDiagnostics() {
+            const healthDiv = document.getElementById('telegram-health');
+            healthDiv.innerHTML = '🔄 Checking Telegram health...';
+            fetch('/api/telegram/health')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        healthDiv.innerHTML = `✅ ${data.message} · chats: ${data.chat_count}`;
+                        healthDiv.style.color = '#10b981';
+                    } else {
+                        healthDiv.innerHTML = `⚠️ ${data.message || 'Telegram check failed'}`;
+                        healthDiv.style.color = '#f59e0b';
+                    }
+                })
+                .catch(e => {
+                    healthDiv.innerHTML = `❌ Diagnostics error: ${e.message}`;
+                    healthDiv.style.color = '#ef4444';
+                });
+        }
         
         function runYouTubeSummarizer() {
             const url = document.getElementById('yt-url').value.trim();
@@ -1358,6 +1382,7 @@
 
         // Initial data loads
         loadTelegramChats();
+        runTelegramDiagnostics();
 
         // Auto-refresh every 60 seconds
         setInterval(() => location.reload(), 60000);

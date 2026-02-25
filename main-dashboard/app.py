@@ -1086,6 +1086,35 @@ def telegram_chats():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+
+@app.route('/api/telegram/health', methods=['GET'])
+def telegram_health():
+    """Telegram diagnostics for command center card hardening."""
+    diag = {
+        'status': 'error',
+        'bridge': False,
+        'chats_ok': False,
+        'chat_count': 0,
+        'message': 'Unknown'
+    }
+    try:
+        bridge_url = 'http://host.docker.internal:18080/telegram/chats'
+        response = urllib.request.urlopen(bridge_url, timeout=12)
+        result = json.loads(response.read().decode('utf-8'))
+        diag['bridge'] = True
+        if result.get('status') == 'success':
+            chats = result.get('chats', []) or []
+            diag['chats_ok'] = True
+            diag['chat_count'] = len(chats)
+            diag['status'] = 'success'
+            diag['message'] = 'Telegram bridge healthy'
+        else:
+            diag['message'] = result.get('message', 'Telegram bridge returned error')
+    except Exception as e:
+        diag['message'] = str(e)
+
+    return jsonify(diag)
+
 @app.route('/api/telegram/history', methods=['POST'])
 def telegram_history():
     """Get recent Telegram messages for selected chat."""
