@@ -1,14 +1,15 @@
 cron_expression,frequency_human,command,model_used
-"5 6 * * *","Daily at 06:05","cd /Users/AI-OPS/.openclaw/workspace && bash scripts/run_ops_cycle.sh >> generated/cron_ops_cycle.log 2>&1","Unknown / not explicitly set in cron target script"
-"15 * * * *","Hourly at minute 15","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/monitor_automation_failures.py >> generated/cron_monitor_failures.log 2>&1","N/A (no model invocation detected)"
-"0 9 * * 0","Weekly on Sunday at 09:00","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/memory_consolidator.py >> generated/cron_memory_consolidator.log 2>&1","N/A (no model invocation detected)"
-"30 6 * * 1","Weekly on Monday at 06:30","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/weekly_cost_digest.py >> generated/cron_weekly_cost_digest.log 2>&1","N/A (summarizes token logs; does not run a model)"
-"45 * * * *","Hourly at minute 45","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/queue_optimizer_digest.py >> generated/cron_queue_optimizer.log 2>&1","N/A (no model invocation detected)"
-"0 */2 * * *","Every 2 hours (at minute 0)","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/routing_compliance_validator.py >> generated/cron_routing_validator.log 2>&1","N/A (no model invocation detected)"
-"20 * * * *","Hourly at minute 20","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/youtube_rss_monitor.py >> generated/cron_youtube_monitor.log 2>&1","N/A (no model invocation detected)"
-"7 * * * *","Hourly at minute 7","/Users/AI-OPS/.openclaw/scripts/deploy-news-widget.sh >> /Users/AI-OPS/.openclaw/logs/deploy-news-widget-cron.log 2>&1","N/A (no model invocation detected)"
-"40 2 * * *","Daily at 02:40","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/local_model_toolcall_probe.py >> generated/cron_model_toolcall_probe.log 2>&1","Ollama models: qwen2.5:14b; mistral-small3.2:24b-instruct-2506-q4_K_M; qwen2.5-coder:32b-instruct-q3_K_L"
-"*/5 * * * *","Every 5 minutes","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/codex_mode_guard.py >> generated/cron_codex_mode_guard.log 2>&1","N/A (reads Codex usage endpoint; no direct model call)"
-"*/3 * * * *","Every 3 minutes","/Users/AI-OPS/.openclaw/scripts/auto-hotspot-fallback.sh >> /Users/AI-OPS/.openclaw/logs/auto-hotspot-fallback-cron.log 2>&1","N/A (no model invocation detected)"
-"*/5 * * * *","Every 5 minutes","cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/battery_alert_monitor.py >> generated/cron_battery_alert.log 2>&1","N/A (no model invocation detected)"
-"10 8 * * *","Daily at 08:10","cd /Users/AI-OPS/.openclaw/workspace && /usr/bin/python3 scripts/grant_daily_local_scan.py >> generated/cron_grant_scan.log 2>&1","Ollama model default: qwen2.5:14b"
+5 6 * * *,Daily at 06:05,cd /Users/AI-OPS/.openclaw/workspace && bash scripts/run_ops_cycle.sh >> generated/cron_ops_cycle.log 2>&1,Unknown / may invoke model-driven scripts indirectly
+15 * * * *,Hourly at minute 15,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/monitor_automation_failures.py >> generated/cron_monitor_failures.log 2>&1,N/A (no model invocation detected)
+0 9 * * 0,Weekly on Sunday at 09:00,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/memory_consolidator.py >> generated/cron_memory_consolidator.log 2>&1,N/A (no model invocation detected)
+30 6 * * 1,Weekly on Monday at 06:30,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/weekly_cost_digest.py >> generated/cron_weekly_cost_digest.log 2>&1,N/A (summarizes token logs; does not run a model)
+45 * * * *,Hourly at minute 45,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/queue_optimizer_digest.py >> generated/cron_queue_optimizer.log 2>&1,N/A (no model invocation detected)
+0 */2 * * *,Every 2 hours (at minute 0),cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/routing_compliance_validator.py >> generated/cron_routing_validator.log 2>&1,N/A (no model invocation detected)
+20 * * * *,Hourly at minute 20,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/youtube_rss_monitor.py >> generated/cron_youtube_monitor.log 2>&1,N/A (no model invocation detected)
+7 * * * *,Hourly at minute 7,/Users/AI-OPS/.openclaw/scripts/deploy-news-widget.sh >> /Users/AI-OPS/.openclaw/logs/deploy-news-widget-cron.log 2>&1,N/A (no model invocation detected)
+40 2 * * *,Daily at 02:40,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/local_model_toolcall_probe.py >> generated/cron_model_toolcall_probe.log 2>&1,Primary: local queue models (local/qwen-14b; local/mistral-small; local/qwen-coder-32b). Fallback: API model via openclaw agent
+*/5 * * * *,Every 5 minutes,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/codex_mode_guard.py >> generated/cron_codex_mode_guard.log 2>&1,N/A (reads Codex/API usage endpoint; no direct model call)
+*/3 * * * *,Every 3 minutes,/Users/AI-OPS/.openclaw/scripts/auto-hotspot-fallback.sh >> /Users/AI-OPS/.openclaw/logs/auto-hotspot-fallback-cron.log 2>&1,N/A (no model invocation detected)
+*/5 * * * *,Every 5 minutes,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/battery_alert_monitor.py >> generated/cron_battery_alert.log 2>&1,N/A (no model invocation detected)
+10 8 * * *,Daily at 08:10,cd /Users/AI-OPS/.openclaw/workspace && /usr/bin/python3 scripts/grant_daily_local_scan.py >> generated/cron_grant_scan.log 2>&1,Primary: local queue model local/qwen-14b (priority high). Fallback: API model via openclaw agent
+* * * * *,Every minute,cd /Users/AI-OPS/.openclaw/workspace && python3 skills/ollama-agent-queue/scripts/queue_manager.py process-once >> generated/cron_ollama_queue_worker.log 2>&1,Queue worker (enables local model priority routing)
