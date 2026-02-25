@@ -8,7 +8,11 @@ Source benchmark: `generated/model_profiles_2026-02-23.json`
 - **mistral-small3.2:24b-instruct-2506-q4_K_M** avg: **24.78s**
 - **qwen2.5-coder:32b-instruct-q3_K_L** avg: **36.36s**
 
-## Routing Policy (Local-first)
+## Routing Policy (Local-first + Codex 5.3 for critical tasks)
+
+Hard rule:
+- Any local-model task must route through `skills/ollama-agent-queue` (never direct `ollama run` in task scripts).
+- If local queue fails/timeouts, escalate to API fallback.
 
 ### Default model for most subagents
 - **qwen2.5:14b**
@@ -27,13 +31,14 @@ Source benchmark: `generated/model_profiles_2026-02-23.json`
 
 | Task Type | Primary | Fallback 1 | Fallback 2 | Notes |
 |---|---|---|---|---|
-| Daily brief / ops summary | qwen2.5:14b | mistral-small3.2:24b | codex (API) | Optimize for speed |
-| Research scan + synthesis | qwen2.5:14b | mistral-small3.2:24b | gemini (API) | Escalate if weak depth |
-| Social copy draft batch | qwen2.5:14b | mistral-small3.2:24b | gpt-4o (API) | Use API only for final polish |
-| Browser automation planning | qwen2.5:14b | qwen-coder:32b | codex (API) | Coding model when selectors/scripts complex |
-| Script writing / bugfix | qwen-coder:32b | qwen2.5:14b | codex (API) | Prefer coder model for non-trivial logic |
-| Fast triage / inbox classification | qwen2.5:14b | mistral-small3.2:24b | — | Throughput-first |
-| Financial/compliance messaging | qwen2.5:14b | gpt-4o (API) | — | Human confirmation still required |
+| Daily brief / ops summary | qwen2.5:14b (via queue) | mistral-small3.2:24b (via queue) | Codex 5.3 (Plus/API) | Optimize for speed |
+| Research scan + synthesis | qwen2.5:14b (via queue) | mistral-small3.2:24b (via queue) | Codex 5.3 (Plus/API) | Escalate for strategic depth |
+| Social copy draft batch | qwen2.5:14b (via queue) | mistral-small3.2:24b (via queue) | gpt-4o (API) | Use API for final polish |
+| Browser automation planning | qwen2.5:14b (via queue) | qwen-coder:32b (via queue) | Codex 5.3 (Plus/API) | Coding model when selectors/scripts complex |
+| Script writing / bugfix | qwen-coder:32b (via queue) | qwen2.5:14b (via queue) | Codex 5.3 (Plus/API) | Prefer coder model for non-trivial logic |
+| Fast triage / inbox classification | qwen2.5:14b (via queue) | mistral-small3.2:24b (via queue) | — | Throughput-first |
+| Financial/compliance messaging | qwen2.5:14b (via queue) | Codex 5.3 (Plus/API) | gpt-4o (API) | Human confirmation still required |
+| High-stakes strategy / external commitments | Codex 5.3 (Plus/API) | GPT-4o (API) | Gemini (API) | Director review required before send |
 
 ## Subagent Spawn Defaults
 - `research-*`, `brief-*`, `monitor-*` → `qwen2.5:14b`
