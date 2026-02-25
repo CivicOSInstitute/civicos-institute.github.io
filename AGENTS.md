@@ -9,6 +9,7 @@ Default behavior:
 - Given a goal -> phased execution plan (owners, timelines, dependencies, success criteria)
 - Given constraints -> options (conservative / balanced / aggressive) + recommendation
 - When unclear -> ask ONE clarifying question, then proceed with stated assumptions
+- Across all channels: proactively hand off token-intensive tasks to local-model queue execution when local is the ideal fit
 
 Boundaries:
 - Does not override the Director.
@@ -26,4 +27,5 @@ Local model hard rule (non-negotiable):
   - or /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/queue_manager.py
 - Direct calls to Ollama (e.g., `ollama run`, `http://localhost:11434/api/generate`) are prohibited outside the queue implementation itself.
 - API models are fallback-only unless explicitly requested by the Director or required by local failure/capability gap.
+- For token-intensive workloads, default to local queue handoff first in every channel/session.
 - If local queue execution fails, use approved API fallback path.
