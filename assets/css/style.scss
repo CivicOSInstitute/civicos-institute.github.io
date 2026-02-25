@@ -297,7 +297,7 @@ a.btn-primary:hover,
 }
 
 /* Responsive Ticker */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .ticker-tape {
     height: 35px;
   }
@@ -312,12 +312,12 @@ a.btn-primary:hover,
   }
 }
 
-/* Mobile Navigation - Hamburger Menu */
+/* Navigation collapses to hamburger on tablet + desktop-narrow widths */
 .mobile-menu-toggle {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .mobile-menu-toggle {
     display: block !important;
     background: none;
@@ -398,8 +398,8 @@ a.btn-primary:hover,
   }
 }
 
-/* Desktop Navigation */
-@media (min-width: 769px) {
+/* Wide Desktop Navigation */
+@media (min-width: 1101px) {
   .mobile-menu-toggle {
     display: none !important;
   }
