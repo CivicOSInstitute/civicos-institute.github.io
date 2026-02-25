@@ -141,3 +141,19 @@ Entry fields include:
 ```
 
 Timeout/error variants include `status: "timeout"` or `status: "error"` and `error` text.
+
+## Calling-skill integration helper
+
+Use `scripts/integration_helper.py` to standardize caller behavior (enqueue + poll + optional cleanup):
+
+```bash
+python3 scripts/integration_helper.py \
+  --calling-skill council-of-advisors \
+  --model local/qwen-14b \
+  --priority high \
+  --system-prompt "You are Vera..." \
+  --user-prompt "Analyze this decision..." \
+  --max-tokens 500
+```
+
+The helper returns final result JSON to stdout when `status` reaches `complete|timeout|error|cancelled`.

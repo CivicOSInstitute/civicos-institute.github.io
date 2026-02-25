@@ -52,9 +52,22 @@ python3 scripts/queue_manager.py status-block
 
 ## Calling convention for other skills
 
+Option A (manual):
 1) Register request with `enqueue`.
-2) Poll callback result file until status is `complete|timeout|error`.
+2) Poll callback result file until status is `complete|timeout|error|cancelled`.
 3) After consuming result, caller deletes its own callback file to keep `results/` clean.
+
+Option B (recommended helper):
+```bash
+python3 scripts/integration_helper.py \
+  --calling-skill council-of-advisors \
+  --model local/qwen-14b \
+  --priority high \
+  --system-prompt "You are Vera..." \
+  --user-prompt "Analyze this decision..." \
+  --max-tokens 500
+```
+Returns final result JSON to stdout after enqueue+poll(+cleanup).
 
 ## Validate/package
 

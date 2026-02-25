@@ -48,7 +48,7 @@ No advisor sees any other advisor response during this step.
 
 Queue integration pattern (required):
 1. Build 6 queue payloads (Magnus, Vera, Dante, Eleanor, Ray, Mira) with unique `agent_id`s and callbacks in `./data/agent-queue/results/`.
-2. Enqueue all 6 immediately (same council session).
+2. Enqueue all 6 immediately (same council session) — use `ollama-agent-queue/scripts/integration_helper.py` per seat or equivalent standardized enqueue call.
 3. Continue other council prep work while polling result files every ~3s.
 4. Proceed to synthesis once all six results are present (or explicit timeout/error handled).
 5. Delete consumed callback result files after ingest.
