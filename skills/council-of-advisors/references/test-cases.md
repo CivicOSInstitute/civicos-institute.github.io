@@ -18,6 +18,10 @@
 
 ## Evaluation checklist
 - Triggering: correct on/off behavior for all 12 tests.
+- Queue integration: all 6 advisor seats are enqueued immediately (fast registration), not directly run in parallel.
+- Polling behavior: council polls callback files until each seat reaches `complete|timeout|error`.
+- Cleanup behavior: consumed callback files are removed after ingest.
+- Runtime envelope: full six-seat sequence typically lands in ~3–4 minutes (acceptable), avoiding saturation/timeouts.
 - Distinctness: six advisors produce genuinely distinct perspectives, not minor variants.
 - Magnus quality: surfaces a real implementation gap, not mere restatement.
 - Dante quality: presents a substantive adversarial case, not only clarifying questions.

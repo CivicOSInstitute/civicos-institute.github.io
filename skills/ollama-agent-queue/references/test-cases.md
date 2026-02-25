@@ -65,3 +65,21 @@
 15. **Callback path honored**
    - Set custom callback path.
    - Expect result JSON at that exact path.
+
+## Trigger-eval phrases (skill routing)
+
+### Should trigger
+1. "Show me the agent queue status"
+2. "How many agents are queued right now"
+3. "Pause the agent queue"
+4. "Something is stuck in the queue — skip current agent"
+5. "Clear the agent queue, we're starting fresh"
+6. Council of Advisors registers 6 agents simultaneously (automatic)
+7. Memory-consolidator registers 1 agent (automatic)
+
+### Should NOT trigger
+1. "Draft an acknowledgment for the donation that came in"
+2. "What's in my approval queue?" (queue-optimizer domain)
+3. "Run the morning brief"
+4. "Check system health"
+5. "Post to social media"
