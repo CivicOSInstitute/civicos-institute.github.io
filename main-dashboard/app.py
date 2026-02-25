@@ -812,6 +812,12 @@ def youtube_content_studio():
     return render_template('youtube_content_studio.html', now=datetime.now())
 
 
+@app.route('/telegram-dashboard')
+def telegram_dashboard():
+    """Expanded Telegram operations console."""
+    return render_template('telegram_dashboard.html', now=datetime.now())
+
+
 @app.route('/youtube/channel-monitor')
 def youtube_channel_monitor():
     """Current monitored-channel summaries dashboard scaffold."""

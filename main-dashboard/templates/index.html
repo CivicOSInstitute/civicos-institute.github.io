@@ -325,7 +325,9 @@
                 </div>
                 <div class="card-body">
                     <div class="metric-row"><span class="metric-label">Status</span><span class="metric-value {% if gateway_stats.status == 'Running' %}success{% elif gateway_stats.status == 'Stopped' %}danger{% else %}warning{% endif %}">{{ gateway_stats.status }}</span></div>
+                    <div class="metric-row"><span class="metric-label">Uptime</span><span class="metric-value" style="font-size:0.85rem;">{{ gateway_stats.uptime or 'Unknown' }}</span></div>
                     <div class="metric-row"><span class="metric-label">Version</span><span class="metric-value" style="font-size:0.85rem;">{{ gateway_stats.version or 'Unknown' }}</span></div>
+                    <div class="quick-links"><a href="/api/gateway/status" class="btn btn-secondary" target="_blank">Raw Status</a></div>
                     <div id="restart-status" style="margin-top: 0.6rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
                 </div>
             </div>
@@ -632,6 +634,11 @@
                         <span class="metric-value">Community Server</span>
                         <a href="https://discord.gg/civictech" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Join</a>
                     </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Telegram Ops</span>
+                        <span class="metric-value">Expanded Console</span>
+                        <a href="/telegram-dashboard" class="btn btn-secondary btn-small" target="_blank" style="margin-left: auto; font-size: 0.75rem; padding: 0.25rem 0.5rem;">Open</a>
+                    </div>
                     <div style="margin-top:0.6rem; font-size:0.75rem; color:#64748b;">Portfolio-level access is centralized in Unified Dashboard Hub.</div>
                 </div>
             </div>
@@ -692,34 +699,6 @@
                         <button onclick="checkEmail('burt')" class="btn btn-secondary" style="flex: 1;">Check Burt</button>
                     </div>
                     <div id="email-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
-                </div>
-            </div>
-            
-            <!-- System Admin -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>
-                        <span class="status-dot status-online"></span>
-                        System Admin
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="metric-row">
-                        <span class="metric-label">Gateway Status</span>
-                        <span class="metric-value {% if gateway_stats.status == 'Running' %}success{% elif gateway_stats.status == 'Stopped' %}danger{% else %}warning{% endif %}">{{ gateway_stats.status }}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Uptime</span>
-                        <span class="metric-value">{{ gateway_stats.uptime or 'Unknown' }}</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Version</span>
-                        <span class="metric-value" style="font-size: 0.875rem;">{{ gateway_stats.version or 'Unknown' }}</span>
-                    </div>
-                    <div class="quick-links">
-                        <a href="/api/gateway/status" class="btn btn-secondary" target="_blank" style="width: 100%; justify-content:center;">View Raw Gateway Status</a>
-                    </div>
-                    <div id="gateway-admin-status" style="margin-top: 0.75rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
                 </div>
             </div>
             
@@ -800,24 +779,7 @@
                             <div id="contact-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
                         </div>
                         
-                        <!-- Send Telegram -->
-                        <div>
-                            <div class="section-title">Telegram</div>
-                            <form id="telegram-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                <div style="display:flex; gap:0.5rem;">
-                                    <select id="telegram-chat-select" onchange="loadTelegramHistory()" style="flex:1; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;"></select>
-                                    <button type="button" onclick="loadTelegramChats()" class="btn btn-secondary">Refresh</button>
-                                </div>
-                                <div id="telegram-history" style="max-height:180px; overflow:auto; border:1px solid #334155; border-radius:6px; padding:8px; font-size:0.8rem; color:#cbd5e1;"></div>
-                                <textarea id="telegram-message" placeholder="Type your message..." rows="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; resize: vertical;"></textarea>
-                                <div style="display:flex; gap:0.5rem;">
-                                    <button type="button" onclick="sendTelegram()" class="btn btn-primary" style="flex:1;">Send Message</button>
-                                    <button type="button" onclick="runTelegramDiagnostics()" class="btn btn-secondary" style="flex:1;">Diagnostics</button>
-                                </div>
-                            </form>
-                            <div id="telegram-status" style="margin-top: 0.5rem; font-size: 0.75rem; display: none;"></div>
-                            <div id="telegram-health" style="margin-top: 0.5rem; font-size: 0.75rem; color:#94a3b8;"></div>
-                        </div>
+                        <!-- Telegram moved to expanded social console -->
 
                         <!-- YouTube Summarizer -->
                         <div>
@@ -1361,10 +1323,6 @@
                     statusDiv.style.color = '#ef4444';
                 });
         }
-
-        // Initial data loads
-        loadTelegramChats();
-        runTelegramDiagnostics();
 
         // Auto-refresh every 60 seconds
         setInterval(() => location.reload(), 60000);

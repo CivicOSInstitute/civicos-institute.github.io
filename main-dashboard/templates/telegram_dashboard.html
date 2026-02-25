@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telegram Console — CivicOS</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px; margin-bottom:16px; }
+    .row { display:flex; gap:10px; }
+    .btn { background:#3b82f6; color:#fff; border:0; border-radius:8px; padding:8px 12px; cursor:pointer; }
+    .btn.secondary { background:#334155; }
+    select, textarea { width:100%; background:#0f172a; color:#e2e8f0; border:1px solid #334155; border-radius:8px; padding:8px; }
+    textarea { min-height:96px; }
+    #history { max-height: 300px; overflow:auto; border:1px solid #334155; border-radius:8px; padding:8px; margin-top:10px; }
+    .muted { color:#94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Telegram Console</h1>
+    <p class="muted">Expanded chat operations from Command Center.</p>
+
+    <div class="card">
+      <div class="row">
+        <select id="chatSelect" onchange="loadHistory()"></select>
+        <button class="btn secondary" onclick="loadChats()">Refresh</button>
+        <button class="btn secondary" onclick="diag()">Diagnostics</button>
+      </div>
+      <div id="health" class="muted" style="margin-top:8px;"></div>
+      <div id="history"></div>
+      <textarea id="message" placeholder="Type your message..."></textarea>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" onclick="sendMsg()">Send</button>
+        <a href="/" class="btn secondary" style="text-decoration:none;">Back to Command Center</a>
+      </div>
+      <div id="status" class="muted" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const esc = (s='') => String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+
+    function renderHistory(messages){
+      const box = document.getElementById('history');
+      if(!messages || !messages.length){ box.innerHTML = '<span class="muted">No messages.</span>'; return; }
+      box.innerHTML = messages.map(m => `<div style="margin:6px 0;"><strong style="color:${m.dir==='out'?'#93c5fd':'#86efac'}">${m.dir==='out'?'You':esc(m.from||'Them')}:</strong> ${esc(m.text||'')}</div>`).join('');
+    }
+
+    function loadChats(){
+      fetch('/api/telegram/chats').then(r=>r.json()).then(data=>{
+        const sel = document.getElementById('chatSelect');
+        if(data.status!=='success'){ document.getElementById('status').innerText = 'Error loading chats: '+(data.message||'unknown'); return; }
+        const chats = data.chats || [];
+        sel.innerHTML = chats.map(c => `<option value="${c.chat_id}">${esc(c.title)} (${c.chat_id})</option>`).join('');
+        if(!chats.length) sel.innerHTML = '<option value="">No chats</option>';
+        loadHistory();
+      });
+    }
+
+    function loadHistory(){
+      const chat_id = document.getElementById('chatSelect').value;
+      if(!chat_id){ renderHistory([]); return; }
+      fetch('/api/telegram/history', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id, limit:20})})
+        .then(r=>r.json()).then(data=> renderHistory(data.messages||[]));
+    }
+
+    function sendMsg(){
+      const chat_id = document.getElementById('chatSelect').value;
+      const message = document.getElementById('message').value.trim();
+      if(!chat_id || !message){ document.getElementById('status').innerText='Select chat and message first.'; return; }
+      document.getElementById('status').innerText='Sending...';
+      fetch('/api/telegram/send', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({chat_id, message})})
+        .then(r=>r.json()).then(data=>{
+          if(data.status==='success'){ document.getElementById('status').innerText='Message sent.'; document.getElementById('message').value=''; loadHistory(); }
+          else document.getElementById('status').innerText='Send failed: '+(data.message||'unknown');
+        }).catch(e=> document.getElementById('status').innerText='Network error: '+e.message);
+    }
+
+    function diag(){
+      fetch('/api/telegram/health').then(r=>r.json()).then(d=>{
+        document.getElementById('health').innerText = d.status==='success' ? `Healthy · chats: ${d.chat_count}` : `Issue: ${d.message}`;
+      });
+    }
+
+    loadChats();
+    diag();
+  </script>
+</body>
+</html>
