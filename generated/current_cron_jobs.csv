@@ -14,3 +14,5 @@ cron_expression,frequency_human,command,model_used
 10 8 * * *,Daily at 08:10,cd /Users/AI-OPS/.openclaw/workspace && /usr/bin/python3 scripts/grant_daily_local_scan.py >> generated/cron_grant_scan.log 2>&1,Primary: local queue model local/qwen-14b (priority high). Fallback: API model via openclaw agent
 * * * * *,Every minute,cd /Users/AI-OPS/.openclaw/workspace && python3 skills/ollama-agent-queue/scripts/queue_manager.py process-once >> generated/cron_ollama_queue_worker.log 2>&1,Queue worker (enables local model priority routing)
 */30 * * * *,Every 30 minutes,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/local_model_queue_enforcer.py >> generated/cron_local_model_queue_enforcer.log 2>&1,Policy guard (fails if direct Ollama/local server use is detected outside queue implementation)
+*/30 * * * *,Every 30 minutes,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/update_cron_jobs_csv.py >> generated/cron_update_cron_jobs_csv.log 2>&1,N/A (no model invocation detected)
+12 * * * *,Custom schedule,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/state_snapshot.py >> generated/cron_state_snapshot.log 2>&1,N/A (no model invocation detected)
