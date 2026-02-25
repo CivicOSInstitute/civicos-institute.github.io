@@ -270,6 +270,36 @@
         {% endfor %}
         {% endif %}
 
+        <!-- Unified Dashboard Hub (Single Access Point) -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+            <div class="card-header">
+                <h2><span class="status-dot status-online"></span>Unified Dashboard Hub</h2>
+                <span style="font-size:0.75rem; color:#94a3b8;">Single-entry navigation, no duplicate links</span>
+            </div>
+            <div class="card-body">
+                <div class="section-title">Operations</div>
+                <div class="quick-links">
+                    {% for item in dashboard_registry.operations %}
+                    <a href="{{ item.url }}" class="btn btn-secondary" target="_blank" title="{{ item.desc }}">{{ item.name }}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="section-title">YouTube</div>
+                <div class="quick-links">
+                    {% for item in dashboard_registry.youtube %}
+                    <a href="{{ item.url }}" class="btn btn-primary" target="_blank" title="{{ item.desc }}">{{ item.name }}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="section-title">External</div>
+                <div class="quick-links">
+                    {% for item in dashboard_registry.external %}
+                    <a href="{{ item.url }}" class="btn btn-secondary" target="_blank" title="{{ item.desc }}">{{ item.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
         <!-- Operations Cockpit (Mission-Critical) -->
         <div class="grid" style="margin-bottom: 1.25rem;">
             <div class="card">
@@ -303,6 +333,17 @@
                 <div class="card-body">
                     <div class="metric-row"><span class="metric-label">Revenue</span><span class="metric-value success">${{ "%.2f"|format((distribution_stats.total_revenue or 0)) }}</span></div>
                     <div class="metric-row"><span class="metric-label">Net</span><span class="metric-value {% if (finance_stats.net or 0) >= 0 %}success{% else %}danger{% endif %}">${{ "%.2f"|format((finance_stats.net or 0)) }}</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="status-dot {% if battery_stats.status == 'good' %}status-online{% elif battery_stats.status == 'warning' %}status-warning{% else %}status-offline{% endif %}"></span>Battery</h2>
+                </div>
+                <div class="card-body">
+                    <div class="metric-row"><span class="metric-label">Charge</span><span class="metric-value {% if battery_stats.status == 'good' %}success{% elif battery_stats.status == 'warning' %}warning{% else %}danger{% endif %}">{% if battery_stats.percent is not none %}{{ battery_stats.percent }}%{% else %}Unknown{% endif %}</span></div>
+                    <div class="metric-row"><span class="metric-label">State</span><span class="metric-value" style="font-size:0.85rem;">{% if battery_stats.charging == True %}Charging{% elif battery_stats.charging == False %}Discharging{% else %}Unknown{% endif %}</span></div>
+                    <div class="metric-row"><span class="metric-label">Power Source</span><span class="metric-value" style="font-size:0.85rem;">{{ battery_stats.source }}</span></div>
                 </div>
             </div>
 

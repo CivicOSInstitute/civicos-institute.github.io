@@ -25,6 +25,28 @@ SERVICES = {
     'searxng': {'url': 'http://100.81.239.69:8080', 'external': True}
 }
 
+
+def get_dashboard_registry():
+    """Single source of truth for dashboard/navigation cards shown in Command Center."""
+    return {
+        'operations': [
+            {'name': 'Task Tracker', 'url': 'http://100.81.239.69:8082', 'desc': 'Execution queue and owners'},
+            {'name': 'CRM', 'url': 'http://100.81.239.69:8083', 'desc': 'Contacts and relationship pipeline'},
+            {'name': 'Token Tracker', 'url': 'http://100.81.239.69:8081', 'desc': 'Model usage and budget controls'},
+            {'name': 'Publishing Ops', 'url': '/publishing-ops', 'desc': 'Amazon/Apple channel readiness'},
+            {'name': 'Finance', 'url': '/finance', 'desc': 'Revenue, expenses, and net'},
+        ],
+        'youtube': [
+            {'name': 'YouTube Content Studio (Future CivicOS)', 'url': '/youtube/content-studio', 'desc': 'Our planned/published content workflow'},
+            {'name': 'YouTube Channel Monitor', 'url': '/youtube/channel-monitor', 'desc': 'Tracked channels + summary feed'},
+        ],
+        'external': [
+            {'name': 'Website', 'url': 'https://civicos-institute.org', 'desc': 'Public web presence'},
+            {'name': 'News Feed', 'url': 'https://civicos-institute.org/news', 'desc': 'Public updates and widget'},
+            {'name': 'SearXNG', 'url': 'http://100.81.239.69:8080', 'desc': 'Private search'}
+        ]
+    }
+
 HOME_DIR = Path.home()
 OPENCLAW_DIR = HOME_DIR / '.openclaw'
 WORKSPACE_DIR = OPENCLAW_DIR / 'workspace'
@@ -533,6 +555,46 @@ def get_finance_stats():
         return stats
 
 
+def get_battery_stats():
+    """Read host battery status (best effort)."""
+    import subprocess
+    stats = {
+        'percent': None,
+        'charging': None,
+        'source': 'Unknown',
+        'status': 'unknown'
+    }
+    try:
+        out = subprocess.check_output(['pmset', '-g', 'batt'], text=True, timeout=5)
+        # Example: 'Now drawing from \"AC Power\"' + '85%; charging;'
+        if 'AC Power' in out:
+            stats['source'] = 'AC'
+        elif 'Battery Power' in out:
+            stats['source'] = 'Battery'
+
+        import re
+        m = re.search(r'(\d+)%', out)
+        if m:
+            stats['percent'] = int(m.group(1))
+
+        if 'charging' in out.lower() or 'charged' in out.lower() and 'discharging' not in out.lower():
+            stats['charging'] = True
+        elif 'discharging' in out.lower():
+            stats['charging'] = False
+
+        if stats['percent'] is not None:
+            if stats['percent'] <= 20:
+                stats['status'] = 'low'
+            elif stats['percent'] <= 40:
+                stats['status'] = 'warning'
+            else:
+                stats['status'] = 'good'
+        return stats
+    except Exception as e:
+        print(f"Error getting battery stats: {e}")
+        return stats
+
+
 def get_alerts():
     """Generate alerts based on system state."""
     alerts = []
@@ -587,6 +649,7 @@ def index():
     ebook_stats = get_ebook_stats()
     distribution_stats = get_distribution_stats()
     finance_stats = get_finance_stats()
+    battery_stats = get_battery_stats()
     
     # Calculate grant deadlines
     from datetime import datetime
@@ -613,6 +676,8 @@ def index():
                          ebook_stats=ebook_stats,
                          distribution_stats=distribution_stats,
                          finance_stats=finance_stats,
+                         battery_stats=battery_stats,
+                         dashboard_registry=get_dashboard_registry(),
                          grant_deadlines=grant_deadlines,
                          now=datetime.now())
 
@@ -699,6 +764,31 @@ def api_status():
     for name, config in SERVICES.items():
         services[name] = {'status': check_service(name, config)}
     return jsonify(services)
+
+
+@app.route('/youtube/content-studio')
+def youtube_content_studio():
+    """Future CivicOS YouTube content dashboard placeholder."""
+    return jsonify({
+        'status': 'ok',
+        'dashboard': 'YouTube Content Studio (Future CivicOS)',
+        'message': 'Scaffold live. Next phase: planning queue, script pipeline, and publish tracking.'
+    })
+
+
+@app.route('/youtube/channel-monitor')
+def youtube_channel_monitor():
+    """Current monitored-channel summaries dashboard placeholder."""
+    monitor_root = WORKSPACE_DIR / 'generated' / 'youtube_dashboard'
+    summaries = monitor_root / 'summaries'
+    videos = monitor_root / 'videos.json'
+    return jsonify({
+        'status': 'ok',
+        'dashboard': 'YouTube Channel Monitor',
+        'videos_json_exists': videos.exists(),
+        'summary_folders': len(list(summaries.glob('*'))) if summaries.exists() else 0,
+        'root': str(monitor_root)
+    })
 
 @app.route('/api/run-council', methods=['POST'])
 def run_council():
