@@ -12,9 +12,9 @@ Each Tuesday, the Director shares updates on CivicOS Institute's work, progress,
 
 ## Latest Letter
 
-**[Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/)**  
-*February 17, 2026*  
-This week, I've been thinking about infrastructure, not concrete and steel, but the invisible systems that determine whether technology serves democracy or undermines it. As AI becomes embedded in government decision-making, the governance frameworks we establish in the next 1,000 days will determine whether we get transparency and accountability or opaque algorithms making consequential decisions without public scrutiny.
+**[Weekly Update - Week 8, 2026](/blog/letter-2026-02-24/)**  
+*February 24, 2026*  
+This week focuses on urgency and implementation: the next 1,000 days will determine whether government AI systems are governed by transparency, auditability, and democratic accountability, or by opaque vendor-controlled defaults.
 
 ---
 
@@ -22,6 +22,7 @@ This week, I've been thinking about infrastructure, not concrete and steel, but 
 
 | Date | Title | Summary |
 |------|-------|---------|
+| Feb 24, 2026 | [Weekly Update - Week 8, 2026](/blog/letter-2026-02-24/) | On why the next 1,000 days are an implementation window, and the non-negotiable standards public-sector AI procurement must include: auditability, interoperability, and human accountability. |
 | Feb 17, 2026 | [Weekly Update - Week 7, 2026](/blog/letter-2026-02-17/) | On building the invisible infrastructure that determines whether AI serves democracy, and why the next 1,000 days are critical for establishing governance frameworks that prioritize transparency and accountability. |
 
 ---
