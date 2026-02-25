@@ -300,6 +300,22 @@
             </div>
         </div>
 
+        <!-- Migration Safety / Legacy Integrity -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+            <div class="card-header">
+                <h2><span class="status-dot {% if integrity_status.score >= 85 %}status-online{% elif integrity_status.score >= 60 %}status-warning{% else %}status-offline{% endif %}"></span>Legacy Function Integrity</h2>
+                <a href="/api/command-center/integrity" class="btn btn-secondary" target="_blank">Raw Check</a>
+            </div>
+            <div class="card-body">
+                <div class="metric-row"><span class="metric-label">Integrity Score</span><span class="metric-value {% if integrity_status.score >= 85 %}success{% elif integrity_status.score >= 60 %}warning{% else %}danger{% endif %}">{{ integrity_status.score }}%</span></div>
+                <div class="quick-links" style="margin-top:0.75rem;">
+                    {% for key, ok in integrity_status.checks.items() %}
+                    <span class="btn btn-secondary" style="cursor:default; opacity:0.95;">{{ '✅' if ok else '❌' }} {{ key }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
         <!-- Operations Cockpit (Mission-Critical) -->
         <div class="grid" style="margin-bottom: 1.25rem;">
             <div class="card">

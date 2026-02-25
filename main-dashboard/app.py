@@ -12,6 +12,7 @@ import csv
 from pathlib import Path
 import urllib.request
 import urllib.error
+import os
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -45,6 +46,35 @@ def get_dashboard_registry():
             {'name': 'News Feed', 'url': 'https://civicos-institute.org/news', 'desc': 'Public updates and widget'},
             {'name': 'SearXNG', 'url': 'http://100.81.239.69:8080', 'desc': 'Private search'}
         ]
+    }
+
+
+def get_integrity_status():
+    """Non-breaking guardrail: verify legacy command center dependencies are still available."""
+    checks = {
+        'task_db': (OPENCLAW_DIR / 'task-tracker' / 'tasks.db').exists(),
+        'crm_db': (OPENCLAW_DIR / 'civic-crm' / 'crm.db').exists(),
+        'token_log': (OPENCLAW_DIR / 'token-tracker' / 'token_log.jsonl').exists(),
+        'revenue_csv': REVENUE_CSV.exists(),
+        'expenses_csv': EXPENSES_CSV.exists(),
+        'youtube_monitor': (WORKSPACE_DIR / 'generated' / 'youtube_dashboard' / 'videos.json').exists(),
+        'ebook_pipeline': (EBOOK_SCRIPTS / 'run_all.sh').exists(),
+    }
+
+    # Bridge reachability (telegram/email/gateway API dependency)
+    try:
+        urllib.request.urlopen('http://host.docker.internal:18080/gateway/status', timeout=4)
+        checks['host_bridge'] = True
+    except Exception:
+        checks['host_bridge'] = False
+
+    total = len(checks)
+    ok = sum(1 for v in checks.values() if v)
+    return {
+        'checks': checks,
+        'ok': ok,
+        'total': total,
+        'score': round((ok / total) * 100) if total else 0
     }
 
 HOME_DIR = Path.home()
@@ -650,6 +680,8 @@ def index():
     distribution_stats = get_distribution_stats()
     finance_stats = get_finance_stats()
     battery_stats = get_battery_stats()
+    integrity_status = get_integrity_status()
+    epic_mode = os.getenv('COMMAND_CENTER_EPIC_MODE', '1') == '1'
     
     # Calculate grant deadlines
     from datetime import datetime
@@ -677,6 +709,8 @@ def index():
                          distribution_stats=distribution_stats,
                          finance_stats=finance_stats,
                          battery_stats=battery_stats,
+                         integrity_status=integrity_status,
+                         epic_mode=epic_mode,
                          dashboard_registry=get_dashboard_registry(),
                          grant_deadlines=grant_deadlines,
                          now=datetime.now())
@@ -766,29 +800,44 @@ def api_status():
     return jsonify(services)
 
 
+@app.route('/api/command-center/integrity')
+def api_command_center_integrity():
+    """Return legacy-function integrity checks to ensure non-breaking layout migration."""
+    return jsonify(get_integrity_status())
+
+
 @app.route('/youtube/content-studio')
 def youtube_content_studio():
-    """Future CivicOS YouTube content dashboard placeholder."""
-    return jsonify({
-        'status': 'ok',
-        'dashboard': 'YouTube Content Studio (Future CivicOS)',
-        'message': 'Scaffold live. Next phase: planning queue, script pipeline, and publish tracking.'
-    })
+    """Future CivicOS YouTube content dashboard scaffold."""
+    return render_template('youtube_content_studio.html', now=datetime.now())
 
 
 @app.route('/youtube/channel-monitor')
 def youtube_channel_monitor():
-    """Current monitored-channel summaries dashboard placeholder."""
+    """Current monitored-channel summaries dashboard scaffold."""
     monitor_root = WORKSPACE_DIR / 'generated' / 'youtube_dashboard'
     summaries = monitor_root / 'summaries'
     videos = monitor_root / 'videos.json'
-    return jsonify({
-        'status': 'ok',
-        'dashboard': 'YouTube Channel Monitor',
-        'videos_json_exists': videos.exists(),
-        'summary_folders': len(list(summaries.glob('*'))) if summaries.exists() else 0,
-        'root': str(monitor_root)
-    })
+
+    items = []
+    if summaries.exists():
+        for d in sorted(summaries.glob('*'), reverse=True)[:20]:
+            if d.is_dir():
+                md = d / 'summary.md'
+                items.append({
+                    'id': d.name,
+                    'has_summary': md.exists(),
+                    'summary_path': str(md) if md.exists() else ''
+                })
+
+    return render_template(
+        'youtube_channel_monitor.html',
+        now=datetime.now(),
+        monitor_root=str(monitor_root),
+        videos_json_exists=videos.exists(),
+        summary_count=len(items),
+        items=items
+    )
 
 @app.route('/api/run-council', methods=['POST'])
 def run_council():

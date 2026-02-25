@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Content Studio — CivicOS</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; }
+    .wrap { max-width: 1100px; margin:0 auto; padding:24px; }
+    .card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px; margin-bottom:16px; }
+    .muted { color:#94a3b8; }
+    .row { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    .pill { background:#334155; border-radius:999px; padding:6px 10px; display:inline-block; font-size:12px; }
+    a.btn { color:white; text-decoration:none; background:#3b82f6; padding:8px 12px; border-radius:8px; display:inline-block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>YouTube Content Studio (Future CivicOS)</h1>
+    <p class="muted">Scaffold live. This dashboard will manage our internal content pipeline end-to-end.</p>
+
+    <div class="card">
+      <h3>Planned Pipeline</h3>
+      <div class="row">
+        <div><span class="pill">1. Content Backlog</span><p class="muted">Topic bank + priority + owner</p></div>
+        <div><span class="pill">2. Script Drafting</span><p class="muted">Generate/refine scripts with approvals</p></div>
+        <div><span class="pill">3. Production Status</span><p class="muted">Draft → Record → Edit → Publish</p></div>
+        <div><span class="pill">4. Post-Publish Metrics</span><p class="muted">Views, retention, CTA conversion</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Quick Actions (next build phase)</h3>
+      <ul>
+        <li>Create content item</li>
+        <li>Attach outline/script</li>
+        <li>Mark publish state</li>
+        <li>Link to summary/distribution outputs</li>
+      </ul>
+      <a class="btn" href="/">Back to Command Center</a>
+    </div>
+
+    <p class="muted">Generated {{ now.strftime('%Y-%m-%d %H:%M') }}</p>
+  </div>
+</body>
+</html>
