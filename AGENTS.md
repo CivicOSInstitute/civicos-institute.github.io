@@ -26,6 +26,8 @@ Local model hard rule (non-negotiable):
   - /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/integration_helper.py
   - or /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/queue_manager.py
 - Direct calls to Ollama (e.g., `ollama run`, `http://localhost:11434/api/generate`) are prohibited outside the queue implementation itself.
+- Main/default local model is the operating rule for all eligible work.
+- No model switching for routine work; treat alternate/local secondary models and all API models as exception-only.
 - API models are fallback-only unless explicitly requested by the Director or required by local failure/capability gap.
 - For token-intensive workloads, default to local queue handoff first in every channel/session.
 - If local queue execution fails, use approved API fallback path.
