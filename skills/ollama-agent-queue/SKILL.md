@@ -96,20 +96,34 @@ If `queue.lock` is older than 10 minutes and no Ollama process is active:
 # Enqueue one request
 python3 scripts/queue_manager.py enqueue --payload-json '<json>'
 
-# View queue status
+# View queue status (JSON)
 python3 scripts/queue_manager.py status
+
+# View queue status (human block)
+python3 scripts/queue_manager.py status-block
 
 # Run one cycle
 python3 scripts/queue_manager.py process-once
 
-# Persistent watcher
+# Persistent watcher (2s loop)
 python3 scripts/queue_manager.py worker --poll-seconds 2
 
 # Control plane
 python3 scripts/queue_manager.py pause
 python3 scripts/queue_manager.py resume
 python3 scripts/queue_manager.py clear
+python3 scripts/queue_manager.py skip-current
 ```
+
+## Performance log
+
+Each processed item appends to:
+- `./data/agent-queue/queue-log-YYYY-MM-DD.json`
+
+Entry fields include:
+- `agent_id`, `calling_skill`, `model`, `priority`
+- `queued_at`, `started_at`, `completed_at`
+- `wait_time_seconds`, `duration_seconds`, `tokens_used`, `status`
 
 ## Result schema (output)
 

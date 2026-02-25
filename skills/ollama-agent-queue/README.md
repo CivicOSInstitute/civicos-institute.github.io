@@ -38,6 +38,7 @@ python3 scripts/queue_manager.py worker --poll-seconds 2
 
 - Uses `data/agent-queue/queue.lock` while active item is running.
 - Will not start next item until current call returns complete/timeout/error.
+- Handles stale lock recovery (>10 min, no ollama process) automatically.
 
 ## Controls
 
@@ -45,6 +46,8 @@ python3 scripts/queue_manager.py worker --poll-seconds 2
 python3 scripts/queue_manager.py pause
 python3 scripts/queue_manager.py resume
 python3 scripts/queue_manager.py clear
+python3 scripts/queue_manager.py skip-current
+python3 scripts/queue_manager.py status-block
 ```
 
 ## Calling convention for other skills

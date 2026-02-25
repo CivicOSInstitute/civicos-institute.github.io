@@ -43,8 +43,15 @@ Write a neutral 100-150 word problem statement including:
 - What help is needed (assumption challenge, options, stress test, ethics)
 
 ### STEP 2 — Independent advisor responses
-Spawn six advisors with the same problem statement using `sessions_spawn(mode=run)`.
+Register all six advisor requests to `ollama-agent-queue` immediately (fast enqueue, no direct parallel Ollama calls), then poll callback results until each seat returns `complete|timeout|error`.
 No advisor sees any other advisor response during this step.
+
+Queue integration pattern (required):
+1. Build 6 queue payloads (Magnus, Vera, Dante, Eleanor, Ray, Mira) with unique `agent_id`s and callbacks in `./data/agent-queue/results/`.
+2. Enqueue all 6 immediately (same council session).
+3. Continue other council prep work while polling result files every ~3s.
+4. Proceed to synthesis once all six results are present (or explicit timeout/error handled).
+5. Delete consumed callback result files after ingest.
 
 Model assignment + fallback:
 - Seat 1 MAGNUS → `qwen2.5-coder:32b-instruct-q3_K_L` | fallback: `openai-codex/gpt-5.3-codex`
@@ -55,9 +62,15 @@ Model assignment + fallback:
 - Seat 6 MIRA → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `qwen2.5:14b`
 
 Operating intent:
-- Run all six advisor seats locally first.
+- Run all six advisor seats locally first via queue serialization.
 - Use fallback only if local model is unavailable or fails quality constraints.
 - Burt seat (Seat 7) owns final synthesis authority.
+
+Expected sequential runtime (target):
+- 3× Mistral seats: ~50s total
+- 2× Qwen-14B seats: ~75s total
+- 1× Qwen-Coder-32B seat: ~75s total
+- Full council: ~3–4 minutes (acceptable and preferred over failed parallel runs)
 
 ### STEP 3 — Cross-pollination (optional)
 Trigger only if 2+ advisors conflict sharply on a key point.
