@@ -33,8 +33,9 @@
             </button>
             
             <nav class="site-nav" id="mainNav">
+                {% assign cb = '20260225a' %}
                 {% for item in site.navigation %}
-                    <a class="page-link" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                    <a class="page-link" href="{{ item.url | relative_url }}?v={{ cb }}">{{ item.title }}</a>
                 {% endfor %}
             </nav>
         </div>
