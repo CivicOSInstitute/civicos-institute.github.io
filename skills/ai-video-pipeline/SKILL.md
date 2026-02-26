@@ -57,6 +57,7 @@ Return:
 4. Build rough cut: concatenate/select clips; trim to target duration.
 5. Audio pass:
    - generate natural voiceover with `scripts/voiceover_natural.sh` using `voice_profile=auto`
+   - support expressive script tags: `[[pause:ms]]`, `[[emph:text]]`, `[[slow:text]]`
    - voiceover mix
    - background music ducking
    - loudness normalization (EBU R128 target)

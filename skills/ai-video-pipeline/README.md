@@ -24,6 +24,9 @@ echo "$PROJECT_DIR"
 # Put your script at: $PROJECT_DIR/assets/script.txt
 ./scripts/voiceover_natural.sh "$PROJECT_DIR/assets/script.txt" "$PROJECT_DIR/audio/voiceover.wav" narrator
 
+# Optional script tags for expressive delivery:
+# [[pause:500]] [[emph:critical phrase]] [[slow:this sentence lands here]]
+
 # 4) Export platform variants
 ./scripts/export_variants.sh "$PROJECT_DIR/src/master.mp4" "$PROJECT_DIR/exports"
 
