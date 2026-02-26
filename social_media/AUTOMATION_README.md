@@ -27,6 +27,44 @@ python3 scripts/open_social_drafts.py
 - Facebook direct autopost requires API app permissions or stable browser automation session.
 - Discord webhook posting requires keychain secret `discord-civicos-webhook` to be valid.
 
+## Reddit automation (compliant near-autonomous)
+
+Added:
+- Runner: `scripts/reddit_autopilot.py`
+- Config template: `social_media/reddit_automation_config.example.json`
+- Queue sample: `social_media/queue/reddit_queue.sample.json`
+- Pause state: `social_media/queue/reddit_state.json`
+- Logs: `social_media/analytics/reddit_autopilot_*.json`
+
+Behavior:
+- Uses official Reddit OAuth + API endpoints.
+- Supports queued `post` and `comment` actions.
+- Enforces spacing (`min_seconds_between_actions`) to reduce anti-spam triggers.
+- Automatically pauses on auth/challenge-style errors (no CAPTCHA bypass attempts).
+
+Setup:
+1. Create a Reddit app and collect `client_id` + `client_secret`.
+2. Obtain a `refresh_token` (one-time human auth).
+3. Copy template to active config:
+   ```bash
+   cp social_media/reddit_automation_config.example.json social_media/reddit_automation_config.json
+   ```
+4. Create active queue:
+   ```bash
+   cp social_media/queue/reddit_queue.sample.json social_media/queue/reddit_queue.json
+   ```
+
+Run:
+```bash
+python3 scripts/reddit_autopilot.py --dry-run
+python3 scripts/reddit_autopilot.py
+```
+
+If paused:
+- Check `social_media/queue/reddit_state.json`
+- Resolve required manual auth/verification on Reddit
+- Re-run the script (it auto-clears pause after successful run)
+
 ## Next hardening (tomorrow)
 
 - Add scheduler hooks (hourly/daily)

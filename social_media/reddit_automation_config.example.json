@@ -1,0 +1,7 @@
+{
+  "client_id": "REDDIT_APP_CLIENT_ID",
+  "client_secret": "REDDIT_APP_CLIENT_SECRET",
+  "refresh_token": "REDDIT_REFRESH_TOKEN",
+  "user_agent": "civicos-reddit-autopilot/1.0 by u/YOUR_USERNAME",
+  "min_seconds_between_actions": 120
+}

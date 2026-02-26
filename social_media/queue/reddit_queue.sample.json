@@ -1,0 +1,19 @@
+{
+  "actions": [
+    {
+      "id": "r1-comment-readiness",
+      "type": "comment",
+      "thing_id": "t3_REPLACE_POST_ID",
+      "text": "At what point did you feel your child was ready to use AI tools independently? We've seen that troubleshooting confidence is usually the turning point.",
+      "status": "queued"
+    },
+    {
+      "id": "r2-post-local-llama",
+      "type": "post",
+      "subreddit": "LocalLLaMA",
+      "title": "For those teaching teens: did starting with local models change learning outcomes?",
+      "text": "Curious if anyone has tested introducing local model workflows before frontier APIs in student settings. Did it change how students reason about privacy, limits, and troubleshooting?",
+      "status": "queued"
+    }
+  ]
+}
