@@ -2,7 +2,7 @@
 
 Status: **Active**
 Owner: Burt Prime
-Updated: 2026-02-22
+Updated: 2026-02-26
 
 ## Policy Goal
 Use **local models as much as practical** while preserving execution quality and speed for high-impact tasks.
@@ -28,9 +28,10 @@ Use local by default for:
 - Background tasks
 
 Preferred:
-1. **Qwen** (`Qwen`) — default local generalist
-2. **Mistral** (`Mistral`) — local fallback
-3. **Qwen-Coder** (`Qwen-Coder`) — coding-heavy local, off-peak preferred
+1. **Qwen3-14B** (`local/qwen-14b` alias → `qwen3:14b`) — default local generalist
+2. **Mistral** (`local/mistral-small`) — local fallback / second-opinion style
+3. **Qwen-Coder** (`local/qwen-coder-32b`) — coding-heavy local, off-peak preferred
+4. **Qwen2.5-14B** (`local/qwen2.5-14b`) — legacy fallback only
 
 ### Tier 2 — API Escalation (when needed)
 Escalate from local when task is high-stakes or local quality is insufficient:
@@ -54,10 +55,10 @@ Always require explicit human confirmation for:
 
 ## Sub-Agent Model Defaults
 - `artifact architect`, `coding`, `automation`, `debug`, `infra` → **Codex**
-- `research`, `scan`, `summarize` → **Qwen** first, escalate to **Gemini** if weak
-- `email`, `inbox`, `simple tasks` → **Qwen** (local) by default
-- `draft`, `announcement` → **Qwen** first, escalate to **GPT-4o** for final polish
-- `bulk/background` → **Qwen** / **Mistral**
+- `research`, `scan`, `summarize` → **Qwen3-14B** first, escalate to **Gemini** if weak
+- `email`, `inbox`, `simple tasks` → **Qwen3-14B** (local) by default
+- `draft`, `announcement` → **Qwen3-14B** first, escalate to **GPT-4o** for final polish
+- `bulk/background` → **Qwen3-14B** / **Mistral**
 
 ## Escalation Trigger Checklist
 Escalate from local if any true:
@@ -69,15 +70,16 @@ Escalate from local if any true:
 ## Operator Note
 When spawning sub-agents, pass `model` explicitly to enforce this matrix.
 
-## Empirical Local Profiles (2026-02-23)
-Benchmarked local Ollama models for speed + boundary behavior:
-- qwen2.5:14b: fastest balanced default (~13.32s avg on quick test set)
-- mistral-small3.2:24b-instruct-2506-q4_K_M: quality fallback (~24.78s avg)
-- qwen2.5-coder:32b-instruct-q3_K_L: coding specialist, slowest (~36.36s avg)
+## Empirical Local Profiles (2026-02-26)
+Benchmarked local Ollama models for speed + quality taste checks:
+- `qwen3:14b` (via `local/qwen-14b`): new default; ~2x faster average vs qwen2.5 in current 3-case benchmark set
+- `qwen2.5:14b` (via `local/qwen2.5-14b`): retained as legacy fallback route
+- `mistral-small3.2:24b-instruct-2506-q4_K_M`: style-diverse fallback / second-opinion lane
+- `qwen2.5-coder:32b-instruct-q3_K_L`: coding specialist, slower but useful for hard code tasks
 
 Artifacts:
-- `generated/model_profiles_2026-02-23.json`
-- `generated/subagent_assignment_matrix_2026-02-23.md`
+- `/tmp/qwen_benchmark_results_2026-02-26.json`
+- `generated/subagent_assignment_matrix_2026-02-23.md` (superseded guidance in progress)
 
 ### Smart spawn helper
 Use:

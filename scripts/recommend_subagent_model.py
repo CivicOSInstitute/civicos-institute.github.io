@@ -15,6 +15,6 @@ if any(k in task for k in code_kw):
 elif any(k in task for k in rewrite_kw):
     print('mistral-small3.2:24b-instruct-2506-q4_K_M')
 elif any(k in task for k in research_kw):
-    print('qwen2.5:14b')
+    print('qwen3:14b')
 else:
-    print('qwen2.5:14b')
+    print('qwen3:14b')

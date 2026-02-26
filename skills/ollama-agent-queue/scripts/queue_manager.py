@@ -15,14 +15,16 @@ from typing import Any, Dict, List, Optional, Tuple
 PRIORITY_RANK = {"normal": 0, "high": 1, "urgent": 2}
 MODEL_MAP = {
     "local/qwen-coder-32b": "qwen2.5-coder:32b",
-    "local/qwen-14b": "qwen2.5:14b",
+    "local/qwen-14b": "qwen3:14b",            # default 14B route (upgraded)
     "local/qwen3-14b": "qwen3:14b",
+    "local/qwen2.5-14b": "qwen2.5:14b",       # explicit legacy route
     "local/mistral-small": "mistral:latest",
 }
 MODEL_TIMEOUTS = {
     "local/mistral-small": 120,
-    "local/qwen-14b": 240,
+    "local/qwen-14b": 300,
     "local/qwen3-14b": 300,
+    "local/qwen2.5-14b": 240,
     "local/qwen-coder-32b": 480,
 }
 
@@ -125,6 +127,7 @@ class QueueManager:
             "local/mistral-small": 0.0,
             "local/qwen-14b": 0.0,
             "local/qwen3-14b": 0.0,
+            "local/qwen2.5-14b": 0.0,
             "local/qwen-coder-32b": 0.0,
         }
         if not p.exists():
@@ -653,7 +656,7 @@ class QueueManager:
             f"Then: {next2.get('agent_id')} ({next2.get('model')}) — {next2.get('priority', 'normal')}" if next2 else "Then: none",
             f"Completed today: {s.get('completed_today', 0)}",
             f"Failed today: {s.get('failed_today', 0)}",
-            f"Avg duration: {av['local/mistral-small']}s (Mistral) | {av['local/qwen-14b']}s (Qwen2.5-14B) | {av['local/qwen3-14b']}s (Qwen3-14B) | {av['local/qwen-coder-32b']}s (QwenCoder32B)",
+            f"Avg duration: {av['local/mistral-small']}s (Mistral) | {av['local/qwen-14b']}s (Qwen-Default) | {av['local/qwen3-14b']}s (Qwen3-14B) | {av['local/qwen2.5-14b']}s (Qwen2.5-14B legacy) | {av['local/qwen-coder-32b']}s (QwenCoder32B)",
             f"Queue file: {self.paths.queue_file}",
             f"Results folder: {self.paths.results_dir} ({pending_pickup} pending pickup)",
             "Manual commands:",
