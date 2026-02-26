@@ -36,6 +36,7 @@ Optional:
 - `logo_path`
 - `music_path`
 - `voiceover_path`
+- `voice_profile` (`auto` default, `narrator`, `founder`)
 - `captions_style` (minimal, bold, subtitle)
 
 ## Output contract
@@ -55,6 +56,7 @@ Return:
 3. If needed, extract transcript with Whisper skill/tooling and save `captions/raw.srt`.
 4. Build rough cut: concatenate/select clips; trim to target duration.
 5. Audio pass:
+   - generate natural voiceover with `scripts/voiceover_natural.sh` using `voice_profile=auto`
    - voiceover mix
    - background music ducking
    - loudness normalization (EBU R128 target)
