@@ -31,3 +31,7 @@ Local model hard rule (non-negotiable):
 - API models are fallback-only unless explicitly requested by the Director or required by local failure/capability gap.
 - For token-intensive workloads, default to local queue handoff first in every channel/session.
 - If local queue execution fails, use approved API fallback path.
+
+Workflow operating standard (mandatory):
+- Follow `/Users/AI-OPS/.openclaw/workspace/WORKFLOW_V2_SPEC.md` for lane architecture, queue contract, promotion gates, reliability controls, and rollback policy.
+- Treat all new model/server experiments as `experimental` lane unless explicitly promoted.
