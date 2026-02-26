@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-02-26T16:44:09-05:00",
+  "date": "2026-02-26",
+  "workflow": "workflow_slo_rollup",
+  "lane": "prod-critical",
+  "queue": {
+    "jobs_total": 24,
+    "jobs_complete": 23,
+    "success_rate_percent": 95.83,
+    "wait_p50_seconds": 60.06,
+    "wait_p95_seconds": 232.44
+  },
+  "fallback": {
+    "hits": 0,
+    "artifacts_checked": 11,
+    "estimated_rate_percent": 0.0
+  },
+  "ops_cycle": {
+    "last_total_seconds": 3,
+    "failing_steps": 1
+  },
+  "targets": {
+    "queue_success_rate_percent": ">=98",
+    "queue_wait_p95_seconds": "<30"
+  }
+}
