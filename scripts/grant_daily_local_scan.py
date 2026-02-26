@@ -18,6 +18,8 @@ from urllib.request import Request, urlopen
 WORKSPACE = Path('/Users/AI-OPS/.openclaw/workspace')
 OUT_DIR = WORKSPACE / 'generated' / 'grants'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+WORKFLOW_LANE = 'prod-critical'
+WORKFLOW_NAME = 'grant_daily_local_scan'
 
 SOURCES = [
     ("Grants.gov - Community Development", "https://www.grants.gov/web/grants/search-grants.html?keywords=community+development"),
@@ -165,7 +167,13 @@ def main() -> int:
         except Exception as e:
             errors.append({"source": name, "url": url, "error": str(e)})
 
-    snapshot = {"generated_at": ts, "pages": pages, "errors": errors}
+    snapshot = {
+        "generated_at": ts,
+        "workflow": WORKFLOW_NAME,
+        "lane": WORKFLOW_LANE,
+        "pages": pages,
+        "errors": errors,
+    }
     raw_path = OUT_DIR / f'grant-scan-raw-{ts}.json'
     raw_path.write_text(json.dumps(snapshot, indent=2))
 
@@ -195,7 +203,10 @@ def main() -> int:
     report_path = OUT_DIR / f'grant-scan-{ts}.md'
     latest_path = OUT_DIR / 'grant-scan-latest.md'
     report_path.write_text(report)
-    latest_path.write_text(report)
+    # Atomic latest pointer write
+    latest_tmp = OUT_DIR / 'grant-scan-latest.tmp.md'
+    latest_tmp.write_text(report)
+    latest_tmp.replace(latest_path)
 
     print(str(report_path))
     return 0

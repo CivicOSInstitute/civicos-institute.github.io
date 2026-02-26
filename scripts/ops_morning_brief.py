@@ -7,6 +7,8 @@ from pathlib import Path
 
 BASE = Path('/Users/AI-OPS/.openclaw/workspace')
 TASK_DB = Path('/Users/AI-OPS/.openclaw/task-tracker/tasks.db')
+WORKFLOW_LANE = 'prod-critical'
+WORKFLOW_NAME = 'ops_morning_brief'
 NEWS_JSON = BASE / 'website-news' / 'news.json'
 SOCIAL_QUEUE = BASE / 'social_media' / 'queue'
 OUT_DIR = BASE / 'generated'
@@ -133,6 +135,8 @@ def render_md(now, task_stats, news, queue, checklist, health):
     lines = []
     lines.append(f"# Ops Morning Brief — {now.strftime('%Y-%m-%d %H:%M %Z')}")
     lines.append('')
+    lines.append(f"_workflow: {WORKFLOW_NAME} | lane: {WORKFLOW_LANE}_")
+    lines.append('')
 
     lines.append('## Snapshot')
     if task_stats.get('error'):
@@ -215,6 +219,13 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = Path(args.out).resolve() if args.out else (OUT_DIR / f'ops_morning_brief_{today}.md')
     out.write_text(md)
+
+    # Atomic latest pointer for downstream readers
+    latest = OUT_DIR / 'ops_morning_brief_latest.md'
+    latest_tmp = OUT_DIR / 'ops_morning_brief_latest.tmp.md'
+    latest_tmp.write_text(md)
+    latest_tmp.replace(latest)
+
     print(str(out))
 
 

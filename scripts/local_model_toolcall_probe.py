@@ -19,6 +19,8 @@ PROMPT = (
 
 OUT_DIR = Path('/Users/AI-OPS/.openclaw/workspace/generated')
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+WORKFLOW_LANE = 'prod-critical'
+WORKFLOW_NAME = 'local_model_toolcall_probe'
 
 
 def run_model(model: str):
@@ -116,6 +118,8 @@ def main():
     rows = [run_model(m) for m in MODELS]
     payload = {
         'generated_at': datetime.now().isoformat(timespec='seconds'),
+        'workflow': WORKFLOW_NAME,
+        'lane': WORKFLOW_LANE,
         'probe': 'local_toolcall_proxy',
         'models': rows
     }

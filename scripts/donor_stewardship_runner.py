@@ -20,6 +20,8 @@ from pathlib import Path
 
 BASE = Path('/Users/AI-OPS/.openclaw/workspace')
 DATA = BASE / 'data'
+WORKFLOW_LANE = 'prod-critical'
+WORKFLOW_NAME = 'donor_stewardship_runner'
 QUEUE = DATA / 'queue' / 'pending'
 CRM_LOG = DATA / 'crm'
 GEN = BASE / 'generated'
@@ -97,6 +99,8 @@ def write_ack_queue(donor, gift, tier):
     priority = 'urgent' if gift['amount'] > 2500 else ('high' if gift['amount'] > 500 else 'standard')
     f = QUEUE / f"ack-{donor['id']}-{gift_date}.md"
     header = {
+        'workflow': WORKFLOW_NAME,
+        'lane': WORKFLOW_LANE,
         'id': fid,
         'type': 'acknowledgment_letter',
         'destination_type': 'email',
@@ -223,7 +227,7 @@ def main():
         res = mode_portfolio(data)
 
     out = GEN / f"donor_stewardship_{args.mode}_latest.json"
-    out.write_text(json.dumps({'generated_at': now_iso(), **res}, indent=2))
+    out.write_text(json.dumps({'generated_at': now_iso(), 'workflow': WORKFLOW_NAME, 'lane': WORKFLOW_LANE, **res}, indent=2))
     print(out)
     print(json.dumps(res, indent=2))
 
