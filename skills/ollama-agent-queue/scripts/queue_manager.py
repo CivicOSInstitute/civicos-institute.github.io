@@ -16,11 +16,13 @@ PRIORITY_RANK = {"normal": 0, "high": 1, "urgent": 2}
 MODEL_MAP = {
     "local/qwen-coder-32b": "qwen2.5-coder:32b",
     "local/qwen-14b": "qwen2.5:14b",
+    "local/qwen3-14b": "qwen3:14b",
     "local/mistral-small": "mistral:latest",
 }
 MODEL_TIMEOUTS = {
     "local/mistral-small": 120,
     "local/qwen-14b": 240,
+    "local/qwen3-14b": 300,
     "local/qwen-coder-32b": 480,
 }
 
@@ -119,7 +121,12 @@ class QueueManager:
 
     def _avg_duration_by_model(self) -> Dict[str, float]:
         p = self._daily_perf_log_path()
-        out = {"local/mistral-small": 0.0, "local/qwen-14b": 0.0, "local/qwen-coder-32b": 0.0}
+        out = {
+            "local/mistral-small": 0.0,
+            "local/qwen-14b": 0.0,
+            "local/qwen3-14b": 0.0,
+            "local/qwen-coder-32b": 0.0,
+        }
         if not p.exists():
             return out
         try:
@@ -182,6 +189,8 @@ class QueueManager:
             "system": system_prompt,
             "prompt": user_prompt,
             "stream": False,
+            # Prefer final-answer output for queue callers.
+            "think": False,
             "options": {"num_predict": max_tokens, "temperature": 0.7},
         }
         req = urllib.request.Request(
@@ -210,6 +219,25 @@ class QueueManager:
     def _is_resource_error(self, err_payload: Dict[str, Any]) -> bool:
         text = json.dumps(err_payload, ensure_ascii=False).lower()
         return ("503" in text) or ("out of memory" in text) or ("resource exhausted" in text)
+
+    def _extract_text(self, payload: Dict[str, Any]) -> str:
+        # Ollama formats differ by model/version. Try common response shapes.
+        response = payload.get("response")
+        if isinstance(response, str) and response.strip():
+            return response
+
+        msg = payload.get("message")
+        if isinstance(msg, dict):
+            content = msg.get("content")
+            if isinstance(content, str) and content.strip():
+                return content
+
+        for k in ("content", "output_text", "text", "thinking"):
+            v = payload.get(k)
+            if isinstance(v, str) and v.strip():
+                return v
+
+        return ""
 
     def enqueue(self, payload: Dict[str, Any]) -> None:
         required = ["calling_skill", "agent_id", "model", "system_prompt", "user_prompt", "max_tokens"]
@@ -548,16 +576,26 @@ class QueueManager:
                 })
                 return {"ok": False, "message": result["status"], "agent_id": nxt.get("agent_id")}
 
+            extracted = self._extract_text(payload)
+            eval_count = payload.get("eval_count")
+            eval_duration_ns = payload.get("eval_duration")
+            tokens_per_second = None
+            if isinstance(eval_count, (int, float)) and isinstance(eval_duration_ns, (int, float)) and eval_duration_ns > 0:
+                tokens_per_second = round(float(eval_count) / (float(eval_duration_ns) / 1_000_000_000), 2)
+
             result = {
                 "agent_id": nxt.get("agent_id"),
                 "calling_skill": nxt.get("calling_skill"),
                 "model": requested_model,
                 "status": "complete",
-                "result": payload.get("response", ""),
-                "tokens_used": payload.get("eval_count"),
+                "result": extracted,
+                "tokens_used": eval_count,
+                "tokens_per_second": tokens_per_second,
                 "duration_seconds": duration,
                 "completed_at": ended,
             }
+            if not extracted and isinstance(payload, dict):
+                result["warning"] = f"empty_text_payload_keys={','.join(sorted(payload.keys()))}"
             self._write_result(nxt, result)
             state["completed_today"] = int(state.get("completed_today", 0)) + 1
             state["consecutive_resource_failures"] = 0
@@ -615,7 +653,7 @@ class QueueManager:
             f"Then: {next2.get('agent_id')} ({next2.get('model')}) — {next2.get('priority', 'normal')}" if next2 else "Then: none",
             f"Completed today: {s.get('completed_today', 0)}",
             f"Failed today: {s.get('failed_today', 0)}",
-            f"Avg duration: {av['local/mistral-small']}s (Mistral) | {av['local/qwen-14b']}s (Qwen14B) | {av['local/qwen-coder-32b']}s (QwenCoder32B)",
+            f"Avg duration: {av['local/mistral-small']}s (Mistral) | {av['local/qwen-14b']}s (Qwen2.5-14B) | {av['local/qwen3-14b']}s (Qwen3-14B) | {av['local/qwen-coder-32b']}s (QwenCoder32B)",
             f"Queue file: {self.paths.queue_file}",
             f"Results folder: {self.paths.results_dir} ({pending_pickup} pending pickup)",
             "Manual commands:",
