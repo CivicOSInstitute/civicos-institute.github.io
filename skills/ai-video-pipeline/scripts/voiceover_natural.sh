@@ -5,9 +5,12 @@ set -euo pipefail
 # Priority: ElevenLabs -> OpenAI TTS -> macOS say fallback.
 #
 # Script tags supported (lightweight):
-#   [[pause:500]]       -> half-second pause
-#   [[emph:wording]]    -> stronger spoken emphasis (text shaping)
-#   [[slow:sentence]]   -> slower delivery hint (comma/ellipsis shaping)
+#   [[pause:500]]         -> half-second pause
+#   [[emph:wording]]      -> stronger spoken emphasis (text shaping)
+#   [[slow:sentence]]     -> slower delivery hint (comma/ellipsis shaping)
+#   [[calm:sentence]]     -> gentler cadence shaping
+#   [[urgent:sentence]]   -> sharper cadence shaping
+#   [[inspiring:sentence]]-> uplift cadence shaping
 #
 # Usage:
 #   ./voiceover_natural.sh <script.txt> <output.wav> [narrator|founder]
@@ -51,6 +54,11 @@ text = re.sub(r"\[\[emph:(.*?)\]\]", lambda m: f"{m.group(1).upper()}.", text)
 
 # slow tags -> spaced cadence
 text = re.sub(r"\[\[slow:(.*?)\]\]", lambda m: f"{m.group(1).strip()}...", text)
+
+# emotion tags -> sentence-level cadence shaping
+text = re.sub(r"\[\[calm:(.*?)\]\]", lambda m: f"Take a breath. {m.group(1).strip()}.", text)
+text = re.sub(r"\[\[urgent:(.*?)\]\]", lambda m: f"Listen closely: {m.group(1).strip()}!", text)
+text = re.sub(r"\[\[inspiring:(.*?)\]\]", lambda m: f"Imagine this: {m.group(1).strip()}.", text)
 
 # whitespace cleanup
 text = re.sub(r"[ \t]+", " ", text)

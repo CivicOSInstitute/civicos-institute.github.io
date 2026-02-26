@@ -26,6 +26,7 @@ echo "$PROJECT_DIR"
 
 # Optional script tags for expressive delivery:
 # [[pause:500]] [[emph:critical phrase]] [[slow:this sentence lands here]]
+# [[calm:steady and grounded]] [[urgent:we need action now]] [[inspiring:we can build this together]]
 
 # 4) Export platform variants
 ./scripts/export_variants.sh "$PROJECT_DIR/src/master.mp4" "$PROJECT_DIR/exports"
