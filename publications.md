@@ -17,11 +17,10 @@ We are distributing the **CivicOS AI Learning Kit** for free to help non-technic
 ### Included Downloads
 - [Non-Technical AI Onramp Program (.doc)](/downloads/ai-learning-kit/CivicOS_NonTechnical_AI_Onramp_Program.doc)
 - [Non-Technical Worksheet Packet (.doc)](/downloads/ai-learning-kit/CivicOS_NonTechnical_Onramp_Worksheet_Packet.doc)
-- [MIT 15.773 Executive Summary (.doc)](/downloads/ai-learning-kit/MIT_15_773_Executive_Summary.doc)
-- [MIT 15.773 Pre-Course Bootcamp (10-Day) (.md)](/downloads/ai-learning-kit/CivicOS_MIT15_773_PreCourse_Bootcamp_10Day.md)
+- [CivicOS AI Pre-Course Bootcamp (10-Day) (.md)](/downloads/ai-learning-kit/CivicOS_AI_PreCourse_Bootcamp_10Day.md)
 - [Download Full AI Learning Kit (.zip)](/downloads/ai-learning-kit.zip)
 
-**License/Use:** Free to share for educational use with attribution to CivicOS Institute.
+**License/Use:** Free to share for educational use with attribution to CivicOS Institute. No third-party branded course materials are included.
 
 ---
 
