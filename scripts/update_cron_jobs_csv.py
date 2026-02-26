@@ -26,6 +26,7 @@ FREQ_MAP = {
     '50 6 * * *': 'Daily at 06:50',
     '55 6 * * *': 'Daily at 06:55',
     '35 7 * * 1': 'Weekly on Monday at 07:35',
+    '25 7 * * *': 'Daily at 07:25',
     '* * * * *': 'Every minute',
     '*/30 * * * *': 'Every 30 minutes',
 }
@@ -52,6 +53,8 @@ def model_for(cmd: str) -> str:
         return 'N/A (SLO alerting + likely-cause summary; no model invocation detected)'
     if 'scripts/workflow_slo_weekly_digest.py' in cmd:
         return 'N/A (7-day SLO trend digest; no model invocation detected)'
+    if 'scripts/notification_batcher.py' in cmd:
+        return 'N/A (severity-based notification batching; no model invocation detected)'
     return 'N/A (no model invocation detected)'
 
 

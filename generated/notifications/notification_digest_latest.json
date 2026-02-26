@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-02-26T17:00:17",
+  "workflow": "notification_batcher",
+  "lane": "prod-critical",
+  "policy": {
+    "critical": "immediate",
+    "high": "immediate",
+    "medium": "batched",
+    "low": "batched"
+  },
+  "items": [
+    {
+      "source": "workflow_slo_alert_20260226_164659.txt",
+      "severity": "medium",
+      "message": "\ud83d\udea8 Workflow SLO Alert (2026-02-26)"
+    },
+    {
+      "source": "workflow_slo_alert_20260226_164718.txt",
+      "severity": "medium",
+      "message": "\ud83d\udea8 Workflow SLO Alert (2026-02-26)"
+    },
+    {
+      "source": "workflow_slo_alert_20260226_165156.txt",
+      "severity": "medium",
+      "message": "\ud83d\udea8 Workflow SLO Alert (2026-02-26)"
+    }
+  ]
+}
