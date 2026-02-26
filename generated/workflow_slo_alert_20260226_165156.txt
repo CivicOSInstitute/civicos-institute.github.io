@@ -1,0 +1,7 @@
+🚨 Workflow SLO Alert (2026-02-26)
+- Queue success: 95.83% (target >=98%)
+- Queue p95 wait: 232.44s (target <30s)
+- Top likely causes:
+  • 12 jobs waited >60s (queue congestion).
+  • Top workload model today: local/qwen-14b (8 jobs).
+  • Non-complete jobs detected (error:1).

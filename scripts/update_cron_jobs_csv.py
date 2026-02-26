@@ -24,6 +24,7 @@ FREQ_MAP = {
     '*/3 * * * *': 'Every 3 minutes',
     '10 8 * * *': 'Daily at 08:10',
     '50 6 * * *': 'Daily at 06:50',
+    '55 6 * * *': 'Daily at 06:55',
     '* * * * *': 'Every minute',
     '*/30 * * * *': 'Every 30 minutes',
 }
@@ -46,6 +47,8 @@ def model_for(cmd: str) -> str:
         return 'Unknown / may invoke model-driven scripts indirectly'
     if 'scripts/workflow_slo_rollup.py' in cmd:
         return 'N/A (SLO analytics rollup; no model invocation detected)'
+    if 'scripts/workflow_slo_alert.py' in cmd:
+        return 'N/A (SLO alerting + likely-cause summary; no model invocation detected)'
     return 'N/A (no model invocation detected)'
 
 

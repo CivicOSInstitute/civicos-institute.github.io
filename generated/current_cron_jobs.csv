@@ -18,3 +18,4 @@ cron_expression,frequency_human,command,model_used
 12 * * * *,Custom schedule,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/state_snapshot.py >> generated/cron_state_snapshot.log 2>&1,N/A (no model invocation detected)
 22 * * * *,Custom schedule,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/transcript_keyword_scan.py >> generated/cron_transcript_keyword_scan.log 2>&1,N/A (no model invocation detected)
 50 6 * * *,Daily at 06:50,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/workflow_slo_rollup.py >> generated/cron_workflow_slo_rollup.log 2>&1,N/A (SLO analytics rollup; no model invocation detected)
+55 6 * * *,Daily at 06:55,cd /Users/AI-OPS/.openclaw/workspace && python3 scripts/workflow_slo_alert.py >> generated/cron_workflow_slo_alert.log 2>&1,N/A (SLO alerting + likely-cause summary; no model invocation detected)
