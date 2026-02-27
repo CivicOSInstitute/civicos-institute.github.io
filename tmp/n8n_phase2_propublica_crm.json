@@ -1,0 +1,239 @@
+[
+  {
+    "id": "phase2-propublica-crm-enrichment",
+    "name": "Phase2 - ProPublica Congress API to CRM Enrichment",
+    "active": false,
+    "nodes": [
+      {
+        "id": "Cron_Trigger",
+        "name": "Daily 08:30",
+        "type": "n8n-nodes-base.cron",
+        "typeVersion": 1,
+        "position": [
+          -980,
+          40
+        ],
+        "parameters": {
+          "triggerTimes": {
+            "item": [
+              {
+                "mode": "everyDay",
+                "hour": 8,
+                "minute": 30
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "HTTP_ProPublica",
+        "name": "ProPublica Congress API",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          -760,
+          40
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.propublica.org/congress/v1/119/house/members.json",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-API-Key",
+                "value": "={{$env.PROPUBLICA_API_KEY}}"
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "Normalize",
+        "name": "Normalize for CRM",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -520,
+          40
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const payload = $json?.results?.[0]?.members || [];\nconst records = payload.map(m => ({\n  external_id: m.id,\n  source: 'propublica_congress',\n  first_name: m.first_name,\n  last_name: m.last_name,\n  party: m.party,\n  state: m.state,\n  district: m.district,\n  office: m.office,\n  phone: m.phone,\n  website: m.url,\n  updated_at: new Date().toISOString()\n}));\nreturn [{ json: { count: records.length, records } }];"
+        }
+      },
+      {
+        "id": "Approval_Gate",
+        "name": "Human Approval Required",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -280,
+          40
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const approved = (process.env.CRM_WRITE_APPROVED || 'false').toLowerCase() === 'true';\nreturn [{ json: { ...$json, approved_by_human: approved } }];"
+        }
+      },
+      {
+        "id": "If_Approved",
+        "name": "Approved for External Write?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          -40,
+          40
+        ],
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.approved_by_human }}",
+                "value2": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "CRM_Upsert",
+        "name": "CRM Enrichment Upsert",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          220,
+          -60
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "={{$env.CRM_ENRICH_WEBHOOK_URL}}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{$env.CRM_ENRICH_TOKEN}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        }
+      },
+      {
+        "id": "Success_Log",
+        "name": "Success Log",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          460,
+          -60
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "return [{ json: { status: 'ok', message: 'CRM enrichment write completed', count: $json.count ?? null, ts: new Date().toISOString() } }];"
+        }
+      },
+      {
+        "id": "Error_Log",
+        "name": "Error Logging",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          140
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "return [{ json: { status: 'blocked', reason: 'human approval required before CRM external write', count: $json.count ?? null, ts: new Date().toISOString() } }];"
+        }
+      }
+    ],
+    "connections": {
+      "Daily 08:30": {
+        "main": [
+          [
+            {
+              "node": "ProPublica Congress API",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ProPublica Congress API": {
+        "main": [
+          [
+            {
+              "node": "Normalize for CRM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize for CRM": {
+        "main": [
+          [
+            {
+              "node": "Human Approval Required",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Human Approval Required": {
+        "main": [
+          [
+            {
+              "node": "Approved for External Write?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Approved for External Write?": {
+        "main": [
+          [
+            {
+              "node": "CRM Enrichment Upsert",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Error Logging",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CRM Enrichment Upsert": {
+        "main": [
+          [
+            {
+              "node": "Success Log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  }
+]

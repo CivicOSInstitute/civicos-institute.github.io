@@ -22,7 +22,7 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "const token = $json.headers?.['x-webhook-token'] || $json.headers?.['X-Webhook-Token'] || '';\nconst expected = 'civicos-webhook-2026';\nreturn [{ json: { ...$json, auth_ok: token === expected, received_at: new Date().toISOString() } }];"
+          "jsCode": "const token = $json.headers?.['x-webhook-token'] || $json.headers?.['X-Webhook-Token'] || '';\nconst expected = process.env.N8N_WEBHOOK_AUTH_TOKEN || '';\nreturn [{ json: { ...$json, auth_ok: !!token && token === expected, received_at: new Date().toISOString() } }];"
         },
         "id": "Auth_Check",
         "name": "Webhook Auth",
@@ -103,7 +103,11 @@
       },
       {
         "parameters": {
-          "options": {}
+          "respondWith": "json",
+          "responseBody": "={{$json}}",
+          "options": {
+            "responseCode": 403
+          }
         },
         "id": "Respond_Deny",
         "name": "Respond 403",
@@ -130,7 +134,11 @@
       },
       {
         "parameters": {
-          "options": {}
+          "respondWith": "json",
+          "responseBody": "={{$json}}",
+          "options": {
+            "responseCode": 200
+          }
         },
         "id": "Respond_OK",
         "name": "Respond 200",
@@ -157,7 +165,11 @@
       },
       {
         "parameters": {
-          "options": {}
+          "respondWith": "json",
+          "responseBody": "={{$json}}",
+          "options": {
+            "responseCode": 401
+          }
         },
         "id": "Respond_401",
         "name": "Respond 401",
