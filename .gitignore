@@ -6,3 +6,4 @@ _site/
 .bundle/
 vendor/
 config/n8n_runtime.env
+config/phase3_runtime.env
