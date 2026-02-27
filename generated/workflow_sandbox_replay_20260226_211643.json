@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-02-26T21:16:43",
+  "workflow": "workflow_sandbox_replay",
+  "lane": "experimental",
+  "results": [
+    {
+      "scenario": "queue_congestion",
+      "timestamp": "2026-02-26T21:16:43",
+      "checks": [
+        {
+          "name": "p95_wait_observed",
+          "value": 232.44
+        }
+      ],
+      "pass": true
+    },
+    {
+      "scenario": "provider_outage",
+      "timestamp": "2026-02-26T21:16:43",
+      "checks": [
+        {
+          "name": "queue_state_exists",
+          "value": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "scenario": "cloud_auth_failure",
+      "timestamp": "2026-02-26T21:16:43",
+      "checks": [
+        {
+          "name": "alert_artifacts_present",
+          "value": 3
+        }
+      ],
+      "pass": true
+    },
+    {
+      "scenario": "cron_drift",
+      "timestamp": "2026-02-26T21:16:43",
+      "checks": [
+        {
+          "name": "expected_artifacts_missing",
+          "value": []
+        }
+      ],
+      "pass": true
+    }
+  ]
+}

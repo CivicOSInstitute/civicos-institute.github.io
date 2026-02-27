@@ -26,7 +26,9 @@ FREQ_MAP = {
     '50 6 * * *': 'Daily at 06:50',
     '55 6 * * *': 'Daily at 06:55',
     '35 7 * * 1': 'Weekly on Monday at 07:35',
+    '15 7 * * *': 'Daily at 07:15',
     '25 7 * * *': 'Daily at 07:25',
+    '40 7 * * 1': 'Weekly on Monday at 07:40',
     '* * * * *': 'Every minute',
     '*/30 * * * *': 'Every 30 minutes',
 }
@@ -55,6 +57,10 @@ def model_for(cmd: str) -> str:
         return 'N/A (7-day SLO trend digest; no model invocation detected)'
     if 'scripts/notification_batcher.py' in cmd:
         return 'N/A (severity-based notification batching; no model invocation detected)'
+    if 'scripts/workflow_cost_visibility.py' in cmd:
+        return 'N/A (workflow-level cost visibility rollup; no model invocation detected)'
+    if 'scripts/workflow_sandbox_replay.py' in cmd:
+        return 'N/A (sandbox incident replay checks; no model invocation detected)'
     return 'N/A (no model invocation detected)'
 
 
