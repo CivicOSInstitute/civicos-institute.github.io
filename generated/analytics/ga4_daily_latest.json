@@ -1,10 +1,22 @@
 {
-  "generated_at": "2026-02-27T17:00:29.701479+00:00",
-  "ok": false,
-  "property_id": "13678397338",
+  "generated_at": "2026-02-27T19:02:51.579980+00:00",
+  "ok": true,
+  "property_id": "526241272",
   "measurement_id": "G-Z4LCY5PVBL",
-  "blockers": [
-    "ADC auth unavailable: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information."
-  ],
-  "next_step": "Run: gcloud auth application-default login (or --no-launch-browser) as burt@civicos-institute.org"
+  "window": "last7 vs prior7",
+  "totals": {
+    "users": {
+      "current": 0,
+      "previous": 0,
+      "wow_pct": null
+    },
+    "sessions": {
+      "current": 0,
+      "previous": 0,
+      "wow_pct": null
+    }
+  },
+  "source_medium_top10": [],
+  "top_pages_top10": [],
+  "board_ready_flags": []
 }
