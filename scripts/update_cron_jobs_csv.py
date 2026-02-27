@@ -36,9 +36,9 @@ FREQ_MAP = {
 
 def model_for(cmd: str) -> str:
     if 'scripts/local_model_toolcall_probe.py' in cmd:
-        return 'Primary: local queue models (local/qwen-14b; local/mistral-small; local/qwen-coder-32b). Fallback: API model via openclaw agent'
+        return 'Primary: local queue models (local/qwen-14b -> qwen3:14b; local/mistral-small -> mistral:latest; local/qwen-coder-32b -> qwen2.5-coder:32b). Fallback: API model via openclaw agent'
     if 'scripts/grant_daily_local_scan.py' in cmd:
-        return 'Primary: local queue model local/qwen-14b (priority high). Fallback: API model via openclaw agent'
+        return 'Primary: local queue model local/qwen-14b -> qwen3:14b (priority high). Fallback: API model via openclaw agent'
     if 'skills/ollama-agent-queue/scripts/queue_manager.py process-once' in cmd:
         return 'Queue worker (enables local model priority routing)'
     if 'scripts/local_model_queue_enforcer.py' in cmd:
