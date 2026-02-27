@@ -22,7 +22,7 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "const token = $json.headers?.['x-webhook-token'] || $json.headers?.['X-Webhook-Token'] || '';\nconst expected = process.env.N8N_WEBHOOK_AUTH_TOKEN || '';\nreturn [{ json: { ...$json, auth_ok: !!token && token === expected, received_at: new Date().toISOString() } }];"
+          "jsCode": "const base = ($json && typeof $json === 'object') ? $json : {};\nconst headers = (base.headers && typeof base.headers === 'object') ? base.headers : {};\nconst token = String(headers['x-webhook-token'] ?? headers['X-Webhook-Token'] ?? '');\nconst expected = String(process.env.N8N_WEBHOOK_AUTH_TOKEN || '');\nconst auth_ok = !!token && !!expected && token === expected;\nconst safeBody = (base.body && typeof base.body === 'object') ? base.body : (base.body ?? null);\nreturn [{ json: { auth_ok, received_at: new Date().toISOString(), body: safeBody, headers } }];"
         },
         "id": "Auth_Check",
         "name": "Webhook Auth",
