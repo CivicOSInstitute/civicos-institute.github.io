@@ -1,0 +1,35 @@
+router:
+  classifier:
+    low_threshold: 0.35
+    high_threshold: 0.65
+  cache:
+    similarity_threshold: 0.88
+    ttl_session_seconds: 1800
+    ttl_general_seconds: 86400
+    enabled: true
+  compression:
+    enabled: true
+    target_ratio: 0.10
+    min_confidence: 0.80
+  budget:
+    daily_token_cap: 1000000
+    session_token_cap: 200000
+    agent_token_cap: 50000
+    tier2_output_cap: 25000
+    warn_percent: 80
+  guardrails:
+    no_cache_task_classes:
+      - legal
+      - security
+      - irreversible_action
+      - policy_governance
+    no_compress_task_classes:
+      - legal
+      - security
+      - irreversible_action
+      - policy_governance
+
+telemetry:
+  enabled: true
+  sink: "jsonl"
+  path: "./data/router_telemetry.jsonl"
