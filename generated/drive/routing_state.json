@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-02-27T11:12:58.087067",
+  "folders": {
+    "Board-Packages": "1AXxCSvnlQ-FR5ffxGqaYp5SXP9_N6tqr",
+    "Board-Packages/2026-02": "15Vv1ywEP04ZqgnWDNHHHJFcphAhAOIC_",
+    "Ops-Reports": "1Xd51GNAadxtfFjplKBTTggkg4iO9AW2Z",
+    "Decision-Logs": "1INMxcsIRePfWirG71c73xl6IOTof1BOr"
+  },
+  "board_ready_count": 0,
+  "uploads": [
+    {
+      "type": "ops_report",
+      "name": "crm_email_sync_latest_20260227-111255.json",
+      "id": "1pZMEHJ6t9gI0BfgP2aNjT78fx-sBFT0D"
+    },
+    {
+      "type": "ops_report",
+      "name": "crm_email_sync_latest_20260227-111255.md",
+      "id": "1WT_oqgiUa0ywd8WrngMME-lhjKdod2t9"
+    }
+  ]
+}
