@@ -1,0 +1,39 @@
+{
+  "govinfo_rss": [
+    "https://www.govinfo.gov/rss/bills.xml"
+  ],
+  "google_alerts_rss": [],
+  "gnews": {
+    "enabled": true,
+    "daily_cap": 100,
+    "per_query_max": 10,
+    "queries": [
+      "civic technology policy",
+      "digital public infrastructure",
+      "open data government",
+      "public sector AI governance",
+      "nonprofit technology grants"
+    ]
+  },
+  "noise_filter": {
+    "require_any_keywords": [
+      "civic",
+      "government",
+      "public",
+      "policy",
+      "nonprofit",
+      "democracy",
+      "regulation",
+      "grant",
+      "infrastructure",
+      "governance"
+    ],
+    "exclude_keywords": [
+      "sponsored",
+      "advertisement",
+      "promo",
+      "coupon",
+      "casino"
+    ]
+  }
+}

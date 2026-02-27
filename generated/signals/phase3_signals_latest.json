@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-02-27T19:37:18.829199+00:00",
+  "noise_filter_applied": true,
+  "totals": {
+    "ingested": 2,
+    "low": 0,
+    "medium": 1,
+    "high": 1,
+    "board_ready": 1
+  },
+  "gnews_quota": {
+    "date": "2026-02-27",
+    "used": 0,
+    "cap": 100
+  },
+  "gnews_error": "missing GNEWS_API_KEY",
+  "signals": [
+    {
+      "id": "97cd2aa0fec75de5f23c",
+      "source": "govinfo_rss",
+      "title": "S.&nbsp;3882&nbsp;(IS) - Fair Legal Access Grants Act",
+      "link": "https://www.govinfo.gov/app/details/BILLS-119s3882is",
+      "summary": " Content Files \n  PDF  \n  XML  \n  TEXT  \n \n \n  Metadata download \n  Descriptive Metadata (MODS)  \n  Preservation Metadata (PREMIS)  \n  All Content and Metadata files, including granules   ZIP ",
+      "published": "Thu, 26 Feb 2026 11:06:57 +0000",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:37:18.829199+00:00"
+    },
+    {
+      "id": "0f06d96a1644eb400613",
+      "source": "govinfo_rss",
+      "title": "S.&nbsp;3858&nbsp;(IS) - Strengthening Infrastructure, Readiness, and Emergency Notifications Act of 2026",
+      "link": "https://www.govinfo.gov/app/details/BILLS-119s3858is",
+      "summary": " Content Files \n  PDF  \n  XML  \n  TEXT  \n \n \n  Metadata download \n  Descriptive Metadata (MODS)  \n  Preservation Metadata (PREMIS)  \n  All Content and Metadata files, including granules   ZIP ",
+      "published": "Thu, 26 Feb 2026 11:06:58 +0000",
+      "severity": "high",
+      "board_ready": true,
+      "ingested_at": "2026-02-27T19:37:18.829199+00:00"
+    }
+  ]
+}

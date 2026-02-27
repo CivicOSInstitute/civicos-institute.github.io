@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-02-27T19:37:18.829199+00:00",
+  "notion_tasks_created": 2,
+  "drive_uploads": [
+    {
+      "type": "ops_report",
+      "id": "1pHKQhX_tC8ag9Z8UaZE-9QOd6x2ZzKf3",
+      "name": "phase3_signals_latest_20260227-143724.json"
+    },
+    {
+      "type": "ops_report",
+      "id": "1x_f7mxe8FckGsO9I_eDuYj8-S7LnMYjp",
+      "name": "phase3_signals_latest_20260227-143724.md"
+    },
+    {
+      "type": "decision_log",
+      "id": "1FD_NejymqBP0dvAwlkbJNlxscUbLkIba",
+      "name": "decision_log_board_ready_20260227-143724.md"
+    }
+  ]
+}
