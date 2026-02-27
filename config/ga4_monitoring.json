@@ -1,0 +1,18 @@
+{
+  "ga4": {
+    "property_id": "13678397338",
+    "measurement_id": "G-Z4LCY5PVBL",
+    "viewer_access": "burt@civicos-institute.org",
+    "cadence": "daily",
+    "metrics": [
+      "users",
+      "sessions",
+      "source_medium",
+      "top_pages"
+    ],
+    "board_ready_threshold_wow_pct": 20,
+    "drive_route": "Ops-Reports",
+    "approved": true,
+    "approved_at": "2026-02-27T16:40:12.003477+00:00"
+  }
+}

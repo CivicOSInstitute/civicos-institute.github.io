@@ -1,0 +1,1 @@
+GA4 Property ID: 13678397338. Measurement ID: G-Z4LCY5PVBL. burt@civicos-institute.org Viewer access granted. Approve daily cadence — pull users, sessions, source/medium, top pages, flag any metric swinging 20%+ week-over-week as [Board-ready]. Route reports to Ops-Reports in Drive.
