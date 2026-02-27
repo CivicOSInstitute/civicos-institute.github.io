@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-02-27T16:43:43.613874+00:00",
+  "ok": false,
+  "property_id": "13678397338",
+  "measurement_id": "G-Z4LCY5PVBL",
+  "blockers": [
+    "GOOGLE_APPLICATION_CREDENTIALS not set (service account json path required for Data API)"
+  ],
+  "next_step": "Set GOOGLE_APPLICATION_CREDENTIALS to GA4 service account key and grant Viewer to property."
+}
