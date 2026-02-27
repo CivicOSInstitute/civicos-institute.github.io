@@ -13,6 +13,8 @@ from pathlib import Path
 from collections import Counter
 
 TELEMETRY = Path("/Users/AI-OPS/.openclaw/workspace/data/telemetry/router_telemetry.jsonl")
+CLEAN_TELEMETRY = Path("/Users/AI-OPS/.openclaw/workspace/data/telemetry/router_telemetry.clean.jsonl")
+QUALITY_SUMMARY = Path("/Users/AI-OPS/.openclaw/workspace/generated/efficiency/telemetry_quality_latest.json")
 STATE = Path("/Users/AI-OPS/.openclaw/workspace/data/state/api_rollout_state.json")
 OUT_DIR = Path("/Users/AI-OPS/.openclaw/workspace/generated/efficiency")
 
@@ -49,11 +51,12 @@ def save_state(state):
 
 
 def load_events(hours: int):
-    if not TELEMETRY.exists():
+    src = CLEAN_TELEMETRY if CLEAN_TELEMETRY.exists() else TELEMETRY
+    if not src.exists():
         return []
     cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
     rows = []
-    for line in TELEMETRY.read_text(encoding="utf-8").splitlines():
+    for line in src.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         try:
@@ -81,11 +84,17 @@ def summarize(rows):
     }
 
 
-def evaluate(state, s):
+def evaluate(state, s, dq):
     phase = int(state.get("phase", 0))
     reasons = []
     escalate_council = False
     promote = False
+
+    dq_rate = dq.get("quality_pass_rate_pct", 0)
+    if dq_rate and dq_rate < 95:
+        reasons.append("data_quality_below_threshold")
+        escalate_council = True
+        return promote, escalate_council, reasons
 
     if s["events"] < 40:
         reasons.append("insufficient_data")
@@ -126,12 +135,22 @@ def evaluate(state, s):
     return promote, escalate_council, reasons
 
 
-def write_outputs(state, summary, recommend, council, reasons):
+def load_data_quality():
+    if QUALITY_SUMMARY.exists():
+        try:
+            return json.loads(QUALITY_SUMMARY.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+
+def write_outputs(state, summary, dq, recommend, council, reasons):
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = {
         "generated_at": now_iso(),
         "state": state,
         "summary_24h": summary,
+        "data_quality": dq,
         "recommend_promote": recommend,
         "council_review_needed": council,
         "reasons": reasons,
@@ -146,6 +165,7 @@ def write_outputs(state, summary, recommend, council, reasons):
         f"- Quality pass: **{summary['quality_pass_rate_pct']}%**",
         f"- Cache hit: **{summary['cache_hit_rate_pct']}%**",
         f"- Avg latency: **{summary['avg_latency_ms']} ms**",
+        f"- Data quality pass: **{dq.get('quality_pass_rate_pct', 'n/a')}%**",
         f"- Recommend promote: **{recommend}**",
         f"- Council needed: **{council}**",
         f"- Reasons: {', '.join(reasons) if reasons else 'none'}",
@@ -170,8 +190,9 @@ def main():
     args = ap.parse_args()
 
     state = load_state()
+    dq = load_data_quality()
     summary = summarize(load_events(args.hours))
-    promote, council, reasons = evaluate(state, summary)
+    promote, council, reasons = evaluate(state, summary, dq)
 
     if args.auto_advance and promote and state["phase"] < 3:
         state["phase"] += 1
@@ -185,7 +206,7 @@ def main():
         })
         save_state(state)
 
-    write_outputs(state, summary, promote, council, reasons)
+    write_outputs(state, summary, dq, promote, council, reasons)
     print(json.dumps({
         "phase": state["phase"],
         "phase_name": state["phase_name"],
