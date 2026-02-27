@@ -1,0 +1,26 @@
+{
+  "default_persona": "Burt Primo",
+  "workspace_routing": {
+    "ops_default_account": "burt@civicos-institute.org",
+    "executive_primary_account": "ncerbone@civicos-institute.org",
+    "rules": [
+      {
+        "context": "coo_cos_ops_execution",
+        "use_account": "burt@civicos-institute.org"
+      },
+      {
+        "context": "principal_external_comms",
+        "use_account": "ncerbone@civicos-institute.org"
+      },
+      {
+        "context": "board_package_assembly",
+        "use_account": "burt@civicos-institute.org"
+      },
+      {
+        "context": "director_approval_or_signature",
+        "use_account": "ncerbone@civicos-institute.org"
+      }
+    ]
+  },
+  "updated_at": "2026-02-27T11:20:00-05:00"
+}

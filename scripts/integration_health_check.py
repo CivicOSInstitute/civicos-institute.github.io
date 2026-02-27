@@ -29,13 +29,14 @@ rc,out,err = sh(['python3','-c',
 "import os,re,json,urllib.request,pathlib; p=pathlib.Path.home()/'.openclaw'/'.env.notion'; t=p.read_text(); m=re.search(r'NOTION_TOKEN=(.+)',t); tok=m.group(1).strip() if m else ''; req=urllib.request.Request('https://api.notion.com/v1/users/me',headers={'Authorization':f'Bearer {tok}','Notion-Version':'2022-06-28'});\nimport urllib.error;\n\ntry:\n r=urllib.request.urlopen(req,timeout=15); print('ok')\nexcept Exception as e:\n print('fail')"])
 status['checks']['notion_api'] = {'ok': 'ok' in out.lower(), 'detail': out or err}
 
-# Google Workspace quick checks
-rc_g,out_g,err_g = sh(['gog','gmail','search','--account','ncerbone@civicos-institute.org','--max','1','in:inbox','--json'])
-status['checks']['google_gmail_api'] = {'ok': rc_g==0}
-rc_d,out_d,err_d = sh(['gog','drive','ls','--account','ncerbone@civicos-institute.org','--json'])
-status['checks']['google_drive_api'] = {'ok': rc_d==0}
-rc_c,out_c,err_c = sh(['gog','calendar','calendars','--account','ncerbone@civicos-institute.org','--max','1','--json'])
-status['checks']['google_calendar_api'] = {'ok': rc_c==0, 'detail': '' if rc_c==0 else (err_c or out_c)[:180]}
+# Google Workspace quick checks (both accounts)
+for acct in ['burt@civicos-institute.org','ncerbone@civicos-institute.org']:
+    rc_g,out_g,err_g = sh(['gog','gmail','search','--account',acct,'--max','1','in:inbox','--json'])
+    status['checks'][f'google_gmail_api[{acct}]'] = {'ok': rc_g==0}
+    rc_d,out_d,err_d = sh(['gog','drive','ls','--account',acct,'--json'])
+    status['checks'][f'google_drive_api[{acct}]'] = {'ok': rc_d==0}
+    rc_c,out_c,err_c = sh(['gog','calendar','calendars','--account',acct,'--max','1','--json'])
+    status['checks'][f'google_calendar_api[{acct}]'] = {'ok': rc_c==0, 'detail': '' if rc_c==0 else (err_c or out_c)[:180]}
 
 # write reports
 j = OUT / 'integration_health_latest.json'
