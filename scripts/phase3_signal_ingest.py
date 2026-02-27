@@ -4,13 +4,14 @@ import hashlib
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote_plus, urlparse
+from urllib.parse import quote_plus
 import subprocess
 import requests
 import xml.etree.ElementTree as ET
 
 ROOT = Path('/Users/AI-OPS/.openclaw/workspace')
 CFG = ROOT / 'config' / 'phase3_signal_sources.json'
+YT_CFG = ROOT / 'social_media' / 'youtube_channels.json'
 OUT_DIR = ROOT / 'generated' / 'signals'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 NOW = datetime.now(timezone.utc)
@@ -113,6 +114,47 @@ def parse_rss(url, source_tag):
     return out
 
 
+def load_youtube_channels(path):
+    data = load_json(path, {})
+    channels = []
+    for c in data.get('channels', []):
+        if c.get('enabled', True) and c.get('channel_id'):
+            channels.append(c)
+    return channels
+
+
+def parse_youtube_feed(channel):
+    channel_id = channel.get('channel_id')
+    feed_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+    source_tag = f"youtube:{channel.get('name', channel_id)}"
+    out = []
+    try:
+        r = requests.get(feed_url, timeout=20)
+        r.raise_for_status()
+        root = ET.fromstring(r.content)
+        ns = {'atom': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
+        entries = root.findall('atom:entry', ns)
+        for e in entries[:15]:
+            title = (e.findtext('atom:title', default='', namespaces=ns) or '').strip()
+            video_id = (e.findtext('yt:videoId', default='', namespaces=ns) or '').strip()
+            link = f"https://www.youtube.com/watch?v={video_id}" if video_id else ''
+            desc = (e.findtext('atom:group/atom:description', default='', namespaces=ns) or '').strip()
+            if not desc:
+                desc = (e.findtext('yt:group/yt:description', default='', namespaces=ns) or '').strip()
+            pub = (e.findtext('atom:published', default='', namespaces=ns) or '').strip()
+            out.append({
+                'source': source_tag,
+                'channel': channel.get('name', ''),
+                'title': title,
+                'link': link,
+                'summary': desc,
+                'published': pub,
+            })
+    except Exception as e:
+        out.append({'source': source_tag, 'error': str(e), 'title': '', 'link': '', 'summary': ''})
+    return out
+
+
 def gnews_scan(cfg, quota_state):
     results = []
     key = (Path.home() / '.zshrc')
@@ -192,6 +234,10 @@ def main():
         raw.extend(parse_rss(u, 'govinfo_rss'))
     for u in cfg.get('google_alerts_rss', []):
         raw.extend(parse_rss(u, 'google_alerts_rss'))
+
+    # YouTube RSS ingestion (full enabled list from compiled channel catalog)
+    for ch in load_youtube_channels(YT_CFG):
+        raw.extend(parse_youtube_feed(ch))
 
     quota_state = load_json(STATE_QUOTA, {'date': DATE_KEY, 'used': 0, 'cap': 100})
     gnews_items, quota_state, gnews_err = gnews_scan(cfg.get('gnews', {}), quota_state)

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-02-27T19:37:18.829199+00:00",
+  "generated_at": "2026-02-27T19:40:26.318713+00:00",
   "noise_filter_applied": true,
   "totals": {
-    "ingested": 2,
-    "low": 0,
-    "medium": 1,
-    "high": 1,
-    "board_ready": 1
+    "ingested": 15,
+    "low": 9,
+    "medium": 6,
+    "high": 0,
+    "board_ready": 0
   },
   "gnews_quota": {
     "date": "2026-02-27",
@@ -16,26 +16,169 @@
   "gnews_error": "missing GNEWS_API_KEY",
   "signals": [
     {
-      "id": "97cd2aa0fec75de5f23c",
-      "source": "govinfo_rss",
-      "title": "S.&nbsp;3882&nbsp;(IS) - Fair Legal Access Grants Act",
-      "link": "https://www.govinfo.gov/app/details/BILLS-119s3882is",
-      "summary": " Content Files \n  PDF  \n  XML  \n  TEXT  \n \n \n  Metadata download \n  Descriptive Metadata (MODS)  \n  Preservation Metadata (PREMIS)  \n  All Content and Metadata files, including granules   ZIP ",
-      "published": "Thu, 26 Feb 2026 11:06:57 +0000",
-      "severity": "medium",
+      "id": "88cb78fa846d59cb6555",
+      "source": "youtube:Linux Foundation",
+      "title": "TREND #8 Agentic AI and Governance Skills Move Into the Mainstream - 2026 Top 10 IT Education Trends",
+      "link": "https://www.youtube.com/watch?v=NwjweOlZn-4",
+      "summary": "",
+      "published": "2026-02-26T10:15:04+00:00",
+      "severity": "low",
       "board_ready": false,
-      "ingested_at": "2026-02-27T19:37:18.829199+00:00"
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
     },
     {
-      "id": "0f06d96a1644eb400613",
-      "source": "govinfo_rss",
-      "title": "S.&nbsp;3858&nbsp;(IS) - Strengthening Infrastructure, Readiness, and Emergency Notifications Act of 2026",
-      "link": "https://www.govinfo.gov/app/details/BILLS-119s3858is",
-      "summary": " Content Files \n  PDF  \n  XML  \n  TEXT  \n \n \n  Metadata download \n  Descriptive Metadata (MODS)  \n  Preservation Metadata (PREMIS)  \n  All Content and Metadata files, including granules   ZIP ",
-      "published": "Thu, 26 Feb 2026 11:06:58 +0000",
-      "severity": "high",
-      "board_ready": true,
-      "ingested_at": "2026-02-27T19:37:18.829199+00:00"
+      "id": "4f91cfb2f19282d3159d",
+      "source": "youtube:Linux Foundation",
+      "title": "CNCF Annual Cloud Native Survey: The infrastructure of AI\u2019s future",
+      "link": "https://www.youtube.com/watch?v=GTCuwquQKDo",
+      "summary": "",
+      "published": "2026-02-03T14:07:33+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "084b0083f16888d55e6b",
+      "source": "youtube:Linux Foundation",
+      "title": "Why 66% of AI Workloads Now Run on Kubernetes: The Infrastructure Shift | Hilary Carter",
+      "link": "https://www.youtube.com/watch?v=ujHdXF32-Rc",
+      "summary": "",
+      "published": "2026-02-02T16:11:05+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "a0ce50f77adaa081e066",
+      "source": "youtube:Linux Foundation",
+      "title": "Why Every AI Agent Needs Shared Infrastructure",
+      "link": "https://www.youtube.com/watch?v=oeS8QkAR82I",
+      "summary": "",
+      "published": "2026-02-02T15:01:02+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "52906fadb2c50e0da86c",
+      "source": "youtube:Brookings Institution",
+      "title": "US policy in a changing nuclear landscape",
+      "link": "https://www.youtube.com/watch?v=sV0ImXn8Dos",
+      "summary": "",
+      "published": "2026-02-23T01:12:01+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "c66a0e02c74eb074502e",
+      "source": "youtube:Brookings Institution",
+      "title": "Now what? The future of Trump tariffs and trade policy after Supreme Court ruling",
+      "link": "https://www.youtube.com/watch?v=SWHchEd0OZQ",
+      "summary": "",
+      "published": "2026-02-25T08:41:59+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "181dde58215115025b8d",
+      "source": "youtube:CSIS",
+      "title": "Four Years of War in Ukraine, New Dutch Government, and Europe's China Challenge",
+      "link": "https://www.youtube.com/watch?v=l1HGVQZQIr4",
+      "summary": "",
+      "published": "2026-02-26T19:17:29+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "3b9a1d040ca5b5f7d7af",
+      "source": "youtube:TechSoup",
+      "title": "AI Impact Hour for Nonprofits February 2026",
+      "link": "https://www.youtube.com/watch?v=rOZ8F17PqoQ",
+      "summary": "",
+      "published": "2026-02-26T14:36:21+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "220ae24364e2e1406313",
+      "source": "youtube:TechSoup",
+      "title": "The Nonprofit Leadership Trifecta  HR, Marketing, and Grant Writing",
+      "link": "https://www.youtube.com/watch?v=TwvOwyN-Vbk",
+      "summary": "",
+      "published": "2026-02-25T00:09:00+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "ce6b22b7968dd3043cf0",
+      "source": "youtube:TechSoup",
+      "title": "Own Your Future: Data Sovereignty and Digital Autonomy for Canadian Nonprofits",
+      "link": "https://www.youtube.com/watch?v=yAKGBAsuLbU",
+      "summary": "",
+      "published": "2026-02-23T22:30:05+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "d7e99ebd68b375df48b4",
+      "source": "youtube:TechSoup",
+      "title": "TechSoup Connect Austin | Podcasting for Nonprofits: Amplify Your Mission",
+      "link": "https://www.youtube.com/watch?v=djVqiUP-GfA",
+      "summary": "",
+      "published": "2026-02-23T16:43:54+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "43e837be4d20c588366e",
+      "source": "youtube:TechSoup",
+      "title": "Grantseeking Smarter with a Small Team",
+      "link": "https://www.youtube.com/watch?v=oOr890G3-i8",
+      "summary": "",
+      "published": "2026-02-11T02:28:07+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "c27d35fb33b20f9d3cd4",
+      "source": "youtube:TechSoup",
+      "title": "Unlocking Nonprofit Efficiency  How BILL\u2019s AI Streamlines Fund Accounting, Insights, and 1099s",
+      "link": "https://www.youtube.com/watch?v=NC9y-CqIC9Y",
+      "summary": "",
+      "published": "2026-01-30T12:56:41+00:00",
+      "severity": "low",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "28fa400244d1c64b52c9",
+      "source": "youtube:TechSoup",
+      "title": "Smarter Grant Prospecting with GrantStation + AI",
+      "link": "https://www.youtube.com/watch?v=xh2zKz8ZLjQ",
+      "summary": "",
+      "published": "2026-01-29T00:02:10+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
+    },
+    {
+      "id": "7c5b36fa53f8179dc3cc",
+      "source": "youtube:TechSoup",
+      "title": "Kick Start Your Mission in the New Year with Google Ad Grants",
+      "link": "https://www.youtube.com/watch?v=yEQNGUADK-g",
+      "summary": "",
+      "published": "2026-01-22T23:47:23+00:00",
+      "severity": "medium",
+      "board_ready": false,
+      "ingested_at": "2026-02-27T19:40:26.318713+00:00"
     }
   ]
 }
