@@ -2,7 +2,15 @@
   "govinfo_rss": [
     "https://www.govinfo.gov/rss/bills.xml"
   ],
-  "google_alerts_rss": [],
+  "google_alerts_rss": [
+    "https://www.google.com/alerts/feeds/02439611284606613460/16947382257419290684",
+    "https://www.google.com/alerts/feeds/02439611284606613460/6680773078005530245",
+    "https://www.google.com/alerts/feeds/02439611284606613460/4637761907135427611",
+    "https://www.google.com/alerts/feeds/02439611284606613460/12776461734876210710",
+    "https://www.google.com/alerts/feeds/02439611284606613460/18047589292149553609",
+    "https://www.google.com/alerts/feeds/02439611284606613460/14228880308211077833",
+    "https://www.google.com/alerts/feeds/02439611284606613460/14228880308211078076"
+  ],
   "gnews": {
     "enabled": true,
     "daily_cap": 100,

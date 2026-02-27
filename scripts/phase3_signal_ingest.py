@@ -96,6 +96,8 @@ def parse_rss(url, source_tag):
         r = requests.get(url, timeout=20)
         r.raise_for_status()
         root = ET.fromstring(r.content)
+
+        # RSS
         items = root.findall('.//item')
         for it in items[:30]:
             title = (it.findtext('title') or '').strip()
@@ -109,6 +111,26 @@ def parse_rss(url, source_tag):
                 'summary': re.sub(r'<[^>]+>', ' ', desc),
                 'published': pub,
             })
+
+        # Atom (e.g., Google Alerts)
+        if not out:
+            ns = {'atom': 'http://www.w3.org/2005/Atom'}
+            entries = root.findall('atom:entry', ns)
+            for e in entries[:30]:
+                title = (e.findtext('atom:title', default='', namespaces=ns) or '').strip()
+                link = ''
+                link_el = e.find('atom:link', ns)
+                if link_el is not None:
+                    link = (link_el.attrib.get('href') or '').strip()
+                desc = (e.findtext('atom:content', default='', namespaces=ns) or e.findtext('atom:summary', default='', namespaces=ns) or '').strip()
+                pub = (e.findtext('atom:published', default='', namespaces=ns) or e.findtext('atom:updated', default='', namespaces=ns) or '').strip()
+                out.append({
+                    'source': source_tag,
+                    'title': title,
+                    'link': link,
+                    'summary': re.sub(r'<[^>]+>', ' ', desc),
+                    'published': pub,
+                })
     except Exception as e:
         out.append({'source': source_tag, 'error': str(e), 'title': '', 'link': '', 'summary': ''})
     return out
