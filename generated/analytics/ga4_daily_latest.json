@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-02-27T16:43:43.613874+00:00",
+  "generated_at": "2026-02-27T17:00:29.701479+00:00",
   "ok": false,
   "property_id": "13678397338",
   "measurement_id": "G-Z4LCY5PVBL",
   "blockers": [
-    "GOOGLE_APPLICATION_CREDENTIALS not set (service account json path required for Data API)"
+    "ADC auth unavailable: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information."
   ],
-  "next_step": "Set GOOGLE_APPLICATION_CREDENTIALS to GA4 service account key and grant Viewer to property."
+  "next_step": "Run: gcloud auth application-default login (or --no-launch-browser) as burt@civicos-institute.org"
 }

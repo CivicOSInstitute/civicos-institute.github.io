@@ -29,8 +29,6 @@ threshold = int(cfg.get('board_ready_threshold_wow_pct', 20))
 blockers = []
 if not property_id:
     blockers.append('missing property_id')
-if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
-    blockers.append('GOOGLE_APPLICATION_CREDENTIALS not set (service account json path required for Data API)')
 
 if blockers:
     report = {
@@ -58,7 +56,32 @@ if blockers:
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange, Metric, Dimension, RunReportRequest
 
-client = BetaAnalyticsDataClient()
+try:
+    client = BetaAnalyticsDataClient()
+except Exception as e:
+    report = {
+        'generated_at': now,
+        'ok': False,
+        'property_id': property_id,
+        'measurement_id': cfg.get('measurement_id'),
+        'blockers': [f'ADC auth unavailable: {str(e)}'],
+        'next_step': 'Run: gcloud auth application-default login (or --no-launch-browser) as burt@civicos-institute.org'
+    }
+    STATE.write_text(json.dumps(report, indent=2), encoding='utf-8')
+    MD.write_text(
+        "# GA4 Daily Pull\n\n"
+        f"Generated: {now}\n\n"
+        "## Status\n"
+        "- ⚠️ Blocked\n"
+        f"- Property ID: {property_id}\n"
+        f"- Measurement ID: {cfg.get('measurement_id')}\n"
+        "\n## Blockers\n"
+        f"- ADC auth unavailable: {str(e)}\n"
+        "\n## Next Step\n- Run gcloud auth application-default login as burt@civicos-institute.org\n"
+    , encoding='utf-8')
+    print(MD)
+    raise SystemExit(0)
+
 prop = f"properties/{property_id}"
 
 # core totals: last 7 days vs previous 7 days
