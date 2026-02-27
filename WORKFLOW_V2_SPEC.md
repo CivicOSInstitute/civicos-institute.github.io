@@ -79,11 +79,13 @@ Each workflow must define:
 - Timeout policy
 - Fallback path
 - Output location and latest pointer
+- Knowledge write artifact using `templates/WORKFLOW_KB_WRITE_TEMPLATE.md` for production-impacting changes
 
 Minimum expected behavior:
 - No silent failure
 - No infinite retries
 - No unbounded queue growth
+- KB discipline checks pass (`scripts/workflow_kb_enforcer.py`) for active prod workflows
 
 ---
 

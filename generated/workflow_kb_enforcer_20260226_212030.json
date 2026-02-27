@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-02-26T21:20:30",
+  "workflow": "workflow_kb_enforcer",
+  "lane": "prod-critical",
+  "date": "2026-02-26",
+  "active_workflows": [
+    "run_ops_cycle",
+    "grant_daily_local_scan",
+    "workflow_slo_rollup"
+  ],
+  "missing_kb_writes": [],
+  "pass": true
+}
