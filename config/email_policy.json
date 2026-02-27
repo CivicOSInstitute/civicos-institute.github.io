@@ -1,0 +1,14 @@
+{
+  "gmail": {
+    "github_ci_archive_after_days": 7,
+    "system_mail_mode": "summarize_only",
+    "deletions_require_confirmation": true,
+    "autonomous_cleanup_enabled": false,
+    "test_run": {
+      "enabled": true,
+      "mode": "dry_run",
+      "duration_hours": 24,
+      "approved_at": "2026-02-27T10:00:00-05:00"
+    }
+  }
+}
