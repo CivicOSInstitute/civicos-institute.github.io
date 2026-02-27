@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-02-27T16:06:58.054030+00:00",
+  "checks": {
+    "gmail_himalaya": {
+      "ok": true,
+      "artifact": "/Users/AI-OPS/.openclaw/workspace/generated/email/email_hourly_latest.json"
+    },
+    "notion_env": {
+      "ok": true,
+      "artifact": "/Users/AI-OPS/.openclaw/.env.notion"
+    },
+    "notion_api": {
+      "ok": true,
+      "detail": "ok"
+    },
+    "google_gmail_api": {
+      "ok": true
+    },
+    "google_drive_api": {
+      "ok": true
+    },
+    "google_calendar_api": {
+      "ok": true,
+      "detail": ""
+    }
+  }
+}
