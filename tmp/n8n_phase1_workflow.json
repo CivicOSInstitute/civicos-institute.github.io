@@ -1,0 +1,281 @@
+[
+  {
+    "id": "phase1-secure-gateway",
+    "name": "Phase1 - Secure External Write Gateway",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "external-write-gateway",
+          "responseMode": "responseNode"
+        },
+        "id": "Webhook_Trigger",
+        "name": "Webhook Trigger",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -820,
+          20
+        ],
+        "webhookId": "external-write-gateway-v1"
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const token = $json.headers?.['x-webhook-token'] || $json.headers?.['X-Webhook-Token'] || '';\nconst expected = 'civicos-webhook-2026';\nreturn [{ json: { ...$json, auth_ok: token === expected, received_at: new Date().toISOString() } }];"
+        },
+        "id": "Auth_Check",
+        "name": "Webhook Auth",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -560,
+          20
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.auth_ok }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "id": "If_Auth",
+        "name": "Auth OK?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          -330,
+          20
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const approved = !!($json.body?.approved_by_human);\nreturn [{ json: { ...$json, approved_by_human: approved } }];"
+        },
+        "id": "Approval_Node",
+        "name": "Human Approval Required",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -90,
+          -80
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.approved_by_human }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "id": "If_Approved",
+        "name": "Approved?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          130,
+          -80
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "return [{ json: { status: 'blocked', reason: 'human approval required for external write actions', ts: new Date().toISOString() } }];"
+        },
+        "id": "Error_Log",
+        "name": "Error Logging",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          350,
+          40
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "Respond_Deny",
+        "name": "Respond 403",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          580,
+          40
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "return [{ json: { status: 'approved', message: 'ready for external write action', ts: new Date().toISOString(), payload: $json.body || {} } }];"
+        },
+        "id": "Creds_Vault",
+        "name": "Creds Vault",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          350,
+          -200
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "Respond_OK",
+        "name": "Respond 200",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          580,
+          -200
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "return [{ json: { status: 'unauthorized', reason: 'invalid webhook token', ts: new Date().toISOString() } }];"
+        },
+        "id": "Auth_Fail_Log",
+        "name": "Auth Fail Log",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -90,
+          180
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "Respond_401",
+        "name": "Respond 401",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          130,
+          180
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook Trigger": {
+        "main": [
+          [
+            {
+              "node": "Webhook Auth",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook Auth": {
+        "main": [
+          [
+            {
+              "node": "Auth OK?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Auth OK?": {
+        "main": [
+          [
+            {
+              "node": "Human Approval Required",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Auth Fail Log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Human Approval Required": {
+        "main": [
+          [
+            {
+              "node": "Approved?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Approved?": {
+        "main": [
+          [
+            {
+              "node": "Creds Vault",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Error Logging",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Creds Vault": {
+        "main": [
+          [
+            {
+              "node": "Respond 200",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Error Logging": {
+        "main": [
+          [
+            {
+              "node": "Respond 403",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Auth Fail Log": {
+        "main": [
+          [
+            {
+              "node": "Respond 401",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "active": false
+  }
+]
