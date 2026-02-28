@@ -11,6 +11,16 @@ const PDF_DIR = path.join(ROOT, 'generated', 'governance', 'pdf');
 const ARCHIVE_DIR = path.join(ROOT, 'generated', 'governance', 'archive');
 const LOG_PATH = path.join(ROOT, 'generated', 'governance', 'generation_log.jsonl');
 const SUITE_ZIP = path.join(ROOT, 'generated', 'governance', 'CivicOS_Governance_Suite.zip');
+const TEMPLATE_DIR = '/Users/AI-OPS/Desktop/02_Governance_and_Finance/01_Governance/Governance';
+const TEMPLATE_DOCX = {
+  AOI: path.join(TEMPLATE_DIR, '01-Strategy', 'Articles of Incorporation - CivicOS Institute.docx'),
+  '01': path.join(TEMPLATE_DIR, '01-Strategy', '01 - CivicOS Institute Bylaws.docx'),
+  '02': path.join(TEMPLATE_DIR, '02-Policies', '02 - Conflict of Interest Policy.docx'),
+  '03': path.join(TEMPLATE_DIR, '01-Strategy', '03 - Delegation of Authority Matrix.docx'),
+  '04': path.join(TEMPLATE_DIR, '02-Policies', '04 - Document Retention Policy.docx'),
+  '05': path.join(TEMPLATE_DIR, '02-Policies', '05 - IP and Licensing Policy.docx'),
+  '06': path.join(TEMPLATE_DIR, '02-Policies', '06 - Data Privacy and Security Policy.docx'),
+};
 
 const DOC_META = {
   AOI: { short: 'Articles_of_Incorporation', title: 'Articles of Incorporation (Florida)' },
@@ -347,6 +357,15 @@ function generateDoc(docId, cfg) {
   const outName = `${docId}_${DOC_META[docId].short}_CivicOS_Institute_v${version}.docx`;
   const outPath = path.join(OUT_DIR, outName);
   maybeArchiveExisting(outPath, docId, version);
+
+  // For AOI + 01..06, use Desktop reference templates to match approved layout/format.
+  const template = TEMPLATE_DOCX[docId];
+  if (template && fs.existsSync(template)) {
+    fs.copyFileSync(template, outPath);
+    return outPath;
+  }
+
+  // For 07..09 (no legacy templates), use generator output.
   writeDocx(outPath, buildDocXml(buildParagraphs(docId, cfg)));
   return outPath;
 }
