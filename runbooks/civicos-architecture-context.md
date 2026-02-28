@@ -17,6 +17,8 @@ Maintain decision continuity and prevent context loss in high-volume architectur
 - Adopt message prefixes in channel operations: `DECISION:`, `ACTION:`, `BLOCKER:`, `FYI:`.
 - Adopt rolling state snapshots every ~25–40 messages.
 - Adopt durable write-back of finalized decisions into this file/memory.
+- Director approved autonomous cadence: post periodic snapshots every ~30 messages or at end of major phase (whichever comes first).
+- Director approved automatic context-file updates after significant decisions/actions.
 
 ## Open Questions
 - Should we split architecture into topic threads by subsystem (routing, queue, observability, integrations)?
