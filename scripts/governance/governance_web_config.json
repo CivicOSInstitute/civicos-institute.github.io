@@ -1,0 +1,135 @@
+{
+  "transparency_statement": "CivicOS Institute is committed to proactive transparency in governance, finances, operations, and program delivery. These documents are not compliance artifacts — they are the operating commitments of an organization that teaches civic literacy and must model it. All governance documents are publicly accessible in full. Authenticated stakeholder dashboards provide real-time visibility into organizational performance.",
+  "documents": [
+    {
+      "id": "AOI",
+      "title": "Articles of Incorporation (Florida)",
+      "page": "articles.html",
+      "source_markdown": "governance/Articles_of_Incorporation_Florida.md",
+      "summary": "The founding legal document that establishes CivicOS Institute as a Florida nonprofit corporation. It defines our legal name, perpetual existence, charitable and educational purposes, prohibited activities, and dissolution procedures. Filed with the State of Florida to create the legal entity.",
+      "key_facts": [
+        "Incorporated in: Florida",
+        "Corporation type: Nonprofit, 501(c)(3) pending",
+        "Purpose: Charitable, educational, and scientific",
+        "Dissolution: Assets transfer to qualifying 501(c)(3) organizations"
+      ]
+    },
+    {
+      "id": "01",
+      "title": "Bylaws",
+      "page": "bylaws.html",
+      "source_markdown": "governance/01_Bylaws.md",
+      "summary": "The internal rulebook that governs how CivicOS Institute operates day to day. It defines Board composition, officer roles, meeting procedures, voting rules, financial controls, and amendment procedures. Includes provisions for provisional directors during the founding period. Submitted with the IRS 501(c)(3) application.",
+      "key_facts": [
+        "Board: 3–9 directors, 3-year staggered terms",
+        "Provisional directors: Full voting rights, 12-month maximum term",
+        "Meetings: Minimum 4 per year",
+        "Amendment: Two-thirds vote with 7-day notice"
+      ]
+    },
+    {
+      "id": "02",
+      "title": "Conflict of Interest Policy",
+      "page": "conflict-of-interest.html",
+      "source_markdown": "governance/02_Conflict_of_Interest_Policy.md",
+      "summary": "Ensures that decisions made by Board members, officers, and key employees are made in the best interest of CivicOS Institute — not personal or financial interests. IRS-required for 501(c)(3) organizations. All covered persons sign an annual disclosure statement.",
+      "key_facts": [
+        "Covers: Directors, officers, key employees",
+        "Annual disclosure: Required within 30 days of fiscal year start",
+        "Gift limit: $75 per occurrence; $25 reporting threshold",
+        "Enforcement: Up to and including removal from service"
+      ]
+    },
+    {
+      "id": "03",
+      "title": "Delegation of Authority Matrix",
+      "page": "delegation-authority.html",
+      "source_markdown": "governance/03_Delegation_of_Authority_Matrix.md",
+      "summary": "Defines exactly who has the power to sign contracts, commit funds, hire personnel, and make binding organizational decisions — and at what dollar thresholds. Prevents unauthorized commitments and ensures appropriate oversight scales with the size of the decision.",
+      "key_facts": [
+        "Board approval required: Contracts above $100,000",
+        "Dual signature required: Checks and wires above $10,000",
+        "ED emergency authority: Up to $25,000",
+        "Annual review: Required by Board"
+      ]
+    },
+    {
+      "id": "04",
+      "title": "Document Retention & Records Policy",
+      "page": "document-retention.html",
+      "source_markdown": "governance/04_Document_Retention_Policy.md",
+      "summary": "Establishes how long CivicOS Institute retains different categories of records and how they are securely destroyed when retention periods expire. Ensures legal compliance, supports audits, and protects against liability from both over-retention and premature destruction.",
+      "key_facts": [
+        "Permanent: Corporate governance, tax status, board minutes",
+        "7 years: Financial records, grants, personnel files",
+        "3 years: Email, project files, routine correspondence",
+        "Litigation hold: Suspends all automatic deletion"
+      ]
+    },
+    {
+      "id": "05",
+      "title": "Intellectual Property & Licensing Policy",
+      "page": "ip-licensing.html",
+      "source_markdown": "governance/05_IP_Licensing_Policy.md",
+      "summary": "Governs how CivicOS Institute creates, protects, and shares its intellectual property. We default to open licenses — MIT for software, CC BY for content — because our mission is public benefit, not proprietary lock-in. This policy also covers contributor agreements, trademark protection, and third-party code usage.",
+      "key_facts": [
+        "Default software license: MIT",
+        "Default content license: CC BY 4.0",
+        "External contributors: CLA required before contributions accepted",
+        "Trademark: CivicOS Institute name and logo are protected"
+      ]
+    },
+    {
+      "id": "06",
+      "title": "Data, Privacy & Security Policy",
+      "page": "data-privacy.html",
+      "source_markdown": "governance/06_Data_Security_Policy.md",
+      "summary": "Establishes how CivicOS Institute collects, processes, stores, and protects personal data. Privacy by design is a founding principle — we collect only what we need, use it only as stated, and protect it with appropriate technical and organizational controls. Compliant with GDPR and CCPA.",
+      "key_facts": [
+        "Principle: Privacy by design, data minimization",
+        "Data subject rights: Access, rectification, erasure, portability",
+        "Breach notification: Regulatory notice within 72 hours",
+        "AI data handling: Personal data not submitted to external AI models"
+      ]
+    },
+    {
+      "id": "07",
+      "title": "Board Member Agreement",
+      "page": "board-member-agreement.html",
+      "source_markdown": "governance/07_Board_Member_Agreement.md",
+      "summary": "The individual commitment document signed by each director at seating. Covers fiduciary duties, governance alignment, participation expectations, conflict of interest obligations, confidentiality, and conduct standards. Supports both standard 3-year terms and provisional 12-month appointments.",
+      "key_facts": [
+        "Signed individually by each director at seating",
+        "Covers: Standard (3-year) and Provisional (12-month) service types",
+        "Attendance commitment: Minimum 3 of 4 annual meetings",
+        "Confidentiality survives board service"
+      ]
+    },
+    {
+      "id": "08",
+      "title": "Whistleblower Policy",
+      "page": "whistleblower.html",
+      "source_markdown": "governance/08_Whistleblower_Policy.md",
+      "summary": "Protects individuals who report suspected misconduct in good faith from retaliation. Establishes clear reporting channels including an anonymous option, defines investigation timelines, and ensures Board-level oversight. Required for IRS Form 990 governance disclosures.",
+      "key_facts": [
+        "Anonymous reporting: whistleblower@civicos-institute.org",
+        "Non-retaliation: Strictly enforced; violations treated as separate offense",
+        "Investigation target: 30 days; hard limit: 90 days",
+        "Board oversight: Annual reporting at fiscal year-end meeting"
+      ]
+    },
+    {
+      "id": "09",
+      "title": "Compensation Review Policy",
+      "page": "compensation-review.html",
+      "source_markdown": "governance/09_Compensation_Review_Policy.md",
+      "summary": "Establishes the formal process for determining and documenting compensation for the Executive Director, officers, and key employees. Follows IRS rebuttable presumption procedures — independent approval, comparable market data, contemporaneous documentation — to ensure compensation is reasonable and defensible.",
+      "key_facts": [
+        "Standard: IRS rebuttable presumption of reasonableness",
+        "Requires: Independent approval, comparability data, written documentation",
+        "Annual review: Required; aligned to budget and fiscal year cycle",
+        "ED self-review: Must be initiated in writing to Board Chair"
+      ]
+    }
+  ]
+}

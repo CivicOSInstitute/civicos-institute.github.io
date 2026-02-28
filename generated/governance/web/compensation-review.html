@@ -1,0 +1,72 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Compensation Review Policy | CivicOS Governance</title>
+<style>
+:root{--navy:#1B2B4B;--gold:#B8963E;--lg:#F2F4F7;--border:#D0D5DD;--white:#fff;--text:#111;--body:#333;--muted:#777}
+*{box-sizing:border-box} body{margin:0;font-family:Georgia,serif;color:var(--body);background:var(--lg)}
+a{color:var(--navy)}
+.top{background:var(--navy);color:#fff;padding:14px 18px;position:sticky;top:0;z-index:10}
+.brand{font-family:Arial,sans-serif;font-weight:700}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between}
+.nav-links{display:flex;gap:14px}
+.nav-links a{color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px}
+.hamb{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 10px;border-radius:6px}
+main{max-width:1100px;margin:22px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;border-left:4px solid var(--gold);transition:box-shadow .2s ease}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-family:Arial,sans-serif;font-size:12px;border:1px solid}
+.badge.draft{background:#FFF3CD;color:#856404;border-color:#FFEAA7}
+.badge.adopted{background:#D1E7DD;color:#0A3622;border-color:#A3CFBB}
+.badge.review{background:#CFF4FC;color:#055160;border-color:#9EEAF9}
+.kf{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.kf span{font-family:Arial,sans-serif;font-size:12px;background:var(--lg);border:1px solid var(--border);padding:4px 8px;border-radius:16px}
+.layer{margin-top:14px}
+.fulltext{background:var(--lg);border-left:3px solid var(--border);padding:24px;overflow:hidden;max-height:0;transition:max-height .35s ease}
+.fulltext.open{max-height:2000px}
+.tog{font-family:Arial,sans-serif;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:6px;cursor:pointer}
+.dl{display:inline-block;background:var(--navy);color:#fff !important;text-decoration:none;padding:10px 14px;border-radius:6px;font-family:Arial,sans-serif}
+.dl:hover{background:var(--gold)}
+.small{font-size:12px;color:var(--muted);font-family:Arial,sans-serif}
+footer{margin:30px 0;color:var(--muted);font-family:Arial,sans-serif;font-size:12px}
+code{font-family:monospace}
+@media (max-width:768px){.grid{grid-template-columns:1fr}.hamb{display:inline-block}.nav-links{display:none;flex-direction:column;background:var(--navy);position:absolute;left:0;right:0;top:54px;padding:10px 18px}.nav-links.open{display:flex}.dl{display:block;width:100%;text-align:center}}
+</style></head><body><header class="top"><div class="nav-wrap"><div class="brand">CivicOS Governance</div><button class="hamb" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button><nav id="navLinks" class="nav-links" aria-label="Governance navigation"><a href="index.html">Index</a><a href="downloads.html">Downloads</a></nav></div></header><main>
+  <article>
+    <h1>Compensation Review Policy</h1>
+    <section class="layer card" aria-label="At a glance">
+      <div><span class="badge draft">DRAFT</span></div>
+      <p>Establishes the formal process for determining and documenting compensation for the Executive Director, officers, and key employees. Follows IRS rebuttable presumption procedures — independent approval, comparable market data, contemporaneous documentation — to ensure compensation is reasonable and defensible.</p>
+      <div class="kf"><span>Standard: IRS rebuttable presumption of reasonableness</span><span>Requires: Independent approval, comparability data, written documentation</span><span>Annual review: Required; aligned to budget and fiscal year cycle</span><span>ED self-review: Must be initiated in writing to Board Chair</span></div>
+      <div class="small">Last reviewed: Not yet reviewed</div>
+    </section>
+
+    <section class="layer card" aria-label="Full text">
+      <button class="tog" aria-expanded="true" aria-controls="full-09" onclick="toggleFull('full-09',this)">Hide full text</button>
+      <div id="full-09" class="fulltext open"><h1>Compensation Review Policy (Doc 09)</h1>
+<h2>Purpose</h2>
+<p>Define compensation governance for Executive Director, officers, and key employees using IRS rebuttable presumption controls.</p>
+<h2>Required Elements</h2>
+<p>1. Independent authorized approval body</p>
+<p>2. Appropriate comparability data</p>
+<p>3. Contemporaneous written documentation</p>
+<h2>Annual + Mid-Cycle Reviews</h2>
+<ul>
+<li>annual review required and aligned to budget/fiscal cycle</li>
+<li>mid-cycle adjustments allowed with full controls</li>
+<li>ED self-initiated review request must be submitted in writing to Board Chair, who convenes independent review</li>
+</ul>
+<h2>Excess Benefit Prevention</h2>
+<p>Potential excess benefit cases are escalated for corrective action and counsel review.</p>
+<p>Note for legal review: Excess benefit transactions under IRC 4958 may carry excise tax exposure on the disqualified person. Counsel should determine whether explicit statutory citation should remain in-policy or in separate legal guidance.</p>
+<h2>Board Member Compensation</h2>
+<p>Any board-member compensation action requires disinterested review and documented reasonableness determination.</p>
+<p>Note for legal review: Confirm whether Florida nonprofit law imposes additional constraints on director compensation beyond bylaws provisions.</p></div>
+    </section>
+
+    <section class="layer card" aria-label="Downloads">
+      <a class="dl" href="../docx/09_Compensation_Review_Policy_CivicOS_Institute_v1.0.docx" download>Download document</a>
+      <div class="small">Version 1.0 · Adoption: Pending · File size: 11700 bytes</div>
+    </section>
+  </article></main><script>
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function toggleFull(id,btn){const e=document.getElementById(id);const open=e.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Hide full text':'Show full text';}
+</script><footer><main>Generated by create_governance_web.js</main></footer></body></html>
