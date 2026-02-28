@@ -1,0 +1,537 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Intellectual Property &amp; Licensing Policy | CivicOS Governance</title><style>
+:root{--navy:#1B2B4B;--gold:#B8963E;--lg:#F2F4F7;--border:#D0D5DD;--white:#FFFFFF;--td:#111111;--tb:#333333;--muted:#777777}
+*{box-sizing:border-box} body{margin:0;font-family:Georgia,serif;color:var(--tb);background:var(--lg)}
+a{color:var(--navy)}
+.top{background:var(--navy);color:#fff;padding:14px 18px;position:sticky;top:0;z-index:10}
+.brand{font-family:Arial,sans-serif;font-weight:700}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between}
+.nav-links{display:flex;gap:14px}.nav-links a{font-family:Arial,sans-serif;color:#fff;text-decoration:none;font-size:14px}
+.hamb{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 10px;border-radius:6px}
+main{max-width:1120px;margin:22px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;border-left:4px solid var(--gold);transition:box-shadow .2s ease}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-family:Arial,sans-serif;font-size:12px;border:1px solid}
+.badge.draft{background:#FFF3CD;color:#856404;border-color:#FFEAA7}
+.badge.adopted{background:#D1E7DD;color:#0A3622;border-color:#A3CFBB}
+.badge.review{background:#CFF4FC;color:#055160;border-color:#9EEAF9}
+.kf{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.kf span{font-family:Arial,sans-serif;font-size:12px;background:var(--lg);border:1px solid var(--border);padding:4px 8px;border-radius:16px}
+.layer{margin-top:14px}
+.fulltext{background:var(--lg);border-left:3px solid var(--border);padding:24px;overflow:hidden;max-height:0;transition:max-height .35s ease}
+.fulltext.open{max-height:2200px}
+.tog{font-family:Arial,sans-serif;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:6px;cursor:pointer}
+.dl{display:inline-block;background:var(--navy);color:#fff !important;text-decoration:none;padding:10px 14px;border-radius:6px;font-family:Arial,sans-serif}
+.dl:hover{background:var(--gold);color:#fff !important}
+.small{font-size:12px;color:var(--muted);font-family:Arial,sans-serif}
+footer{margin:30px 0;color:var(--muted);font-family:Arial,sans-serif;font-size:12px}
+@media (max-width:768px){.grid{grid-template-columns:1fr}.hamb{display:inline-block}.nav-links{display:none;flex-direction:column;background:var(--navy);position:absolute;left:0;right:0;top:54px;padding:10px 18px}.nav-links.open{display:flex}.dl{display:block;width:100%;text-align:center}}
+</style></head><body><header class="top"><div class="nav-wrap"><div class="brand">CivicOS Governance</div><button class="hamb" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button><nav id="navLinks" class="nav-links" aria-label="Governance navigation"><a href="index.html">Index</a><a href="downloads.html">Downloads</a></nav></div></header><main><article>
+  <h1>Intellectual Property &amp; Licensing Policy</h1>
+  <section class="layer card" aria-label="At a glance"><h2>Layer 1 — At a glance</h2><span class="badge draft">DRAFT</span><p>Governs how CivicOS Institute creates, protects, and shares its intellectual property. We default to open licenses — MIT for software, CC BY for content — because our mission is public benefit, not proprietary lock-in. This policy also covers contributor agreements, trademark protection, and third-party code usage.</p><div class="kf"><span>Default software license: MIT</span><span>Default content license: CC BY 4.0</span><span>External contributors: CLA required before contributions accepted</span><span>Trademark: CivicOS Institute name and logo are protected</span></div><div class="small">Last reviewed: Not yet reviewed</div></section>
+  <section class="layer card" aria-label="Full text"><h2>Layer 2 — Full text</h2><button class="tog" aria-label="Toggle full text" aria-expanded="true" aria-controls="full-05" onclick="toggleFull('full-05',this)">Hide full text</button><div id="full-05" class="fulltext open"><h1>Intellectual Property &amp; Licensing Policy</h1>
+<p>**Document Number:** 05</p>
+<p>**Version:** 1.0</p>
+<p>**Effective Date:** [DATE]</p>
+<p>**Last Reviewed:** [DATE]</p>
+<p>**Approved By:** [BOARD/EXECUTIVE BODY]</p>
+<p>---</p>
+<h2>1. Purpose and Scope</h2>
+<h3>1.1 Purpose</h3>
+<p>This Intellectual Property &amp; Licensing Policy establishes guidelines for the creation, protection, management, and licensing of intellectual property assets for [ORGANIZATION NAME] (&quot;Organization&quot;). This policy ensures that IP assets are properly identified, protected, and leveraged to advance the Organization&#39;s mission while respecting the rights of others and complying with open source community norms.</p>
+<h3>1.2 Scope</h3>
+<p>This policy applies to:</p>
+<ul>
+<li>**All Personnel:** Board members, officers, employees, volunteers, contractors, interns, and contributors</li>
+<li>**All IP Types:** Copyrights, trademarks, patents, trade secrets, and proprietary information</li>
+<li>**All Activities:** Research, development, content creation, software development, and collaboration</li>
+<li>**All Works:** Created during organizational activities, using organizational resources, or within scope of engagement</li>
+</ul>
+<p>---</p>
+<h2>2. IP Ownership Framework</h2>
+<h3>2.1 Work-for-Hire and Assignment</h3>
+<p>**Employee-Created IP:**</p>
+<p>All intellectual property created by employees within the scope of their employment is the exclusive property of the Organization. This includes, but is not limited to:</p>
+<ul>
+<li>Software code and documentation</li>
+<li>Research findings and publications</li>
+<li>Educational materials and curricula</li>
+<li>Designs, graphics, and multimedia content</li>
+<li>Processes, methodologies, and know-how</li>
+<li>Data sets and databases</li>
+</ul>
+<p>**Contractor-Created IP:**</p>
+<p>All contractor engagements must include explicit IP assignment clauses ensuring Organization ownership of deliverables. Standard contract language requires:</p>
+<ul>
+<li>Assignment of all IP rights in deliverables</li>
+<li>License to underlying pre-existing IP incorporated into deliverables</li>
+<li>Waiver of moral rights where applicable</li>
+<li>Cooperation in registration and enforcement</li>
+</ul>
+<p>**Volunteer and Contributor IP:**</p>
+<p>Volunteers and external contributors must execute a Contributor License Agreement (CLA) or equivalent assignment before contributions are accepted. See Section 6 for CLA requirements.</p>
+<h3>2.2 Pre-Existing IP</h3>
+<p>Personnel retain ownership of IP developed:</p>
+<ul>
+<li>Prior to engagement with Organization</li>
+<li>Outside scope of employment/engagement</li>
+<li>Without use of organizational resources</li>
+<li>Unrelated to organizational mission or activities</li>
+</ul>
+<p>Personnel must disclose pre-existing IP that may relate to organizational work to avoid conflicts.</p>
+<h3>2.3 Joint Development</h3>
+<p>When IP is developed jointly with third parties:</p>
+<ul>
+<li>Execute joint development agreement before work commences</li>
+<li>Define ownership splits, licensing rights, and commercialization</li>
+<li>Establish decision-making authority for enforcement and licensing</li>
+<li>Document each party&#39;s contributions</li>
+</ul>
+<p>---</p>
+<h2>3. Open Source Licensing Policy</h2>
+<h3>3.1 Philosophy and Preferences</h3>
+<p>The Organization is committed to open source principles and supports broad access to its innovations. Our licensing philosophy prioritizes:</p>
+<p>1. **Mission advancement** over commercial restrictions</p>
+<p>2. **Adoption and impact** through permissive terms</p>
+<p>3. **Community collaboration** through standard licenses</p>
+<p>4. **Attribution** to recognize contributions</p>
+<h3>3.2 License Selection Framework</h3>
+<p>**Tier 1: Preferred Licenses (Default)**</p>
+<p>| License | Use Case | Requirements |</p>
+<p>|---------|----------|--------------|</p>
+<p>| **MIT** | Software libraries, tools, standalone applications | Attribution only |</p>
+<p>| **Apache 2.0** | Larger software projects, enterprise-grade tools | Attribution + patent grant |</p>
+<p>| **CC BY 4.0** | Documentation, educational content, research | Attribution only |</p>
+<p>| **CC0** | Data sets, reference implementations, where attribution impractical | No requirements (public domain dedication) |</p>
+<p>**Tier 2: Acceptable with Justification**</p>
+<p>| License | Use Case | Considerations |</p>
+<p>|---------|----------|----------------|</p>
+<p>| **BSD 2/3-Clause** | Software | Similar to MIT; acceptable alternative |</p>
+<p>| **GPL v3** | Software requiring copyleft derivatives | Requires legal review; contagion risk assessment |</p>
+<p>| **LGPL** | Libraries where copyleft of derivatives desired | Linking exceptions acceptable |</p>
+<p>| **CC BY-SA** | Content requiring share-alike derivatives | For community content projects |</p>
+<p>| **ODbL** | Open databases | For collaboratively maintained data |</p>
+<p>**Tier 3: Prohibited or Restricted**</p>
+<p>| License | Status | Rationale |</p>
+<p>|---------|--------|-----------|</p>
+<p>| **GPL v2 only** | Avoid | No patent protection; compatibility issues |</p>
+<p>| **AGPL** | Prohibited | Network use triggers copyleft; mission conflict |</p>
+<p>| **Proprietary** | Prohibited | Organizational commitment to open source |</p>
+<p>| **CC BY-NC / -ND** | Discouraged | Non-commercial restrictions limit mission impact |</p>
+<p>| **Custom licenses** | Requires approval | Complexity and incompatibility risks |</p>
+<h3>3.3 License Selection Process</h3>
+<p>**Default Path (No Legal Review Required):**</p>
+<p>1. Evaluate whether Tier 1 license meets needs</p>
+<p>2. If yes, apply MIT (software) or CC BY 4.0 (content)</p>
+<p>3. Document license choice in project README</p>
+<p>**Escalation Path (Requires Legal Review):**</p>
+<p>1. Tier 2 license under consideration</p>
+<p>2. Multiple license types in single project</p>
+<p>3. Mixed proprietary/open source components</p>
+<p>4. Third-party code with conflicting licenses</p>
+<p>**Approval Authority:**</p>
+<ul>
+<li>[DESIGNATED TECHNICAL LEAD]: Tier 1 licenses</li>
+<li>[DESIGNATED LEGAL COUNSEL]: Tier 2 licenses</li>
+<li>Board of Directors: Tier 3 licenses or exceptions</li>
+</ul>
+<h3>3.4 Dual Licensing</h3>
+<p>Dual licensing (offering same code under multiple licenses) requires:</p>
+<ul>
+<li>Legal counsel review of compatibility</li>
+<li>Board approval for commercial licensing track</li>
+<li>Clear documentation of terms for each license</li>
+<li>Contributor consent for dual-licensed contributions</li>
+</ul>
+<h3>3.5 License Application Requirements</h3>
+<p>Every open source release must include:</p>
+<p>```</p>
+<p>1. LICENSE file with full license text</p>
+<p>2. Copyright notice in README and source headers</p>
+<p>3. NOTICE file for Apache 2.0 or attribution-required licenses</p>
+<p>4. CONTRIBUTING.md with CLA requirements</p>
+<p>5. Code of Conduct reference</p>
+<p>```</p>
+<p>**Standard Copyright Header:**</p>
+<p>```</p>
+<p>Copyright [YEAR] [ORGANIZATION NAME]</p>
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</p>
+<p>you may not use this file except in compliance with the License.</p>
+<p>You may obtain a copy of the License at</p>
+<p>    http://www.apache.org/licenses/LICENSE-2.0</p>
+<p>Unless required by applicable law or agreed to in writing, software</p>
+<p>distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</p>
+<p>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</p>
+<p>See the License for the specific language governing permissions and</p>
+<p>limitations under the License.</p>
+<p>```</p>
+<p>---</p>
+<h2>4. Proprietary IP Protection</h2>
+<h3>4.1 Trademark Policy</h3>
+<p>**Trademark Portfolio:**</p>
+<p>The Organization protects its brand through trademark registration and proper use guidelines.</p>
+<p>| Element | Status | Registration |</p>
+<p>|---------|--------|--------------|</p>
+<p>| [ORGANIZATION NAME] | [Primary mark] | [JURISDICTIONS] |</p>
+<p>| [LOGO] | [Visual mark] | [JURISDICTIONS] |</p>
+<p>| [PRODUCT NAMES] | [Product marks] | [STATUS] |</p>
+<p>**Permitted Use (by Others):**</p>
+<ul>
+<li>Reference to Organization in factual, non-trademark manner</li>
+<li>Nominative fair use in comparative or descriptive contexts</li>
+<li>Use under express license or partnership agreement</li>
+</ul>
+<p>**Prohibited Use:**</p>
+<ul>
+<li>Use likely to cause confusion with Organization</li>
+<li>Use implying endorsement not granted</li>
+<li>Use in domain names without authorization</li>
+<li>Use of confusingly similar marks</li>
+</ul>
+<p>**Trademark Licensing:**</p>
+<ul>
+<li>License agreements required for trademark use</li>
+<li>Quality control provisions required</li>
+<li>Termination for breach or brand harm</li>
+<li>Geographic and scope limitations</li>
+</ul>
+<h3>4.2 Patent Policy</h3>
+<p>**Patent Strategy:**</p>
+<p>The Organization generally avoids patenting innovations, preferring publication and open source release to establish prior art. Patent applications require Board approval and are only pursued when:</p>
+<ul>
+<li>Significant defensive value against patent trolls</li>
+<li>Strategic partnership requires patent protection</li>
+<li>Commercial licensing strategy approved</li>
+</ul>
+<p>**Patent Pledge:**</p>
+<p>Any Organization patents are licensed royalty-free for:</p>
+<ul>
+<li>Open source implementations</li>
+<li>Non-commercial research and education</li>
+<li>Products furthering Organization mission</li>
+</ul>
+<p>**Invention Disclosure:**</p>
+<p>Personnel must disclose potentially patentable inventions to [DESIGNATED IP OFFICER] within 30 days of conception.</p>
+<h3>4.3 Trade Secret Protection</h3>
+<p>**Protected Information:**</p>
+<ul>
+<li>Donor lists and contact information</li>
+<li>Fundraising strategies and donor research</li>
+<li>Unpublished research findings</li>
+<li>Proprietary methodologies (if not open sourced)</li>
+<li>Financial projections and strategic plans</li>
+<li>Personnel records</li>
+</ul>
+<p>**Protection Measures:**</p>
+<ul>
+<li>Marking: &quot;CONFIDENTIAL - [ORGANIZATION NAME]&quot;</li>
+<li>Access controls: Role-based, need-to-know</li>
+<li>NDAs required for external disclosure</li>
+<li>Secure storage and transmission</li>
+<li>Annual trade secret inventory</li>
+</ul>
+<p>**Duration:**</p>
+<p>Trade secrets protected indefinitely while maintaining confidentiality. Upon public disclosure, protection terminates.</p>
+<p>---</p>
+<h2>5. Commercial Use Guidelines</h2>
+<h3>5.1 Philosophy</h3>
+<p>The Organization encourages commercial use of its open source outputs to maximize mission impact. Commercial users are welcome and supported.</p>
+<h3>5.2 Permitted Commercial Use</h3>
+<p>Without restriction, commercial entities may:</p>
+<ul>
+<li>Use Organization software in commercial products</li>
+<li>Integrate Organization content into commercial offerings</li>
+<li>Modify and redistribute under applicable license terms</li>
+<li>Build consulting or support businesses around Organization projects</li>
+<li>Create proprietary derivative works (under permissive licenses)</li>
+</ul>
+<h3>5.3 Commercial Use with Attribution Requirements</h3>
+<p>Commercial users must:</p>
+<ul>
+<li>Provide attribution as required by license</li>
+<li>Not remove copyright notices</li>
+<li>Include license text in distributions</li>
+<li>Not use Organization trademarks without authorization</li>
+<li>Comply with notice requirements (Apache 2.0)</li>
+</ul>
+<h3>5.4 Prohibited Commercial Activities</h3>
+<p>Commercial entities may NOT:</p>
+<ul>
+<li>Use Organization trademarks as their own</li>
+<li>Imply Organization endorsement without written consent</li>
+<li>Remove or alter attribution requirements</li>
+<li>Violate terms of copyleft licenses (GPL family)</li>
+<li>Use Organization content in ways violating moral rights</li>
+</ul>
+<h3>5.5 Commercial Partnership Framework</h3>
+<p>Organizations seeking deeper collaboration may:</p>
+<ul>
+<li>Sponsor specific projects or features</li>
+<li>Enter trademark license agreements</li>
+<li>Participate in advisory councils</li>
+<li>Jointly develop under partnership agreements</li>
+</ul>
+<p>Contact: [PARTNERSHIP EMAIL]</p>
+<p>---</p>
+<h2>6. Contributor License Agreements</h2>
+<h3>6.1 CLA Requirement</h3>
+<p>All substantial contributions to Organization projects require a signed Contributor License Agreement. &quot;Substantial&quot; means:</p>
+<ul>
+<li>Code contributions exceeding [NUMBER] lines</li>
+<li>Documentation contributions exceeding [NUMBER] words</li>
+<li>Design or creative contributions</li>
+<li>Any contribution not clearly de minimis</li>
+</ul>
+<p>**Exceptions:**</p>
+<ul>
+<li>De minimis contributions (typo fixes, minor corrections)</li>
+<li>Contributions from employees (covered by employment agreement)</li>
+<li>Contributions under existing partnership agreements</li>
+</ul>
+<h3>6.2 CLA Types</h3>
+<p>**Individual CLA (ICLA):**</p>
+<ul>
+<li>For individual contributors</li>
+<li>Grants license and patent rights to Organization</li>
+<li>Warranties contribution is original and rights held</li>
+<li>Covers all contributions to all Organization projects</li>
+</ul>
+<p>**Corporate CLA (CCLA):**</p>
+<ul>
+<li>For employees contributing on behalf of employer</li>
+<li>Employer grants license and patent rights</li>
+<li>Lists authorized contributors</li>
+<li>Covers contributions during employment</li>
+</ul>
+<h3>6.3 CLA Content Requirements</h3>
+<p>CLA must include:</p>
+<ul>
+<li>Grant of copyright license (perpetual, worldwide, royalty-free)</li>
+<li>Grant of patent license (if applicable)</li>
+<li>Representation of authority to grant</li>
+<li>Warranty of originality</li>
+<li>Acknowledgment no compensation expected</li>
+<li>Agreement to follow project Code of Conduct</li>
+</ul>
+<h3>6.4 CLA Administration</h3>
+<p>**Process:**</p>
+<p>1. CLA sent to prospective contributor</p>
+<p>2. Signed CLA returned (electronic signature acceptable)</p>
+<p>3. CLA recorded in [DESIGNATED SYSTEM]</p>
+<p>4. Contributor added to authorized contributors list</p>
+<p>5. CLA verification automated in CI/CD pipeline</p>
+<p>**Records:**</p>
+<ul>
+<li>CLAs retained for duration of copyright plus [NUMBER] years</li>
+<li>Annual audit of CLA compliance</li>
+<li>Quarterly reconciliation with project contributors</li>
+</ul>
+<p>---</p>
+<h2>7. Third-Party Code Usage</h2>
+<h3>7.1 Policy Principles</h3>
+<ul>
+<li>Respect open source licenses</li>
+<li>Comply with all license obligations</li>
+<li>Maintain accurate inventory of third-party code</li>
+<li>Prohibit use of code with incompatible licenses</li>
+<li>Document all third-party dependencies</li>
+</ul>
+<h3>7.2 Approved License Categories</h3>
+<p>| Category | Licenses | Use |</p>
+<p>|----------|----------|-----|</p>
+<p>| **Permissive** | MIT, BSD, Apache 2.0 | Any use, including proprietary |</p>
+<p>| **Weak Copyleft** | LGPL, MPL | Dynamic linking allowed in proprietary |</p>
+<p>| **Strong Copyleft** | GPL, AGPL | Only in compatible open source projects |</p>
+<p>| **Documentation** | CC BY, CC0, GFDL | Content and documentation |</p>
+<h3>7.3 License Compliance Requirements</h3>
+<p>**For All Third-Party Code:**</p>
+<p>1. **Inventory:** Maintain Software Bill of Materials (SBOM)</p>
+<p>2. **Verification:** Confirm license compatibility with project license</p>
+<p>3. **Documentation:** Include in NOTICES or LICENSE file</p>
+<p>4. **Attribution:** Preserve all copyright notices</p>
+<p>5. **Source:** Make source available when required by copyleft</p>
+<p>**Apache 2.0 Compliance:**</p>
+<ul>
+<li>Include NOTICE file if provided</li>
+<li>State modifications made</li>
+<li>Preserve patent grant</li>
+</ul>
+<p>**GPL Compliance:**</p>
+<ul>
+<li>Source code offer for distributed binaries</li>
+<li>License text inclusion</li>
+<li>Written offer valid for 3 years</li>
+</ul>
+<h3>7.4 Prohibited Code</h3>
+<p>Do NOT use code with:</p>
+<ul>
+<li>Unknown or unclear licenses</li>
+<li>&quot;Research only&quot; or &quot;non-commercial&quot; restrictions</li>
+<li>GPL-incompatible licenses in GPL projects</li>
+<li>Proprietary licenses without express authorization</li>
+<li>Copyleft code in proprietary products (without compliance)</li>
+</ul>
+<h3>7.5 Security Considerations</h3>
+<p>Third-party code must also meet:</p>
+<ul>
+<li>Security review for critical dependencies</li>
+<li>Maintenance status verification (not abandoned)</li>
+<li>Vulnerability scanning in CI/CD</li>
+<li>Approved source only (no unverified packages)</li>
+</ul>
+<p>---</p>
+<h2>8. Attribution Requirements</h2>
+<h3>8.1 Internal Attribution</h3>
+<p>Organization projects must properly attribute:</p>
+<ul>
+<li>Individual contributors (in CONTRIBUTORS file)</li>
+<li>Funding sources (in ACKNOWLEDGMENTS)</li>
+<li>Partner organizations</li>
+<li>Third-party code (in NOTICES)</li>
+</ul>
+<h3>8.2 External Attribution</h3>
+<p>Users of Organization IP must provide:</p>
+<p>**Software:**</p>
+<p>```</p>
+<p>This product includes software developed by [ORGANIZATION NAME].</p>
+<p>[License text or reference]</p>
+<p>```</p>
+<p>**Content:**</p>
+<p>```</p>
+<p>[Title] by [ORGANIZATION NAME] is licensed under CC BY 4.0</p>
+<p>[Link to original]</p>
+<p>```</p>
+<h3>8.3 Moral Rights</h3>
+<p>The Organization respects moral rights of creators where applicable:</p>
+<ul>
+<li>Right of attribution (paternity)</li>
+<li>Right of integrity (no derogatory treatment)</li>
+<li>Right to anonymity (if requested)</li>
+</ul>
+<p>---</p>
+<h2>9. IP Enforcement</h2>
+<h3>9.1 Infringement Monitoring</h3>
+<p>The Organization monitors for:</p>
+<ul>
+<li>Unauthorized trademark use</li>
+<li>License violations (failure to attribute, etc.)</li>
+<li>Plagiarism of content</li>
+<li>Patent infringement claims against Organization</li>
+</ul>
+<h3>9.2 Enforcement Priorities</h3>
+<p>**High Priority:**</p>
+<ul>
+<li>Trademark confusion harming Organization reputation</li>
+<li>Willful license violations</li>
+<li>Commercial exploitation without attribution</li>
+</ul>
+<p>**Medium Priority:**</p>
+<ul>
+<li>Innocent attribution failures (educational response)</li>
+<li>Non-commercial violations</li>
+</ul>
+<p>**Low Priority:**</p>
+<ul>
+<li>Technical violations with no harm</li>
+<li>De minimis uses</li>
+</ul>
+<h3>9.3 Enforcement Process</h3>
+<p>1. **Documentation:** Gather evidence of violation</p>
+<p>2. **Evaluation:** Assess priority and best resolution</p>
+<p>3. **Contact:** Initial outreach seeking compliance</p>
+<p>4. **Escalation:** Formal notice if needed</p>
+<p>5. **Resolution:** Compliance or legal action</p>
+<p>**Preferred Resolution:**</p>
+<ul>
+<li>Always prefer education over enforcement</li>
+<li>Seek compliance, not damages</li>
+<li>Preserve relationships where possible</li>
+</ul>
+<h3>9.4 Defensive Response</h3>
+<p>If Organization accused of infringement:</p>
+<p>1. Immediate legal counsel consultation</p>
+<p>2. Document review and analysis</p>
+<p>3. Good faith investigation</p>
+<p>4. Remediation if substantiated</p>
+<p>5. Defense if unsubstantiated</p>
+<p>---</p>
+<h2>10. Education and Compliance</h2>
+<h3>10.1 Training Requirements</h3>
+<p>| Audience | Training Content | Frequency |</p>
+<p>|----------|-----------------|-----------|</p>
+<p>| All Staff | IP basics, confidentiality | Annually |</p>
+<p>| Developers | Open source licensing, CLA process | Annually |</p>
+<p>| Managers | Third-party code approval, enforcement | Annually |</p>
+<p>| New Hires | IP ownership, disclosure obligations | Within 30 days |</p>
+<h3>10.2 Resources</h3>
+<p>**Internal Resources:**</p>
+<ul>
+<li>IP policy portal: [URL]</li>
+<li>License decision tree: [URL]</li>
+<li>Approved vendor list: [URL]</li>
+<li>CLA submission system: [URL]</li>
+</ul>
+<p>**External Resources:**</p>
+<ul>
+<li>Open Source Initiative: https://opensource.org/licenses</li>
+<li>Choose a License: https://choosealicense.com</li>
+<li>Creative Commons: https://creativecommons.org/choose</li>
+</ul>
+<h3>10.3 Compliance Review</h3>
+<p>**Quarterly:**</p>
+<ul>
+<li>CLA compliance check</li>
+<li>Trademark usage audit</li>
+<li>Third-party code inventory update</li>
+</ul>
+<p>**Annually:**</p>
+<ul>
+<li>Full IP policy review</li>
+<li>Training completion verification</li>
+<li>External IP landscape assessment</li>
+</ul>
+<p>---</p>
+<h2>11. Implementation Notes</h2>
+<h3>11.1 Immediate Actions (0-30 Days)</h3>
+<ul>
+<li>[ ] Inventory existing IP assets</li>
+<li>[ ] Register core trademarks</li>
+<li>[ ] Implement CLA collection system</li>
+<li>[ ] Create license decision tree for developers</li>
+<li>[ ] Audit third-party dependencies in all projects</li>
+</ul>
+<h3>11.2 Short-Term Actions (30-90 Days)</h3>
+<ul>
+<li>[ ] Standardize licenses on existing projects</li>
+<li>[ ] Create SBOM for all active projects</li>
+<li>[ ] Develop trademark usage guidelines</li>
+<li>[ ] Establish IP enforcement procedures</li>
+<li>[ ] Deploy training program</li>
+</ul>
+<h3>11.3 Ongoing Actions</h3>
+<ul>
+<li>[ ] Quarterly IP audits</li>
+<li>[ ] Annual policy review</li>
+<li>[ ] Continuous CLA processing</li>
+<li>[ ] Trademark monitoring</li>
+<li>[ ] License compliance in CI/CD</li>
+</ul>
+<h3>11.4 Key Contacts</h3>
+<p>| Role | Name/Email | Responsibilities |</p>
+<p>|------|------------|-----------------|</p>
+<p>| IP Officer | [EMAIL] | Strategy, enforcement, trademarks |</p>
+<p>| Open Source Lead | [EMAIL] | License selection, CLA process |</p>
+<p>| Legal Counsel | [EMAIL] | Complex licensing, disputes |</p>
+<p>| Compliance Officer | [EMAIL] | Training, audits, policy |</p>
+<p>---</p>
+<h2>Document Control</h2>
+<p>| Version | Date | Author | Changes |</p>
+<p>|---------|------|--------|---------|</p>
+<p>| 1.0 | [DATE] | [AUTHOR] | Initial policy |</p>
+<p>---</p>
+<p>**Acknowledgment**</p>
+<p>I have received, read, and understood the Intellectual Property &amp; Licensing Policy. I agree to comply with its requirements and understand that violations may result in disciplinary action.</p>
+<p>Employee Name: _________________________</p>
+<p>Signature: _________________________</p>
+<p>Date: _________________________</p></div></section>
+  <section class="layer card" aria-label="Download"><h2>Layer 3 — Download</h2><a class="dl" href="downloads/pdf/05_Intellectual_Property_Licensing_Policy_CivicOS_Institute_v1.0.pdf" download>Download PDF</a> <span class="small">&nbsp;</span> <a class="dl" href="downloads/docx/05_Intellectual_Property_Licensing_Policy_CivicOS_Institute_v1.0.docx" download>Download DOCX</a><div class="small">Version 1.0 · Status: DRAFT · Pending adoption</div></section>
+</article></main><script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')} function toggleFull(id,btn){const e=document.getElementById(id);const open=e.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Hide full text':'Show full text';}</script><footer><main>Generated by create_governance_web.js</main></footer></body></html>

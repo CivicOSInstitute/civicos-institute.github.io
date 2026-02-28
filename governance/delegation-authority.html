@@ -1,0 +1,359 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Delegation of Authority Matrix | CivicOS Governance</title><style>
+:root{--navy:#1B2B4B;--gold:#B8963E;--lg:#F2F4F7;--border:#D0D5DD;--white:#FFFFFF;--td:#111111;--tb:#333333;--muted:#777777}
+*{box-sizing:border-box} body{margin:0;font-family:Georgia,serif;color:var(--tb);background:var(--lg)}
+a{color:var(--navy)}
+.top{background:var(--navy);color:#fff;padding:14px 18px;position:sticky;top:0;z-index:10}
+.brand{font-family:Arial,sans-serif;font-weight:700}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between}
+.nav-links{display:flex;gap:14px}.nav-links a{font-family:Arial,sans-serif;color:#fff;text-decoration:none;font-size:14px}
+.hamb{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:6px 10px;border-radius:6px}
+main{max-width:1120px;margin:22px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;border-left:4px solid var(--gold);transition:box-shadow .2s ease}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-family:Arial,sans-serif;font-size:12px;border:1px solid}
+.badge.draft{background:#FFF3CD;color:#856404;border-color:#FFEAA7}
+.badge.adopted{background:#D1E7DD;color:#0A3622;border-color:#A3CFBB}
+.badge.review{background:#CFF4FC;color:#055160;border-color:#9EEAF9}
+.kf{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.kf span{font-family:Arial,sans-serif;font-size:12px;background:var(--lg);border:1px solid var(--border);padding:4px 8px;border-radius:16px}
+.layer{margin-top:14px}
+.fulltext{background:var(--lg);border-left:3px solid var(--border);padding:24px;overflow:hidden;max-height:0;transition:max-height .35s ease}
+.fulltext.open{max-height:2200px}
+.tog{font-family:Arial,sans-serif;background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:6px;cursor:pointer}
+.dl{display:inline-block;background:var(--navy);color:#fff !important;text-decoration:none;padding:10px 14px;border-radius:6px;font-family:Arial,sans-serif}
+.dl:hover{background:var(--gold);color:#fff !important}
+.small{font-size:12px;color:var(--muted);font-family:Arial,sans-serif}
+footer{margin:30px 0;color:var(--muted);font-family:Arial,sans-serif;font-size:12px}
+@media (max-width:768px){.grid{grid-template-columns:1fr}.hamb{display:inline-block}.nav-links{display:none;flex-direction:column;background:var(--navy);position:absolute;left:0;right:0;top:54px;padding:10px 18px}.nav-links.open{display:flex}.dl{display:block;width:100%;text-align:center}}
+</style></head><body><header class="top"><div class="nav-wrap"><div class="brand">CivicOS Governance</div><button class="hamb" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button><nav id="navLinks" class="nav-links" aria-label="Governance navigation"><a href="index.html">Index</a><a href="downloads.html">Downloads</a></nav></div></header><main><article>
+  <h1>Delegation of Authority Matrix</h1>
+  <section class="layer card" aria-label="At a glance"><h2>Layer 1 — At a glance</h2><span class="badge draft">DRAFT</span><p>Defines exactly who has the power to sign contracts, commit funds, hire personnel, and make binding organizational decisions — and at what dollar thresholds. Prevents unauthorized commitments and ensures appropriate oversight scales with the size of the decision.</p><div class="kf"><span>Board approval required: Contracts above $100,000</span><span>Dual signature required: Checks and wires above $10,000</span><span>ED emergency authority: Up to $25,000</span><span>Annual review: Required by Board</span></div><div class="small">Last reviewed: Not yet reviewed</div></section>
+  <section class="layer card" aria-label="Full text"><h2>Layer 2 — Full text</h2><button class="tog" aria-label="Toggle full text" aria-expanded="true" aria-controls="full-03" onclick="toggleFull('full-03',this)">Hide full text</button><div id="full-03" class="fulltext open"><h1>CIVICOS INSTITUTE</h1>
+<h1>DELEGATION OF AUTHORITY MATRIX</h1>
+<h2>PURPOSE</h2>
+<p>This Delegation of Authority Matrix (&quot;Matrix&quot;) establishes clear boundaries for decision-making authority within CivicOS Institute (the &quot;Organization&quot;). It defines who has the power to:</p>
+<ul>
+<li>Sign contracts and legal documents</li>
+<li>Commit organizational funds</li>
+<li>Make binding commitments on behalf of the Organization</li>
+<li>Hire, manage, and terminate personnel</li>
+<li>Approve expenditures at various thresholds</li>
+</ul>
+<p>This Matrix is a living document that shall be reviewed annually and updated as needed.</p>
+<p>---</p>
+<h2>SECTION 1: DEFINITIONS</h2>
+<h3>1.1 Authority Levels</h3>
+<p>| Level | Description |</p>
+<p>|-------|-------------|</p>
+<p>| **Board** | Requires formal vote of the Board of Directors |</p>
+<p>| **Executive Committee** | Requires approval by the Executive Committee |</p>
+<p>| **Chair** | Chair of the Board, acting within delegated limits |</p>
+<p>| **ED** | Executive Director, with full operational authority |</p>
+<p>| **Director-Level** | Department or program directors |</p>
+<p>| **Manager-Level** | Managers or senior staff |</p>
+<p>| **Staff** | Regular employees (limited authority) |</p>
+<h3>1.2 Financial Thresholds</h3>
+<p>| Tier | Annual Amount | Description |</p>
+<p>|------|---------------|-------------|</p>
+<p>| **Minor** | Up to $[1,000] | Routine operational expenses |</p>
+<p>| **Moderate** | $[1,001] – $[10,000] | Standard contracts and purchases |</p>
+<p>| **Significant** | $[10,001] – $[50,000] | Major contracts and commitments |</p>
+<p>| **Material** | $[50,001] – $[100,000] | Significant financial commitments |</p>
+<p>| **Major** | Above $[100,000] | Board-level decisions required |</p>
+<h3>1.3 Contract Types</h3>
+<ul>
+<li>**Standard Contract**: Routine agreements using Organization templates (e.g., standard NDAs, simple vendor agreements)</li>
+<li>**Non-Standard Contract**: Agreements with custom terms or significant liability exposure</li>
+<li>**Strategic Contract**: Multi-year agreements, partnership MOUs, major vendor relationships</li>
+<li>**Employment Contract**: Individual employment agreements</li>
+<li>**Grant Agreement**: Funding agreements with donors or recipients</li>
+</ul>
+<p>---</p>
+<h2>SECTION 2: SIGNING AUTHORITY</h2>
+<h3>2.1 Contract Signing Authority</h3>
+<p>| Transaction Type | Board | Chair | ED | Director | Notes |</p>
+<p>|-----------------|-------|-------|-----|----------|-------|</p>
+<p>| **Articles of Incorporation/Bylaw Amendments** | ✓ Required | — | — | — | Must follow Bylaw procedures |</p>
+<p>| **Real Estate Purchase/Sale** | ✓ Required | — | — | — | 2/3 vote; legal review required |</p>
+<p>| **Real Estate Lease (&gt; 1 year)** | ✓ Required | — | — | — | Legal review required |</p>
+<p>| **Real Estate Lease (≤ 1 year)** | — | ✓ | ✓ | — | Up to $[50,000]/year |</p>
+<p>| **Major Contracts (&gt;$100K)** | ✓ Required | — | — | — | Board vote required |</p>
+<p>| **Material Contracts ($50K-$100K)** | — | ✓ | ✓ | — | Chair or ED; legal review |</p>
+<p>| **Significant Contracts ($10K-$50K)** | — | — | ✓ | ✓* | ED or designated Director |</p>
+<p>| **Standard Contracts (&lt;$10K)** | — | — | ✓ | ✓ | Template agreements only |</p>
+<p>| **Employment Contracts (ED)** | ✓ Required | — | — | — | Executive Committee negotiation |</p>
+<p>| **Employment Contracts (Staff)** | — | — | ✓ | — | Within budget and policy |</p>
+<p>| **Grant Agreements (Incoming)** | — | ✓ | ✓ | — | Chair or ED; $50K+ Board notice |</p>
+<p>| **Grant Agreements (Outgoing)** | — | — | ✓ | ✓* | ED or program director |</p>
+<p>| **Intellectual Property Licenses** | — | ✓ | ✓ | — | Strategic licenses to Board |</p>
+<p>| **Settlement Agreements** | ✓* | — | — | — | Board approval if &gt;$[25,000] |</p>
+<p>*With specific written delegation from ED</p>
+<h3>2.2 Financial Document Signing Authority</h3>
+<p>| Document Type | Board | Chair | Treasurer | ED | Notes |</p>
+<p>|--------------|-------|-------|-----------|-----|-------|</p>
+<p>| **Loans/Credit Facilities** | ✓ Required | — | — | — | Board vote; legal review |</p>
+<p>| **Investment Agreements** | ✓ Required | — | — | — | Within investment policy |</p>
+<p>| **Tax Returns (Form 990)** | — | ✓ | ✓ | — | Chair and Treasurer |</p>
+<p>| **Banking Resolutions** | ✓ Required | — | — | — | Board authorization |</p>
+<p>| **Bank Account Opening** | — | ✓ | ✓ | — | Chair or Treasurer |</p>
+<p>| **Checks &gt;$10,000** | — | — | ✓* | ✓ | Dual signature required |</p>
+<p>| **Wire Transfers &gt;$10,000** | — | — | ✓* | ✓ | Dual authorization required |</p>
+<p>| **Audit Engagement Letter** | — | ✓ | ✓ | — | Chair or Treasurer |</p>
+<p>| **Insurance Policies** | — | — | ✓ | ✓ | Within approved coverage |</p>
+<p>*Primary signatory</p>
+<h3>2.3 Legal Document Signing Authority</h3>
+<p>| Document Type | Board | Chair | ED | Legal Counsel | Notes |</p>
+<p>|--------------|-------|-------|-----|---------------|-------|</p>
+<p>| **Litigation Settlement** | ✓* | — | — | ✓ | Board if &gt;$[25,000] |</p>
+<p>| **Filing Lawsuit** | — | ✓ | ✓ | ✓ | With legal counsel approval |</p>
+<p>| **Appeals of Adverse Decisions** | — | ✓ | ✓ | ✓ | With legal counsel approval |</p>
+<p>| **IRS/Regulatory Filings** | — | — | ✓ | — | ED or designated staff |</p>
+<p>| **Trademark/Patent Applications** | — | — | ✓ | ✓ | Within IP policy |</p>
+<p>| **Subpoena Responses** | — | — | ✓ | ✓ | With legal review |</p>
+<p>---</p>
+<h2>SECTION 3: SPENDING AUTHORITY</h2>
+<h3>3.1 Expenditure Approval Matrix</h3>
+<p>| Category | Minor (&lt;$1K) | Moderate ($1K-$10K) | Significant ($10K-$50K) | Material ($50K-$100K) | Major (&gt;$100K) |</p>
+<p>|----------|--------------|---------------------|------------------------|-----------------------|----------------|</p>
+<p>| **Personnel Costs** | ED | ED | ED* | Board (notice) | Board (approval) |</p>
+<p>| **Professional Services** | ED | ED | ED | Chair or ED | Board |</p>
+<p>| **Technology/Software** | Director | ED | ED | Chair or ED | Board |</p>
+<p>| **Marketing/Communications** | Director | ED | ED | Chair or ED | Board |</p>
+<p>| **Facilities/Office** | Director | ED | ED | Chair or ED | Board |</p>
+<p>| **Travel &amp; Events** | Director | ED | ED | Chair or ED | Board |</p>
+<p>| **Grants to Others** | — | ED | ED | Chair or ED | Board |</p>
+<p>| **Equipment (&gt;5yr life)** | — | ED | ED | Chair or ED | Board |</p>
+<p>| **Emergency Expenditures** | ED | ED | Chair | Chair | Board (retroactive) |</p>
+<p>*New position creation requires Board notice; salary bands established by Board</p>
+<h3>3.2 Recurring vs. One-Time Expenses</h3>
+<p>| Type | Authority |</p>
+<p>|------|-----------|</p>
+<p>| **Recurring Operating Expenses** (utilities, subscriptions, routine services) | ED up to $[50,000]/year total; Director up to $[5,000]/year per budget line |</p>
+<p>| **One-Time Capital Expenditures** | Per threshold matrix above |</p>
+<p>| **Multi-Year Commitments** | Board approval if total value exceeds $[50,000] |</p>
+<h3>3.3 Emergency Expenditure Authority</h3>
+<p>In emergency situations where delay would harm the Organization:</p>
+<p>| Role | Emergency Spending Limit | Conditions |</p>
+<p>|------|-------------------------|------------|</p>
+<p>| **Board Chair** | Up to $[50,000] | Immediate threat to operations, safety, or legal compliance |</p>
+<p>| **Executive Director** | Up to $[25,000] | Immediate threat to operations or compliance |</p>
+<p>| **Treasurer** | Up to $[10,000] | Financial emergency only |</p>
+<p>**Emergency Expenditure Requirements:**</p>
+<ul>
+<li>Must be necessary to prevent significant harm</li>
+<li>Must be documented within 24 hours</li>
+<li>Must be reported to Board at next meeting</li>
+<li>Retroactive Board ratification required for amounts over $[25,000]</li>
+<li>May not be used to circumvent normal approval processes</li>
+</ul>
+<p>---</p>
+<h2>SECTION 4: PERSONNEL AUTHORITY</h2>
+<h3>4.1 Hiring Authority</h3>
+<p>| Position Level | Post Job | Interview | Extend Offer | Set Compensation | Final Approval |</p>
+<p>|----------------|----------|-----------|--------------|------------------|----------------|</p>
+<p>| **Executive Director** | Board | Board/Committee | Board | Board | Board Vote |</p>
+<p>| **Direct Reports to ED** | ED/HR | ED/Panel | ED | ED (within bands) | ED |</p>
+<p>| **Management Staff** | Director | Director/Panel | Director | ED | ED |</p>
+<p>| **Professional Staff** | Director | Manager/Panel | Manager | Director | ED |</p>
+<p>| **Administrative Staff** | Manager | Manager | Manager | Director | Director |</p>
+<p>| **Contractors/Consultants** | ED/Director | Panel | ED/Director | Per contract matrix | Per contract matrix |</p>
+<p>| **Interns/Fellows** | Manager | Manager | Manager | Set rate | Director |</p>
+<h3>4.2 Compensation Authority</h3>
+<p>| Action | Board | ED | Director | HR | Notes |</p>
+<p>|--------|-------|-----|----------|-----|-------|</p>
+<p>| **Set Salary Bands** | ✓ | Advised | — | Advised | Board approves structure |</p>
+<p>| **ED Compensation** | ✓ | — | — | — | Independent compensation committee |</p>
+<p>| **Hire within Band** | — | ✓ | — | Advised | Following HR policy |</p>
+<p>| **Promotion within Band** | — | ✓ | ✓* | Advised | *With ED approval |</p>
+<p>| **Promotion exceeding Band** | — | ✓ | — | Advised | ED approval required |</p>
+<p>| **Merit Increases (standard)** | — | ✓ | ✓* | Advised | Within budget |</p>
+<p>| **Merit Increases (exceptional)** | — | ✓ | — | Advised | &gt;10% requires ED |</p>
+<p>| **Bonus/Variable Comp** | ✓ | — | — | — | Board-approved plan only |</p>
+<p>| **Benefits Changes** | ✓ | Recommended | — | Advised | Board approves plans |</p>
+<h3>4.3 Termination Authority</h3>
+<p>| Action | Board | Chair | ED | Director | Notes |</p>
+<p>|--------|-------|-------|-----|----------|-------|</p>
+<p>| **Terminate ED** | ✓ | — | — | — | 30 days notice; immediate if cause |</p>
+<p>| **Terminate Direct Reports to ED** | — | ✓* | ✓ | — | *If ED conflict |</p>
+<p>| **Terminate Management** | — | — | ✓ | Recommended | With HR consultation |</p>
+<p>| **Terminate Staff** | — | — | ✓ | ✓* | *Within policy |</p>
+<p>| **Layoffs/Reduction in Force** | ✓ | — | Recommended | — | Board approval required |</p>
+<p>| **Eliminate Position** | — | — | ✓ | Recommended | Budget permitting |</p>
+<p>---</p>
+<h2>SECTION 5: OPERATIONAL COMMITMENTS</h2>
+<h3>5.1 Commitment Authority</h3>
+<p>| Type of Commitment | Authority Level | Notes |</p>
+<p>|-------------------|-----------------|-------|</p>
+<p>| **Strategic Partnerships** | Board | MOUs, multi-year collaborations |</p>
+<p>| **Speaking/Representation** | ED | Official Organizational positions |</p>
+<p>| **Public Statements** | ED/Communications | Policy positions, press releases |</p>
+<p>| **Social Media** | Designated Staff | Within approved messaging |</p>
+<p>| **Research Collaboration** | ED | Institutional partnerships |</p>
+<p>| **Data Sharing Agreements** | ED | With privacy officer review |</p>
+<p>| **Open Source Contributions** | ED/Tech Lead | Within IP policy |</p>
+<p>| **Trademark Use (3rd party)** | ED | Legal review required |</p>
+<p>| **Event Sponsorship** | ED | Up to $[25,000] |</p>
+<p>| **Event Hosting** | Director | Within budget |</p>
+<h3>5.2 Obligation Limits</h3>
+<p>No individual may commit the Organization to:</p>
+<ul>
+<li>Obligations exceeding their spending authority</li>
+<li>Multi-year commitments without appropriate approval</li>
+<li>Personal guarantees or surety obligations</li>
+<li>Unlimited liability or indemnification</li>
+</ul>
+<p>---</p>
+<h2>SECTION 6: DELEGATION PROCEDURES</h2>
+<h3>6.1 Formal Delegation</h3>
+<p>Authority may be formally delegated as follows:</p>
+<p>| From | To | Process | Limits |</p>
+<p>|------|-----|---------|--------|</p>
+<p>| **Board** | Committee | Board Resolution | Specified in resolution |</p>
+<p>| **Board** | Chair | Board Resolution | Specified in resolution |</p>
+<p>| **Chair** | ED | Written delegation | Must not exceed Chair&#39;s authority |</p>
+<p>| **ED** | Director | Written delegation | Specified in writing; may be revoked |</p>
+<p>| **ED** | Manager | Written delegation | Limited scope and duration |</p>
+<h3>6.2 Documentation of Delegation</h3>
+<p>All formal delegations must include:</p>
+<ul>
+<li>Scope of authority granted</li>
+<li>Financial limits, if applicable</li>
+<li>Duration of delegation</li>
+<li>Reporting requirements</li>
+<li>Conditions for revocation</li>
+<li>Signature of delegating authority</li>
+</ul>
+<h3>6.3 Revocation of Delegation</h3>
+<p>Delegation may be revoked by:</p>
+<ul>
+<li>The authority that granted it, at any time</li>
+<li>The Board, in its sole discretion</li>
+<li>Automatic revocation upon termination of employment</li>
+<li>Automatic revocation upon expiration of term</li>
+</ul>
+<p>Revocation must be in writing and effective immediately upon notice.</p>
+<p>---</p>
+<h2>SECTION 7: ACCOUNTABILITY AND REPORTING</h2>
+<h3>7.1 Monthly Reporting</h3>
+<p>The Executive Director shall provide monthly reports to the Board including:</p>
+<ul>
+<li>Contracts executed (summary)</li>
+<li>Expenditures exceeding $[10,000]</li>
+<li>Personnel changes</li>
+<li>Emergency expenditures</li>
+</ul>
+<h3>7.2 Quarterly Reporting</h3>
+<p>The Treasurer shall provide quarterly reports including:</p>
+<ul>
+<li>All contracts exceeding $[25,000]</li>
+<li>Budget variance analysis</li>
+<li>Commitments and obligations outstanding</li>
+<li>Compliance with spending authority limits</li>
+</ul>
+<h3>7.3 Annual Review</h3>
+<p>The Board shall annually review:</p>
+<ul>
+<li>This Delegation Matrix</li>
+<li>Effectiveness of delegation structure</li>
+<li>Any proposed changes to authority levels</li>
+<li>Compliance and exceptions</li>
+</ul>
+<h3>7.4 Documentation Requirements</h3>
+<p>All delegations of authority must be documented:</p>
+<ul>
+<li>Contracts: Retained per Document Retention Policy</li>
+<li>Approvals: Evidence of approval attached to expenditure</li>
+<li>Delegations: Written documentation on file</li>
+<li>Reports: Minutes or written summaries</li>
+</ul>
+<p>---</p>
+<h2>SECTION 8: PROHIBITED ACTIONS</h2>
+<p>The following actions are prohibited regardless of authority level:</p>
+<p>1. **Self-Dealing**: No individual may approve a transaction in which they have a personal financial interest</p>
+<p>2. **Splitting Transactions**: Breaking a single transaction into multiple smaller ones to circumvent authority limits</p>
+<p>3. **Retroactive Approval**: Seeking approval after a commitment has been made, except in genuine emergencies</p>
+<p>4. **Conditional Commitments**: Making commitments &quot;subject to Board approval&quot; without prior Board indication</p>
+<p>5. **Personal Liability**: Committing to personal liability on behalf of the Organization</p>
+<p>6. **Gift Restrictions**: Accepting gifts with conditions that violate Organization policy or law</p>
+<p>7. **Political Activity**: Authorizing partisan political activities or campaign intervention</p>
+<p>---</p>
+<h2>SECTION 9: EXCEPTIONS AND OVERRIDE</h2>
+<h3>9.1 Board Override</h3>
+<p>The Board retains ultimate authority and may:</p>
+<ul>
+<li>Override any delegated decision</li>
+<li>Require additional approvals for specific matters</li>
+<li>Modify authority levels for specific transactions</li>
+<li>Suspend delegation in extraordinary circumstances</li>
+</ul>
+<h3>9.2 Conflict Resolution</h3>
+<p>If there is uncertainty about authority:</p>
+<p>1. The matter shall be escalated to the next higher authority level</p>
+<p>2. Legal counsel may be consulted</p>
+<p>3. The conservative interpretation shall prevail pending resolution</p>
+<p>4. The Board shall be notified of material ambiguities</p>
+<p>---</p>
+<h2>SECTION 10: AMENDMENT</h2>
+<p>This Delegation of Authority Matrix may be amended by:</p>
+<ul>
+<li>Board resolution for changes to Board-level authority</li>
+<li>Board resolution for changes to ED-level authority</li>
+<li>ED with Board notice for administrative clarifications</li>
+</ul>
+<p>---</p>
+<h2>APPENDIX A: SIGNATORY CARD TEMPLATE</h2>
+<h3>BANK SIGNATORY AUTHORIZATION</h3>
+<p>**Authorized Signatories for Account #[ACCOUNT NUMBER]**</p>
+<p>| Name | Title | Signature | Authority Level | Effective Date |</p>
+<p>|------|-------|-----------|-----------------|----------------|</p>
+<p>| | Chair | | Up to $[unlimited] | |</p>
+<p>| | Treasurer | | Up to $[unlimited] | |</p>
+<p>| | Executive Director | | Up to $[100,000] | |</p>
+<p>| | [Designee] | | Up to $[25,000] | |</p>
+<p>**Dual Signature Required For:** Amounts exceeding $[10,000]</p>
+<p>---</p>
+<h2>APPENDIX B: DELEGATION CERTIFICATE TEMPLATE</h2>
+<h3>CERTIFICATE OF DELEGATION</h3>
+<p>I, _________________________________, [TITLE], delegate to:</p>
+<p>Name: ________________________________</p>
+<p>Title: ________________________________</p>
+<p>the following authority:</p>
+<p>☐ Contract signing up to $___________</p>
+<p>☐ Expenditure approval up to $___________</p>
+<p>☐ Hiring authority for positions up to: _______________</p>
+<p>☐ Other: ___________________________________________</p>
+<p>**Conditions:**</p>
+<p>_________________________________________________________________</p>
+<p>**Duration:** ☐ Ongoing ☐ Until: _______________ ☐ Revocable at will</p>
+<p>**Reporting Requirements:**</p>
+<p>_________________________________________________________________</p>
+<p>This delegation does not include authority to further delegate without written consent.</p>
+<p>Delegating Authority: _________________________ Date: ___________</p>
+<p>Accepting Authority: __________________________ Date: ___________</p>
+<p>---</p>
+<h2>APPENDIX C: QUICK REFERENCE CHART</h2>
+<h3>WHO CAN APPROVE WHAT?</h3>
+<p>| If you need to... | Ask... | Notes |</p>
+<p>|-------------------|--------|-------|</p>
+<p>| Sign any contract over $100K | Board | Vote required |</p>
+<p>| Sign a contract $50K-$100K | Chair or ED | Legal review recommended |</p>
+<p>| Hire a new staff member | ED (within budget) | HR process required |</p>
+<p>| Change someone&#39;s salary | Per compensation matrix | Must be within bands |</p>
+<p>| Spend $25K on a project | ED | Within approved budget |</p>
+<p>| Buy equipment over $10K | ED | Capital asset tracking |</p>
+<p>| Sign a grant agreement | ED | Over $50K notify Board |</p>
+<p>| Commit to multi-year contract | Board | If total &gt;$50K |</p>
+<p>| Authorize emergency spending | Chair (up to $50K) | Document immediately |</p>
+<p>| Sign a lease over 1 year | Board | |</p>
+<p>| Sign a lease under 1 year | Chair or ED | Under $50K/year |</p>
+<p>| Approve a consultant | Per contract value | See matrix |</p>
+<p>---</p>
+<h2>IMPLEMENTATION NOTES</h2>
+<p>1. **Customize Thresholds**: Adjust all bracketed dollar amounts based on Organization budget size and risk tolerance</p>
+<p>2. **Bank Documentation**: Provide this Matrix to all banking institutions holding Organization funds</p>
+<p>3. **Training**: Train all authorized signatories on their responsibilities</p>
+<p>4. **Insurance**: Ensure appropriate Directors &amp; Officers (D&amp;O) and fidelity bond coverage</p>
+<p>5. **Annual Review**: Review and update this Matrix as part of annual governance review</p>
+<p>6. **Legal Review**: Have an attorney review to ensure compliance with state law and banking requirements</p></div></section>
+  <section class="layer card" aria-label="Download"><h2>Layer 3 — Download</h2><a class="dl" href="downloads/pdf/03_Delegation_of_Authority_Matrix_CivicOS_Institute_v1.0.pdf" download>Download PDF</a> <span class="small">&nbsp;</span> <a class="dl" href="downloads/docx/03_Delegation_of_Authority_Matrix_CivicOS_Institute_v1.0.docx" download>Download DOCX</a><div class="small">Version 1.0 · Status: DRAFT · Pending adoption</div></section>
+</article></main><script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')} function toggleFull(id,btn){const e=document.getElementById(id);const open=e.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Hide full text':'Show full text';}</script><footer><main>Generated by create_governance_web.js</main></footer></body></html>
