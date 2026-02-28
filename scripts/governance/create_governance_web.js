@@ -120,9 +120,9 @@ function fileInfo(docId, version) {
 
 function layer3Downloads(info) {
   const primary = info.pdfExists
-    ? `<a class="dl" href="../pdf/${esc(info.pdfName)}" download>Download PDF</a>`
+    ? `<a class="dl" href="downloads/pdf/${esc(info.pdfName)}" download>Download PDF</a>`
     : '';
-  const secondary = `<a class="dl" href="../docx/${esc(info.docxName)}" download>${info.pdfExists ? 'Download DOCX' : 'Download DOCX'}</a>`;
+  const secondary = `<a class="dl" href="downloads/docx/${esc(info.docxName)}" download>${info.pdfExists ? 'Download DOCX' : 'Download DOCX'}</a>`;
   if (info.pdfExists) return `${primary} <span class="small">&nbsp;</span> ${secondary}`;
   return secondary;
 }
@@ -151,7 +151,7 @@ function buildIndex(webCfg, govCfg) {
     return `<article class="card"><h2 style="margin-top:0"><a href="${esc(d.page)}">${esc(d.title)}</a></h2><span class="badge ${statusClass(dc.status)}">${esc(dc.status || 'DRAFT')}</span><div class="small" style="margin-top:6px">Layer 1 — At a glance</div><p>${esc(d.summary)}</p><div class="kf">${d.key_facts.map(k => `<span>${esc(k)}</span>`).join('')}</div><div class="small">Last reviewed: ${esc(dc.last_reviewed || 'Not yet reviewed')}</div><div class="layer"><div class="small">Layer 2 — Full text</div><button class="tog" aria-label="Toggle full text" aria-expanded="false" aria-controls="full-${d.id}" onclick="toggleFull('full-${d.id}',this)">Show full text</button><div id="full-${d.id}" class="fulltext">${fullHtml}</div></div><div class="layer"><div class="small">Layer 3 — Download</div>${layer3Downloads(info)}</div></article>`;
   }).join('');
 
-  const body = `<section class="card" style="margin-bottom:14px"><h1>Governance</h1><p>${esc(webCfg.transparency_statement)}</p></section><aside class="card" style="margin-bottom:14px" aria-label="Board composition summary"><h2>Board Composition Summary</h2><p><strong>${govCfg.board.min_directors}–${govCfg.board.max_directors}</strong> directors · ${govCfg.board.term_years}-year terms · minimum ${govCfg.board.meetings_per_year_minimum} meetings/year · quorum: ${esc(govCfg.board.quorum)}</p></aside><section class="grid">${cards}</section><section class="card" style="margin-top:14px"><h2>Downloads</h2><a class="dl" href="downloads.html">Open downloads center</a></section>`;
+  const body = `<section class="card" style="margin-bottom:14px"><h1>Governance</h1></section><section role="note" aria-label="Governance documents provisional status notice" style="background:#FFF3CD;border-left:4px solid #B8963E;border-radius:6px;padding:20px 24px;color:#856404;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;margin-bottom:32px;">⚖ These governance documents are published in draft form as part of our founding transparency commitment. They reflect our current operating standards and are pending formal adoption at our first board meeting. We believe you should be able to see how we govern ourselves before, during, and after that process — not just after.</section><section class="grid">${cards}</section><section class="card" style="margin-top:14px"><h2>Transparency Statement</h2><p>${esc(webCfg.transparency_statement)}</p></section><aside class="card" style="margin-top:14px" aria-label="Board composition summary"><h2>Board Composition Summary</h2><p><strong>${govCfg.board.min_directors}–${govCfg.board.max_directors}</strong> directors · ${govCfg.board.term_years}-year terms · minimum ${govCfg.board.meetings_per_year_minimum} meetings/year · quorum: ${esc(govCfg.board.quorum)}</p></aside><section class="card" style="margin-top:14px"><h2>Downloads</h2><a class="dl" href="downloads.html">Open downloads center</a></section>`;
   return wrap('Governance | CivicOS Institute', body);
 }
 
@@ -160,8 +160,8 @@ function buildDownloads(webCfg, govCfg) {
     const dc = govCfg.documents[d.id] || { version: '1.0', status: 'DRAFT', adopted: null, last_reviewed: null };
     const info = fileInfo(d.id, dc.version || '1.0');
     const size = info.pdfExists ? info.pdfSize : info.docxSize;
-    const pdfBtn = info.pdfExists ? `<a class="dl" href="../pdf/${esc(info.pdfName)}" download>PDF ⬇</a>` : '';
-    const docxBtn = `<a class="dl" href="../docx/${esc(info.docxName)}" download>DOCX ⬇</a>`;
+    const pdfBtn = info.pdfExists ? `<a class="dl" href="downloads/pdf/${esc(info.pdfName)}" download>PDF ⬇</a>` : '';
+    const docxBtn = `<a class="dl" href="downloads/docx/${esc(info.docxName)}" download>DOCX ⬇</a>`;
     return `<tr><td>${esc(d.title)}</td><td>${esc(dc.version || '1.0')}</td><td><span class="badge ${statusClass(dc.status)}">${esc(dc.status || 'DRAFT')}</span></td><td>${pdfBtn} ${docxBtn}</td><td>${size}</td></tr>`;
   }).join('');
 
@@ -174,7 +174,7 @@ function buildDownloads(webCfg, govCfg) {
     <h1>Governance Downloads</h1>
     <section class="card"><h2>Layer 1 — At a glance</h2><p>Download every governance document with status, version, and file metadata.</p></section>
     <section class="card layer"><h2>Layer 2 — Full text</h2><button class="tog" aria-label="Toggle full text" aria-expanded="false" aria-controls="full-downloads" onclick="toggleFull('full-downloads',this)">Show full text</button><div id="full-downloads" class="fulltext"><p>This page includes complete download metadata and a changelog table for review and audit traceability.</p></div></section>
-    <section class="card layer"><h2>Layer 3 — Download</h2><a class="dl" href="../CivicOS_Governance_Suite.zip" download>Download Full Suite ZIP</a></section>
+    <section class="card layer"><h2>Layer 3 — Download</h2><a class="dl" href="downloads/CivicOS_Governance_Suite.zip" download>Download Full Suite ZIP</a></section>
     <section class="card layer"><h2>Documents</h2><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif"><thead><tr><th align="left">Document</th><th align="left">Version</th><th align="left">Status</th><th align="left">Downloads</th><th align="left">Size</th></tr></thead><tbody>${rows}</tbody></table></div></section>
     <section class="card layer"><h2>Changelog: Version History</h2><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif"><thead><tr><th align="left">ID</th><th align="left">Version</th><th align="left">Status</th><th align="left">Last Reviewed</th></tr></thead><tbody>${changelog}</tbody></table></div></section>
   </article>`;
@@ -213,11 +213,11 @@ function runValidation(webCfg, govCfg, pagesGenerated) {
     for (const l of ['Layer 1 — At a glance', 'Layer 2 — Full text', 'Layer 3 — Download']) if (!html.includes(l)) throw new Error(`${d.page}: missing ${l}`);
 
     const info = fileInfo(d.id, dc.version || '1.0');
-    if (!info.docxExists) broken_docx_links.push(`../docx/${info.docxName}`);
-    if (!info.pdfExists) broken_pdf_links.push(`../pdf/${info.pdfName}`);
+    if (!info.docxExists) broken_docx_links.push(`downloads/docx/${info.docxName}`);
+    if (!info.pdfExists) broken_pdf_links.push(`downloads/pdf/${info.pdfName}`);
   }
 
-  if (!fs.existsSync(SUITE_ZIP)) broken_docx_links.push('../CivicOS_Governance_Suite.zip');
+  if (!fs.existsSync(SUITE_ZIP)) broken_docx_links.push('downloads/CivicOS_Governance_Suite.zip');
   return { pages_generated: pagesGenerated.slice(), broken_pdf_links, broken_docx_links };
 }
 
