@@ -170,14 +170,6 @@ def build_brief(report_date):
     ]
 
     lines = [
-        "**CIVICOS INSTITUTE**",
-        "",
-        "**Board Intelligence Brief**",
-        "",
-        f"**{report_date}**",
-        "",
-        "---",
-        "",
         f"# CivicOS Board Brief — {report_date}",
         "",
         "## Executive Summary",

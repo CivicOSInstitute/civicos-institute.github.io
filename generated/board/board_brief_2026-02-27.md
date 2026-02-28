@@ -1,9 +1,3 @@
-# CivicOS Institute
-### Board Briefing Packet
-**Date:** 2026-02-27
-
----
-
 # CivicOS Board Brief — 2026-02-27
 
 ## Executive Summary
