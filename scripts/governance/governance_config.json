@@ -1,0 +1,57 @@
+{
+  "org": {
+    "name": "CivicOS Institute",
+    "legal_name": "CivicOS Institute",
+    "state": "Florida",
+    "address": "4884 Beresford Circle, West Palm Beach, Florida 33417",
+    "phone": "561-287-3579",
+    "website": "civicos-institute.org",
+    "email_legal": "NCerbone@civicos-institute.org",
+    "email_ops": "Burt@civicos-institute.org"
+  },
+  "leadership": {
+    "executive_director": "Nicholas A. Cerbone",
+    "ed_title": "Executive Director",
+    "registered_agent": "Nicholas A. Cerbone"
+  },
+  "board": {
+    "min_directors": 3,
+    "max_directors": 9,
+    "term_years": 3,
+    "max_consecutive_terms": 2,
+    "meetings_per_year_minimum": 4,
+    "quorum": "majority"
+  },
+  "financials": {
+    "fiscal_year": "January 1 – December 31",
+    "threshold_minor": 1000,
+    "threshold_moderate": 10000,
+    "threshold_significant": 50000,
+    "threshold_material": 100000,
+    "dual_signature_above": 10000,
+    "emergency_chair_limit": 50000,
+    "emergency_ed_limit": 25000,
+    "emergency_treasurer_limit": 10000,
+    "budget_variance_pct": 10,
+    "key_employee_comp_threshold": 100000
+  },
+  "policy": {
+    "gift_disclosure_threshold": 75,
+    "gift_reporting_threshold": 25,
+    "coi_ownership_threshold_pct": 5,
+    "retention_standard_years": 7,
+    "retention_short_years": 3,
+    "ed_removal_notice_days": 30,
+    "bylaw_amendment_vote": "two-thirds",
+    "dissolution_vote": "three-quarters"
+  },
+  "documents": {
+    "AOI": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "01": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "02": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "03": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "04": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "05": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
+    "06": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null }
+  }
+}
