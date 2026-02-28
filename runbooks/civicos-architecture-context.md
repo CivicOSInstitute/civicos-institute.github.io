@@ -44,3 +44,4 @@ Maintain decision continuity and prevent context loss in high-volume architectur
 - Final decisions must be recorded here same day.
 - Summaries should link back to this file path:
   `/Users/AI-OPS/.openclaw/workspace/runbooks/civicos-architecture-context.md`
+- **Standing rule:** `board_brief.js` template is Claude-owned. Burt populates data only.
