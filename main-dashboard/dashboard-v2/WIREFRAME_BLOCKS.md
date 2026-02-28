@@ -1,5 +1,9 @@
 # Wireframe Blocks
 
+Two-layer structure mapping:
+- **Layer 1 (Executive Snapshot):** Alert bar + executive cards + critical path signal
+- **Layer 2 (Morning Ops Brief):** priorities, deadlines, overnight activity, schedule, pipeline pulse
+
 ## Desktop (12-column)
 
 ### Row 1

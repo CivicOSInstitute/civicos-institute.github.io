@@ -1,7 +1,9 @@
 # CivicOS Dashboard v2 — Spec
 
 ## Goal
-Single-screen executive triage + daily operational depth.
+Implement the settled **2-layer dashboard scaffold**:
+1. **Executive Snapshot (single-screen)** for immediate strategic triage
+2. **Morning Ops Brief (daily operational layer)** for execution depth
 
 ## Core Layout (Top to Bottom)
 1. **Global Alert Bar (R/Y/G)**
@@ -10,38 +12,34 @@ Single-screen executive triage + daily operational depth.
    - Green: no critical blockers
 
 2. **Executive Snapshot Row (6 cards)**
-   - Foundation Status
-   - Funding Pipeline
-   - Communications Throughput
-   - Operations Health
-   - Board/Grant/Pilot Pulse
-   - System Reliability
+   - Foundation Status (board seats, 501c3 status, fiscal sponsor)
+   - Funding Pipeline (urgent deadlines, active/submitted apps, revenue)
+   - Communications (Discord/Facebook/X automation status)
+   - Operations Health (open/overdue tasks, cron health, backups)
+   - Critical Path summary (next 30 days)
+   - Health Check banner status (top blocking risk)
 
 3. **Today Focus Panel**
    - Top 3 actions
    - Owner + ETA
    - “Do now” command links
 
-4. **Deadlines Panel (7-day + 14-day tabs)**
-   - Sorted by urgency
-   - Missing owner highlighted
+4. **Morning Ops Brief Layer**
+   - Deadlines <7 days (lead section)
+   - Today’s priorities (critical path + top 3 actions)
+   - Upcoming 14-day deadlines
+   - Overnight activity summary (completions + failures)
+   - Today’s schedule / cron windows
+   - Pipeline status pulse (board, grants, pilots)
 
-5. **Overnight Activity Feed**
-   - Completed jobs
-   - Failed jobs with first error + affected workflow
-
-6. **Critical Path (30-day)**
+5. **Critical Path (30-day)**
    - Checklist with status chips: Not Started / In Progress / Blocked / Done
 
-7. **Pipeline Pulse**
-   - Board recruitment
-   - Grants pipeline
-   - Pilot conversations
-
-## Design Rules
-- Decision-first: action blocks above diagnostics
-- One glance for risk level
-- Every red item must map to owner + ETA
+## Design Principles (settled)
+- Top-down triage: red/yellow/green first, details second
+- Decision-first layout: “What needs action now?” at top
+- Owner + ETA orientation: every critical item maps to an owner
+- Reliability visibility: automation failures surfaced beside strategic work
 - Show source timestamp on each module
 
 ## Refresh Behavior
