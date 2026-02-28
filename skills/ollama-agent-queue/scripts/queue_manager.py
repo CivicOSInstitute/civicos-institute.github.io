@@ -14,11 +14,11 @@ from typing import Any, Dict, List, Optional, Tuple
 
 PRIORITY_RANK = {"normal": 0, "high": 1, "urgent": 2}
 MODEL_MAP = {
-    "local/qwen-coder-32b": "qwen2.5-coder:32b",
+    "local/qwen-coder-32b": "qwen2.5-coder:32b-instruct-q3_K_L",
     "local/qwen-14b": "qwen3:14b",            # default 14B route (upgraded)
     "local/qwen3-14b": "qwen3:14b",
     "local/qwen2.5-14b": "qwen2.5:14b",       # explicit legacy route
-    "local/mistral-small": "mistral:latest",
+    "local/mistral-small": "mistral-small3.2:24b-instruct-2506-q4_K_M",
 }
 MODEL_TIMEOUTS = {
     "local/mistral-small": 120,

@@ -1,0 +1,1121 @@
+{
+  "generated_at": "2026-02-28T08:31:15",
+  "models": {
+    "local/qwen-14b": {
+      "toolcall": {
+        "runs": 5,
+        "json_valid_rate": 1.0,
+        "schema_valid_rate": 1.0,
+        "exec_pass_rate": 1.0,
+        "avg_seconds": 3.3,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 3.28,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          }
+        ]
+      },
+      "skill_routing": {
+        "runs": 10,
+        "json_valid_rate": 1.0,
+        "accuracy": 1.0,
+        "avg_seconds": 3.29,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "Get a 3-day weather forecast for Miami, FL."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "Add a reminder tomorrow at 9am to submit grant report."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"github\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "github",
+            "expected": "github",
+            "task": "Check open PRs and CI status for owner/repo."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"youtube-summarizer\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "youtube-summarizer",
+            "expected": "youtube-summarizer",
+            "task": "Summarize this YouTube video transcript and key takeaways."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"video-frames\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "video-frames",
+            "expected": "video-frames",
+            "task": "Extract one frame every 10 seconds from this mp4."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"browser-automation\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "browser-automation",
+            "expected": "browser-automation",
+            "task": "Log in to a website and capture a screenshot after submit."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"openai-whisper\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "openai-whisper",
+            "expected": "openai-whisper",
+            "task": "Transcribe this local audio file to text."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"apple-notes\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-notes",
+            "expected": "apple-notes",
+            "task": "Create a note in Apple Notes with meeting bullets."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "List overdue reminders and mark completed ones done."
+          },
+          {
+            "ok": true,
+            "seconds": 3.17,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "What is the current temperature in New York City?"
+          }
+        ]
+      }
+    },
+    "local/qwen2.5-14b": {
+      "toolcall": {
+        "runs": 5,
+        "json_valid_rate": 1.0,
+        "schema_valid_rate": 1.0,
+        "exec_pass_rate": 1.0,
+        "avg_seconds": 7.67,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 12.7,
+            "error": "",
+            "result": "{\n  \"tool\": \"exec\",\n  \"arguments\": {\n    \"command\": \"echo TOOLCALL_BENCH\"\n  }\n}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 6.46,
+            "error": "",
+            "result": "{\n  \"tool\": \"exec\",\n  \"arguments\": {\n    \"command\": \"echo TOOLCALL_BENCH\"\n  }\n}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 6.39,
+            "error": "",
+            "result": "{\n  \"tool\": \"exec\",\n  \"arguments\": {\n    \"command\": \"echo TOOLCALL_BENCH\"\n  }\n}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 6.4,
+            "error": "",
+            "result": "{\n  \"tool\": \"exec\",\n  \"arguments\": {\n    \"command\": \"echo TOOLCALL_BENCH\"\n  }\n}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 6.4,
+            "error": "",
+            "result": "{\n  \"tool\": \"exec\",\n  \"arguments\": {\n    \"command\": \"echo TOOLCALL_BENCH\"\n  }\n}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          }
+        ]
+      },
+      "skill_routing": {
+        "runs": 10,
+        "json_valid_rate": 1.0,
+        "accuracy": 1.0,
+        "avg_seconds": 3.27,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 3.15,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "Get a 3-day weather forecast for Miami, FL."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "Add a reminder tomorrow at 9am to submit grant report."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"github\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "github",
+            "expected": "github",
+            "task": "Check open PRs and CI status for owner/repo."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"youtube-summarizer\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "youtube-summarizer",
+            "expected": "youtube-summarizer",
+            "task": "Summarize this YouTube video transcript and key takeaways."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"video-frames\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "video-frames",
+            "expected": "video-frames",
+            "task": "Extract one frame every 10 seconds from this mp4."
+          },
+          {
+            "ok": true,
+            "seconds": 3.28,
+            "error": "",
+            "result": "{\"skill\":\"browser-automation\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "browser-automation",
+            "expected": "browser-automation",
+            "task": "Log in to a website and capture a screenshot after submit."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"openai-whisper\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "openai-whisper",
+            "expected": "openai-whisper",
+            "task": "Transcribe this local audio file to text."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"apple-notes\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-notes",
+            "expected": "apple-notes",
+            "task": "Create a note in Apple Notes with meeting bullets."
+          },
+          {
+            "ok": true,
+            "seconds": 3.15,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "List overdue reminders and mark completed ones done."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "What is the current temperature in New York City?"
+          }
+        ]
+      }
+    },
+    "local/mistral-small": {
+      "toolcall": {
+        "runs": 5,
+        "json_valid_rate": 0.0,
+        "schema_valid_rate": 0.0,
+        "exec_pass_rate": 0.0,
+        "avg_seconds": 3.27,
+        "details": [
+          {
+            "ok": false,
+            "seconds": 3.16,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.31,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          }
+        ]
+      },
+      "skill_routing": {
+        "runs": 10,
+        "json_valid_rate": 0.0,
+        "accuracy": 0.0,
+        "avg_seconds": 3.29,
+        "details": [
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "weather",
+            "task": "Get a 3-day weather forecast for Miami, FL."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-reminders",
+            "task": "Add a reminder tomorrow at 9am to submit grant report."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "github",
+            "task": "Check open PRs and CI status for owner/repo."
+          },
+          {
+            "ok": false,
+            "seconds": 3.2,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "youtube-summarizer",
+            "task": "Summarize this YouTube video transcript and key takeaways."
+          },
+          {
+            "ok": false,
+            "seconds": 3.29,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "video-frames",
+            "task": "Extract one frame every 10 seconds from this mp4."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "browser-automation",
+            "task": "Log in to a website and capture a screenshot after submit."
+          },
+          {
+            "ok": false,
+            "seconds": 3.31,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "openai-whisper",
+            "task": "Transcribe this local audio file to text."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-notes",
+            "task": "Create a note in Apple Notes with meeting bullets."
+          },
+          {
+            "ok": false,
+            "seconds": 3.31,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-reminders",
+            "task": "List overdue reminders and mark completed ones done."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: mistral:latest",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "weather",
+            "task": "What is the current temperature in New York City?"
+          }
+        ]
+      }
+    },
+    "local/qwen-coder-32b": {
+      "toolcall": {
+        "runs": 5,
+        "json_valid_rate": 0.0,
+        "schema_valid_rate": 0.0,
+        "exec_pass_rate": 0.0,
+        "avg_seconds": 3.25,
+        "details": [
+          {
+            "ok": false,
+            "seconds": 3.17,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.18,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.29,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "schema_valid": false,
+            "exec_ok": false
+          }
+        ]
+      },
+      "skill_routing": {
+        "runs": 10,
+        "json_valid_rate": 0.0,
+        "accuracy": 0.0,
+        "avg_seconds": 3.3,
+        "details": [
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "weather",
+            "task": "Get a 3-day weather forecast for Miami, FL."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-reminders",
+            "task": "Add a reminder tomorrow at 9am to submit grant report."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "github",
+            "task": "Check open PRs and CI status for owner/repo."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "youtube-summarizer",
+            "task": "Summarize this YouTube video transcript and key takeaways."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "video-frames",
+            "task": "Extract one frame every 10 seconds from this mp4."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "browser-automation",
+            "task": "Log in to a website and capture a screenshot after submit."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "openai-whisper",
+            "task": "Transcribe this local audio file to text."
+          },
+          {
+            "ok": false,
+            "seconds": 3.31,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-notes",
+            "task": "Create a note in Apple Notes with meeting bullets."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "apple-reminders",
+            "task": "List overdue reminders and mark completed ones done."
+          },
+          {
+            "ok": false,
+            "seconds": 3.3,
+            "error": "model_not_available: qwen2.5-coder:32b",
+            "result": "",
+            "json_valid": false,
+            "match": false,
+            "predicted": "",
+            "expected": "weather",
+            "task": "What is the current temperature in New York City?"
+          }
+        ]
+      }
+    },
+    "qwen3.5:cloud": {
+      "toolcall": {
+        "runs": 5,
+        "json_valid_rate": 1.0,
+        "schema_valid_rate": 1.0,
+        "exec_pass_rate": 1.0,
+        "avg_seconds": 3.9,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.16,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 6.44,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          },
+          {
+            "ok": true,
+            "seconds": 3.29,
+            "error": "",
+            "result": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_BENCH\"}}",
+            "json_valid": true,
+            "schema_valid": true,
+            "exec_ok": true
+          }
+        ]
+      },
+      "skill_routing": {
+        "runs": 10,
+        "json_valid_rate": 1.0,
+        "accuracy": 1.0,
+        "avg_seconds": 3.3,
+        "details": [
+          {
+            "ok": true,
+            "seconds": 3.29,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "Get a 3-day weather forecast for Miami, FL."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":0.98}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "Add a reminder tomorrow at 9am to submit grant report."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"github\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "github",
+            "expected": "github",
+            "task": "Check open PRs and CI status for owner/repo."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"youtube-summarizer\",\"confidence\":0.98}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "youtube-summarizer",
+            "expected": "youtube-summarizer",
+            "task": "Summarize this YouTube video transcript and key takeaways."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"video-frames\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "video-frames",
+            "expected": "video-frames",
+            "task": "Extract one frame every 10 seconds from this mp4."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"browser-automation\",\"confidence\":0.95}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "browser-automation",
+            "expected": "browser-automation",
+            "task": "Log in to a website and capture a screenshot after submit."
+          },
+          {
+            "ok": true,
+            "seconds": 3.31,
+            "error": "",
+            "result": "{\"skill\":\"openai-whisper\",\"confidence\":0.98}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "openai-whisper",
+            "expected": "openai-whisper",
+            "task": "Transcribe this local audio file to text."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"apple-notes\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-notes",
+            "expected": "apple-notes",
+            "task": "Create a note in Apple Notes with meeting bullets."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"apple-reminders\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "apple-reminders",
+            "expected": "apple-reminders",
+            "task": "List overdue reminders and mark completed ones done."
+          },
+          {
+            "ok": true,
+            "seconds": 3.3,
+            "error": "",
+            "result": "{\"skill\":\"weather\",\"confidence\":1.0}",
+            "json_valid": true,
+            "match": true,
+            "predicted": "weather",
+            "expected": "weather",
+            "task": "What is the current temperature in New York City?"
+          }
+        ]
+      }
+    }
+  },
+  "method": "queue-routed empirical benchmark: tool-call schema pass + skill-routing accuracy + latency",
+  "best_model_by_skill": {
+    "weather": {
+      "best_model": "local/qwen-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.23
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.23
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.23
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.29
+        }
+      }
+    },
+    "apple-reminders": {
+      "best_model": "local/qwen2.5-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.23
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.23
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        }
+      }
+    },
+    "github": {
+      "best_model": "local/qwen-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.31
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        }
+      }
+    },
+    "youtube-summarizer": {
+      "best_model": "local/qwen-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.3
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.2
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        }
+      }
+    },
+    "video-frames": {
+      "best_model": "local/qwen2.5-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.3
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.29
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        }
+      }
+    },
+    "browser-automation": {
+      "best_model": "local/qwen2.5-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.28
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.28
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        }
+      }
+    },
+    "openai-whisper": {
+      "best_model": "local/qwen-14b",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.3
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        }
+      }
+    },
+    "apple-notes": {
+      "best_model": "qwen3.5:cloud",
+      "metrics": {
+        "accuracy": 1.0,
+        "avg_seconds": 3.3
+      },
+      "all_models": {
+        "local/qwen-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/qwen2.5-14b": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.31
+        },
+        "local/mistral-small": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.3
+        },
+        "local/qwen-coder-32b": {
+          "accuracy": 0.0,
+          "avg_seconds": 3.31
+        },
+        "qwen3.5:cloud": {
+          "accuracy": 1.0,
+          "avg_seconds": 3.3
+        }
+      }
+    }
+  },
+  "qwen3_5_experimental_gate_card": {
+    "model": "qwen3.5:cloud",
+    "toolcall_exec_pass_rate": 1.0,
+    "toolcall_avg_seconds": 3.9,
+    "skill_routing_accuracy": 1.0,
+    "skill_routing_avg_seconds": 3.3,
+    "sample_size": {
+      "toolcall_runs": 5,
+      "skill_runs": 10
+    }
+  }
+}

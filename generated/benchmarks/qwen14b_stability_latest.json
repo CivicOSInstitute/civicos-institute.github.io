@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-02-28T08:31:08",
+  "model": "local/qwen-14b",
+  "runs": [
+    {
+      "run": 1,
+      "ok": true,
+      "seconds": 9.52,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 2,
+      "ok": true,
+      "seconds": 3.34,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 3,
+      "ok": true,
+      "seconds": 3.29,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 4,
+      "ok": true,
+      "seconds": 3.27,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 5,
+      "ok": true,
+      "seconds": 3.31,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 6,
+      "ok": true,
+      "seconds": 3.31,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 7,
+      "ok": true,
+      "seconds": 3.25,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 8,
+      "ok": true,
+      "seconds": 3.31,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 9,
+      "ok": true,
+      "seconds": 3.3,
+      "result": "OK",
+      "error": ""
+    },
+    {
+      "run": 10,
+      "ok": true,
+      "seconds": 3.31,
+      "result": "OK",
+      "error": ""
+    }
+  ],
+  "pass_rate": 1.0,
+  "avg_seconds": 3.92
+}

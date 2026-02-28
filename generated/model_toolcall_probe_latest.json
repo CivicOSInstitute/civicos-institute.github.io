@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-02-28T08:37:42",
+  "workflow": "local_model_toolcall_probe",
+  "lane": "prod-critical",
+  "probe": "local_toolcall_proxy",
+  "models": [
+    {
+      "model": "local/qwen-14b",
+      "route": "local_queue",
+      "ok": true,
+      "seconds": 18.65,
+      "raw_preview": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_TEST\"}}",
+      "json_valid": true,
+      "schema_valid": true,
+      "exec_result": "TOOLCALL_TEST",
+      "error": ""
+    },
+    {
+      "model": "local/mistral-small",
+      "route": "local_queue",
+      "ok": false,
+      "seconds": 18.82,
+      "raw_preview": "```json {\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_TEST\"}} ```",
+      "json_valid": false,
+      "schema_valid": false,
+      "exec_result": "",
+      "error": "json_parse_error: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "model": "local/qwen-coder-32b",
+      "route": "local_queue",
+      "ok": true,
+      "seconds": 43.66,
+      "raw_preview": "{\"tool\":\"exec\",\"arguments\":{\"command\":\"echo TOOLCALL_TEST\"}}",
+      "json_valid": true,
+      "schema_valid": true,
+      "exec_result": "TOOLCALL_TEST",
+      "error": ""
+    }
+  ]
+}

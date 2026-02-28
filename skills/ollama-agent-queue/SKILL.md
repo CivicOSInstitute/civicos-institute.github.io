@@ -48,9 +48,9 @@ Every ~2 seconds:
 
 ## Model mapping
 
-- `local/qwen-coder-32b` → `qwen2.5-coder:32b`
+- `local/qwen-coder-32b` → `qwen2.5-coder:32b-instruct-q3_K_L`
 - `local/qwen-14b` → `qwen2.5:14b`
-- `local/mistral-small` → `mistral:latest`
+- `local/mistral-small` → `mistral-small3.2:24b-instruct-2506-q4_K_M`
 
 Startup/model check uses Ollama tags (`/api/tags`). If requested model is unavailable, that item fails immediately and queue continues.
 
