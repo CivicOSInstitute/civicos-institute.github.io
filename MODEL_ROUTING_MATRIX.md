@@ -1,7 +1,7 @@
 # MODEL_ROUTING_MATRIX.md
 
 CivicOS Institute — AI Infrastructure Policy  
-Version: 1.1  
+Version: 1.2  
 Last updated: 2026-02-27
 
 ---
@@ -26,6 +26,15 @@ Last updated: 2026-02-27
 - T1: similarity ≥ 0.88 and TTL valid → cache return
 - T2: complexity > 0.65 or high-stakes class → API path
 - Hard override to T2: security, legal-sensitive, irreversible actions, governance-critical outputs
+
+### Experimental Local Default (Decision 2026-02-27)
+- `qwen3.5-local` (llama.cpp) is the **default local inference model in experimental lane only**.
+- Endpoint: `http://localhost:18080/v1`
+- Fallback when unavailable: `qwen3:14b` via Ollama (`http://127.0.0.1:11434/v1`)
+- Priority task classes in experimental lane:
+  - signal summarization
+  - CRM enrichment notes
+  - board-ready analysis
 
 ---
 

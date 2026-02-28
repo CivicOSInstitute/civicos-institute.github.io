@@ -1,0 +1,36 @@
+{
+  "updated_at": "2026-02-27T21:55:00-05:00",
+  "lanes": {
+    "prod_critical": {
+      "default_local": "local/qwen-14b",
+      "fallback_local": "local/mistral-small"
+    },
+    "experimental": {
+      "default_local": "qwen3.5-local",
+      "status": "active_experimental"
+    }
+  },
+  "models": {
+    "qwen3.5-local": {
+      "provider": "llama.cpp",
+      "base_url": "http://localhost:18080/v1",
+      "model": "Qwen_Qwen3.5-27B-Q4_K_M.gguf",
+      "healthcheck": "http://localhost:18080/v1/models",
+      "lane": "experimental"
+    },
+    "local/qwen-14b": {
+      "provider": "ollama",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "model": "qwen3:14b",
+      "role": "fallback"
+    }
+  },
+  "preferred_task_routes": {
+    "signal_summarization": "qwen3.5-local",
+    "crm_enrichment_notes": "qwen3.5-local",
+    "board_ready_analysis": "qwen3.5-local"
+  },
+  "fallbacks": {
+    "qwen3.5-local_unavailable": "local/qwen-14b"
+  }
+}
