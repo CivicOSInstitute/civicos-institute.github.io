@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import json
 from pathlib import Path
-import subprocess
 from datetime import datetime
+from telegram_router import send_route_message, RoutingError
 
 BASE = Path('/Users/AI-OPS/.openclaw/workspace')
 GEN = BASE / 'generated'
-SEND = Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
 
 
 def load_recent(n=3):
@@ -46,8 +45,10 @@ def main():
         f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
         f"Action: check generated/automation_health.json and ops_cycle log"
     )
-    if SEND.exists():
-        subprocess.run([str(SEND), '8334496229', msg], check=False)
+    try:
+        send_route_message('financial_ops', msg)
+    except RoutingError as e:
+        raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')
     print(msg)
 
 

@@ -4,12 +4,12 @@ import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from telegram_router import send_route_message, RoutingError
 
 BASE = Path('/Users/AI-OPS/.openclaw/workspace')
 GEN = BASE / 'generated'
 GEN.mkdir(parents=True, exist_ok=True)
 STATE = GEN / 'battery_alert_state.json'
-SEND_TG = Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
 IMSG_TARGET_FILE = Path('/Users/AI-OPS/.openclaw/workspace/generated/imessage_target.txt')
 
 
@@ -36,8 +36,10 @@ def save_state(s):
 
 
 def send_telegram(msg):
-    if SEND_TG.exists():
-        subprocess.run([str(SEND_TG), '8334496229', msg], check=False)
+    try:
+        send_route_message('financial_ops', msg)
+    except RoutingError as e:
+        raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')
 
 
 def send_imessage(msg):

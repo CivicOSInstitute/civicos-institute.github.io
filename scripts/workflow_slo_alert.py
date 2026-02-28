@@ -7,9 +7,9 @@ Reads latest SLO rollup and emits alert when targets fail.
 from __future__ import annotations
 
 import json
-import subprocess
 from datetime import datetime
 from pathlib import Path
+from telegram_router import send_route_message, RoutingError
 
 WORKSPACE = Path('/Users/AI-OPS/.openclaw/workspace')
 GEN = WORKSPACE / 'generated'
@@ -58,17 +58,11 @@ def top_causes() -> list[str]:
 
 
 def send_telegram(text: str) -> None:
-    """Optional notifier hook.
-    If ~/.openclaw/scripts/send-telegram.sh is compatible, it will be attempted.
-    Failures are non-fatal (alert file is still written).
-    """
-    send_script = Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
-    if not send_script.exists():
-        return
+    """Hard-enforced notifier hook via route key mapping (fail-closed)."""
     try:
-        subprocess.run(['bash', str(send_script), '8334496229', text], check=False, capture_output=True, text=True)
-    except Exception:
-        pass
+        send_route_message('financial_ops', text)
+    except RoutingError as e:
+        raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')
 
 
 def main() -> int:

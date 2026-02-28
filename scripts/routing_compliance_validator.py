@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import json,re,datetime as dt,subprocess
+import json,re,datetime as dt
+from telegram_router import send_route_message, RoutingError
 
 BASE=Path('/Users/AI-OPS/.openclaw/workspace')
-SEND=Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
 out=BASE/'generated'/'routing_compliance_latest.json'
 
 checks=[]
@@ -29,6 +29,9 @@ res={'generated_at':dt.datetime.now().isoformat(timespec='seconds'),'checks':che
 out.write_text(json.dumps(res,indent=2))
 print(out)
 
-if viol and SEND.exists():
+if viol:
     msg='⚠️ Routing compliance warning:\n' + '\n'.join('- '+v for v in viol)
-    subprocess.run([str(SEND),'8334496229',msg],check=False)
+    try:
+        send_route_message('governance', msg)
+    except RoutingError as e:
+        raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')

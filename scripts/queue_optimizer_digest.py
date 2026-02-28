@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import sqlite3
 from pathlib import Path
-import subprocess
 from datetime import datetime
+from telegram_router import send_route_message, RoutingError
 
 DB = Path('/Users/AI-OPS/.openclaw/task-tracker/tasks.db')
-SEND = Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
 
 if not DB.exists():
     print('no task db')
@@ -38,5 +37,7 @@ for r in rows[:5]:
   msg.append(f"- #{r[0]} [{r[2]}] {r[1][:70]}")
 text='\n'.join(msg)
 print(text)
-if SEND.exists():
-  subprocess.run([str(SEND),'8334496229',text],check=False)
+try:
+  send_route_message('financial_ops', text)
+except RoutingError as e:
+  raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')

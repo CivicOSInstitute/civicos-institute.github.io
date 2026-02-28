@@ -2,10 +2,9 @@
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
-import subprocess
+from telegram_router import send_route_message, RoutingError
 
 LOG = Path('/Users/AI-OPS/.openclaw/token-tracker/token_log.jsonl')
-SEND = Path('/Users/AI-OPS/.openclaw/scripts/send-telegram.sh')
 
 
 def parse_ts(v):
@@ -37,5 +36,7 @@ for m,t in top:
     msg.append(f'- {m}: {t:,}')
 text='\n'.join(msg)
 print(text)
-if SEND.exists():
-    subprocess.run([str(SEND), '8334496229', text], check=False)
+try:
+    send_route_message('financial_ops', text)
+except RoutingError as e:
+    raise SystemExit(f'ROUTING_FAIL_CLOSED: {e}')
