@@ -1,0 +1,54 @@
+{
+  "updated_at": "2026-02-27T21:00:00-05:00",
+  "default_channel": "telegram",
+  "imessage_escalation": {
+    "address": "ncerbone@civicos-institute.org",
+    "use_for": "urgent/personal escalations only"
+  },
+  "channels": {
+    "publishing": {
+      "name": "CivicOS Publishing",
+      "id": "-3826894048"
+    },
+    "governance": {
+      "name": "CivicOS Governance",
+      "id": "-5095027055"
+    },
+    "fundraising": {
+      "name": "CivicOS Fundraising",
+      "id": "-3756065473"
+    },
+    "youtube": {
+      "name": "CivicsOS YouTube",
+      "id": "-5232457391"
+    },
+    "grants": {
+      "name": "CivicOS Grants",
+      "id": "-5217384569"
+    },
+    "architecture": {
+      "name": "CivicOS Architecture",
+      "id": "-5268730316"
+    },
+    "financial_ops": {
+      "name": "CivicOS Financial Ops",
+      "id": "-3789422388"
+    },
+    "social_media": {
+      "name": "CivicOS Social Media",
+      "id": "-5225875596"
+    }
+  },
+  "routing_rules": {
+    "architecture_decisions_snapshots_phase_updates": "architecture",
+    "queue_health_slo_reports_cron_failures": "financial_ops",
+    "phase3_signals_board_ready_items": "governance",
+    "grant_pipeline_updates": "grants",
+    "content_drafts_posts": [
+      "publishing",
+      "social_media"
+    ],
+    "youtube_signals_and_content": "youtube",
+    "donor_fundraising_activity": "fundraising"
+  }
+}
