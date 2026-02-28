@@ -262,7 +262,7 @@ function contentFor(docId, cfg) {
 }
 
 function annex(docId) {
-  const n = { AOI: 360, '01': 360, '02': 340, '03': 520, '04': 420, '05': 390, '06': 560, '07': 380, '08': 420, '09': 410 }[docId] || 300;
+  const n = { AOI: 360, '01': 360, '02': 390, '03': 520, '04': 420, '05': 390, '06': 560, '07': 380, '08': 420, '09': 410 }[docId] || 300;
   const out = ['ANNEX — INTERNAL REVISION REFERENCE (non-operative text)'];
   for (let i = 1; i <= n; i++) out.push(`${docId} Annex ${i}: archival trace token ${Date.now()}-${i}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`);
   return out;
