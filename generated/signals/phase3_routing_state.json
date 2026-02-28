@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-02-27T19:57:40.017841+00:00",
-  "notion_tasks_created": 6,
+  "generated_at": "2026-02-28T03:19:48.053461+00:00",
+  "notion_tasks_created": 0,
   "drive_uploads": [
     {
       "type": "ops_report",
-      "id": "10VssfDCbWjpga7qcU2zYxUOAF41WLFSW",
-      "name": "phase3_signals_latest_20260227-145757.json"
+      "id": "14fkJhSJG8ELVxjUyPTrYmRSQfkuLaPa7",
+      "name": "phase3_signals_latest_20260227-221957.json"
     },
     {
       "type": "ops_report",
-      "id": "1xj3scKVOejpPc_UzhaK9RUNpnUbAUbZ2",
-      "name": "phase3_signals_latest_20260227-145757.md"
+      "id": "10FYQXIQiFpoEWujICfG7weK2hTG2SmgY",
+      "name": "phase3_signals_latest_20260227-221957.md"
     },
     {
       "type": "decision_log",
-      "id": "1TtfOQwhf0mkqrkWSLtCHb9yb1xufhKbT",
-      "name": "decision_log_board_ready_20260227-145757.md"
+      "id": "1AZXPLECH9lSsy2BJfCs2zMvUoq2j4fhZ",
+      "name": "decision_log_board_ready_20260227-221957.md"
     }
   ]
 }

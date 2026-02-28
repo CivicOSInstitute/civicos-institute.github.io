@@ -2,9 +2,10 @@
 import json
 import hashlib
 import re
+import html
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlparse, parse_qs, unquote
 import subprocess
 import requests
 import xml.etree.ElementTree as ET
@@ -72,6 +73,64 @@ def load_json(path, default):
 def signal_hash(title, link):
     key = f"{(title or '').strip().lower()}|{(link or '').strip()}"
     return hashlib.sha256(key.encode()).hexdigest()[:20]
+
+
+def unwrap_google_alert_url(link):
+    try:
+        if not link:
+            return link
+        u = urlparse(link)
+        if 'google.com' in (u.netloc or '') and u.path == '/url':
+            q = parse_qs(u.query)
+            target = (q.get('url') or q.get('q') or [''])[0]
+            return unquote(target) if target else link
+        return link
+    except Exception:
+        return link
+
+
+def extract_publication(link, fallback='Unknown'):
+    try:
+        host = (urlparse(link).netloc or '').lower()
+        if host.startswith('www.'):
+            host = host[4:]
+        if not host:
+            return fallback
+        parts = host.split('.')
+        base = parts[-2] if len(parts) >= 2 else host
+        return base.capitalize()
+    except Exception:
+        return fallback
+
+
+def tokenize(text):
+    words = re.findall(r"[a-zA-Z0-9']+", (text or '').lower())
+    stop = {
+        'the', 'and', 'for', 'with', 'this', 'that', 'from', 'into', 'about', 'your', 'have', 'will', 'what',
+        'when', 'where', 'how', 'why', 'are', 'was', 'were', 'been', 'being', 'their', 'them', 'they', 'you',
+        'our', 'not', 'but', 'can', 'all', 'new', 'use', 'using', 'guide', 'video'
+    }
+    return {w for w in words if len(w) > 2 and w not in stop}
+
+
+def find_related_video(signal, youtube_items):
+    st = tokenize(signal.get('title', '') + ' ' + signal.get('summary', ''))
+    best = None
+    best_score = 0
+    for y in youtube_items:
+        yt = tokenize(y.get('title', '') + ' ' + y.get('summary', ''))
+        score = len(st & yt)
+        if score > best_score:
+            best_score = score
+            best = y
+    return best if best_score >= 2 else None
+
+
+def clean_text(text):
+    t = re.sub(r'<[^>]+>', ' ', text or '')
+    t = html.unescape(t)
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t
 
 
 def contains_any(text, kws):
@@ -270,25 +329,28 @@ def main():
     for r in raw:
         if r.get('error'):
             continue
-        text = f"{r.get('title','')} {r.get('summary','')}"
+        resolved_link = unwrap_google_alert_url(r.get('link', ''))
+        text = f"{clean_text(r.get('title',''))} {clean_text(r.get('summary',''))}"
         if excl_kws and contains_any(text, excl_kws):
             continue
         if must_kws and not contains_any(text, must_kws):
             continue
-        hid = signal_hash(r.get('title', ''), r.get('link', ''))
+        hid = signal_hash(r.get('title', ''), resolved_link)
         if hid in seen:
             continue
         sev = score_severity(text)
         item = {
             'id': hid,
             'source': r.get('source'),
-            'title': r.get('title'),
-            'link': r.get('link'),
-            'summary': r.get('summary', ''),
+            'title': clean_text(r.get('title')),
+            'link': resolved_link,
+            'summary': clean_text(r.get('summary', '')),
             'published': r.get('published', ''),
             'severity': sev,
             'board_ready': sev == 'high',
             'ingested_at': NOW.isoformat(),
+            'publication': extract_publication(resolved_link, fallback=r.get('source', 'Unknown')),
+            'channel': r.get('channel', ''),
         }
         clean.append(item)
 
@@ -342,11 +404,26 @@ def main():
         f"Generated: {NOW.isoformat()}",
         '',
     ]
+    youtube_items = [x for x in clean if str(x.get('source', '')).startswith('youtube:')]
     if not board:
         board_md.append('- None')
     else:
         for s in board:
-            board_md.append(f"- [Board-ready] {s['title']} ({s['source']})\n  {s['link']}")
+            rel = find_related_video(s, youtube_items)
+            board_md.append(f"## [Board-ready] {s['title']}")
+            board_md.append(f"Source: {s.get('publication','Unknown')} — {s.get('link','')}")
+            if rel:
+                ch = rel.get('channel') or rel.get('source', '').replace('youtube:', '')
+                board_md.append(f"Related video: {ch} — {rel.get('title','')} — {rel.get('link','')}")
+            else:
+                board_md.append("Related video: none found in monitored YouTube feeds")
+            why = f"This signal indicates a potentially material governance shift that could affect CivicOS positioning in the next 30–90 days."
+            risk = f"Risk: delayed response could weaken policy credibility; Opportunity: timely framing can position CivicOS as a trusted governance convener."
+            nxt = f"Next step: assign an owner to produce a 1-page briefing memo and recommendation within 48 hours."
+            board_md.append(f"Why it matters: {why}")
+            board_md.append(f"Risk/Opportunity: {risk}")
+            board_md.append(f"Next step: {nxt}")
+            board_md.append('')
     BOARD_MD.write_text('\n'.join(board_md), encoding='utf-8')
 
     notion_created = to_notion_tasks(clean)
