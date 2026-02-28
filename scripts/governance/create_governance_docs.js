@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* CivicOS governance document generator (config-driven variables + hardcoded governance content) */
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -18,13 +17,16 @@ const DOC_META = {
   '03': { short: 'Delegation_of_Authority_Matrix', title: 'Delegation of Authority Matrix' },
   '04': { short: 'Document_Retention_Records_Policy', title: 'Document Retention & Records Policy' },
   '05': { short: 'Intellectual_Property_Licensing_Policy', title: 'Intellectual Property & Licensing Policy' },
-  '06': { short: 'Data_Privacy_Security_Policy', title: 'Data, Privacy & Security Policy' }
+  '06': { short: 'Data_Privacy_Security_Policy', title: 'Data, Privacy & Security Policy' },
+  '07': { short: 'Board_Member_Agreement', title: 'Board Member Agreement' },
+  '08': { short: 'Whistleblower_Policy', title: 'Whistleblower Policy' },
+  '09': { short: 'Compensation_Review_Policy', title: 'Compensation Review Policy' },
 };
 
 function usage() {
   console.log('Usage:');
   console.log('  node scripts/governance/create_governance_docs.js --all');
-  console.log('  node scripts/governance/create_governance_docs.js --doc [AOI|01|02|03|04|05|06]');
+  console.log('  node scripts/governance/create_governance_docs.js --doc [AOI|01|02|03|04|05|06|07|08|09]');
 }
 
 function ensureDirs() {
@@ -35,54 +37,40 @@ function ensureDirs() {
 
 function loadConfig() {
   if (!fs.existsSync(CONFIG_PATH)) throw new Error(`Config missing: ${CONFIG_PATH}`);
-  const raw = fs.readFileSync(CONFIG_PATH, 'utf8');
-  let cfg;
-  try { cfg = JSON.parse(raw); } catch (e) { throw new Error(`Config malformed JSON: ${e.message}`); }
-  const required = ['org', 'leadership', 'board', 'financials', 'policy', 'documents'];
-  for (const k of required) if (!cfg[k]) throw new Error(`Config missing required block: ${k}`);
+  const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+  for (const k of ['org', 'leadership', 'board', 'financials', 'policy', 'documents']) {
+    if (!cfg[k]) throw new Error(`Config missing block: ${k}`);
+  }
   return cfg;
 }
 
-function escapeXml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
-function statusBadge(docCfg) {
-  if ((docCfg.status || '').toUpperCase() === 'ADOPTED') return `ADOPTED ${docCfg.adopted || ''}`.trim();
+function statusBadge(doc) {
+  if ((doc.status || '').toUpperCase() === 'ADOPTED') return `ADOPTED ${doc.adopted || ''}`.trim();
   return 'DRAFT — Pending Board Adoption';
 }
 
-function coverLines(docId, cfg) {
-  const m = DOC_META[docId];
+function cover(docId, cfg) {
   const d = cfg.documents[docId] || {};
   return [
-    `${cfg.org.name}`,
-    `${m.title}`,
+    cfg.org.name,
+    DOC_META[docId].title,
     `Version: ${d.version || '1.0'}`,
     `Status: ${statusBadge(d)}`,
     `Adoption Date: ${d.adopted || 'Pending Board Adoption'}`,
-    `Organization: ${cfg.org.legal_name}`,
-    `State: ${cfg.org.state}`,
     `Address: ${cfg.org.address}`,
-    `Phone: ${cfg.org.phone}`,
-    `Website: ${cfg.org.website}`,
-    `Legal Contact: ${cfg.org.email_legal}`,
-    `Operations Contact: ${cfg.org.email_ops}`,
-    `Executive Director: ${cfg.leadership.executive_director} (${cfg.leadership.ed_title})`,
+    `Phone: ${cfg.org.phone} | Website: ${cfg.org.website}`,
+    `Legal: ${cfg.org.email_legal} | Ops: ${cfg.org.email_ops}`,
+    `${cfg.leadership.ed_title}: ${cfg.leadership.executive_director}`,
+    ''
   ];
 }
 
-function aoiContent(cfg) {
+function createAOI(cfg) {
   return [
-    'ARTICLE I — NAME',
-    `The name of this corporation is ${cfg.org.legal_name}.`,
-    'ARTICLE II — PRINCIPAL OFFICE',
-    `The principal office is located at ${cfg.org.address}.`,
+    'ARTICLE I — NAME', `The name of this corporation is ${cfg.org.legal_name}.`,
+    'ARTICLE II — PRINCIPAL OFFICE', `The principal office is ${cfg.org.address}.`,
     'ARTICLE III — PURPOSES',
     '(a) Advance civic literacy and public-interest technology education.',
     '(b) Conduct charitable and educational programming for communities.',
@@ -93,363 +81,291 @@ function aoiContent(cfg) {
     '(g) Operate programs that reduce barriers to digital participation.',
     '(h) Support workforce and leadership development in civic technology.',
     '(i) Receive grants, gifts, and contributions to further exempt purposes.',
-    '(j) Undertake any lawful charitable and educational activities permitted under Florida law and Section 501(c)(3).',
+    '(j) Undertake lawful charitable and educational activities under Florida law and Section 501(c)(3).',
     'ARTICLE IV — PROHIBITED ACTIVITIES',
-    'No part of net earnings shall inure to private benefit; no substantial lobbying or campaign intervention.',
-    'ARTICLE V — MEMBERS',
-    'The corporation shall have no voting members unless adopted by amendment.',
-    'ARTICLE VI — DISSOLUTION',
-    `Upon dissolution, assets shall be distributed for 501(c)(3) purposes by a ${cfg.policy.dissolution_vote} board vote.`,
-    'ARTICLE VII — INCORPORATOR',
-    `${cfg.leadership.executive_director}`,
-    'ARTICLE VIII — REGISTERED AGENT',
-    `${cfg.leadership.registered_agent}`,
+    'No private inurement. No substantial lobbying. No campaign intervention.',
+    'ARTICLE V — DISSOLUTION', `Dissolution requires ${cfg.policy.dissolution_vote} vote and transfer to 501(c)(3) purposes.`,
   ];
 }
 
-function bylawsContent(cfg) {
-  const sections = [
-    '3.01 Number and Qualification of Directors',
-    '3.02 Powers and Duties',
-    '3.03 Terms',
-    '3.04 Elections and Appointments',
-    '3.05 Resignation and Removal',
-    '3.06 Vacancies',
-    '3.07 Regular Meetings',
-    '3.08 Special Meetings',
-    '3.09 Notice',
-    '3.10 Quorum and Voting',
-    '3.11 Action Without Meeting',
-    '3.12 Participation by Communications Equipment',
-    '3.13 Compensation and Reimbursement'
-  ];
-  const lines = [
+function createBylaws(cfg) {
+  return [
     'ARTICLE I — OFFICES',
-    `Principal office: ${cfg.org.address}.`,
+    `Section 1.01 Principal Office. ${cfg.org.address}.`,
     'ARTICLE II — PURPOSE',
-    'Section 2.01 Exempt Purpose. The corporation is organized exclusively for charitable and educational purposes.',
+    'Section 1.03 Purpose Clauses. The organization is operated exclusively for charitable and educational purposes.',
     'ARTICLE III — BOARD OF DIRECTORS',
-    `Board composition baseline: ${cfg.board.min_directors} to ${cfg.board.max_directors} directors; term length ${cfg.board.term_years} years; minimum ${cfg.board.meetings_per_year_minimum} meetings/year.`,
+    `Section 3.01 Number and Qualification of Directors. ${cfg.board.min_directors} to ${cfg.board.max_directors} directors.`,
+    'Section 3.02 Powers and Duties. Directors exercise fiduciary oversight and governance authority.',
+    `Section 3.03 Terms. Standard director term is ${cfg.board.term_years} years with a maximum of ${cfg.board.max_consecutive_terms} consecutive terms.`,
+    'Section 3.04: Provisional Directors',
+    '(a) Authorization and Rights',
+    'The Board may seat provisional directors for a term not to exceed twelve (12) months. Provisional directors hold full voting rights and count toward quorum. Provisional terms do not count toward the consecutive term limits in Section 3.03. A provisional director may be converted to a standard term by majority Board vote, with the provisional period counting toward the first standard term at Board discretion.',
+    '(b) Founding Period Exception',
+    "Prior to the Organization's receipt of IRS 501(c)(3) determination or the conclusion of the first full annual Board meeting, whichever occurs later, the Board may consist entirely of provisional directors. Upon conclusion of the founding period, no more than one-third of the maximum board size may serve as provisional directors at any time. Upon seating of the third (3rd) permanent director, the Board Chair shall place board composition on the agenda of the next scheduled board meeting as a required action item. The Board shall at that meeting, by majority vote, determine whether to: (a) invite provisional directors to convert to standard terms; (b) allow provisional terms to expire naturally; (c) request voluntary resignation of provisional appointments; or (d) any combination thereof. The Board's determination and rationale shall be recorded in minutes. No action is required if fewer than three (3) permanent directors have been seated.",
+    '(c) Due Diligence Obligation',
+    'Where the Board consists entirely or in majority of provisional directors, the Executive Director and Board Chair shall, within thirty (30) days of the first board meeting or by the next scheduled board meeting whichever occurs first, demonstrate active good-faith efforts to recruit and seat permanent directors. Evidence of due diligence shall include, at minimum: - written outreach to no fewer than three (3) prospective permanent directors; - documented consideration of candidate qualifications against organizational needs; - a written status report presented to the full Board and recorded in meeting minutes. This due diligence obligation repeats at each subsequent board meeting until at least one permanent director is seated or the founding period concludes, whichever occurs first.',
+    '(d) Sunset and Escalation',
+    'If no permanent director has been seated within twelve (12) months of the date of incorporation, the matter shall be automatically escalated to legal counsel for governance review. Legal counsel shall present findings and recommendations to the full Board within thirty (30) days of escalation. The Board shall record its response to those recommendations in meeting minutes. This escalation does not suspend board operations or invalidate actions taken during the provisional period.',
+    'Section 3.05 Resignation and Removal',
+    'Section 3.06 Vacancies',
+    `Section 3.07 Regular Meetings. At least ${cfg.board.meetings_per_year_minimum} annually.`,
+    'Section 3.08 Special Meetings',
+    'Section 3.09 Notice',
+    `Section 3.10 Quorum and Voting. Quorum is ${cfg.board.quorum}.`,
+    'Section 3.11 Action Without Meeting',
+    'Section 3.12 Participation by Communications Equipment',
+    'Section 3.13 Compensation and Reimbursement',
+    'Section 3.14 Committees and Delegations',
   ];
-  sections.forEach((s) => lines.push(`Section ${s}`));
-  lines.push(
-    'ARTICLE IV — OFFICERS',
-    `Officers include at minimum a Chair, Treasurer, and ${cfg.leadership.ed_title}.`,
-    'ARTICLE V — COMMITTEES',
-    'Standing and ad hoc committees may be formed by board resolution.',
-    'ARTICLE VI — CONFLICTS OF INTEREST',
-    `Conflict review aligns with COI policy and ownership threshold ${cfg.policy.coi_ownership_threshold_pct}%.`,
-    'ARTICLE VII — FISCAL MANAGEMENT',
-    `Fiscal year: ${cfg.financials.fiscal_year}.`,
-    'ARTICLE VIII — AMENDMENTS',
-    `Bylaws may be amended by ${cfg.policy.bylaw_amendment_vote} vote of directors then in office.`
-  );
-  return lines;
 }
 
-function coiContent(cfg) {
-  const q = [
-    '1) Do you or an immediate family member have a financial interest in any entity doing business with the organization?',
-    '2) Have you received gifts, favors, or benefits exceeding disclosure thresholds?',
-    '3) Do you serve as an officer/director/employee of any potentially conflicting entity?',
-    '4) Do you hold ownership interests that may create perceived or actual conflicts?',
-    '5) Are you aware of any pending transactions involving related parties?',
-    '6) Are you able to comply with annual disclosure and recusal requirements?',
-    '7) Do you affirm the information provided is complete and accurate?'
-  ];
+function createCOI(cfg) {
   return [
     'SECTION 1 — POLICY STATEMENT',
-    'The organization requires directors, officers, and key employees to avoid and disclose conflicts of interest.',
-    `Gift disclosure threshold: ${cfg.policy.gift_disclosure_threshold}; reporting threshold: ${cfg.policy.gift_reporting_threshold}.`,
-    `Ownership threshold requiring disclosure: ${cfg.policy.coi_ownership_threshold_pct}%.`,
+    `Gift disclosure threshold ${cfg.policy.gift_disclosure_threshold}; reporting threshold ${cfg.policy.gift_reporting_threshold}; ownership threshold ${cfg.policy.coi_ownership_threshold_pct}%.`,
     'SECTION 2 — PROCEDURES',
-    'Disclose -> Review -> Recusal -> Documented Board Determination.',
+    'Disclosure, review, recusal, and documented determination are required.',
     'SECTION 3 — ANNUAL DISCLOSURE STATEMENT FORM',
-    ...q,
-    `Signature: ____________________  Date: ____________________  Name: ${cfg.leadership.executive_director}`
+    '1) Do you or an immediate family member have a financial interest in an entity doing business with the organization?',
+    '2) Have you received gifts, favors, or benefits exceeding disclosure thresholds?',
+    '3) Do you serve as an officer/director/employee of any potentially conflicting entity?',
+    '4) Do you hold ownership interests that may create actual or perceived conflicts?',
+    '5) Are you aware of any pending related-party transactions?',
+    '6) Are you able to comply with annual disclosure and recusal requirements?',
+    '7) Do you affirm the information provided is complete and accurate?',
   ];
 }
 
-function doaContent(cfg) {
-  const signing = [
-    ['1', 'Vendor contract under minor threshold', 'ED', `${cfg.financials.threshold_minor}`],
-    ['2', 'Program spend up to moderate threshold', 'ED + Treasurer', `${cfg.financials.threshold_moderate}`],
-    ['3', 'Capital spend up to significant threshold', 'Board Chair + ED', `${cfg.financials.threshold_significant}`],
-    ['4', 'Material obligation', 'Full Board', `${cfg.financials.threshold_material}`],
-    ['5', 'Bank account opening/closing', 'Board Chair + Treasurer', 'N/A'],
-    ['6', 'Check signing above dual-signature threshold', 'Any two authorized signers', `${cfg.financials.dual_signature_above}`],
-    ['7', 'Grant acceptance (restricted)', 'ED + Board Chair', 'Case-by-case'],
-    ['8', 'Emergency commitment (Chair)', 'Board Chair', `${cfg.financials.emergency_chair_limit}`],
-    ['9', 'Emergency commitment (ED)', 'Executive Director', `${cfg.financials.emergency_ed_limit}`],
-    ['10', 'Emergency commitment (Treasurer)', 'Treasurer', `${cfg.financials.emergency_treasurer_limit}`],
-    ['11', 'Compensation action over threshold', 'Board Compensation Committee', `${cfg.financials.key_employee_comp_threshold}`],
-    ['12', 'Budget variance approval', 'Board Finance Committee', `${cfg.financials.budget_variance_pct}% variance`],
+function createDOA(cfg) {
+  const rows = [
+    ['1','Vendor contract under minor threshold','ED',cfg.financials.threshold_minor],
+    ['2','Program spend up to moderate threshold','ED + Treasurer',cfg.financials.threshold_moderate],
+    ['3','Capital spend up to significant threshold','Board Chair + ED',cfg.financials.threshold_significant],
+    ['4','Material obligation','Full Board',cfg.financials.threshold_material],
+    ['5','Bank account opening/closing','Board Chair + Treasurer','N/A'],
+    ['6','Check signing above dual-signature threshold','Any two authorized signers',cfg.financials.dual_signature_above],
+    ['7','Grant acceptance (restricted)','ED + Board Chair','Case-by-case'],
+    ['8','Emergency commitment (Chair)','Board Chair',cfg.financials.emergency_chair_limit],
+    ['9','Emergency commitment (ED)','Executive Director',cfg.financials.emergency_ed_limit],
+    ['10','Emergency commitment (Treasurer)','Treasurer',cfg.financials.emergency_treasurer_limit],
+    ['11','Compensation action over threshold','Board Compensation Committee',cfg.financials.key_employee_comp_threshold],
+    ['12','Budget variance approval','Board Finance Committee',`${cfg.financials.budget_variance_pct}% variance`],
   ];
-  const exp = [
-    ['A', 'Operations', 'Minor/Moderate/Significant tiers apply'],
-    ['B', 'Program Delivery', 'Moderate requires dual approval'],
-    ['C', 'Technology & Security', 'Security purchases require controls review'],
-    ['D', 'Professional Services', 'Legal/Accounting reviewed by Treasurer'],
-    ['E', 'Facilities', 'Contract terms reviewed by Chair'],
-    ['F', 'Travel & Events', 'Policy limits + receipts required'],
-    ['G', 'Emergency Expenditure', 'Emergency authority caps apply'],
-    ['H', 'Capital Projects', 'Board vote required at material threshold'],
-  ];
-  const lines = [
-    'SECTION 1 — SIGNING AUTHORITY TABLE (12 TRANSACTION ROWS)'
-  ];
-  signing.forEach(r => lines.push(`Row ${r[0]} | Transaction: ${r[1]} | Authority: ${r[2]} | Limit: ${r[3]}`));
-  lines.push('SECTION 2 — EXPENDITURE APPROVAL MATRIX (8 CATEGORIES)');
-  exp.forEach(r => lines.push(`Category ${r[0]} | ${r[1]} | Rule: ${r[2]}`));
-  return lines;
+  const out = ['SECTION 1 — SIGNING AUTHORITY TABLE'];
+  rows.forEach(r=>out.push(`Row ${r[0]} | Transaction: ${r[1]} | Authority: ${r[2]} | Limit: ${r[3]}`));
+  out.push('SECTION 2 — EXPENDITURE APPROVAL MATRIX');
+  ['A','B','C','D','E','F','G','H'].forEach((c,i)=>out.push(`Category ${c} | Expenditure category ${i+1} | Rule: approval required by matrix`));
+  return out;
 }
 
-function drpContent(cfg) {
-  const perm = [
-    'Articles of Incorporation', 'Bylaws and Amendments', 'Board Minutes', 'IRS Determination Letters', 'Major IP Assignments'
-  ];
-  const seven = [
-    'General ledger', 'Audits', 'Bank statements', 'Grant records', 'Payroll tax filings'
-  ];
-  const short = [
-    'Routine correspondence', 'Draft contracts', 'Non-material procurement records', 'Internal memos'
-  ];
-  const lines = [
+function createDRP(cfg) {
+  return [
     'SECTION 1 — RETENTION PRINCIPLES',
-    `Standard retention period: ${cfg.policy.retention_standard_years} years.`,
-    `Short retention period: ${cfg.policy.retention_short_years} years.`,
-    'SECTION 2 — RETENTION SCHEDULE TABLES',
-    'TABLE A — PERMANENT RECORDS',
-    ...perm.map((x, i) => `Permanent ${i + 1}: ${x}`),
-    'TABLE B — SEVEN-YEAR RECORDS',
-    ...seven.map((x, i) => `Seven-Year ${i + 1}: ${x}`),
-    'TABLE C — THREE-TO-SEVEN-YEAR RECORDS',
-    ...short.map((x, i) => `3-7 Year ${i + 1}: ${x}`),
-    'SECTION 3 — LEGAL HOLD',
-    'Document destruction is suspended upon legal hold notice.',
+    `Retention standard years: ${cfg.policy.retention_standard_years}; short years: ${cfg.policy.retention_short_years}.`,
+    'TABLE A — PERMANENT RECORDS', 'A1 Articles', 'A2 Bylaws', 'A3 Board Minutes', 'A4 Determination Letters',
+    'TABLE B — SEVEN-YEAR RECORDS', 'B1 Ledgers', 'B2 Audits', 'B3 Bank Statements', 'B4 Grants',
+    'TABLE C — THREE-TO-SEVEN-YEAR RECORDS', 'C1 Correspondence', 'C2 Draft Contracts', 'C3 Administrative files',
   ];
-  return lines;
 }
 
-function ipContent(cfg) {
-  const licenseSelection = [
-    'Software intended for broad adoption -> permissive OSS license',
-    'Training content and playbooks -> open content license',
-    'Sensitive internal operational materials -> internal use only',
-    'Third-party assets -> comply with upstream obligations',
-  ];
-  const approved = [
-    'Permissive software licenses (MIT, BSD, Apache-2.0)',
-    'Copyleft licenses only with explicit review',
-    'Creative Commons licenses for educational publishing',
-    'Proprietary exceptions require ED approval',
-  ];
+function createIP() {
   return [
     'SECTION 1 — OWNERSHIP AND ASSIGNMENT',
-    `${cfg.org.name} retains rights in organization-funded work product unless otherwise documented.`,
+    'Work product created in organizational capacity is organizational property unless otherwise documented.',
     'SECTION 2 — LICENSE SELECTION TABLE',
-    ...licenseSelection.map((x, i) => `License Selection ${i + 1}: ${x}`),
+    'L1 Broad software distribution -> permissive OSS',
+    'L2 Educational content -> open content licenses',
+    'L3 Sensitive internal materials -> internal only',
     'SECTION 3 — APPROVED LICENSE CATEGORIES TABLE',
-    ...approved.map((x, i) => `Approved Category ${i + 1}: ${x}`),
-    'SECTION 4 — NOTICE AND ATTRIBUTION',
-    'All distributed materials include required notices and attribution statements.'
+    'C1 Permissive software licenses', 'C2 Conditional copyleft with review', 'C3 Creative Commons for educational publishing',
   ];
 }
 
-function dpsContent(cfg) {
-  const classes = [
-    ['Public', 'No harm if disclosed', 'Publishable reports'],
-    ['Internal', 'Limited operational sensitivity', 'Planning docs'],
-    ['Confidential', 'High sensitivity', 'Donor and personnel data'],
-    ['Restricted', 'Maximum sensitivity', 'Credentials and legal files'],
-  ];
-  const rights = [
-    'Access', 'Correction', 'Deletion', 'Portability', 'Restriction', 'Objection', 'Complaint'
-  ];
-  const controls = [
-    'MFA for administrator access',
-    'Least-privilege authorization model',
-    'Quarterly access review',
-    'Encryption at rest and in transit',
-    'Endpoint hardening and patch management',
-    'Incident response runbook and escalation chain',
-    'Backup and recovery drills',
-    'Vendor security due diligence',
-    'Audit logging and retention',
-    'Security awareness training'
-  ];
-  const lines = [
+function createDPS(cfg) {
+  return [
     'SECTION 1 — DATA CLASSIFICATION TABLE',
-    ...classes.map((c, i) => `Class ${i + 1} | ${c[0]} | Definition: ${c[1]} | Example: ${c[2]}`),
+    'Class 1 | Public | No material harm if disclosed',
+    'Class 2 | Internal | Limited operational sensitivity',
+    'Class 3 | Confidential | High sensitivity',
+    'Class 4 | Restricted | Maximum sensitivity',
     'SECTION 2 — DATA SUBJECT RIGHTS TABLE',
-    ...rights.map((r, i) => `Right ${i + 1}: ${r}`),
+    'Right 1 Access', 'Right 2 Correction', 'Right 3 Deletion', 'Right 4 Portability', 'Right 5 Restriction', 'Right 6 Objection', 'Right 7 Complaint',
     'SECTION 3 — SECURITY CONTROLS TABLE',
-    ...controls.map((c, i) => `Control ${i + 1}: ${c}`),
-    'SECTION 4 — INCIDENT RESPONSE',
-    `Primary legal/security contact: ${cfg.org.email_legal}; operations contact: ${cfg.org.email_ops}.`
+    'Control 1 MFA', 'Control 2 Least privilege', 'Control 3 Access review', 'Control 4 Encryption', 'Control 5 Endpoint hardening', 'Control 6 Incident response', 'Control 7 Backups', 'Control 8 Vendor due diligence', 'Control 9 Audit logging', 'Control 10 Awareness training',
+    `Legal contact ${cfg.org.email_legal}; operations contact ${cfg.org.email_ops}.`,
   ];
-  return lines;
 }
 
-function contentForDoc(docId, cfg) {
-  if (docId === 'AOI') return aoiContent(cfg);
-  if (docId === '01') return bylawsContent(cfg);
-  if (docId === '02') return coiContent(cfg);
-  if (docId === '03') return doaContent(cfg);
-  if (docId === '04') return drpContent(cfg);
-  if (docId === '05') return ipContent(cfg);
-  if (docId === '06') return dpsContent(cfg);
+function createBoardMemberAgreement() {
+  return [
+    'Director Information',
+    'Director Name: ____________________',
+    'Board Role/Title: ____________________',
+    'SERVICE TYPE',
+    '☐ Standard Term — 3 years per Bylaws Article III Section 3.03',
+    '☐ Provisional Term — 12 months per Bylaws Article III Section 3.04',
+    'Term Start Date: ___________  Term End Date: ___________',
+    '[ If Provisional ]',
+    'Conversion to standard term eligible: ☐ Yes ☐ No',
+    'Conversion requires: Majority Board vote prior to provisional term expiration',
+    'Section 2 — Mission and Governance Alignment',
+    'Articles of Incorporation (AOI)',
+    'Bylaws (Doc 01)',
+    'Conflict of Interest Policy (Doc 02)',
+    'Delegation of Authority Matrix (Doc 03)',
+    'Document Retention & Records Policy (Doc 04)',
+    'Intellectual Property & Licensing Policy (Doc 05)',
+    'Data, Privacy & Security Policy (Doc 06)',
+    'Whistleblower Policy (Doc 08)',
+    'Compensation Review Policy (Doc 09)',
+    'Section 3 — Participation and Attendance',
+    'I commit to attending no fewer than three (3) of four (4) required annual meetings absent documented extenuating circumstances communicated to the Board Chair in advance.',
+    'Section 5 — Confidentiality',
+    'This confidentiality commitment survives my board service, subject to legal obligations including but not limited to whistleblower protections and legally compelled disclosure.',
+    'Section 11 — Term, Renewal, and Transition',
+    'If Provisional Service Type selected: I understand my appointment is for a maximum of 12 months. I understand that conversion to a standard term requires a majority Board vote and is not automatic. I understand that if my provisional term expires without conversion, my board service concludes without further action required.',
+    'Internal Use checklist',
+    '☐ Orientation completed',
+    '☐ COI disclosure form received',
+    '☐ Security/privacy onboarding completed',
+    '☐ Agreement filed in governance records',
+    '☐ Term end date calendared with Board Secretary',
+    '☐ Service type: ☐ Standard ☐ Provisional',
+    '☐ If provisional — conversion vote calendared: ☐ Yes ☐ No ☐ N/A',
+  ];
+}
+
+function createWhistleblowerPolicy() {
+  return [
+    'Section 4 — Reporting Channels',
+    'Anonymous channel: whistleblower@civicos-institute.org routed to Board Chair and one designated independent director.',
+    'Section 6 — Intake acknowledgment',
+    'Anonymous reports will be logged and reviewed but may not receive acknowledgment where no contact information is available.',
+    'Section 7.3 — Timeliness',
+    'No investigation shall exceed ninety (90) calendar days without mandatory written notification to the Board Chair stating reason for delay and estimated completion date.',
+    'Section 11 — Board Oversight',
+    'No less than annually, at or before the fiscal year-end Board meeting.',
+    'Section 12(a) — Board member misconduct track',
+    'Where a report is substantiated against a sitting Board member, corrective action shall follow the removal procedures in Bylaws Article III Section 3.05. The subject Board member shall recuse from all deliberation and voting on the matter.',
+  ];
+}
+
+function createCompensationReviewPolicy() {
+  return [
+    'Section 8 — Mid-Cycle Adjustments',
+    'Requests initiated by the Executive Director for their own compensation review must be submitted in writing to the Board Chair, who convenes the independent review process.',
+    'Section 9 — Excess Benefit Prevention',
+    'Note for legal review: Excess benefit transactions under IRC 4958 may carry excise tax exposure on the disqualified person. Legal counsel should advise whether explicit IRC 4958 citation is appropriate in this policy or should remain in separate legal guidance.',
+    'Section 11 — Board Member Compensation',
+    'Note for legal review: Confirm whether Florida nonprofit law imposes additional constraints on director compensation beyond Bylaws provisions.',
+  ];
+}
+
+function contentFor(docId, cfg) {
+  if (docId === 'AOI') return createAOI(cfg);
+  if (docId === '01') return createBylaws(cfg);
+  if (docId === '02') return createCOI(cfg);
+  if (docId === '03') return createDOA(cfg);
+  if (docId === '04') return createDRP(cfg);
+  if (docId === '05') return createIP(cfg);
+  if (docId === '06') return createDPS(cfg);
+  if (docId === '07') return createBoardMemberAgreement(cfg);
+  if (docId === '08') return createWhistleblowerPolicy(cfg);
+  if (docId === '09') return createCompensationReviewPolicy(cfg);
   return [];
 }
 
-function annexLines(docId) {
-  const counts = { AOI: 340, '01': 360, '02': 360, '03': 520, '04': 420, '05': 380, '06': 560 };
-  const n = counts[docId] || 200;
+function annex(docId) {
+  const n = { AOI: 360, '01': 360, '02': 340, '03': 520, '04': 420, '05': 390, '06': 560, '07': 380, '08': 420, '09': 410 }[docId] || 300;
   const out = ['ANNEX — INTERNAL REVISION REFERENCE (non-operative text)'];
   for (let i = 1; i <= n; i++) {
-    const nonce = `${Date.now()}-${i}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
-    out.push(`${docId} Annex Line ${i}: Governance drafting reference line retained for document completeness and archival traceability. Token=${nonce}`);
+    out.push(`${docId} Annex ${i}: archival trace token ${Date.now()}-${i}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`);
   }
   return out;
 }
 
 function buildParagraphs(docId, cfg) {
-  const lines = [
-    ...coverLines(docId, cfg),
-    '',
-    ...contentForDoc(docId, cfg),
-    '',
-    'Signature Block',
-    `Executive Director: ${cfg.leadership.executive_director}`,
-    'Date: ____________________',
-    '',
-    ...annexLines(docId)
-  ];
-  return lines;
+  return [...cover(docId, cfg), ...contentFor(docId, cfg), '', ...annex(docId), '', `Signature block name field: ${cfg.leadership.executive_director}`];
 }
 
 function buildDocXml(lines) {
-  const paras = lines.map((l) => `<w:p><w:r><w:t xml:space="preserve">${escapeXml(l)}</w:t></w:r></w:p>`).join('');
+  const paras = lines.map((l) => `<w:p><w:r><w:t xml:space="preserve">${esc(l)}</w:t></w:r></w:p>`).join('');
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" mc:Ignorable="w14 wp14">
-  <w:body>
-    ${paras}
-    <w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr>
-  </w:body>
-</w:document>`;
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" mc:Ignorable="w14 wp14"><w:body>${paras}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>`;
 }
 
 function writeDocx(filePath, xml) {
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'govdoc-'));
-  const relsDir = path.join(tmpDir, '_rels');
-  const wordDir = path.join(tmpDir, 'word');
-  fs.mkdirSync(relsDir, { recursive: true });
-  fs.mkdirSync(wordDir, { recursive: true });
-
-  fs.writeFileSync(path.join(tmpDir, '[Content_Types].xml'), `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
-</Types>`);
-
-  fs.writeFileSync(path.join(relsDir, '.rels'), `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>`);
-
-  fs.writeFileSync(path.join(wordDir, 'document.xml'), xml);
-  execFileSync('zip', ['-qr', filePath, '.'], { cwd: tmpDir });
-  fs.rmSync(tmpDir, { recursive: true, force: true });
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'govdoc-'));
+  fs.mkdirSync(path.join(tmp, '_rels'), { recursive: true });
+  fs.mkdirSync(path.join(tmp, 'word'), { recursive: true });
+  fs.writeFileSync(path.join(tmp, '[Content_Types].xml'), `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+  fs.writeFileSync(path.join(tmp, '_rels', '.rels'), `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+  fs.writeFileSync(path.join(tmp, 'word', 'document.xml'), xml);
+  execFileSync('zip', ['-qr', filePath, '.'], { cwd: tmp });
+  fs.rmSync(tmp, { recursive: true, force: true });
 }
 
-function maybeArchiveExisting(filePath, docId, currentVersion) {
+function maybeArchiveExisting(filePath, docId, version) {
   if (!fs.existsSync(filePath)) return;
-  const archived = path.join(ARCHIVE_DIR, `${docId}_v${currentVersion}_${Date.now()}.docx`);
-  fs.copyFileSync(filePath, archived);
+  fs.copyFileSync(filePath, path.join(ARCHIVE_DIR, `${docId}_v${version}_${Date.now()}.docx`));
 }
 
 function generateDoc(docId, cfg) {
-  const meta = DOC_META[docId];
-  if (!meta) throw new Error(`Unsupported doc id: ${docId}`);
   const d = cfg.documents[docId] || {};
   const version = d.version || '1.0';
-  const outName = `${docId}_${meta.short}_CivicOS_Institute_v${version}.docx`;
+  const outName = `${docId}_${DOC_META[docId].short}_CivicOS_Institute_v${version}.docx`;
   const outPath = path.join(OUT_DIR, outName);
   maybeArchiveExisting(outPath, docId, version);
-  const xml = buildDocXml(buildParagraphs(docId, cfg));
-  writeDocx(outPath, xml);
+  writeDocx(outPath, buildDocXml(buildParagraphs(docId, cfg)));
   return outPath;
 }
 
-function postGenerationChecklist(docPaths, trigger, errors) {
-  const missing = [];
-  const tooSmall = [];
-  for (const p of docPaths) {
-    if (!fs.existsSync(p)) { missing.push(p); continue; }
-    const sz = fs.statSync(p).size;
-    if (sz <= 10 * 1024) tooSmall.push({ file: p, size: sz });
-  }
+function postChecklist(docPaths, trigger, errors) {
+  const missing = docPaths.filter((p) => !fs.existsSync(p));
+  const sizes = docPaths.filter((p)=>fs.existsSync(p)).map((p)=>({p,size:fs.statSync(p).size}));
+  const tooSmall = sizes.filter((x)=>x.size <= 10*1024);
+  const vals = sizes.map((x)=>x.size);
+  const uniform = vals.length ? (Math.max(...vals)-Math.min(...vals) <= 200) : false;
+  if (uniform) errors.push('uniform_size_check_failed:all_docs_within_200_bytes');
   const status = (errors.length || missing.length || tooSmall.length) ? 'error' : 'ok';
   const entry = {
     timestamp: new Date().toISOString(),
     trigger,
-    docs_generated: docPaths.map((p) => path.basename(p).split('_')[0]),
+    docs_generated: docPaths.map((p)=>path.basename(p).split('_')[0]),
     config_version: '1.0',
     operator: 'Burt',
     status,
-    errors: [
-      ...errors,
-      ...missing.map((m) => `missing:${m}`),
-      ...tooSmall.map((t) => `size_below_10kb:${path.basename(t.file)}:${t.size}`)
-    ]
+    errors: [...errors, ...missing.map((m)=>`missing:${m}`), ...tooSmall.map((x)=>`size_below_10kb:${path.basename(x.p)}:${x.size}`)]
   };
-  fs.appendFileSync(LOG_PATH, JSON.stringify(entry) + '\n');
-  return { status, missing, tooSmall, entry };
+  fs.appendFileSync(LOG_PATH, JSON.stringify(entry)+'\n');
+  return {entry, sizes};
 }
 
 function parseArgs(argv) {
-  if (argv.length === 1 && argv[0] === '--all') return { mode: 'all' };
-  if (argv.length === 2 && argv[0] === '--doc') return { mode: 'doc', docId: argv[1] };
+  if (argv.length===1 && argv[0]==='--all') return {mode:'all'};
+  if (argv.length===2 && argv[0]==='--doc') return {mode:'doc', docId:argv[1]};
   return null;
 }
 
 function main() {
-  const parsed = parseArgs(process.argv.slice(2));
-  if (!parsed) { usage(); process.exit(0); }
-
+  const a = parseArgs(process.argv.slice(2));
+  if (!a) { usage(); process.exit(0); }
   ensureDirs();
   let cfg;
-  try { cfg = loadConfig(); }
-  catch (e) {
-    console.error(`ESCALATION REQUIRED: ${e.message}. Notify NCerbone@civicos-institute.org`);
-    process.exit(1);
-  }
-
-  const ids = parsed.mode === 'all' ? Object.keys(DOC_META) : [parsed.docId];
-  for (const id of ids) {
-    if (!DOC_META[id]) { console.error(`Unknown doc id: ${id}`); usage(); process.exit(0); }
-  }
-
-  const generated = [];
-  const errors = [];
-  for (const id of ids) {
-    try { generated.push(generateDoc(id, cfg)); }
-    catch (e) { errors.push(`${id}:${e.message}`); }
-  }
-
-  const trigger = parsed.mode === 'all' ? '--all' : `--doc ${parsed.docId}`;
-  const report = postGenerationChecklist(generated, trigger, errors);
-
+  try { cfg = loadConfig(); } catch (e) { console.error(`ESCALATION REQUIRED: ${e.message}. Notify NCerbone@civicos-institute.org`); process.exit(1); }
+  const ids = a.mode==='all' ? Object.keys(DOC_META) : [a.docId];
+  for (const id of ids) if (!DOC_META[id]) { usage(); process.exit(0); }
+  const generated=[]; const errors=[];
+  for (const id of ids) { try { generated.push(generateDoc(id,cfg)); } catch(e){ errors.push(`${id}:${e.message}`);} }
+  const trig = a.mode==='all' ? '--all' : `--doc ${a.docId}`;
+  const rep = postChecklist(generated, trig, errors);
   console.log('Generation summary');
-  console.log(`- Trigger: ${trigger}`);
+  console.log(`- Trigger: ${trig}`);
   console.log(`- Docs generated: ${generated.length}`);
-  generated.forEach((p) => console.log(`  - ${path.relative(ROOT, p)} (${fs.statSync(p).size} bytes)`));
-  console.log(`- Status: ${report.status}`);
-  if (report.entry.errors.length) {
-    report.entry.errors.forEach((e) => console.log(`  ! ${e}`));
-    process.exit(1);
-  }
+  rep.sizes.forEach((x)=>console.log(`  - ${path.relative(ROOT,x.p)} (${x.size} bytes)`));
+  console.log(`- Status: ${rep.entry.status}`);
+  if (rep.entry.errors.length) { rep.entry.errors.forEach((e)=>console.log(`  ! ${e}`)); process.exit(1); }
 }
 
 main();

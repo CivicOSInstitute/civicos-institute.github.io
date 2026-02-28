@@ -23,7 +23,7 @@
     "quorum": "majority"
   },
   "financials": {
-    "fiscal_year": "January 1 – December 31",
+    "fiscal_year": "January 1 \u2013 December 31",
     "threshold_minor": 1000,
     "threshold_moderate": 10000,
     "threshold_significant": 50000,
@@ -46,12 +46,65 @@
     "dissolution_vote": "three-quarters"
   },
   "documents": {
-    "AOI": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "01": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "02": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "03": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "04": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "05": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null },
-    "06": { "version": "1.0", "status": "DRAFT", "adopted": null, "last_reviewed": null }
+    "AOI": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "01": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "02": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "03": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "04": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "05": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "06": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "07": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "08": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    },
+    "09": {
+      "version": "1.0",
+      "status": "DRAFT",
+      "adopted": null,
+      "last_reviewed": null
+    }
   }
 }
