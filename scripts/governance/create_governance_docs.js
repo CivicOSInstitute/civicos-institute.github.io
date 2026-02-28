@@ -2,13 +2,15 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execFileSync } = require('child_process');
+const { execFileSync, spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const CONFIG_PATH = path.join(__dirname, 'governance_config.json');
 const OUT_DIR = path.join(ROOT, 'generated', 'governance', 'docx');
+const PDF_DIR = path.join(ROOT, 'generated', 'governance', 'pdf');
 const ARCHIVE_DIR = path.join(ROOT, 'generated', 'governance', 'archive');
 const LOG_PATH = path.join(ROOT, 'generated', 'governance', 'generation_log.jsonl');
+const SUITE_ZIP = path.join(ROOT, 'generated', 'governance', 'CivicOS_Governance_Suite.zip');
 
 const DOC_META = {
   AOI: { short: 'Articles_of_Incorporation', title: 'Articles of Incorporation (Florida)' },
@@ -31,6 +33,7 @@ function usage() {
 
 function ensureDirs() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
+  fs.mkdirSync(PDF_DIR, { recursive: true });
   fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
   if (!fs.existsSync(LOG_PATH)) fs.writeFileSync(LOG_PATH, '');
 }
@@ -199,40 +202,22 @@ function createDPS(cfg) {
 
 function createBoardMemberAgreement() {
   return [
-    'Director Information',
-    'Director Name: ____________________',
-    'Board Role/Title: ____________________',
-    'SERVICE TYPE',
-    '☐ Standard Term — 3 years per Bylaws Article III Section 3.03',
-    '☐ Provisional Term — 12 months per Bylaws Article III Section 3.04',
-    'Term Start Date: ___________  Term End Date: ___________',
-    '[ If Provisional ]',
-    'Conversion to standard term eligible: ☐ Yes ☐ No',
+    'Director Information', 'Director Name: ____________________', 'Board Role/Title: ____________________',
+    'SERVICE TYPE', '☐ Standard Term — 3 years per Bylaws Article III Section 3.03', '☐ Provisional Term — 12 months per Bylaws Article III Section 3.04',
+    'Term Start Date: ___________  Term End Date: ___________', '[ If Provisional ]', 'Conversion to standard term eligible: ☐ Yes ☐ No',
     'Conversion requires: Majority Board vote prior to provisional term expiration',
     'Section 2 — Mission and Governance Alignment',
-    'Articles of Incorporation (AOI)',
-    'Bylaws (Doc 01)',
-    'Conflict of Interest Policy (Doc 02)',
-    'Delegation of Authority Matrix (Doc 03)',
-    'Document Retention & Records Policy (Doc 04)',
-    'Intellectual Property & Licensing Policy (Doc 05)',
-    'Data, Privacy & Security Policy (Doc 06)',
-    'Whistleblower Policy (Doc 08)',
-    'Compensation Review Policy (Doc 09)',
+    'Articles of Incorporation (AOI)', 'Bylaws (Doc 01)', 'Conflict of Interest Policy (Doc 02)', 'Delegation of Authority Matrix (Doc 03)',
+    'Document Retention & Records Policy (Doc 04)', 'Intellectual Property & Licensing Policy (Doc 05)', 'Data, Privacy & Security Policy (Doc 06)',
+    'Whistleblower Policy (Doc 08)', 'Compensation Review Policy (Doc 09)',
     'Section 3 — Participation and Attendance',
     'I commit to attending no fewer than three (3) of four (4) required annual meetings absent documented extenuating circumstances communicated to the Board Chair in advance.',
     'Section 5 — Confidentiality',
     'This confidentiality commitment survives my board service, subject to legal obligations including but not limited to whistleblower protections and legally compelled disclosure.',
     'Section 11 — Term, Renewal, and Transition',
     'If Provisional Service Type selected: I understand my appointment is for a maximum of 12 months. I understand that conversion to a standard term requires a majority Board vote and is not automatic. I understand that if my provisional term expires without conversion, my board service concludes without further action required.',
-    'Internal Use checklist',
-    '☐ Orientation completed',
-    '☐ COI disclosure form received',
-    '☐ Security/privacy onboarding completed',
-    '☐ Agreement filed in governance records',
-    '☐ Term end date calendared with Board Secretary',
-    '☐ Service type: ☐ Standard ☐ Provisional',
-    '☐ If provisional — conversion vote calendared: ☐ Yes ☐ No ☐ N/A',
+    'Internal Use checklist', '☐ Orientation completed', '☐ COI disclosure form received', '☐ Security/privacy onboarding completed', '☐ Agreement filed in governance records',
+    '☐ Term end date calendared with Board Secretary', '☐ Service type: ☐ Standard ☐ Provisional', '☐ If provisional — conversion vote calendared: ☐ Yes ☐ No ☐ N/A',
   ];
 }
 
@@ -279,9 +264,7 @@ function contentFor(docId, cfg) {
 function annex(docId) {
   const n = { AOI: 360, '01': 360, '02': 340, '03': 520, '04': 420, '05': 390, '06': 560, '07': 380, '08': 420, '09': 410 }[docId] || 300;
   const out = ['ANNEX — INTERNAL REVISION REFERENCE (non-operative text)'];
-  for (let i = 1; i <= n; i++) {
-    out.push(`${docId} Annex ${i}: archival trace token ${Date.now()}-${i}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`);
-  }
+  for (let i = 1; i <= n; i++) out.push(`${docId} Annex ${i}: archival trace token ${Date.now()}-${i}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`);
   return out;
 }
 
@@ -311,6 +294,54 @@ function maybeArchiveExisting(filePath, docId, version) {
   fs.copyFileSync(filePath, path.join(ARCHIVE_DIR, `${docId}_v${version}_${Date.now()}.docx`));
 }
 
+let _sofficeAvailable = null;
+function sofficeAvailable() {
+  if (_sofficeAvailable !== null) return _sofficeAvailable;
+  const r = spawnSync('soffice', ['--version'], { encoding: 'utf8' });
+  _sofficeAvailable = r.status === 0;
+  return _sofficeAvailable;
+}
+
+function convertDocxToPdf(docxPath) {
+  const outPdf = path.join(PDF_DIR, path.basename(docxPath).replace(/\.docx$/i, '.pdf'));
+  if (!sofficeAvailable()) {
+    return { ok: false, skipped: true, pdfPath: outPdf, error: 'PDF generation skipped: soffice not found. Install LibreOffice to enable PDF output.' };
+  }
+  try {
+    execFileSync('soffice', ['--headless', '--convert-to', 'pdf', docxPath, '--outdir', PDF_DIR], { stdio: 'pipe' });
+    return { ok: fs.existsSync(outPdf), skipped: false, pdfPath: outPdf, error: fs.existsSync(outPdf) ? null : 'PDF not produced by soffice' };
+  } catch (e) {
+    return { ok: false, skipped: false, pdfPath: outPdf, error: `PDF conversion failed: ${e.message}` };
+  }
+}
+
+function buildSuiteZip(cfg, generatedDocx, generatedPdf) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'govsuite-'));
+  const root = path.join(tmp, 'CivicOS_Governance_Suite');
+  const zDocx = path.join(root, 'docx');
+  const zPdf = path.join(root, 'pdf');
+  fs.mkdirSync(zDocx, { recursive: true });
+  fs.mkdirSync(zPdf, { recursive: true });
+
+  generatedDocx.forEach((p) => { if (fs.existsSync(p)) fs.copyFileSync(p, path.join(zDocx, path.basename(p))); });
+  generatedPdf.forEach((p) => { if (fs.existsSync(p)) fs.copyFileSync(p, path.join(zPdf, path.basename(p))); });
+
+  const firstDoc = cfg.documents['AOI'] || { version: '1.0' };
+  const readme = [
+    'CivicOS Institute Governance Document Suite',
+    `Version: ${firstDoc.version || '1.0'}`,
+    `Generated: ${new Date().toISOString()}`,
+    'Status: All documents DRAFT — Pending Board Adoption',
+    'Contact: NCerbone@civicos-institute.org',
+    ''
+  ].join('\n');
+  fs.writeFileSync(path.join(root, 'README.txt'), readme);
+
+  if (fs.existsSync(SUITE_ZIP)) fs.rmSync(SUITE_ZIP, { force: true });
+  execFileSync('zip', ['-qr', SUITE_ZIP, 'CivicOS_Governance_Suite'], { cwd: tmp });
+  fs.rmSync(tmp, { recursive: true, force: true });
+}
+
 function generateDoc(docId, cfg) {
   const d = cfg.documents[docId] || {};
   const version = d.version || '1.0';
@@ -321,51 +352,93 @@ function generateDoc(docId, cfg) {
   return outPath;
 }
 
-function postChecklist(docPaths, trigger, errors) {
+function postChecklist(docPaths, trigger, errors, pdfInfo) {
   const missing = docPaths.filter((p) => !fs.existsSync(p));
-  const sizes = docPaths.filter((p)=>fs.existsSync(p)).map((p)=>({p,size:fs.statSync(p).size}));
-  const tooSmall = sizes.filter((x)=>x.size <= 10*1024);
-  const vals = sizes.map((x)=>x.size);
-  const uniform = vals.length ? (Math.max(...vals)-Math.min(...vals) <= 200) : false;
+  const sizes = docPaths.filter((p) => fs.existsSync(p)).map((p) => ({ p, size: fs.statSync(p).size }));
+  const tooSmall = sizes.filter((x) => x.size <= 10 * 1024);
+  const vals = sizes.map((x) => x.size);
+  const uniform = vals.length ? (Math.max(...vals) - Math.min(...vals) <= 200) : false;
   if (uniform) errors.push('uniform_size_check_failed:all_docs_within_200_bytes');
+
+  const pdf_generated = pdfInfo.filter(x => x.ok).map(x => x.id);
+  const pdf_missing = pdfInfo.filter(x => !x.ok).map(x => x.id);
+  const pdf_errors = pdfInfo.filter(x => x.error).map(x => x.error);
+
   const status = (errors.length || missing.length || tooSmall.length) ? 'error' : 'ok';
   const entry = {
     timestamp: new Date().toISOString(),
     trigger,
-    docs_generated: docPaths.map((p)=>path.basename(p).split('_')[0]),
+    docs_generated: docPaths.map((p) => path.basename(p).split('_')[0]),
     config_version: '1.0',
     operator: 'Burt',
     status,
-    errors: [...errors, ...missing.map((m)=>`missing:${m}`), ...tooSmall.map((x)=>`size_below_10kb:${path.basename(x.p)}:${x.size}`)]
+    errors: [...errors, ...missing.map((m) => `missing:${m}`), ...tooSmall.map((x) => `size_below_10kb:${path.basename(x.p)}:${x.size}`)],
+    pdf_generated,
+    pdf_missing,
+    pdf_errors,
   };
-  fs.appendFileSync(LOG_PATH, JSON.stringify(entry)+'\n');
-  return {entry, sizes};
+  fs.appendFileSync(LOG_PATH, JSON.stringify(entry) + '\n');
+  return { entry, sizes };
 }
 
 function parseArgs(argv) {
-  if (argv.length===1 && argv[0]==='--all') return {mode:'all'};
-  if (argv.length===2 && argv[0]==='--doc') return {mode:'doc', docId:argv[1]};
+  if (argv.length === 1 && argv[0] === '--all') return { mode: 'all' };
+  if (argv.length === 2 && argv[0] === '--doc') return { mode: 'doc', docId: argv[1] };
   return null;
 }
 
 function main() {
   const a = parseArgs(process.argv.slice(2));
   if (!a) { usage(); process.exit(0); }
+
   ensureDirs();
   let cfg;
-  try { cfg = loadConfig(); } catch (e) { console.error(`ESCALATION REQUIRED: ${e.message}. Notify NCerbone@civicos-institute.org`); process.exit(1); }
-  const ids = a.mode==='all' ? Object.keys(DOC_META) : [a.docId];
+  try { cfg = loadConfig(); }
+  catch (e) { console.error(`ESCALATION REQUIRED: ${e.message}. Notify NCerbone@civicos-institute.org`); process.exit(1); }
+
+  const ids = a.mode === 'all' ? Object.keys(DOC_META) : [a.docId];
   for (const id of ids) if (!DOC_META[id]) { usage(); process.exit(0); }
-  const generated=[]; const errors=[];
-  for (const id of ids) { try { generated.push(generateDoc(id,cfg)); } catch(e){ errors.push(`${id}:${e.message}`);} }
-  const trig = a.mode==='all' ? '--all' : `--doc ${a.docId}`;
-  const rep = postChecklist(generated, trig, errors);
+
+  const generated = [];
+  const errors = [];
+  for (const id of ids) {
+    try { generated.push(generateDoc(id, cfg)); }
+    catch (e) { errors.push(`${id}:${e.message}`); }
+  }
+
+  const pdfInfo = [];
+  let sofficeWarnPrinted = false;
+  for (const id of ids) {
+    const d = cfg.documents[id] || {};
+    const version = d.version || '1.0';
+    const docxPath = path.join(OUT_DIR, `${id}_${DOC_META[id].short}_CivicOS_Institute_v${version}.docx`);
+    const r = convertDocxToPdf(docxPath);
+    if (r.skipped && !sofficeWarnPrinted) { console.log(r.error); sofficeWarnPrinted = true; }
+    pdfInfo.push({ id, ...r });
+  }
+
+  // always rebuild suite zip with current outputs
+  try {
+    buildSuiteZip(cfg, generated, pdfInfo.filter(x => x.ok).map(x => x.pdfPath));
+  } catch (e) {
+    errors.push(`suite_zip:${e.message}`);
+  }
+
+  const trig = a.mode === 'all' ? '--all' : `--doc ${a.docId}`;
+  const rep = postChecklist(generated, trig, errors, pdfInfo);
+
   console.log('Generation summary');
   console.log(`- Trigger: ${trig}`);
   console.log(`- Docs generated: ${generated.length}`);
-  rep.sizes.forEach((x)=>console.log(`  - ${path.relative(ROOT,x.p)} (${x.size} bytes)`));
+  rep.sizes.forEach((x) => console.log(`  - ${path.relative(ROOT, x.p)} (${x.size} bytes)`));
+  console.log(`- PDFs generated: ${pdfInfo.filter(x => x.ok).length}/${pdfInfo.length}`);
+  console.log(`- Suite ZIP: ${path.relative(ROOT, SUITE_ZIP)} ${fs.existsSync(SUITE_ZIP) ? '(ok)' : '(missing)'}`);
   console.log(`- Status: ${rep.entry.status}`);
-  if (rep.entry.errors.length) { rep.entry.errors.forEach((e)=>console.log(`  ! ${e}`)); process.exit(1); }
+
+  if (rep.entry.errors.length) {
+    rep.entry.errors.forEach((e) => console.log(`  ! ${e}`));
+    process.exit(1);
+  }
 }
 
 main();
