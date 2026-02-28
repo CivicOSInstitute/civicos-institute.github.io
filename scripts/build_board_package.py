@@ -143,12 +143,18 @@ def read_ga4_summary():
 
 
 def render_docx(md_path, docx_path):
-    run([
-        'pandoc', str(md_path),
-        '-o', str(docx_path),
-        '--from', 'markdown',
-        '--to', 'docx'
-    ])
+    # Default DOCX generation path (requested):
+    # NODE_PATH=/usr/local/lib/node_modules_global/lib/node_modules node scripts/build_board_brief.js
+    env_cmd = [
+        'env',
+        'NODE_PATH=/usr/local/lib/node_modules_global/lib/node_modules',
+        'node',
+        str(ROOT / 'scripts' / 'build_board_brief.js'),
+        md_path.stem.replace('board_brief_', '')
+    ]
+    run(env_cmd)
+    if not docx_path.exists():
+        raise RuntimeError(f'DOCX generation failed: {docx_path}')
 
 
 def build_brief(report_date):
