@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 import json
 import re
+import os
+import shutil
+import tempfile
 import subprocess
+import httpx
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -14,6 +18,10 @@ TEMPLATE_JS = ROOT / 'scripts' / 'board_brief_template.js'
 OUT_DIR = ROOT / 'generated' / 'board'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 ACCOUNT = 'ncerbone@civicos-institute.org'
+LLAMA_URL = 'http://localhost:18080/v1/chat/completions'
+OLLAMA_URL = 'http://localhost:11434/api/chat'
+TIMEOUT = 180.0
+TEMPLATE_OUTPUT = Path('/sessions/serene-zealous-fermat/mnt/outputs/board_brief_2026-02-27.docx')
 
 
 def run(args, env=None):
@@ -124,6 +132,64 @@ def actions_rows(signals):
     return rows
 
 
+def build_executive_summary(signals, crm, ga4):
+    prompt = (
+        "You are preparing a board brief for CivicOS Institute. "
+        "Return ONLY valid JSON as: {\"executiveSummary\":[\"bullet 1\",\"bullet 2\",\"bullet 3\"]}. "
+        "Each bullet must be concise, operational, and grounded in provided inputs."
+        f"\nSignals: {json.dumps(signals[:5], ensure_ascii=False)}"
+        f"\nCRM: {json.dumps(crm, ensure_ascii=False)}"
+        f"\nGA4: {json.dumps(ga4, ensure_ascii=False)}"
+    )
+
+    try:
+        resp = httpx.post(
+            LLAMA_URL,
+            timeout=TIMEOUT,
+            json={
+                "model": "qwen",
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": 250,
+                "temperature": 0.3,
+            },
+        )
+        resp.raise_for_status()
+        content = resp.json()["choices"][0]["message"]["content"].strip()
+        content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.S).strip()
+        parsed = json.loads(content)
+        bullets = parsed.get('executiveSummary', [])
+        if isinstance(bullets, list) and bullets:
+            return [str(x).strip() for x in bullets[:5]], 'qwen3.5-local'
+    except Exception:
+        pass
+
+    try:
+        resp = httpx.post(
+            OLLAMA_URL,
+            timeout=TIMEOUT,
+            json={
+                "model": "qwen3:14b",
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": False,
+            },
+        )
+        resp.raise_for_status()
+        content = resp.json().get('message', {}).get('content', '').strip()
+        content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.S).strip()
+        parsed = json.loads(content)
+        bullets = parsed.get('executiveSummary', [])
+        if isinstance(bullets, list) and bullets:
+            return [str(x).strip() for x in bullets[:5]], 'qwen3:14b'
+    except Exception:
+        pass
+
+    return [
+        "Board-ready signal review completed; prioritize the top governance-relevant developments.",
+        "CRM and analytics pipelines are operational; monitor for fresh stakeholder and traffic deltas.",
+        "Action queue should focus on highest-impact leadership decisions this cycle."
+    ], 'fallback-static'
+
+
 def inject_data_and_run(report_date):
     if not TEMPLATE_JS.exists():
         raise RuntimeError(f"Missing template: {TEMPLATE_JS}")
@@ -133,6 +199,7 @@ def inject_data_and_run(report_date):
     crm = crm_summary_bullets()
     ga4 = ga4_summary_bullets()
     actions = actions_rows(signals)
+    executive_summary, model_used = build_executive_summary(signals, crm, ga4)
 
     date_label = datetime.strptime(report_date, '%Y-%m-%d').strftime('%B %-d, %Y')
     out_docx = OUT_DIR / f'board_brief_{report_date}.docx'
@@ -143,26 +210,29 @@ def inject_data_and_run(report_date):
         f"const crmSummary = {json.dumps(crm, ensure_ascii=False, indent=2)};\n"
         f"const ga4Summary = {json.dumps(ga4, ensure_ascii=False, indent=2)};\n"
         f"const actionsTable = {json.dumps(actions, ensure_ascii=False, indent=2)};\n"
+        f"const executiveSummary = {json.dumps(executive_summary, ensure_ascii=False, indent=2)};\n"
+        f"const MODEL_USED = {json.dumps(model_used)};\n"
     )
 
     original_template = TEMPLATE_JS.read_text(encoding='utf-8', errors='ignore')
     runtime_template = re.sub(r"const DATE\s*=\s*\"[^\"]*\";", data_block, original_template, count=1)
-    # keep Claude template intact in repo; patch only at runtime and restore immediately
-    runtime_template = runtime_template.replace('const actionsTable = (rows) => new Table({', 'const renderActionsTable = (rows) => new Table({')
-    runtime_template = re.sub(r"actionsTable\(\[([\s\S]*?)\]\),", "renderActionsTable(actionsTable),", runtime_template, count=1)
-    runtime_template = runtime_template.replace(
-        '/sessions/serene-zealous-fermat/mnt/outputs/board_brief_2026-02-27.docx',
-        str(out_docx)
-    )
 
-    env = dict(**__import__('os').environ)
+    TEMPLATE_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as tf:
+        tf.write(runtime_template)
+        runtime_js = Path(tf.name)
+
+    env = dict(os.environ)
     env['NODE_PATH'] = '/usr/local/lib/node_modules_global/lib/node_modules'
     try:
-        TEMPLATE_JS.write_text(runtime_template, encoding='utf-8')
-        run(['node', str(TEMPLATE_JS)], env=env)
+        run(['node', str(runtime_js)], env=env)
     finally:
-        TEMPLATE_JS.write_text(original_template, encoding='utf-8')
+        runtime_js.unlink(missing_ok=True)
 
+    if not TEMPLATE_OUTPUT.exists():
+        raise RuntimeError(f"Template output missing: {TEMPLATE_OUTPUT}")
+
+    shutil.copy2(TEMPLATE_OUTPUT, out_docx)
     if not out_docx.exists():
         raise RuntimeError(f"Expected output not found: {out_docx}")
     return out_docx

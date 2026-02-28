@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import quote_plus, urlparse, parse_qs, unquote
 import subprocess
 import requests
+import httpx
 import xml.etree.ElementTree as ET
 
 ROOT = Path('/Users/AI-OPS/.openclaw/workspace')
@@ -27,6 +28,9 @@ NOTION_STATE = OUT_DIR / 'notion_synced_signal_ids.json'
 
 NOTION_CREATE = ROOT / 'notion-ops' / 'notion_task_create.sh'
 ACCOUNT = 'ncerbone@civicos-institute.org'
+LLAMA_URL = 'http://localhost:18080/v1/chat/completions'
+OLLAMA_URL = 'http://localhost:11434/api/chat'
+TIMEOUT = 180.0
 
 
 def run(args):
@@ -302,6 +306,76 @@ def to_notion_tasks(signals):
     return created
 
 
+def enrich_signal(headline: str, source: str, body: str) -> dict:
+    prompt = f"""You are an institutional intelligence analyst for CivicOS Institute, a civic data and transparency nonprofit.
+Analyze this signal and return ONLY valid JSON with these three fields:
+{{
+  \"why_it_matters\": \"1-2 sentences on institutional relevance to CivicOS\",
+  \"risk_opportunity\": \"Is this a risk or opportunity? One sentence.\",
+  \"next_step\": \"One concrete recommended action for CivicOS leadership\"
+}}
+
+Signal headline: {headline}
+Source: {source}
+Body: {body[:800]}
+
+Return only the JSON object. No explanation, no markdown."""
+
+    try:
+        resp = httpx.post(
+            LLAMA_URL,
+            timeout=TIMEOUT,
+            json={
+                "model": "qwen",
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": 300,
+                "temperature": 0.3,
+            },
+        )
+        resp.raise_for_status()
+        content = resp.json()["choices"][0]["message"]["content"].strip()
+        if content.startswith("```"):
+            content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.S).strip()
+        data = json.loads(content)
+        return {
+            "why_it_matters": str(data.get("why_it_matters", "")).strip(),
+            "risk_opportunity": str(data.get("risk_opportunity", "")).strip(),
+            "next_step": str(data.get("next_step", "")).strip(),
+            "model_used": "qwen3.5-local",
+        }
+    except Exception:
+        pass
+
+    try:
+        resp = httpx.post(
+            OLLAMA_URL,
+            timeout=TIMEOUT,
+            json={
+                "model": "qwen3:14b",
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": False,
+            },
+        )
+        resp.raise_for_status()
+        content = resp.json().get("message", {}).get("content", "").strip()
+        if content.startswith("```"):
+            content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.S).strip()
+        data = json.loads(content)
+        return {
+            "why_it_matters": str(data.get("why_it_matters", "")).strip(),
+            "risk_opportunity": str(data.get("risk_opportunity", "")).strip(),
+            "next_step": str(data.get("next_step", "")).strip(),
+            "model_used": "qwen3:14b",
+        }
+    except Exception:
+        return {
+            "why_it_matters": "This signal may be material to CivicOS institutional priorities and should be reviewed.",
+            "risk_opportunity": "Risk: delayed response may reduce CivicOS influence on emerging governance patterns.",
+            "next_step": "Assign an owner to produce a 1-page assessment within 48 hours.",
+            "model_used": "fallback-static",
+        }
+
+
 def main():
     cfg = load_json(CFG, {})
     nf = cfg.get('noise_filter', {})
@@ -417,12 +491,19 @@ def main():
                 board_md.append(f"Related video: {ch} — {rel.get('title','')} — {rel.get('link','')}")
             else:
                 board_md.append("Related video: none found in monitored YouTube feeds")
-            why = f"This signal indicates a potentially material governance shift that could affect CivicOS positioning in the next 30–90 days."
-            risk = f"Risk: delayed response could weaken policy credibility; Opportunity: timely framing can position CivicOS as a trusted governance convener."
-            nxt = f"Next step: assign an owner to produce a 1-page briefing memo and recommendation within 48 hours."
+            enriched = enrich_signal(
+                headline=s.get('title', ''),
+                source=s.get('publication', s.get('source', 'Unknown')),
+                body=s.get('summary', ''),
+            )
+            why = enriched.get('why_it_matters', '').strip()
+            risk = enriched.get('risk_opportunity', '').strip()
+            nxt = enriched.get('next_step', '').strip()
+            model_used = enriched.get('model_used', 'unknown')
             board_md.append(f"Why it matters: {why}")
             board_md.append(f"Risk/Opportunity: {risk}")
             board_md.append(f"Next step: {nxt}")
+            board_md.append(f"Model used: {model_used}")
             board_md.append('')
     BOARD_MD.write_text('\n'.join(board_md), encoding='utf-8')
 
