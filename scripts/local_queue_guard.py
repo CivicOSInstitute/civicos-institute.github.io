@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 FORBIDDEN_PATTERNS = [
@@ -19,6 +21,22 @@ REQUIRED_HINTS = [
     "skills/ollama-agent-queue/scripts/integration_helper.py",
     "skills/ollama-agent-queue/scripts/queue_manager.py",
 ]
+
+ROOT = Path(__file__).resolve().parents[1]
+VIOLATION_LOG = ROOT / "generated" / "queue_guard_violations.jsonl"
+
+
+def _log_violation(context: str, command: str) -> None:
+    VIOLATION_LOG.parent.mkdir(parents=True, exist_ok=True)
+    event = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "context": context,
+        "command": command,
+        "action": "blocked",
+        "exit_code": 42,
+    }
+    with VIOLATION_LOG.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(event) + "\n")
 
 
 def main() -> int:
@@ -37,6 +55,7 @@ def main() -> int:
 
     for pat in FORBIDDEN_PATTERNS:
         if pat.search(command):
+            _log_violation(args.context, command)
             print(
                 "QUEUE_GUARD_BLOCKED: direct local model invocation detected. "
                 "Route through skills/ollama-agent-queue/scripts/integration_helper.py",
@@ -44,6 +63,7 @@ def main() -> int:
             )
             print(f"Context: {args.context}", file=sys.stderr)
             print(f"Command: {command}", file=sys.stderr)
+            print(f"Violation log: {VIOLATION_LOG}", file=sys.stderr)
             return 42
 
     print("QUEUE_GUARD_OK")
