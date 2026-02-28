@@ -50,13 +50,37 @@
         {% endif %}
       </div>
       <div class="card span-5">
-        <div class="h">Deadlines (tab shell)</div>
-        7d / 14d tabs placeholder
+        <div class="h">Deadlines (live)</div>
+        <div style="margin-bottom:8px;"><strong>Next 7 days</strong></div>
+        {% if payload.deadlines.next_7_days %}
+          <ul>
+            {% for d in payload.deadlines.next_7_days[:5] %}<li>{{ d }}</li>{% endfor %}
+          </ul>
+        {% else %}
+          <div>No 7-day deadlines parsed.</div>
+        {% endif %}
+        <div style="margin:10px 0 8px;"><strong>Next 14 days</strong></div>
+        {% if payload.deadlines.next_14_days %}
+          <ul>
+            {% for d in payload.deadlines.next_14_days[:5] %}<li>{{ d }}</li>{% endfor %}
+          </ul>
+        {% else %}
+          <div>No 14-day deadlines parsed.</div>
+        {% endif %}
       </div>
     </div>
 
     <div class="grid" style="margin-bottom:12px;">
-      <div class="card span-7"><div class="h">Overnight Activity Feed</div>placeholder</div>
+      <div class="card span-7">
+        <div class="h">Overnight Activity Feed (live)</div>
+        {% if payload.overnight.items %}
+          <ul>
+            {% for item in payload.overnight.items[:8] %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+        {% else %}
+          <div>No overnight items parsed.</div>
+        {% endif %}
+      </div>
       <div class="card span-5"><div class="h">Critical Path (30-day)</div>placeholder</div>
     </div>
 

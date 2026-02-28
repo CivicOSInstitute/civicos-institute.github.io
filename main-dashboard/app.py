@@ -660,38 +660,96 @@ def get_alerts():
 
 
 def get_dashboard_v2_payload():
-    """Minimal first-pass payload for /v2 route skeleton."""
+    """First live v2 payload: top actions + deadlines + overnight activity from morning brief."""
     brief_path = WORKSPACE_DIR / 'generated' / 'ops_morning_brief_latest.md'
     legacy_path = WORKSPACE_DIR / 'dashboard.md'
 
     top_actions = []
+    deadlines_7d = []
+    deadlines_14d = []
+    overnight_items = []
+
     if brief_path.exists():
         try:
             lines = brief_path.read_text().splitlines()
-            in_checklist = False
+            section = None
             for ln in lines:
-                if ln.strip().startswith('## Prioritized Morning Checklist'):
-                    in_checklist = True
+                s = ln.strip()
+
+                # Section detection
+                if s.startswith('## '):
+                    h = s.lower()
+                    if 'prioritized morning checklist' in h or "today" in h and 'priorit' in h:
+                        section = 'top_actions'
+                    elif 'deadlines' in h and ('7' in h or '<7' in h):
+                        section = 'deadlines_7d'
+                    elif 'upcoming' in h and '14' in h:
+                        section = 'deadlines_14d'
+                    elif 'overnight' in h and ('activity' in h or 'summary' in h):
+                        section = 'overnight'
+                    elif 'automation health' in h:
+                        section = 'automation_health'
+                    elif h.startswith('## snapshot'):
+                        section = 'snapshot'
+                    else:
+                        section = None
                     continue
-                if in_checklist:
-                    s = ln.strip()
-                    if s.startswith('## '):
-                        break
-                    if s and s[0].isdigit() and '. ' in s:
-                        top_actions.append(s.split('. ', 1)[1].strip())
-                    if len(top_actions) >= 3:
-                        break
+
+                # Parse bullets / numbered rows
+                item = None
+                if s.startswith('- ') or s.startswith('* '):
+                    item = s[2:].strip()
+                elif s and s[0].isdigit() and '. ' in s:
+                    item = s.split('. ', 1)[1].strip()
+
+                if not item:
+                    continue
+
+                if section == 'top_actions' and len(top_actions) < 3:
+                    top_actions.append(item)
+                elif section == 'deadlines_7d':
+                    deadlines_7d.append(item)
+                elif section == 'deadlines_14d':
+                    deadlines_14d.append(item)
+                elif section == 'overnight':
+                    overnight_items.append(item)
+                elif section == 'automation_health':
+                    overnight_items.append(item)
+                elif section == 'snapshot':
+                    li = item.lower()
+                    if 'due today' in li or 'overdue' in li:
+                        deadlines_7d.append(item)
+        except Exception:
+            pass
+
+    # Fallback for top actions if section header wording differs
+    if not top_actions and brief_path.exists():
+        try:
+            for ln in brief_path.read_text().splitlines():
+                s = ln.strip()
+                if s and s[0].isdigit() and '. ' in s:
+                    top_actions.append(s.split('. ', 1)[1].strip())
+                if len(top_actions) >= 3:
+                    break
         except Exception:
             pass
 
     risk_level = 'green'
-    if any('overdue' in a.lower() or 'failed' in a.lower() or 'fix' in a.lower() for a in top_actions):
+    risk_blob = ' '.join(top_actions + deadlines_7d + overnight_items).lower()
+    if any(k in risk_blob for k in ['blocker', 'failed', 'failure', 'overdue', 'urgent', 'deadline']):
         risk_level = 'yellow'
 
     return {
         'generated_at': datetime.now().isoformat(),
         'risk_level': risk_level,
         'top_actions': top_actions,
+        'deadlines': {
+            'next_7_days': deadlines_7d,
+            'next_14_days': deadlines_14d,
+        },
+        'overnight': {
+            'items': overnight_items,
+        },
         'sources': {
             'ops_morning_brief_latest': {
                 'path': str(brief_path),
