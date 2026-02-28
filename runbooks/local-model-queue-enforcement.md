@@ -24,3 +24,11 @@ python3 scripts/audit_local_model_routing.py --json
 
 Latest report path:
 - `generated/local_model_routing_audit_2026-02-28.json`
+
+## Launch-path wiring (implemented)
+
+`scripts/spawn_smart.sh` now enforces the guard before spawning subagents:
+- pre-checks the task payload with `local_queue_guard.py`
+- blocks with exit `42` on policy violation
+- surfaces a clean operator-facing error message
+- writes structured violation events to `generated/queue_guard_violations.jsonl`
