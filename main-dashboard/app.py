@@ -658,6 +658,54 @@ def get_alerts():
     
     return alerts
 
+
+def get_dashboard_v2_payload():
+    """Minimal first-pass payload for /v2 route skeleton."""
+    brief_path = WORKSPACE_DIR / 'generated' / 'ops_morning_brief_latest.md'
+    legacy_path = WORKSPACE_DIR / 'dashboard.md'
+
+    top_actions = []
+    if brief_path.exists():
+        try:
+            lines = brief_path.read_text().splitlines()
+            in_checklist = False
+            for ln in lines:
+                if ln.strip().startswith('## Prioritized Morning Checklist'):
+                    in_checklist = True
+                    continue
+                if in_checklist:
+                    s = ln.strip()
+                    if s.startswith('## '):
+                        break
+                    if s and s[0].isdigit() and '. ' in s:
+                        top_actions.append(s.split('. ', 1)[1].strip())
+                    if len(top_actions) >= 3:
+                        break
+        except Exception:
+            pass
+
+    risk_level = 'green'
+    if any('overdue' in a.lower() or 'failed' in a.lower() or 'fix' in a.lower() for a in top_actions):
+        risk_level = 'yellow'
+
+    return {
+        'generated_at': datetime.now().isoformat(),
+        'risk_level': risk_level,
+        'top_actions': top_actions,
+        'sources': {
+            'ops_morning_brief_latest': {
+                'path': str(brief_path),
+                'exists': brief_path.exists(),
+                'updated_at': datetime.fromtimestamp(brief_path.stat().st_mtime).isoformat() if brief_path.exists() else None
+            },
+            'dashboard_md': {
+                'path': str(legacy_path),
+                'exists': legacy_path.exists(),
+                'updated_at': datetime.fromtimestamp(legacy_path.stat().st_mtime).isoformat() if legacy_path.exists() else None
+            }
+        }
+    }
+
 @app.route('/')
 def index():
     """Main dashboard page."""
@@ -714,6 +762,13 @@ def index():
                          dashboard_registry=get_dashboard_registry(),
                          grant_deadlines=grant_deadlines,
                          now=datetime.now())
+
+@app.route('/v2')
+def dashboard_v2():
+    """Dashboard v2 skeleton route (minimal first live template)."""
+    payload = get_dashboard_v2_payload()
+    return render_template('dashboard_v2.html', payload=payload, now=datetime.now())
+
 
 @app.route('/distribution')
 def distribution_dashboard():

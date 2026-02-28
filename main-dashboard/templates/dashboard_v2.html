@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicOS Dashboard v2</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#0b1220; color:#dbe3f0; margin:0; }
+    .wrap { max-width:1200px; margin:0 auto; padding:16px; }
+    .bar { padding:12px 14px; border-radius:10px; margin-bottom:12px; font-weight:600; }
+    .risk-red{ background:#3a1116; border:1px solid #a12a34; }
+    .risk-yellow{ background:#3a2a10; border:1px solid #a1782a; }
+    .risk-green{ background:#13311c; border:1px solid #2a8a4a; }
+    .grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:12px; }
+    .card { background:#131d31; border:1px solid #263451; border-radius:10px; padding:12px; min-height:92px; }
+    .h { font-size:12px; text-transform:uppercase; color:#8ea0c2; letter-spacing:.06em; margin-bottom:8px; }
+    .span-2{ grid-column: span 2; } .span-5{ grid-column: span 5; } .span-7{ grid-column: span 7; } .span-12{ grid-column: span 12; }
+    ul { margin:0; padding-left:18px; }
+    code { color:#9fd3ff; }
+    @media (max-width: 900px){ .span-2,.span-5,.span-7,.span-12{ grid-column: span 12; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2 style="margin:4px 0 12px;">CivicOS Dashboard v2 (Skeleton Live)</h2>
+
+    <div class="bar risk-{{ payload.risk_level }}">
+      Global Alert: {{ payload.risk_level|upper }}
+      <span style="font-weight:400;opacity:.8;"> · generated {{ payload.generated_at }}</span>
+    </div>
+
+    <div class="grid" style="margin-bottom:12px;">
+      <div class="card span-2"><div class="h">Foundation</div>placeholder</div>
+      <div class="card span-2"><div class="h">Funding</div>placeholder</div>
+      <div class="card span-2"><div class="h">Comms</div>placeholder</div>
+      <div class="card span-2"><div class="h">Ops Health</div>placeholder</div>
+      <div class="card span-2"><div class="h">Pipeline</div>placeholder</div>
+      <div class="card span-2"><div class="h">Reliability</div>placeholder</div>
+    </div>
+
+    <div class="grid" style="margin-bottom:12px;">
+      <div class="card span-7">
+        <div class="h">Today Focus (live top actions)</div>
+        {% if payload.top_actions %}
+          <ul>
+            {% for item in payload.top_actions %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+        {% else %}
+          <div>No top actions parsed yet.</div>
+        {% endif %}
+      </div>
+      <div class="card span-5">
+        <div class="h">Deadlines (tab shell)</div>
+        7d / 14d tabs placeholder
+      </div>
+    </div>
+
+    <div class="grid" style="margin-bottom:12px;">
+      <div class="card span-7"><div class="h">Overnight Activity Feed</div>placeholder</div>
+      <div class="card span-5"><div class="h">Critical Path (30-day)</div>placeholder</div>
+    </div>
+
+    <div class="grid">
+      <div class="card span-12">
+        <div class="h">Data wiring status</div>
+        <div><code>{{ payload.sources.ops_morning_brief_latest.path }}</code> → {{ 'connected' if payload.sources.ops_morning_brief_latest.exists else 'missing' }}</div>
+        <div><code>{{ payload.sources.dashboard_md.path }}</code> → {{ 'connected' if payload.sources.dashboard_md.exists else 'missing' }}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
