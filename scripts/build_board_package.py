@@ -10,14 +10,14 @@ SIGNALS_MD = ROOT / 'generated' / 'signals' / 'decision_log_board_ready.md'
 GA4_MD = ROOT / 'generated' / 'analytics' / 'ga4_daily_latest.md'
 CRM_JSON = ROOT / 'generated' / 'crm' / 'crm_email_sync_latest.json'
 CRM_REVIEW = ROOT / 'generated' / 'crm' / 'manual_review_contacts.jsonl'
+TEMPLATE_JS = ROOT / 'scripts' / 'board_brief_template.js'
 OUT_DIR = ROOT / 'generated' / 'board'
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-
 ACCOUNT = 'ncerbone@civicos-institute.org'
 
 
-def run(args):
-    p = subprocess.run(args, capture_output=True, text=True)
+def run(args, env=None):
+    p = subprocess.run(args, capture_output=True, text=True, env=env)
     if p.returncode != 0:
         raise RuntimeError((p.stderr or p.stdout).strip())
     return p.stdout.strip()
@@ -25,9 +25,7 @@ def run(args):
 
 def drive_ls(parent='root'):
     out = run(['gog', 'drive', 'ls', '--account', ACCOUNT, '--parent', parent, '--max', '200', '--json'])
-    if not out:
-        return []
-    return json.loads(out).get('files', [])
+    return json.loads(out).get('files', []) if out else []
 
 
 def ensure_folder(name, parent='root'):
@@ -53,60 +51,33 @@ def parse_board_ready(md_text):
     parts = re.split(r'\n## \[Board-ready\] ', md_text)
     for p in parts[1:]:
         lines = p.strip().splitlines()
-        headline = lines[0].strip()
-        data = {
-            'headline': headline,
-            'source': '',
-            'related_video': '',
-            'why': '',
-            'risk': '',
-            'next_step': ''
-        }
+        h = lines[0].strip()
+        d = {'headline': h, 'source': '', 'url': '', 'video': '', 'why': '', 'risk': '', 'nextStep': ''}
         for ln in lines[1:]:
             if ln.startswith('Source: '):
-                data['source'] = ln.replace('Source: ', '').strip()
+                src = ln.replace('Source: ', '').strip()
+                if ' — ' in src:
+                    pub, url = src.split(' — ', 1)
+                    d['source'] = pub.strip()
+                    d['url'] = url.strip()
+                else:
+                    d['source'] = src
             elif ln.startswith('Related video: '):
-                data['related_video'] = ln.replace('Related video: ', '').strip()
+                d['video'] = ln.replace('Related video: ', '').strip()
             elif ln.startswith('Why it matters: '):
-                data['why'] = ln.replace('Why it matters: ', '').strip()
+                d['why'] = ln.replace('Why it matters: ', '').strip()
             elif ln.startswith('Risk/Opportunity: '):
-                data['risk'] = ln.replace('Risk/Opportunity: ', '').strip()
+                d['risk'] = ln.replace('Risk/Opportunity: ', '').strip()
             elif ln.startswith('Next step: '):
-                data['next_step'] = ln.replace('Next step: ', '').strip()
-        items.append(data)
+                d['nextStep'] = ln.replace('Next step: ', '').strip()
+        items.append(d)
     return items
 
 
-def format_source_link(source_line):
-    # Expected: Publication — URL
-    if ' — ' in source_line:
-        pub, url = source_line.split(' — ', 1)
-        pub = pub.strip()
-        url = url.strip()
-        if url.startswith('http'):
-            return f"[{pub}]({url})"
-    return source_line
-
-
-def format_related_video(video_line):
-    # Expected: Channel — Title — URL
-    if video_line.lower().startswith('none found'):
-        return video_line
-    if ' — ' in video_line:
-        parts = [p.strip() for p in video_line.split(' — ')]
-        if len(parts) >= 3 and parts[-1].startswith('http'):
-            channel = parts[0]
-            title = ' — '.join(parts[1:-1])
-            url = parts[-1]
-            return f"{channel} — [{title}]({url})"
-    return video_line
-
-
-def crm_summary():
+def crm_summary_bullets():
     now = datetime.now()
     since = now - timedelta(days=7)
-    matched = []
-
+    flagged = 0
     if CRM_REVIEW.exists() and CRM_REVIEW.stat().st_size > 0:
         for raw in CRM_REVIEW.read_text(encoding='utf-8', errors='ignore').splitlines():
             try:
@@ -120,133 +91,96 @@ def crm_summary():
                 dt = now
             blob = json.dumps(obj).lower()
             if dt >= since and ('grant' in blob or 'capacity_giving' in blob):
-                matched.append(obj)
-
+                flagged += 1
     latest = {}
     if CRM_JSON.exists():
         try:
             latest = json.loads(CRM_JSON.read_text())
         except Exception:
             latest = {}
-
-    return {
-        'count': len(matched),
-        'items': matched[:10],
-        'latest': latest
-    }
+    return [
+        f"CRM flagged grant/capacity_giving interactions in past 7 days: {flagged}",
+        f"CRM sync stats: processed={latest.get('processed',0)}, matched={latest.get('matched',0)}, manual_review={latest.get('manual_review',0)}",
+    ]
 
 
-def read_ga4_summary():
+def ga4_summary_bullets():
     if not GA4_MD.exists():
-        return 'GA4 summary unavailable.'
-    return GA4_MD.read_text(encoding='utf-8', errors='ignore').strip()
+        return ["GA4 summary unavailable"]
+    lines = [x.strip() for x in GA4_MD.read_text(encoding='utf-8', errors='ignore').splitlines() if x.strip().startswith('- ')]
+    return [x[2:] for x in lines[:8]]
 
 
-def render_docx(md_path, docx_path):
-    # Default DOCX generation path (requested):
-    # NODE_PATH=/usr/local/lib/node_modules_global/lib/node_modules node scripts/build_board_brief.js
-    env_cmd = [
-        'env',
-        'NODE_PATH=/usr/local/lib/node_modules_global/lib/node_modules',
-        'node',
-        str(ROOT / 'scripts' / 'build_board_brief.js'),
-        md_path.stem.replace('board_brief_', '')
-    ]
-    run(env_cmd)
-    if not docx_path.exists():
-        raise RuntimeError(f'DOCX generation failed: {docx_path}')
+def actions_rows(signals):
+    rows = []
+    seen = set()
+    for s in signals:
+        nxt = s.get('nextStep', '').strip()
+        if nxt and nxt not in seen:
+            seen.add(nxt)
+            rows.append([nxt, s.get('headline', '')[:60], 'HIGH'])
+    if not rows:
+        rows.append(["Assign owner to review current board-ready signals.", "Board-ready queue", "MEDIUM"])
+    return rows
 
 
-def build_brief(report_date):
-    src = SIGNALS_MD.read_text(encoding='utf-8', errors='ignore') if SIGNALS_MD.exists() else ''
-    signals = parse_board_ready(src)
-    crm = crm_summary()
-    ga4 = read_ga4_summary()
+def inject_data_and_run(report_date):
+    if not TEMPLATE_JS.exists():
+        raise RuntimeError(f"Missing template: {TEMPLATE_JS}")
 
-    exec_bullets = [
-        f"{len(signals)} board-ready governance signals identified this cycle.",
-        f"CRM flagged interactions (grant/capacity_giving) in past 7 days: {crm['count']}.",
-        "Website analytics snapshot included from latest GA4 daily pull."
-    ]
+    md = SIGNALS_MD.read_text(encoding='utf-8', errors='ignore') if SIGNALS_MD.exists() else ''
+    signals = parse_board_ready(md)
+    crm = crm_summary_bullets()
+    ga4 = ga4_summary_bullets()
+    actions = actions_rows(signals)
 
-    lines = [
-        f"# CivicOS Board Brief — {report_date}",
-        "",
-        "## Executive Summary",
-    ]
-    for b in exec_bullets[:3]:
-        lines.append(f"- {b}")
+    date_label = datetime.strptime(report_date, '%Y-%m-%d').strftime('%B %-d, %Y')
+    out_docx = OUT_DIR / f'board_brief_{report_date}.docx'
 
-    lines += ["", "## Signal Intelligence"]
-    if not signals:
-        lines.append("- No board-ready items found.")
-    else:
-        for s in signals:
-            lines += [
-                f"### {s['headline']}",
-                f"- Source: {format_source_link(s['source'])}",
-                f"- Related video: {format_related_video(s['related_video'])}",
-                f"- Why it matters: {s['why']}",
-                f"- Risk/Opportunity: {s['risk']}",
-                f"- Next step: {s['next_step']}",
-                ""
-            ]
-
-    lines += ["## Stakeholder Activity (past 7 days)"]
-    if crm['count'] == 0:
-        lines.append("- No grant/capacity_giving flagged CRM interactions recorded in the past 7 days.")
-    else:
-        for i, item in enumerate(crm['items'], 1):
-            lines.append(f"- {i}. {json.dumps(item, ensure_ascii=False)}")
-    lines.append(
-        f"- CRM sync stats: processed={crm['latest'].get('processed', 0)}, matched={crm['latest'].get('matched', 0)}, manual_review={crm['latest'].get('manual_review', 0)}"
+    data_block = (
+        f"const DATE = {json.dumps(date_label)};\n"
+        f"const signals = {json.dumps(signals, ensure_ascii=False, indent=2)};\n"
+        f"const crmSummary = {json.dumps(crm, ensure_ascii=False, indent=2)};\n"
+        f"const ga4Summary = {json.dumps(ga4, ensure_ascii=False, indent=2)};\n"
+        f"const actionsTable = {json.dumps(actions, ensure_ascii=False, indent=2)};\n"
     )
 
-    lines += ["", "## Website & Reach (GA4 summary)", ga4, "", "## Recommended Actions"]
+    original_template = TEMPLATE_JS.read_text(encoding='utf-8', errors='ignore')
+    runtime_template = re.sub(r"const DATE\s*=\s*\"[^\"]*\";", data_block, original_template, count=1)
+    # keep Claude template intact in repo; patch only at runtime and restore immediately
+    runtime_template = runtime_template.replace('const actionsTable = (rows) => new Table({', 'const renderActionsTable = (rows) => new Table({')
+    runtime_template = re.sub(r"actionsTable\(\[([\s\S]*?)\]\),", "renderActionsTable(actionsTable),", runtime_template, count=1)
+    runtime_template = runtime_template.replace(
+        '/sessions/serene-zealous-fermat/mnt/outputs/board_brief_2026-02-27.docx',
+        str(out_docx)
+    )
 
-    consolidated = []
-    for s in signals:
-        nxt = s.get('next_step', '').strip()
-        if nxt:
-            consolidated.append(nxt)
-    if not consolidated:
-        consolidated = ["Assign owner to review latest signals and confirm action plan before next board check-in."]
+    env = dict(**__import__('os').environ)
+    env['NODE_PATH'] = '/usr/local/lib/node_modules_global/lib/node_modules'
+    try:
+        TEMPLATE_JS.write_text(runtime_template, encoding='utf-8')
+        run(['node', str(TEMPLATE_JS)], env=env)
+    finally:
+        TEMPLATE_JS.write_text(original_template, encoding='utf-8')
 
-    unique_actions = list(dict.fromkeys(consolidated))
-    lines += [
-        "",
-        "| Action | Owner | Due Date | Status |",
-        "|---|---|---|---|"
-    ]
-    for a in unique_actions:
-        lines.append(f"| {a} | TBD | TBD | Not started |")
-
-    md_path = OUT_DIR / f"board_brief_{report_date}.md"
-    docx_path = OUT_DIR / f"board_brief_{report_date}.docx"
-    md_path.write_text('\n'.join(lines), encoding='utf-8')
-    render_docx(md_path, docx_path)
-    return md_path, docx_path
+    if not out_docx.exists():
+        raise RuntimeError(f"Expected output not found: {out_docx}")
+    return out_docx
 
 
 def main():
     report_date = datetime.now().strftime('%Y-%m-%d')
-    md_path, docx_path = build_brief(report_date)
+    docx_path = inject_data_and_run(report_date)
 
     board_root = ensure_folder('Board-Packages')
     month_folder = ensure_folder(report_date[:7], board_root)
+    up = drive_upload(docx_path, month_folder, name=docx_path.name)
 
-    up_docx = drive_upload(docx_path, month_folder, name=docx_path.name)
-    up_md = drive_upload(md_path, month_folder, name=md_path.name)
-
-    result = {
-        'brief_md_path': str(md_path),
+    print(json.dumps({
         'brief_docx_path': str(docx_path),
-        'drive_docx_file_id': up_docx.get('id'),
-        'drive_docx_link': f"https://drive.google.com/file/d/{up_docx.get('id')}/view",
-        'drive_md_file_id': up_md.get('id'),
-        'drive_md_link': f"https://drive.google.com/file/d/{up_md.get('id')}/view",
-    }
-    print(json.dumps(result))
+        'drive_docx_file_id': up.get('id'),
+        'drive_docx_link': f"https://drive.google.com/file/d/{up.get('id')}/view"
+    }))
 
 
 if __name__ == '__main__':
