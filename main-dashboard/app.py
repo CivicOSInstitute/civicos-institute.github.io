@@ -13,6 +13,7 @@ from pathlib import Path
 import urllib.request
 import urllib.error
 import os
+import re
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -664,6 +665,63 @@ def get_dashboard_v2_payload():
     brief_path = WORKSPACE_DIR / 'generated' / 'ops_morning_brief_latest.md'
     legacy_path = WORKSPACE_DIR / 'dashboard.md'
 
+    def parse_owner_eta(text: str):
+        owner = None
+        eta = None
+        m_owner = re.search(r'owner\s*[:=]\s*([^,;\)]+)', text, re.IGNORECASE)
+        m_eta = re.search(r'eta\s*[:=]\s*([^,;\)]+)', text, re.IGNORECASE)
+        if m_owner:
+            owner = m_owner.group(1).strip()
+        if m_eta:
+            eta = m_eta.group(1).strip()
+        return owner, eta
+
+    def parse_due_days(text: str):
+        t = text.lower()
+        if 'overdue' in t:
+            return -1
+        if 'due today' in t:
+            return 0
+        if 'tomorrow' in t:
+            return 1
+        m = re.search(r'within\s+(\d+)\s+day', t)
+        if m:
+            return int(m.group(1))
+        m = re.search(r'in\s+(\d+)\s+day', t)
+        if m:
+            return int(m.group(1))
+        m = re.search(r'<\s*(\d+)\s*day', t)
+        if m:
+            return int(m.group(1))
+        m = re.search(r'(\d+)\s*day', t)
+        if m and 'next' in t:
+            return int(m.group(1))
+        return None
+
+    # Explicit and simple heuristic requested:
+    # overdue -> red, <=3 days -> yellow, <=7 days -> green, no date -> grey
+    def deadline_severity(days_due):
+        if days_due is None:
+            return 'grey'
+        if days_due < 0:
+            return 'red'
+        if days_due <= 3:
+            return 'yellow'
+        if days_due <= 7:
+            return 'green'
+        return 'grey'
+
+    def to_deadline_obj(text: str):
+        owner, eta = parse_owner_eta(text)
+        days_due = parse_due_days(text)
+        return {
+            'text': text,
+            'owner': owner,
+            'eta': eta,
+            'days_due': days_due,
+            'severity': deadline_severity(days_due),
+        }
+
     top_actions = []
     deadlines_7d = []
     deadlines_14d = []
@@ -679,7 +737,7 @@ def get_dashboard_v2_payload():
                 # Section detection
                 if s.startswith('## '):
                     h = s.lower()
-                    if 'prioritized morning checklist' in h or "today" in h and 'priorit' in h:
+                    if 'prioritized morning checklist' in h or ("today" in h and 'priorit' in h):
                         section = 'top_actions'
                     elif 'deadlines' in h and ('7' in h or '<7' in h):
                         section = 'deadlines_7d'
@@ -708,9 +766,9 @@ def get_dashboard_v2_payload():
                 if section == 'top_actions' and len(top_actions) < 3:
                     top_actions.append(item)
                 elif section == 'deadlines_7d':
-                    deadlines_7d.append(item)
+                    deadlines_7d.append(to_deadline_obj(item))
                 elif section == 'deadlines_14d':
-                    deadlines_14d.append(item)
+                    deadlines_14d.append(to_deadline_obj(item))
                 elif section == 'overnight':
                     overnight_items.append(item)
                 elif section == 'automation_health':
@@ -718,7 +776,7 @@ def get_dashboard_v2_payload():
                 elif section == 'snapshot':
                     li = item.lower()
                     if 'due today' in li or 'overdue' in li:
-                        deadlines_7d.append(item)
+                        deadlines_7d.append(to_deadline_obj(item))
         except Exception:
             pass
 
@@ -734,9 +792,20 @@ def get_dashboard_v2_payload():
         except Exception:
             pass
 
-    risk_level = 'green'
-    risk_blob = ' '.join(top_actions + deadlines_7d + overnight_items).lower()
-    if any(k in risk_blob for k in ['blocker', 'failed', 'failure', 'overdue', 'urgent', 'deadline']):
+    # Overall risk from deadline severities first, then overnight failure hints
+    all_deadlines = deadlines_7d + deadlines_14d
+    sev = [d.get('severity') for d in all_deadlines]
+    if 'red' in sev:
+        risk_level = 'red'
+    elif 'yellow' in sev:
+        risk_level = 'yellow'
+    elif 'green' in sev:
+        risk_level = 'green'
+    else:
+        risk_level = 'grey'
+
+    overnight_blob = ' '.join(overnight_items).lower()
+    if risk_level == 'green' and any(k in overnight_blob for k in ['failed', 'error', '❌']):
         risk_level = 'yellow'
 
     return {

@@ -11,6 +11,12 @@
     .risk-red{ background:#3a1116; border:1px solid #a12a34; }
     .risk-yellow{ background:#3a2a10; border:1px solid #a1782a; }
     .risk-green{ background:#13311c; border:1px solid #2a8a4a; }
+    .risk-grey{ background:#1f2634; border:1px solid #4b5b7a; }
+    .sev { font-size:11px; padding:2px 6px; border-radius:999px; margin-left:6px; }
+    .sev-red{ background:#4a171d; color:#ffb3bc; }
+    .sev-yellow{ background:#4a3817; color:#ffdba0; }
+    .sev-green{ background:#173d24; color:#b8f5cc; }
+    .sev-grey{ background:#2a3347; color:#b8c5df; }
     .grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:12px; }
     .card { background:#131d31; border:1px solid #263451; border-radius:10px; padding:12px; min-height:92px; }
     .h { font-size:12px; text-transform:uppercase; color:#8ea0c2; letter-spacing:.06em; margin-bottom:8px; }
@@ -54,7 +60,14 @@
         <div style="margin-bottom:8px;"><strong>Next 7 days</strong></div>
         {% if payload.deadlines.next_7_days %}
           <ul>
-            {% for d in payload.deadlines.next_7_days[:5] %}<li>{{ d }}</li>{% endfor %}
+            {% for d in payload.deadlines.next_7_days[:5] %}
+              <li>
+                {{ d.text }}
+                <span class="sev sev-{{ d.severity }}">{{ d.severity }}</span>
+                {% if d.owner %}<div style="font-size:12px;opacity:.8;">Owner: {{ d.owner }}</div>{% endif %}
+                {% if d.eta %}<div style="font-size:12px;opacity:.8;">ETA: {{ d.eta }}</div>{% endif %}
+              </li>
+            {% endfor %}
           </ul>
         {% else %}
           <div>No 7-day deadlines parsed.</div>
@@ -62,7 +75,14 @@
         <div style="margin:10px 0 8px;"><strong>Next 14 days</strong></div>
         {% if payload.deadlines.next_14_days %}
           <ul>
-            {% for d in payload.deadlines.next_14_days[:5] %}<li>{{ d }}</li>{% endfor %}
+            {% for d in payload.deadlines.next_14_days[:5] %}
+              <li>
+                {{ d.text }}
+                <span class="sev sev-{{ d.severity }}">{{ d.severity }}</span>
+                {% if d.owner %}<div style="font-size:12px;opacity:.8;">Owner: {{ d.owner }}</div>{% endif %}
+                {% if d.eta %}<div style="font-size:12px;opacity:.8;">ETA: {{ d.eta }}</div>{% endif %}
+              </li>
+            {% endfor %}
           </ul>
         {% else %}
           <div>No 14-day deadlines parsed.</div>
