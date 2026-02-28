@@ -261,14 +261,8 @@ function contentFor(docId) {
   return ['Document body unavailable.'];
 }
 
-function padForFileSize(docId) {
-  const counts = { AOI: 40, '01': 90, '02': 60, '03': 90, '04': 70, '05': 70, '06': 90, '07': 35, '08': 60, '09': 60 };
-  const n = counts[docId] || 80;
-  const out = [];
-  for (let i = 1; i <= n; i++) {
-    out.push(`Governance clause ${docId}.${i}: operational standard maintained for accountability, legal consistency, and board administration controls.`);
-  }
-  return out;
+function padForFileSize() {
+  return [];
 }
 
 function buildParagraphs(docId, cfg) {
