@@ -77,6 +77,31 @@ def parse_board_ready(md_text):
     return items
 
 
+def format_source_link(source_line):
+    # Expected: Publication — URL
+    if ' — ' in source_line:
+        pub, url = source_line.split(' — ', 1)
+        pub = pub.strip()
+        url = url.strip()
+        if url.startswith('http'):
+            return f"[{pub}]({url})"
+    return source_line
+
+
+def format_related_video(video_line):
+    # Expected: Channel — Title — URL
+    if video_line.lower().startswith('none found'):
+        return video_line
+    if ' — ' in video_line:
+        parts = [p.strip() for p in video_line.split(' — ')]
+        if len(parts) >= 3 and parts[-1].startswith('http'):
+            channel = parts[0]
+            title = ' — '.join(parts[1:-1])
+            url = parts[-1]
+            return f"{channel} — [{title}]({url})"
+    return video_line
+
+
 def crm_summary():
     now = datetime.now()
     since = now - timedelta(days=7)
@@ -117,18 +142,34 @@ def read_ga4_summary():
     return GA4_MD.read_text(encoding='utf-8', errors='ignore').strip()
 
 
+def render_docx(md_path, docx_path):
+    run([
+        'pandoc', str(md_path),
+        '-o', str(docx_path),
+        '--from', 'markdown',
+        '--to', 'docx'
+    ])
+
+
 def build_brief(report_date):
     src = SIGNALS_MD.read_text(encoding='utf-8', errors='ignore') if SIGNALS_MD.exists() else ''
     signals = parse_board_ready(src)
     crm = crm_summary()
     ga4 = read_ga4_summary()
 
-    exec_bullets = []
-    exec_bullets.append(f"{len(signals)} board-ready governance signals identified this cycle.")
-    exec_bullets.append(f"CRM flagged interactions (grant/capacity_giving) in past 7 days: {crm['count']}.")
-    exec_bullets.append("Website analytics snapshot included from latest GA4 daily pull.")
+    exec_bullets = [
+        f"{len(signals)} board-ready governance signals identified this cycle.",
+        f"CRM flagged interactions (grant/capacity_giving) in past 7 days: {crm['count']}.",
+        "Website analytics snapshot included from latest GA4 daily pull."
+    ]
 
     lines = [
+        "# CivicOS Institute",
+        "### Board Briefing Packet",
+        f"**Date:** {report_date}",
+        "",
+        "---",
+        "",
         f"# CivicOS Board Brief — {report_date}",
         "",
         "## Executive Summary",
@@ -143,8 +184,8 @@ def build_brief(report_date):
         for s in signals:
             lines += [
                 f"### {s['headline']}",
-                f"- Source: {s['source']}",
-                f"- Related video: {s['related_video']}",
+                f"- Source: {format_source_link(s['source'])}",
+                f"- Related video: {format_related_video(s['related_video'])}",
                 f"- Why it matters: {s['why']}",
                 f"- Risk/Opportunity: {s['risk']}",
                 f"- Next step: {s['next_step']}",
@@ -157,7 +198,9 @@ def build_brief(report_date):
     else:
         for i, item in enumerate(crm['items'], 1):
             lines.append(f"- {i}. {json.dumps(item, ensure_ascii=False)}")
-    lines.append(f"- CRM sync stats: processed={crm['latest'].get('processed', 0)}, matched={crm['latest'].get('matched', 0)}, manual_review={crm['latest'].get('manual_review', 0)}")
+    lines.append(
+        f"- CRM sync stats: processed={crm['latest'].get('processed', 0)}, matched={crm['latest'].get('matched', 0)}, manual_review={crm['latest'].get('manual_review', 0)}"
+    )
 
     lines += ["", "## Website & Reach (GA4 summary)", ga4, "", "## Recommended Actions"]
 
@@ -169,28 +212,39 @@ def build_brief(report_date):
     if not consolidated:
         consolidated = ["Assign owner to review latest signals and confirm action plan before next board check-in."]
 
-    for c in dict.fromkeys(consolidated):
-        lines.append(f"- {c}")
+    unique_actions = list(dict.fromkeys(consolidated))
+    lines += [
+        "",
+        "| Action | Owner | Due Date | Status |",
+        "|---|---|---|---|"
+    ]
+    for a in unique_actions:
+        lines.append(f"| {a} | TBD | TBD | Not started |")
 
-    out_path = OUT_DIR / f"board_brief_{report_date}.md"
-    out_path.write_text('\n'.join(lines), encoding='utf-8')
-    return out_path
+    md_path = OUT_DIR / f"board_brief_{report_date}.md"
+    docx_path = OUT_DIR / f"board_brief_{report_date}.docx"
+    md_path.write_text('\n'.join(lines), encoding='utf-8')
+    render_docx(md_path, docx_path)
+    return md_path, docx_path
 
 
 def main():
     report_date = datetime.now().strftime('%Y-%m-%d')
-    out_path = build_brief(report_date)
+    md_path, docx_path = build_brief(report_date)
 
     board_root = ensure_folder('Board-Packages')
-    month_folder = ensure_folder('2026-02', board_root)
-    up = drive_upload(out_path, month_folder, name=out_path.name)
+    month_folder = ensure_folder(report_date[:7], board_root)
 
-    link = f"https://drive.google.com/file/d/{up.get('id')}/view"
+    up_docx = drive_upload(docx_path, month_folder, name=docx_path.name)
+    up_md = drive_upload(md_path, month_folder, name=md_path.name)
+
     result = {
-        'brief_path': str(out_path),
-        'drive_file_id': up.get('id'),
-        'drive_name': up.get('name'),
-        'drive_link': link,
+        'brief_md_path': str(md_path),
+        'brief_docx_path': str(docx_path),
+        'drive_docx_file_id': up_docx.get('id'),
+        'drive_docx_link': f"https://drive.google.com/file/d/{up_docx.get('id')}/view",
+        'drive_md_file_id': up_md.get('id'),
+        'drive_md_link': f"https://drive.google.com/file/d/{up_md.get('id')}/view",
     }
     print(json.dumps(result))
 
