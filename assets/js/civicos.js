@@ -11,8 +11,16 @@ function observeAnimations() {
     });
   }, { threshold: 0.08 });
 
-  document.querySelectorAll('.page.active .fi').forEach(el => {
+  document.querySelectorAll('.page.active .fi, .fi').forEach(el => {
     if (!el.classList.contains('vis')) io.observe(el);
+  });
+
+  // Immediately reveal elements already in viewport on load
+  document.querySelectorAll('.fi').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      el.classList.add('vis');
+    }
   });
 }
 
