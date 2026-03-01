@@ -1183,6 +1183,21 @@ footer{
   /* Free resource / AI kit */
   .kit-grid { grid-template-columns: 1fr; }
   .kit-card { padding: 20px; }
+  .ai-kit-grid { grid-template-columns: 1fr; gap: 32px; }
+  .ai-kit-grid .kit-dl { flex-direction: column; align-items: flex-start; padding: 16px; gap: 8px; }
+  .ai-kit-grid .kit-dl-icon { margin-bottom: 0; }
+  .ai-kit-grid .kit-dl-name { font-size: 14px; display: block; margin-bottom: 4px; }
+  .ai-kit-grid .kit-dl-type { font-size: 12px; display: block; }
+  .ai-kit-grid .kit-dl-arrow { align-self: flex-end; margin-top: -24px; }
+  
+  /* About page */
+  .about-support-grid { grid-template-columns: 1fr; gap: 32px; }
+  
+  /* Contact page */
+  .contact-name-grid { grid-template-columns: 1fr; }
+  
+  /* Open Source page */
+  .license-grid { grid-template-columns: 1fr; gap: 16px; }
   
   /* Sections general */
   .sec { padding: 48px 20px; }
