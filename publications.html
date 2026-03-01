@@ -172,17 +172,20 @@ permalink: /publications/
         <h2>Stay <em>informed.</em><br>Stay engaged.</h2>
         <p>Be the first to receive white papers, policy analyses, and research findings from CivicOS Institute — delivered as they publish.</p>
       </div>
-      <form class="nl-form" onsubmit="return false;">
-        <div><label class="nl-label">First Name</label><input class="nl-input" type="text" placeholder="Your name"></div>
-        <div><label class="nl-label">Organization (optional)</label><input class="nl-input" type="text" placeholder="Municipality, university, nonprofit…"></div>
-        <div><label class="nl-label">Email</label><input class="nl-input" type="email" placeholder="you@organization.gov"></div>
+      <form class="nl-form" action="https://formspree.io/f/mbdaobda" method="POST">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <input type="hidden" name="_next" value="https://civicos-institute.org/publications/">
+        <input type="hidden" name="_subject" value="Free AI Kit signup — CivicOS Institute">
+        <div><label class="nl-label">First Name</label><input class="nl-input" type="text" name="first_name" placeholder="Your name" required></div>
+        <div><label class="nl-label">Organization (optional)</label><input class="nl-input" type="text" name="organization" placeholder="Municipality, university, nonprofit…"></div>
+        <div><label class="nl-label">Email</label><input class="nl-input" type="email" name="email" placeholder="you@organization.gov" required></div>
         <div>
           <label class="nl-label">Interests</label>
           <div class="nl-checks">
-            <label class="nl-check"><input type="checkbox" checked><span>Civic Technology</span></label>
-            <label class="nl-check"><input type="checkbox" checked><span>Policy &amp; Governance</span></label>
-            <label class="nl-check"><input type="checkbox"><span>Open Source Development</span></label>
-            <label class="nl-check"><input type="checkbox"><span>Grant Opportunities</span></label>
+            <label class="nl-check"><input type="checkbox" name="interests" value="Civic Technology" checked><span>Civic Technology</span></label>
+            <label class="nl-check"><input type="checkbox" name="interests" value="Policy &amp; Governance" checked><span>Policy &amp; Governance</span></label>
+            <label class="nl-check"><input type="checkbox" name="interests" value="Open Source Development"><span>Open Source Development</span></label>
+            <label class="nl-check"><input type="checkbox" name="interests" value="Grant Opportunities"><span>Grant Opportunities</span></label>
           </div>
         </div>
         <button class="btn-primary" type="submit" style="width:fit-content;">Subscribe to Research Updates →</button>

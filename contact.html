@@ -14,16 +14,20 @@ permalink: /contact/
     <div class="contact-grid fi">
       <div>
         <div class="section-label" style="margin-bottom:32px;">Send a Message</div>
-        <form class="contact-form" onsubmit="return false;">
+        <form class="contact-form" action="https://formspree.io/f/YOUR_NEW_CONTACT_FORM_ID" method="POST">
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="_next" value="https://civicos-institute.org/contact/thank-you/">
+          <input type="hidden" name="_subject" value="New message — CivicOS Institute">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-            <div class="cf-row"><label class="cf-label">First Name</label><input class="cf-input" type="text" placeholder="First name"></div>
-            <div class="cf-row"><label class="cf-label">Last Name</label><input class="cf-input" type="text" placeholder="Last name"></div>
+            <div class="cf-row"><label class="cf-label">First Name *</label><input class="cf-input" type="text" name="first_name" required></div>
+            <div class="cf-row"><label class="cf-label">Last Name *</label><input class="cf-input" type="text" name="last_name" required></div>
           </div>
-          <div class="cf-row"><label class="cf-label">Email</label><input class="cf-input" type="email" placeholder="you@organization.gov"></div>
-          <div class="cf-row"><label class="cf-label">Organization</label><input class="cf-input" type="text" placeholder="Municipality, university, nonprofit…"></div>
+          <div class="cf-row"><label class="cf-label">Email *</label><input class="cf-input" type="email" name="email" required></div>
+          <div class="cf-row"><label class="cf-label">Organization</label><input class="cf-input" type="text" name="organization"></div>
           <div class="cf-row">
             <label class="cf-label">Topic</label>
-            <select class="cf-select cf-input">
+            <select class="cf-select cf-input" name="topic">
+              <option value="">Select a topic</option>
               <option>Research Partnership</option>
               <option>Bulk Ebook Order</option>
               <option>Open Source / Technical</option>
@@ -32,7 +36,7 @@ permalink: /contact/
               <option>General Inquiry</option>
             </select>
           </div>
-          <div class="cf-row"><label class="cf-label">Message</label><textarea class="cf-textarea" placeholder="Tell us about your project, question, or inquiry…"></textarea></div>
+          <div class="cf-row"><label class="cf-label">Message *</label><textarea class="cf-textarea" name="message" rows="6" required></textarea></div>
           <button class="btn-primary" type="submit">Send Message →</button>
         </form>
       </div>
