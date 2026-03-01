@@ -59,23 +59,25 @@ permalink: /ebook/
         <p style="color:var(--grey);font-size:14px;">If purchased individually: <span style="text-decoration:line-through;">$41.94</span></p>
         <div style="background:rgba(212,168,67,.08);border-left:2px solid var(--amber);padding:12px 14px;margin:16px 0;font-family:var(--mono);font-size:12px;color:var(--amber);letter-spacing:.06em;">⚠ After April 15 — price increases to $39.99</div>
 
-        <div style="margin-top:26px;max-width:460px;">
-          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">COMING SOON ON</div>
+        <div style="margin-top:26px;max-width:560px;">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">COMING SOON ON</div>
           <div style="display:flex;flex-wrap:wrap;gap:10px;">
-            <span class="book-badge">Amazon</span>
-            <span class="book-badge">Lemon Squeezy</span>
-            <span class="book-badge">Apple Books</span>
-            <span class="book-badge">More Platforms</span>
+            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">📘 Amazon</span>
+            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">🛍 Lemon Squeezy</span>
+            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">📚 Apple Books</span>
+            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">… And more</span>
           </div>
+          <p style="margin-top:12px;border-left:2px solid var(--amber);padding-left:12px;font-family:var(--mono);font-size:12px;color:#8B95A5;line-height:1.7;">100% of proceeds fund CivicOS Institute — covering our 501(c)(3) application, research projects, and organizational infrastructure.</p>
         </div>
 
-        <form action="https://formspree.io/f/mbdaobda" method="POST" style="margin-top:24px;border:1px solid var(--border);padding:16px;border-radius:10px;max-width:520px;">
-          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">Join the waitlist</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <input type="email" name="email" required placeholder="Your email" style="flex:1;min-width:220px;background:var(--navy-light);border:1px solid var(--border);color:var(--white);padding:10px 12px;border-radius:8px;">
-            <input type="hidden" name="source" value="ebook-waitlist">
-            <button type="submit" class="btn-primary">Notify Me</button>
-          </div>
+        <form id="waitlist" action="https://formspree.io/f/mbdaobda" method="POST" style="margin-top:24px;background:rgba(244,241,235,0.04);border:1px solid rgba(244,241,235,0.15);border-top:2px solid #D4A843;padding:32px;max-width:480px;">
+          <h3 style="font-family:var(--serif);font-size:30px;margin:0 0 8px;">Get notified when it launches</h3>
+          <p style="font-family:var(--sans);font-size:14px;color:var(--grey);margin:0 0 16px;">Be first in line at the $9.99 introductory price. After April 15, the price increases to $39.99.</p>
+          <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:var(--navy-light);border:1px solid var(--border);color:var(--white);padding:12px;border-radius:6px;margin-bottom:10px;">
+          <input type="hidden" name="_subject" value="Ebook Waitlist Signup — The Open Source Student">
+          <input type="hidden" name="_next" value="https://civicos-institute.org/ebook-waitlist-thanks/">
+          <button type="submit" style="width:100%;padding:14px;background:#D4A843;color:#0A0F1E;border:none;font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;">Notify Me at Launch →</button>
+          <p style="font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:8px;">We'll only email you about this book launch. No spam.</p>
         </form>
       </div>
 
@@ -95,6 +97,10 @@ permalink: /ebook/
       </div>
     </div>
   </section>
+
+  <div style="padding:16px 56px;background:var(--navy-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <span style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);">LAUNCHING SOON — Amazon · Lemon Squeezy · Apple Books · And More · $9.99 Intro Price Ends April 15</span>
+  </div>
 
   <!-- What's Inside -->
   <section class="sec">
@@ -177,7 +183,7 @@ permalink: /ebook/
           <span class="faq-q-text">Is there institutional or bulk pricing?</span>
           <span class="faq-toggle">+</span>
         </div>
-        <div class="faq-a">Yes. For orders of 10 or more copies — for universities, municipal governments, nonprofits, or training programs — CivicOS Institute offers discounted pricing. Contact us via the Contact page for a quote. We also offer educational licensing for classroom use.</div>
+        <div class="faq-a">Institutional pricing will be available after launch — contact NCerbone@civicos-institute.org for academic and organizational inquiries.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">
@@ -197,6 +203,30 @@ permalink: /ebook/
   </section>
 
   <!-- Bottom CTA -->
+  <script>
+    (function(){
+      const form = document.getElementById('waitlist');
+      if(!form) return;
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        if(btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form)
+          });
+          if(!res.ok) throw new Error('Form submission failed');
+          window.location.href = "{{ '/ebook-waitlist-thanks/' | relative_url }}";
+        } catch(err){
+          alert('Submission failed. Please try again.');
+          if(btn){ btn.disabled = false; btn.textContent = 'Notify Me at Launch →'; }
+        }
+      });
+    })();
+  </script>
+
   <div class="ebook-cta fi">
     <div>
       <h2>Ready to build <em>open</em><br>civic infrastructure?</h2>
@@ -204,8 +234,7 @@ permalink: /ebook/
       <p style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:0.06em;">◆ 100% of proceeds fund CivicOS Institute directly.</p>
     </div>
     <div class="ebook-cta-right">
-      <a href="/ebook/" target="_blank" rel="noopener" class="btn-primary" style="font-size:13px;padding:16px 32px;">View Ebook Details →</a>
-      <button class="btn-outline" style="cursor:pointer;" onclick="window.location='{{ '/contact/' | relative_url }}'">Bulk / Institutional Orders</button>
+      <a href="{{ '/ebook/#waitlist' | relative_url }}" class="btn-primary" style="font-size:13px;padding:16px 32px;">Join the Waitlist →</a>
       <p style="font-family:var(--mono);font-size:10px;color:var(--grey);text-align:right;margin-top:8px;">Coming soon on Amazon · Lemon Squeezy · Apple Books</p>
     </div>
   </div>
