@@ -952,6 +952,50 @@ footer{
   .gov-principles-grid{grid-template-columns:1fr;}
   .gov-hero{padding:80px 24px 56px;}
 }
+
+@media(max-width:768px){
+  /* Governance page mobile fixes */
+  .gov-hero{padding:60px 20px 40px;}
+  .gov-hero h1{font-size:clamp(32px,9vw,48px);}
+  .gov-status-bar{font-size:11px;padding:12px 16px;word-break:break-word;}
+  .gov-status-grid{grid-template-columns:1fr;}
+  .gov-status-cell{padding:24px 20px;}
+  .gsc-value{font-size:18px;}
+  .gsc-desc{font-size:12px;}
+  
+  /* Document table mobile */
+  .gov-doc-header{grid-template-columns:1fr;gap:16px;padding:20px;}
+  .gdh-right{justify-content:flex-start;}
+  .gdh-title{font-size:14px;line-height:1.5;}
+  .gdh-meta{gap:8px 12px;font-size:10px;}
+  .gov-layer-tab{padding:10px 14px;font-size:9px;}
+  .gov-layer-panel{padding:20px;}
+  
+  /* Full text mobile */
+  .gov-fulltext{max-height:350px;padding:16px;font-size:12px;line-height:1.8;}
+  .gov-fulltext h1{font-size:17px;}
+  .gov-fulltext h2{font-size:15px;}
+  .gov-fulltext h3{font-size:13px;}
+  .gov-fulltext table{font-size:11px;}
+  .gov-fulltext th,.gov-fulltext td{padding:6px 8px;}
+  
+  /* Downloads mobile */
+  .gov-dl-row{flex-direction:column;align-items:flex-start;gap:12px;padding:14px 0;}
+  .gov-dl-btns{width:100%;justify-content:flex-start;}
+  .gov-dl-btn{padding:7px 12px;font-size:9px;}
+  
+  /* Principles grid mobile */
+  .gov-principles-grid{grid-template-columns:1fr;}
+  .gov-principle{padding:24px 20px;}
+  .gp-title{font-size:10px;}
+  .gp-text{font-size:13px;}
+  
+  /* Board grid mobile */
+  .gov-board-grid{grid-template-columns:1fr;}
+  .gov-board-card{padding:24px 20px;}
+  .gbc-name{font-size:18px;}
+}
+
 #letters{}
 
 /* Alert bar */
