@@ -52,7 +52,7 @@ We aim to respond to all inquiries within 2-3 business days. Thank you for your 
 
 Subscribe to receive updates on our research, publications, and events.
 
-<form action="https://formspree.io/f/mbdaobda" method="POST">
+<form action="https://formspree.io/f/mpqjepga" method="POST">
   <label>
     Email:
     <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 8px; margin-top: 5px;">
