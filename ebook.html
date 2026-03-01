@@ -63,10 +63,11 @@ permalink: /ebook/
           <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">AVAILABLE ON</div>
           <div style="display:flex;flex-wrap:wrap;gap:10px;">
             <span style="background:transparent;border:1px solid #D4A843;border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#D4A843;">📘 Amazon Kindle — Available Now</span>
-            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">🛍 Lemon Squeezy — Next</span>
-            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">📚 Apple Books — Next</span>
-            <span style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;">… More Platforms — Next</span>
+            <a href="#other-platforms" title="Get notified when available" style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;text-decoration:none;cursor:pointer;">🛍 Lemon Squeezy — Coming Soon</a>
+            <a href="#other-platforms" title="Get notified when available" style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;text-decoration:none;cursor:pointer;">📚 Apple Books — Coming Soon</a>
+            <a href="#other-platforms" title="Get notified when available" style="background:transparent;border:1px solid rgba(244,241,235,0.2);border-radius:4px;padding:10px 20px;font-family:var(--mono);font-size:13px;text-transform:uppercase;color:#8B95A5;text-decoration:none;cursor:pointer;">… More Platforms — Coming Soon</a>
           </div>
+          <p style="text-align:center;margin-top:8px;"><a href="#other-platforms" style="font-family:var(--mono);font-size:11px;color:#8B95A5;text-decoration:none;">↓ Get notified for these platforms</a></p>
           <p style="margin-top:12px;border-left:2px solid var(--amber);padding-left:12px;font-family:var(--mono);font-size:12px;color:#8B95A5;line-height:1.7;">100% of proceeds fund CivicOS Institute — covering our 501(c)(3) application, research projects, and organizational infrastructure.</p>
         </div>
 
@@ -74,6 +75,19 @@ permalink: /ebook/
           <a href="https://www.amazon.com/dp/B0GQ5JM6LT" target="_blank" rel="noopener" style="display:block;width:100%;padding:14px;background:#D4A843;color:#0A0F1E;text-align:center;text-decoration:none;font-family:var(--sans);font-weight:700;font-size:16px;">Get It on Amazon Kindle — $9.99 →</a>
           <p style="font-family:var(--mono);font-size:12px;color:var(--amber);text-align:center;margin-top:10px;">⚠ Introductory price ends April 15 — increases to $39.99</p>
           <p style="font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:6px;">100% of proceeds fund CivicOS Institute.</p>
+        </div>
+
+        <div id="other-platforms" style="margin-top:24px;background:rgba(244,241,235,0.03);border:1px solid rgba(244,241,235,0.12);border-top:2px solid rgba(212,168,67,0.4);padding:28px;max-width:480px;">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:8px;">— OTHER PLATFORMS</div>
+          <h3 style="font-family:var(--serif);font-size:32px;line-height:1.1;margin:0 0 8px;">Prefer a different platform?</h3>
+          <p style="font-family:var(--sans);font-size:14px;color:var(--grey);line-height:1.6;margin:0 0 14px;">Lemon Squeezy, Apple Books, and more are coming. Drop your email and we'll notify you the moment your preferred platform goes live — still at $9.99.</p>
+          <form id="other-platforms-form" action="https://formspree.io/f/mbdaobda" method="POST">
+            <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:var(--navy-light);border:1px solid var(--border);color:var(--white);padding:12px;border-radius:6px;margin-bottom:10px;">
+            <input type="hidden" name="_subject" value="Other Platform Waitlist — The Open Source Student">
+            <input type="hidden" name="_next" value="https://civicos-institute.org/ebook-platform-thanks/">
+            <button type="submit" style="width:100%;padding:12px;background:transparent;color:#D4A843;border:1px solid #D4A843;text-align:center;text-decoration:none;font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;">Notify Me When Available →</button>
+            <p style="font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:8px;">One email when your platform launches. That's it.</p>
+          </form>
         </div>
       </div>
 
@@ -200,6 +214,30 @@ permalink: /ebook/
 
   <!-- Bottom CTA -->
   <!-- Live purchase block -->
+
+  <script>
+    (function(){
+      const form = document.getElementById('other-platforms-form');
+      if(!form) return;
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        if(btn){ btn.disabled = true; btn.textContent = 'Submitting…'; }
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form)
+          });
+          if(!res.ok) throw new Error('Form submission failed');
+          window.location.href = "{{ '/ebook-platform-thanks/' | relative_url }}";
+        } catch (err) {
+          alert('Submission failed. Please try again.');
+          if(btn){ btn.disabled = false; btn.textContent = 'Notify Me When Available →'; }
+        }
+      });
+    })();
+  </script>
 
   <div class="ebook-cta fi">
     <div>
