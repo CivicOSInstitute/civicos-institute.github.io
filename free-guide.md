@@ -51,15 +51,9 @@ permalink: /free-guide/
         <input type="hidden" name="_subject" value="AI Learning Kit Download — CivicOS Institute">
         <input type="hidden" name="_next" value="https://civicos-institute.org/publications/thank-you/">
         
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-          <div>
-            <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">First Name *</label>
-            <input type="text" name="first_name" required style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
-          </div>
-          <div>
-            <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Last Name</label>
-            <input type="text" name="last_name" style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
-          </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Full Name *</label>
+          <input type="text" name="full_name" required style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
         </div>
         
         <div style="margin-bottom:16px;">
@@ -67,25 +61,14 @@ permalink: /free-guide/
           <input type="email" name="email" required style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
         </div>
         
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Role/Title *</label>
+          <input type="text" name="role" required style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
+        </div>
+        
         <div style="margin-bottom:20px;">
-          <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:10px;">I am a... (optional)</label>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;">
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);cursor:pointer;">
-              <input type="checkbox" name="role" value="Student" style="accent-color:var(--amber);"> Student
-            </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);cursor:pointer;">
-              <input type="checkbox" name="role" value="Educator" style="accent-color:var(--amber);"> Educator
-            </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);cursor:pointer;">
-              <input type="checkbox" name="role" value="Parent" style="accent-color:var(--amber);"> Parent
-            </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);cursor:pointer;">
-              <input type="checkbox" name="role" value="Municipal Staff" style="accent-color:var(--amber);"> Municipal Staff
-            </label>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);cursor:pointer;">
-              <input type="checkbox" name="role" value="Other" style="accent-color:var(--amber);"> Other
-            </label>
-          </div>
+          <label style="display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;">Organization *</label>
+          <input type="text" name="organization" required style="width:100%;background:var(--navy);border:1px solid var(--border);color:var(--white);padding:12px;font-size:14px;">
         </div>
         
         <button type="submit" style="width:100%;padding:16px;background:var(--amber);color:var(--navy);border:none;font-family:var(--sans);font-weight:700;font-size:15px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;">Send Me the Free Kit →</button>
