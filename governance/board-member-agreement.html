@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Board Member Agreement | CivicOS Governance</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
 :root{--bg:#0A0F1E;--navbg:rgba(10,15,30,.95);--text:#F4F1EB;--gold:#D4A843;--muted:#8B95A5;--divider:rgba(244,241,235,.12)}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif;max-width:100%;overflow-x:hidden}
 a{color:var(--gold);text-decoration:none}
 a:hover{text-decoration:underline}
 .site-nav{position:sticky;top:0;z-index:50;height:56px;background:var(--navbg);backdrop-filter:blur(8px);border-bottom:1px solid rgba(244,241,235,.12)}
@@ -23,7 +23,7 @@ a:hover{text-decoration:underline}
 main{max-width:1200px;margin:0 auto;padding:28px 16px 40px}
 .card{background:transparent;border:1px solid rgba(244,241,235,.2);border-left:3px solid var(--gold);border-radius:2px;padding:28px 28px 24px;transition:all .2s ease}
 .card:hover{border-left-color:#f0c86b;background:rgba(212,168,67,.04)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
 .card h2,.card h3{font-family:"Playfair Display",Georgia,serif;color:var(--text);font-size:22px}
 .card h2 a:hover{color:var(--gold);text-decoration:none}
 .card p,.card li{font-family:"IBM Plex Sans",sans-serif;color:var(--muted);line-height:1.65;font-size:15px}
