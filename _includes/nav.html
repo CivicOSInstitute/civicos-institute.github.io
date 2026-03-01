@@ -1,0 +1,18 @@
+<nav>
+  <a class="nav-logo" href="{{ '/' | relative_url }}">CivicOS Institute</a>
+  <ul class="nav-links">
+    <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+    <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains 'about' %}class="active"{% endif %}>About</a></li>
+    <li><a href="{{ '/publications/' | relative_url }}" {% if page.url contains 'publications' %}class="active"{% endif %}>Publications</a></li>
+    <li><a href="{{ '/letters/' | relative_url }}" {% if page.url contains 'letters' %}class="active"{% endif %}>Letters</a></li>
+    <li><a href="{{ '/ebook/' | relative_url }}" {% if page.url contains 'ebook' %}class="active"{% endif %}>Ebook</a></li>
+    <li><a href="{{ '/open-source/' | relative_url }}" {% if page.url contains 'open-source' %}class="active"{% endif %}>Open Source</a></li>
+    <li><a href="{{ '/governance/' | relative_url }}" {% if page.url contains 'governance' %}class="active"{% endif %}>Governance</a></li>
+    <li><a href="{{ '/contact/' | relative_url }}" {% if page.url contains 'contact' %}class="active"{% endif %}>Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="btn-nav-outline">Donate ♡</a>
+    <a href="{{ '/publications/' | relative_url }}" class="btn-nav-outline">Free AI Kit ↓</a>
+    <a href="{{ '/ebook/' | relative_url }}" class="btn-nav-solid">Get the Ebook →</a>
+  </div>
+</nav>

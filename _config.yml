@@ -61,3 +61,15 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - README.md
+
+collections:
+  letters:
+    output: true
+    permalink: /letters/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "letters"
+    values:
+      layout: "letter"
