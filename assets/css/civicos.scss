@@ -54,6 +54,7 @@ nav{
 }
 .nav-links li a:hover,.nav-links li a.active{color:var(--amber);border-color:var(--border);}
 .nav-right{display:flex;gap:10px;align-items:center;}
+.nav-burger{display:none;}
 .btn-nav-outline{
   font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
   color:var(--amber);border:1px solid var(--amber-dim);padding:7px 16px;
@@ -1120,10 +1121,25 @@ footer{
 @media(max-width:960px){
   .letters-alert{padding:10px 24px;font-size:10px;gap:12px;flex-wrap:wrap;text-align:center;}
   .letters-hero{padding:80px 24px 56px;}
-  nav{padding:0 24px;}
+  nav{padding:0 24px;position:relative;}
+  .nav-burger{display:flex;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;margin-left:auto;margin-right:12px;}
+  .nav-burger span{display:block;width:22px;height:2px;background:var(--white);}
   .nav-links{display:none;}
+  .nav-links.mobile-open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--navy);padding:24px;gap:0;border-bottom:1px solid var(--border);z-index:999;max-height:calc(100vh - 64px);overflow-y:auto;}
+  .nav-links.mobile-open li{width:100%;}
+  .nav-links.mobile-open li a{padding:14px 0;border-bottom:1px solid var(--border);font-size:15px;width:100%;}
+  .nav-links.mobile-open li:last-child a{border-bottom:none;}
+  .nav-right{gap:6px;}
+  .nav-right .btn-nav-outline:not(:last-child){display:none;}
+  .nav-right .btn-nav-outline,.nav-right .btn-nav-solid{font-size:9px;padding:6px 10px;}
   .home-hero,.pub-hero,.about-hero,.oss-hero,.contact-hero,.ebook-hero,
   .sec,.mission-strip,.ebook-cta{padding-left:24px;padding-right:24px;}
+  .hero-actions{flex-direction:column;align-items:stretch;width:100%;}
+  .hero-actions .btn{width:100%;text-align:center;justify-content:center;}
+  .mission-inner,.tech-inner,[class*="mission-grid"],[class*="tech-grid"],.mission-split{grid-template-columns:1fr;}
+  .ebook-banner .eb-actions{flex-direction:column;width:100%;}
+  .ebook-banner .eb-actions .btn{width:100%;text-align:center;}
+  .ebook-cta .btn{width:100%;text-align:center;display:block;}
   .home-hero,.pub-hero,.ebook-hero{grid-template-columns:1fr;}
   .hero-stats,.specs-grid,.inside-grid,.reviews-grid,.papers-grid,.work-grid,
   .team-grid,.repo-grid,.contrib-steps,.partners-grid,.mission-pillars,.oss-inner,

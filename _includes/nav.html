@@ -1,5 +1,8 @@
 <nav>
   <a class="nav-logo" href="{{ '/' | relative_url }}">CivicOS Institute</a>
+  <button class="nav-burger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
     <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains 'about' %}class="active"{% endif %}>About</a></li>

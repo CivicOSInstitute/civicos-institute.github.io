@@ -1,5 +1,18 @@
 // ── Page routing ──────────────────────────────
 
+// ── Mobile navigation ─────────────────────────
+function toggleMobileNav() {
+  document.querySelector('.nav-links').classList.toggle('mobile-open');
+}
+// Close mobile nav on outside click
+document.addEventListener('click', e => {
+  const navLinks = document.querySelector('.nav-links');
+  const burger = document.querySelector('.nav-burger');
+  if (navLinks && burger && !e.target.closest('nav')) {
+    navLinks.classList.remove('mobile-open');
+  }
+});
+
 // ── Scroll animations ─────────────────────────
 function observeAnimations() {
   const io = new IntersectionObserver((entries) => {
