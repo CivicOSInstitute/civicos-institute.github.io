@@ -39,16 +39,44 @@ function usage() {
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 
+function applyConfigTokens(md = '', govCfg = {}) {
+  const orgName = govCfg?.org?.name || 'CivicOS Institute';
+  const state = govCfg?.org?.state || 'Florida';
+  const tokenMap = {
+    '[CIVICOS INSTITUTE]': orgName,
+    '[STATE OF INCORPORATION]': state,
+    '[THREE (3)]': '3',
+    '[TWO (2)]': '2',
+    '[ONE (1)]': '1',
+    '[FOUR (4)]': '4',
+    '[FIFTEEN (15)]': '15',
+    '[SEVEN (7)]': '7',
+    '[NINE (9)]': '9'
+  };
+  let out = String(md);
+  for (const [k, v] of Object.entries(tokenMap)) out = out.split(k).join(String(v));
+  out = out.replace(/\[([A-Z\s]+)\s*\((\d+)\)\]/g, '$2');
+  out = out.replace(/\[([^\]]+)\]/g, '$1');
+  return out;
+}
+
+function formatInline(text = '') {
+  let t = esc(text);
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  return t;
+}
+
 function mdToHtml(md = '') {
   const lines = md.split(/\r?\n/); const out = []; let inList = false;
   for (const raw of lines) {
     const line = raw.trimEnd();
     if (!line.trim()) { if (inList) { out.push('</ul>'); inList = false; } continue; }
-    if (/^###\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h3>${esc(line.replace(/^###\s+/, ''))}</h3>`); continue; }
-    if (/^##\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h2>${esc(line.replace(/^##\s+/, ''))}</h2>`); continue; }
-    if (/^#\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h1>${esc(line.replace(/^#\s+/, ''))}</h1>`); continue; }
-    if (/^[-*]\s+/.test(line)) { if (!inList) { out.push('<ul>'); inList = true; } out.push(`<li>${esc(line.replace(/^[-*]\s+/, ''))}</li>`); continue; }
-    out.push(`<p>${esc(line)}</p>`);
+    if (/^###\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h3>${formatInline(line.replace(/^###\s+/, ''))}</h3>`); continue; }
+    if (/^##\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h2>${formatInline(line.replace(/^##\s+/, ''))}</h2>`); continue; }
+    if (/^#\s+/.test(line)) { if (inList) { out.push('</ul>'); inList = false; } out.push(`<h1>${formatInline(line.replace(/^#\s+/, ''))}</h1>`); continue; }
+    if (/^[-*]\s+/.test(line)) { if (!inList) { out.push('<ul>'); inList = true; } out.push(`<li>${formatInline(line.replace(/^[-*]\s+/, ''))}</li>`); continue; }
+    out.push(`<p>${formatInline(line)}</p>`);
   }
   if (inList) out.push('</ul>');
   return out.join('\n');
@@ -136,7 +164,7 @@ footer{border-top:1px solid var(--divider);padding:18px 16px;color:var(--muted);
 </style>`;
 }
 
-const scriptBlock = () => `<script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')} function toggleFull(id,btn){const e=document.getElementById(id);const open=e.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Hide full text':'Show full text';}</script>`;
+const scriptBlock = () => `<script>function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')} function closeMenu(){const n=document.getElementById('navLinks');if(n)n.classList.remove('open')} function toggleFull(id,btn){const e=document.getElementById(id);const open=e.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Hide full text':'Show full text';} document.addEventListener('click',function(ev){const nav=document.querySelector('.site-nav');const links=document.getElementById('navLinks');if(!nav||!links) return; if(window.innerWidth<=768 && links.classList.contains('open') && !nav.contains(ev.target)){closeMenu();}}); document.addEventListener('DOMContentLoaded',function(){const links=document.querySelectorAll('#navLinks a');links.forEach(a=>a.addEventListener('click',()=>{if(window.innerWidth<=768) closeMenu();}));});</script>`;
 const nav = () => `<header class="site-nav"><div class="nav-wrap"><a class="wordmark" href="/">CIVICOS INSTITUTE</a><button class="hamb" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button><nav id="navLinks" class="nav-links" aria-label="Site navigation"><a href="/">Home</a><a href="/about/">About</a><a href="/publications/">Publications</a><a href="/letters/">Letters</a><a href="/ebook/">Ebook</a><a href="/open-source/">Open Source</a><a href="/governance/" class="active">Governance</a><a href="/contact/">Contact</a></nav><div class="nav-cta"><a class="btn-cta" href="/donate/">Donate ♥</a><a class="btn-cta" href="/open-source/">Free AI Kit ↓</a><a class="btn-cta fill" href="/ebook/">Get the Ebook →</a></div></div></header>`;
 const wrap = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>${esc(title)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">${styleBlock()}</head><body>${nav()}${body}${scriptBlock()}<footer><div style="max-width:1200px;margin:0 auto">CivicOS Institute · Governance</div></footer></body></html>`;
 
@@ -164,7 +192,8 @@ function layer3Downloads(info) {
 function buildDocPage(d, govCfg) {
   const dc = govCfg.documents[d.id] || { version: '1.0', status: 'DRAFT', adopted: null, last_reviewed: null };
   const mdPath = path.join(ROOT, d.source_markdown);
-  const fullHtml = mdToHtml(fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : 'Full text source not found.');
+  const sourceMd = fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : 'Full text source not found.';
+  const fullHtml = mdToHtml(applyConfigTokens(sourceMd, govCfg));
   const info = fileInfo(d.id, dc.version || '1.0');
 
   const body = `<section class="hero"><div class="eyebrow">— GOVERNANCE DOCUMENT · ${esc(d.id)}</div><h1>${esc(d.title)}</h1><p>${esc(d.summary)}</p><div class="status-badge"><span class="badge ${statusClass(dc.status)}">${esc(dc.status || 'DRAFT')}</span></div></section><main><article>
@@ -179,7 +208,8 @@ function buildIndex(webCfg, govCfg) {
   const cards = webCfg.documents.map(d => {
     const dc = govCfg.documents[d.id] || { status: 'DRAFT', last_reviewed: null, version: '1.0', adopted: null };
     const mdPath = path.join(ROOT, d.source_markdown);
-    const fullHtml = mdToHtml(fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : 'Full text source not found.');
+    const sourceMd = fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : 'Full text source not found.';
+    const fullHtml = mdToHtml(applyConfigTokens(sourceMd, govCfg));
     const info = fileInfo(d.id, dc.version || '1.0');
     return `<article class="card"><h2 style="margin-top:0"><a href="${esc(d.page)}">${esc(d.title)}</a></h2><span class="badge ${statusClass(dc.status)}">${esc(dc.status || 'DRAFT')}</span><div class="small" style="margin-top:6px">Layer 1 — At a glance</div><p>${esc(d.summary)}</p><div class="kf">${d.key_facts.map(k => `<span>${esc(k)}</span>`).join('')}</div><div class="small">Last reviewed: ${esc(dc.last_reviewed || 'Not yet reviewed')}</div><div class="layer"><div class="small">Layer 2 — Full text</div><button class="tog" aria-label="Toggle full text" aria-expanded="false" aria-controls="full-${d.id}" onclick="toggleFull('full-${d.id}',this)">Show full text</button><div id="full-${d.id}" class="fulltext">${fullHtml}</div></div><div class="layer"><div class="small">Layer 3 — Download</div>${layer3Downloads(info)}</div></article>`;
   }).join('');
@@ -192,9 +222,10 @@ function buildDownloads(webCfg, govCfg) {
   const rows = webCfg.documents.map(d => {
     const dc = govCfg.documents[d.id] || { version: '1.0', status: 'DRAFT', adopted: null, last_reviewed: null };
     const info = fileInfo(d.id, dc.version || '1.0');
-    const size = info.pdfExists ? info.pdfSize : info.docxSize;
-    const pdfBtn = info.pdfExists ? `<a class="dl" href="downloads/pdf/${esc(info.pdfName)}" download>PDF ⬇</a>` : '';
-    const docxBtn = `<a class="dl" href="downloads/docx/${esc(info.docxName)}" download>DOCX ⬇</a>`;
+    const sizeBytes = info.pdfExists ? info.pdfSize : info.docxSize;
+    const size = `${Math.round((sizeBytes || 0) / 1024)} KB`;
+    const pdfBtn = info.pdfExists ? `<a class="dl pdf" href="downloads/pdf/${esc(info.pdfName)}" download>PDF ⬇</a>` : '';
+    const docxBtn = `<a class="dl docx" href="downloads/docx/${esc(info.docxName)}" download>DOCX ⬇</a>`;
     return `<tr><td>${esc(d.title)}</td><td>${esc(dc.version || '1.0')}</td><td><span class="badge ${statusClass(dc.status)}">${esc(dc.status || 'DRAFT')}</span></td><td>${pdfBtn} ${docxBtn}</td><td>${size}</td></tr>`;
   }).join('');
 
