@@ -1,0 +1,92 @@
+---
+layout: default
+title: "Contact — CivicOS Institute"
+permalink: /contact/
+---
+
+<section class="contact-hero">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:12px;margin-bottom:24px;" class="au"><span style="width:28px;height:1px;background:var(--amber);display:inline-block;"></span>Contact</div>
+    <h1 class="au d1">Let's build something<br><em>open</em> together.</h1>
+    <p class="au d2">Whether you're interested in research partnerships, bulk ebook orders, contributing to our open source work, or just want to connect — we'd love to hear from you.</p>
+  </section>
+
+  <section class="sec">
+    <div class="contact-grid fi">
+      <div>
+        <div class="section-label" style="margin-bottom:32px;">Send a Message</div>
+        <form class="contact-form" onsubmit="return false;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="cf-row"><label class="cf-label">First Name</label><input class="cf-input" type="text" placeholder="First name"></div>
+            <div class="cf-row"><label class="cf-label">Last Name</label><input class="cf-input" type="text" placeholder="Last name"></div>
+          </div>
+          <div class="cf-row"><label class="cf-label">Email</label><input class="cf-input" type="email" placeholder="you@organization.gov"></div>
+          <div class="cf-row"><label class="cf-label">Organization</label><input class="cf-input" type="text" placeholder="Municipality, university, nonprofit…"></div>
+          <div class="cf-row">
+            <label class="cf-label">Topic</label>
+            <select class="cf-select cf-input">
+              <option>Research Partnership</option>
+              <option>Bulk Ebook Order</option>
+              <option>Open Source / Technical</option>
+              <option>Media &amp; Press</option>
+              <option>Commentary Submission</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="cf-row"><label class="cf-label">Message</label><textarea class="cf-textarea" placeholder="Tell us about your project, question, or inquiry…"></textarea></div>
+          <button class="btn-primary" type="submit">Send Message →</button>
+        </form>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:32px;">Direct Contact</div>
+        <div class="contact-info">
+          <div class="contact-info-card">
+            <div class="cic-label">Email</div>
+            <div class="cic-value">NCerbone@civicos-institute.org</div>
+            <div class="cic-sub">General inquiries · Research · Partnerships</div>
+          </div>
+          <div class="contact-info-card">
+            <div class="cic-label">Phone</div>
+            <div class="cic-value">561-207-2679</div>
+            <div class="cic-sub">Available Mon–Fri, 9am–5pm ET</div>
+          </div>
+          <div class="contact-info-card">
+            <div class="cic-label">Location</div>
+            <div class="cic-value">4844 Bernfield Drive<br>West Palm Beach, FL 33417</div>
+            <div class="cic-sub">Florida nonprofit in formation · 501(c)(3) pending</div>
+          </div>
+          <div>
+            <div class="section-label" style="margin-bottom:20px;margin-top:32px;">Follow &amp; Connect</div>
+            <div class="social-links">
+              <a href="https://github.com/civicos-institute" target="_blank" rel="noopener" class="social-link"><div class="sl-icon">GH</div><span class="sl-name">GitHub</span><span class="sl-handle">@civicos-institute</span></a>
+              <a href="https://x.com/CivicOSInstitut" target="_blank" rel="noopener" class="social-link"><div class="sl-icon">X</div><span class="sl-name">X / Twitter</span><span class="sl-handle">@CivicOSInstitut</span></a>
+              <a href="#" class="social-link"><div class="sl-icon">FB</div><span class="sl-name">Facebook</span><span class="sl-handle">CivicOS Institute</span></a>
+              <a href="https://discord.gg/tECtT9zeTT" target="_blank" rel="noopener" class="social-link"><div class="sl-icon">DC</div><span class="sl-name">Discord</span><span class="sl-handle">discord.gg/tECtT9zeTT</span></a><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="social-link" style="border-color:var(--amber-dim);background:rgba(212,168,67,0.06);"><div class="sl-icon" style="border-color:var(--amber);color:var(--amber);">♡</div><span class="sl-name" style="color:var(--amber);">GoFundMe — Donate</span><span class="sl-handle">Help Launch CivicOS Institute</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ebook promo in contact page -->
+  <section class="sec" style="background:var(--navy-light);">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;" class="fi">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;">Now Available on Amazon</div>
+        <h2 style="font-family:var(--serif);font-size:36px;font-weight:700;line-height:1.1;margin-bottom:12px;">The Open Source Student: Founders Complete Edition</h2>
+        <p style="font-size:14px;color:var(--grey);line-height:1.8;">216 pages · Paperback &amp; Kindle · $179</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
+        <a href="https://www.amazon.com/dp/B0GQ5JM6LT" target="_blank" rel="noopener" class="btn-primary">Buy on Amazon →</a>
+        <button class="btn-outline" style="cursor:pointer;" onclick="window.location='{{ '/ebook/' | relative_url }}'">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand"><h3>CivicOS Institute</h3><p>A nonprofit research organization dedicated to civic technology, open data systems, and digital public infrastructure.</p><div class="footer-social"><a href="https://github.com/civicos-institute" target="_blank" rel="noopener" class="fsocial">GitHub ↗</a><a href="https://x.com/CivicOSInstitut" target="_blank" rel="noopener" class="fsocial">X ↗</a><a href="https://discord.gg/tECtT9zeTT" target="_blank" rel="noopener" class="fsocial">Discord ↗</a><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="fsocial" style="background:rgba(212,168,67,0.15);border-color:var(--amber);">Donate ↗</a></div></div>
+    <div class="footer-col"><h4>Institute</h4><ul><li><a href="{{ '/about/' | relative_url }}">About</a></li><li><a href="{{ '/governance/' | relative_url }}">Governance</a></li><li><a>News</a></li></ul></div>
+    <div class="footer-col"><h4>Resources</h4><ul><li><a href="{{ '/publications/' | relative_url }}">Publications</a></li><li><a href="{{ '/ebook/' | relative_url }}">Ebook</a></li><li><a href="{{ '/open-source/' | relative_url }}">Open Source</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a>Privacy Policy</a></li><li><a>Terms of Use</a></li><li><a>501(c)(3) Pending</a></li></ul></div>
+    <div class="footer-bottom" style="grid-column:1/-1;margin-top:0;"><p>© 2026 CivicOS Institute. All rights reserved. A Florida nonprofit organization in formation.</p><span class="footer-update">Last updated: February 2026</span></div>
+  </footer>

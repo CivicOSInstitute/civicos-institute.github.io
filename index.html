@@ -1,0 +1,153 @@
+---
+layout: default
+title: "CivicOS Institute"
+permalink: /
+---
+
+<!-- Hero -->
+  <section class="home-hero">
+    <div class="hero-overline au">Civic Technology · Open Government · AI Literacy</div>
+    <h1 class="au d1">Building <em>open</em><br>civic infrastructure<br>for the public good.</h1>
+    <p class="lead au d2">CivicOS Institute is a privacy-first, vendor-independent nonprofit producing technical standards, policy research, and AI literacy resources for government, educators, and citizens.</p>
+    <div class="hero-actions au d3">
+      <button class="btn-primary" style="cursor:pointer;" onclick="window.location='{{ '/publications/' | relative_url }}'">Explore Research →</button>
+      <button class="btn-outline" style="cursor:pointer;" onclick="window.location='{{ '/ebook/' | relative_url }}'">Get the Ebook — $179</button>
+      <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="btn-outline" style="border-color:var(--amber);color:var(--amber);">Donate on GoFundMe ♡</a>
+    </div>
+    <div class="hero-stats au d4">
+      <div class="hstat">
+        <div class="hstat-num">v2.0</div>
+        <div class="hstat-label">Open Civic Spec</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">216</div>
+        <div class="hstat-label">Page Curriculum</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">Free</div>
+        <div class="hstat-label">AI Learning Kit</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">501(c)(3)</div>
+        <div class="hstat-label">Nonprofit, Pending</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission strip -->
+  <div class="mission-strip">
+    <div>
+      <h2>Technology that serves <em>people,</em> not vendors.</h2>
+    </div>
+    <div class="mission-right">
+      <p>CivicOS Institute was founded on a simple premise: the tools that govern public life should be open, auditable, and accountable. We produce technical specifications, white papers, and AI literacy curricula to advance that mission — without advertising, vendor sponsorship, or grant dependency.</p>
+      <div class="mission-pillars fi">
+        <div class="pillar">
+          <div class="pillar-icon">⬡</div>
+          <div class="pillar-title">Privacy-First</div>
+          <div class="pillar-desc">No telemetry, no vendor lock-in, no compromise on public data sovereignty.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">◎</div>
+          <div class="pillar-title">Open Standards</div>
+          <div class="pillar-desc">Apache 2.0 licensed specifications and reference implementations for everyone.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-icon">◈</div>
+          <div class="pillar-title">Civic Accountability</div>
+          <div class="pillar-desc">Research and tools designed to make government systems legible to the public.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured work -->
+  <section class="sec">
+    <div class="section-label">Featured Work</div>
+    <div class="work-grid fi">
+      <div class="work-card" style="cursor:pointer;" onclick="window.location='{{ '/letters/' | relative_url }}'">
+        <div class="work-type">Director's Letter · Weekly</div>
+        <h3>Weekly Update — Week 8, 2026</h3>
+        <p>The next 1,000 days will determine whether government AI systems are governed by transparency and democratic accountability — or opaque vendor-controlled defaults.</p>
+        <span class="work-link">Read the Letter →</span>
+      </div>
+      <div class="work-card" style="cursor:pointer;" onclick="window.location='{{ '/publications/' | relative_url }}'">
+        <div class="work-type">Technical Standard</div>
+        <h3>Open Civic Specifications v2.0</h3>
+        <p>The foundational specification for the CivicOS ecosystem — defining open standards for civic data interoperability and workflow architectures.</p>
+        <span class="work-link">Read Specification →</span>
+      </div>
+      <div class="work-card" style="cursor:pointer;" onclick="window.location='{{ '/publications/' | relative_url }}'">
+        <div class="work-type">White Paper · Coming Soon</div>
+        <h3>The Cost of Opaque Government: A Florida Case Study</h3>
+        <p>Analysis of FOIA costs and information asymmetry across Florida municipalities. Expected March 2026.</p>
+        <span class="work-link">Subscribe for Early Access →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ebook promo banner -->
+  <div class="ebook-banner fi" style="cursor:pointer;" onclick="window.location='{{ '/ebook/' | relative_url }}'" style="cursor:pointer;padding:40px 56px;">
+    <div>
+      <div class="eb-label">Now Available</div>
+      <div class="eb-title">The Open Source Student</div>
+      <div class="eb-sub">Founders Complete Edition · 216 pages · 100% of proceeds fund CivicOS Institute</div>
+    </div>
+    <div style="flex:1;"></div>
+    <div class="eb-price">
+      <div class="eb-price-num">$179</div>
+      <div class="eb-price-label">Paperback &amp; Kindle</div>
+    </div>
+    <div class="eb-actions">
+      <button class="btn-primary">Buy on Amazon →</button>
+      <button class="btn-outline" onclick="event.stopPropagation();showPage('ebook')">Learn More</button>
+    </div>
+  </div>
+
+  <!-- GoFundMe donation banner -->
+  <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" style="display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center;padding:32px 56px;background:rgba(212,168,67,0.06);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(212,168,67,0.11)'" onmouseout="this.style.background='rgba(212,168,67,0.06)'">
+    <div style="font-size:32px;">♡</div>
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">GoFundMe — Help Launch CivicOS Institute</div>
+      <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--white);line-height:1.2;">We're a nonprofit in formation. Your donation funds our first research projects and 501(c)(3) application.</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:0.1em;white-space:nowrap;border:1px solid var(--amber-dim);padding:12px 22px;">Donate Now ↗</div>
+  </a>
+
+  <!-- AI Learning Kit teaser -->
+  <section class="sec" style="background:var(--navy-mid);">
+    <div class="section-label">Free Resource</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+      <div class="fi">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber-dim);padding:5px 13px;display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;">◆ Distributed Free of Charge</div>
+        <h2 style="font-family:var(--serif);font-size:42px;font-weight:700;line-height:1.1;margin-bottom:18px;">CivicOS AI<br>Learning Kit</h2>
+        <p style="font-size:14px;color:var(--grey);line-height:1.85;margin-bottom:28px;">Practical AI literacy materials for technical and non-technical learners — freely distributed under the CivicOS educational license. No ads, no upsells, no vendor branding.</p>
+        <div style="display:flex;gap:12px;">
+          <button class="btn-primary" style="cursor:pointer;" onclick="window.location='{{ '/publications/' | relative_url }}'">Download Free Kit ↓</button>
+          <button class="btn-outline" style="cursor:pointer;" onclick="window.location='{{ '/publications/' | relative_url }}'">Learn More</button>
+        </div>
+      </div>
+      <div class="fi" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="kit-dl" style="pointer-events:none;">
+          <div class="kit-dl-icon">PDF</div>
+          <div style="flex:1;"><span class="kit-dl-name">Non-Technical AI Onramp Program</span><span class="kit-dl-type">Final PDF · Foundational Course</span></div>
+          <span class="kit-dl-arrow">↓</span>
+        </div>
+        <div class="kit-dl" style="pointer-events:none;">
+          <div class="kit-dl-icon">PDF</div>
+          <div style="flex:1;"><span class="kit-dl-name">Technical Worksheet Packet</span><span class="kit-dl-type">Final PDF · Practitioner Track</span></div>
+          <span class="kit-dl-arrow">↓</span>
+        </div>
+        <div class="kit-dl" style="pointer-events:none;">
+          <div class="kit-dl-icon">ZIP</div>
+          <div style="flex:1;"><span class="kit-dl-name">AI Pre-Course Bootcamp</span><span class="kit-dl-type">10-Day Program · All Files</span></div>
+          <span class="kit-dl-arrow">↓</span>
+        </div>
+        <div class="kit-dl" style="pointer-events:none;">
+          <div class="kit-dl-icon">PDF</div>
+          <div style="flex:1;"><span class="kit-dl-name">Full AI Learning Kit</span><span class="kit-dl-type">Complete Package · All Files</span></div>
+          <span class="kit-dl-arrow">↓</span>
+        </div>
+      </div>
+    </div>
+  </section>

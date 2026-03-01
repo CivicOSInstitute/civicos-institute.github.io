@@ -1,168 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
-    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
-    <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}">
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-    <link rel="icon" type="image/png" href="{{ "/assets/images/logo.png" | relative_url }}">
-    {% feed_meta %}
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z4LCY5PVBL"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Z4LCY5PVBL');
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: 'CivicOS Institute' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/civicos.css' | relative_url }}">
 </head>
 <body>
-    <header class="site-header">
-        <div class="wrapper" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <a class="site-title" href="{{ "/" | relative_url }}" style="display: flex; align-items: center; gap: 10px;">
-                <img src="{{ "/assets/images/logo.png" | relative_url }}" alt="CivicOS Institute Logo" style="height: 40px; width: auto;">
-                <span>{{ site.title | escape }}</span>
-            </a>
-            
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
-                ☰
-            </button>
-            
-            <nav class="site-nav" id="mainNav">
-                {% assign cb = '20260225a' %}
-                {% for item in site.navigation %}
-                    <a class="page-link" href="{{ item.url | relative_url }}?v={{ cb }}">{{ item.title }}</a>
-                {% endfor %}
-            </nav>
-        </div>
-    </header>
-    
-    <!-- Mobile Menu Script -->
-    <script>
-        function toggleMobileMenu() {
-            const nav = document.getElementById('mainNav');
-            const button = document.querySelector('.mobile-menu-toggle');
-            nav.classList.toggle('active');
-            button.textContent = nav.classList.contains('active') ? '✕' : '☰';
-        }
-        
-        // Close menu when clicking a link
-        document.querySelectorAll('.site-nav .page-link').forEach(link => {
-            link.addEventListener('click', () => {
-                const nav = document.getElementById('mainNav');
-                const button = document.querySelector('.mobile-menu-toggle');
-                nav.classList.remove('active');
-                button.textContent = '☰';
-            });
-        });
-    </script>
-
-    <!-- Scrolling Call-to-Action Ticker - Inline Styles for Reliability -->
-    <div style="background: linear-gradient(135deg, #c41e3a 0%, #a01830 100%); color: white; height: 40px; overflow: hidden; position: relative; border-bottom: 2px solid #1e3a5f;">
-        <div style="display: inline-block; white-space: nowrap; padding-left: 100%; animation: marquee 25s linear infinite;">
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">◦ Help us build the future of civic technology</span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/letter-from-director/" style="color: white; text-decoration: underline;">Read the Director's letter</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" style="color: white; text-decoration: underline;">Donate now</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/contact/" style="color: white; text-decoration: underline;">Volunteer your time</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Follow us: <a href="https://discord.gg/tECtT9zeTT" style="color: white; text-decoration: underline; margin-right: 8px;">Discord</a> · <a href="https://x.com/CivicOSinstitut" style="color: white; text-decoration: underline; margin: 0 8px;">X</a> · <a href="https://facebook.com/CivicOSInstitute" style="color: white; text-decoration: underline; margin-left: 8px;">Facebook</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/ebook/" style="color: white; text-decoration: underline;">Read the ebook</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/#newsletter" style="color: white; text-decoration: underline;">Subscribe to newsletter</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/blog/" style="color: white; text-decoration: underline;">Read weekly updates</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <!-- Duplicate for seamless loop -->
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">◦ Help us build the future of civic technology</span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/letter-from-director/" style="color: white; text-decoration: underline;">Read the Director's letter</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" style="color: white; text-decoration: underline;">Donate now</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/contact/" style="color: white; text-decoration: underline;">Volunteer your time</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Follow us: <a href="https://discord.gg/tECtT9zeTT" style="color: white; text-decoration: underline; margin-right: 8px;">Discord</a> · <a href="https://x.com/CivicOSinstitut" style="color: white; text-decoration: underline; margin: 0 8px;">X</a> · <a href="https://facebook.com/CivicOSInstitute" style="color: white; text-decoration: underline; margin-left: 8px;">Facebook</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/ebook/" style="color: white; text-decoration: underline;">Read the ebook</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/#newsletter" style="color: white; text-decoration: underline;">Subscribe to newsletter</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-            <span style="display: inline-block; padding: 10px 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;"><a href="/blog/" style="color: white; text-decoration: underline;">Read weekly updates</a></span>
-            <span style="color: rgba(255,255,255,0.4);">◦</span>
-        </div>
-        <style>
-            @keyframes marquee {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-            }
-        </style>
-    </div>
-
-    <main class="page-content" aria-label="Content">
-        <div class="wrapper">
-            {{ content }}
-        </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="wrapper">
-            <div class="footer-col-wrapper">
-                <div class="footer-col">
-                    <h2 class="footer-heading" style="display: flex; align-items: center; gap: 10px;">
-                        <img src="{{ "/assets/images/logo.png" | relative_url }}" alt="CivicOS Institute Logo" style="height: 30px; width: auto;">
-                        {{ site.title | escape }}
-                    </h2>
-                    <p>{{ site.description | escape }}</p>
-                </div>
-                <div class="footer-col">
-                    <p>
-                        <strong>Contact:</strong><br>
-                        {{ site.author.name }}<br>
-                        <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a><br>
-                        561-287-3579<br>
-                        4884 Beresford Circle<br>
-                        West Palm Beach, FL 33417
-                    </p>
-                </div>
-                <div class="footer-col">
-                    <p>
-                        <strong>Follow Us:</strong><br>
-                        <a href="https://github.com/{{ site.social.github }}">GitHub</a><br>
-                        <a href="https://x.com/{{ site.social.x }}">X (Twitter)</a><br>
-                        <a href="https://facebook.com/{{ site.social.facebook }}">Facebook</a><br>
-                        <a href="https://discord.gg/{{ site.social.discord }}">Discord</a><br>
-                        <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute">Support Our Work</a>
-                    </p>
-                </div>
-            </div>
-            <div class="footer-nav" style="text-align: center; padding: 20px 0; border-top: 1px solid #eee; margin-top: 20px;">
-                <p style="margin-bottom: 10px;">
-                    <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Back to Top</a>
-                </p>
-                <p style="margin-bottom: 10px;">
-                    <a href="{{ '/' | relative_url }}">Home</a> |
-                    <a href="{{ '/about/' | relative_url }}">About</a> |
-                    <a href="{{ '/governance/' | relative_url }}">Governance</a> |
-                    <a href="{{ '/publications/' | relative_url }}">Publications</a> |
-                    <a href="{{ '/research/' | relative_url }}">Research</a> |
-                    <a href="{{ '/news.html' | relative_url }}">News</a> |
-                    <a href="{{ '/contact/' | relative_url }}">Contact</a> |
-                    <a href="https://facebook.com/{{ site.social.facebook }}">Facebook</a> |
-                    <a href="https://discord.gg/{{ site.social.discord }}">Discord</a>
-                </p>
-            </div>
-            <div class="copyright">
-                &copy; {{ site.time | date: '%Y' }} {{ site.title | escape }}. All rights reserved.
-                <br>A Florida nonprofit corporation in formation. 501(c)(3) status pending.
-            </div>
-        </div>
-    </footer>
+  {% include nav.html %}
+  <main>
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  <script src="{{ '/assets/js/civicos.js' | relative_url }}"></script>
 </body>
 </html>
