@@ -153,14 +153,24 @@ table th{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:1.2
 table th,table td{border-bottom:1px solid var(--divider);padding:10px}
 table td{color:var(--text);font-family:"IBM Plex Sans",sans-serif}
 table tbody tr:nth-child(odd){background:rgba(244,241,235,.02)}
-.provisional{background:rgba(212,168,67,.08);border-left:4px solid var(--gold);border:1px solid rgba(212,168,67,.2);border-radius:2px;padding:20px 24px;color:var(--gold);font-size:14px}
+.provisional{display:block;width:100%;max-width:100%;background:rgba(212,168,67,.08);border-left:4px solid var(--gold);border:1px solid rgba(212,168,67,.2);border-radius:2px;padding:20px 24px;color:var(--gold);font-size:14px}
 .board-panel{background:rgba(244,241,235,.04);border:1px solid rgba(244,241,235,.1);border-top:2px solid var(--gold)}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
 .stat .value{font-family:"Playfair Display",Georgia,serif;font-size:36px;font-weight:700;color:var(--text)}
 .stat .label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
 footer{border-top:1px solid var(--divider);padding:18px 16px;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase}
 @media (max-width:980px){.nav-links{gap:10px}.nav-links a{font-size:12px;letter-spacing:1.2px}.btn-cta{font-size:11px;padding:7px 8px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:768px){.grid{grid-template-columns:1fr}.hamb{display:inline-block}.nav-links{display:none;position:absolute;left:0;right:0;top:56px;background:var(--navbg);padding:12px 16px;flex-direction:column;align-items:flex-start}.nav-links.open{display:flex}.nav-cta{display:none}}
+@media (max-width:768px){
+  .documents-grid,.cards-grid,[class*="grid"]{grid-template-columns:1fr !important}
+  .board-stats,.stats-grid,.stat-row,.stats{grid-template-columns:1fr 1fr;gap:16px}
+  .pills,.facts,[class*="pill"],[class*="tag"],.kf{flex-wrap:wrap}
+  .card,[class*="card"]{padding:20px 16px}
+  .provisional{display:block;width:100%;max-width:100%;margin-left:0;margin-right:0}
+  .hamb{display:inline-block}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:56px;background:var(--navbg);padding:12px 16px;flex-direction:column;align-items:flex-start}
+  .nav-links.open{display:flex}
+  .nav-cta{display:none}
+}
 </style>`;
 }
 
