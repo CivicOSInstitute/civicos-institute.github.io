@@ -196,6 +196,9 @@ class MissionControl {
             case 'council':
                 await this.loadCouncilData();
                 break;
+            case 'news':
+                await this.loadNewsData();
+                break;
             case 'hours':
                 await this.loadHoursData();
                 break;
@@ -671,6 +674,96 @@ class MissionControl {
 
         // Update seat statuses (would integrate with actual queue state)
         this.updateSeatStatuses();
+    }
+
+    async loadNewsData() {
+        await this.renderNewsStories();
+        this.setupNewsFilters();
+
+        // Auto-refresh every 30 minutes
+        if (this.newsRefreshInterval) clearInterval(this.newsRefreshInterval);
+        this.newsRefreshInterval = setInterval(() => {
+            if (this.currentModule === 'news') this.renderNewsStories();
+        }, 30 * 60 * 1000);
+
+        // Global refresh function
+        window.refreshNews = async () => {
+            const btn = document.querySelector('button[onclick="refreshNews()"]');
+            if (btn) { btn.disabled = true; btn.textContent = 'Refreshing...'; }
+            try {
+                await fetch('http://localhost:8877/api/news/refresh', {method: 'POST'});
+                await this.renderNewsStories();
+            } catch (_) {}
+            if (btn) { btn.disabled = false; btn.textContent = '🔄 Refresh'; }
+        };
+    }
+
+    async renderNewsStories() {
+        const grid = document.getElementById('news-grid');
+        if (!grid) return;
+
+        const category = document.getElementById('news-category-filter')?.value || '';
+        const search = document.getElementById('news-search')?.value || '';
+
+        try {
+            let url = 'http://localhost:8877/api/news/stories';
+            const params = [];
+            if (category) params.push(`category=${encodeURIComponent(category)}`);
+            if (search) params.push(`search=${encodeURIComponent(search)}`);
+            if (params.length) url += '?' + params.join('&');
+
+            const r = await fetch(url);
+            if (!r.ok) throw new Error('news unavailable');
+            const j = await r.json();
+            const items = j.items || [];
+
+            if (!items.length) {
+                grid.innerHTML = '<p>No news stories found.</p>';
+                return;
+            }
+
+            grid.innerHTML = items.map(s => `
+                <div class="news-card ${s.read ? 'read' : ''}" data-id="${s.id}">
+                    <div class="news-category">${s.category}</div>
+                    <h4 class="news-title"><a href="${s.url}" target="_blank">${s.title}</a></h4>
+                    <div class="news-meta">${s.source} • ${s.published_at?.slice(0,10) || ''}</div>
+                    <p class="news-summary">${s.summary || ''}</p>
+                    <div class="news-actions">
+                        <button class="btn-icon" onclick="missionControl.markNewsRead(${s.id})" title="Mark read">✓</button>
+                        <button class="btn-icon ${s.bookmarked ? 'active' : ''}" onclick="missionControl.toggleNewsBookmark(${s.id})" title="Bookmark">★</button>
+                    </div>
+                </div>
+            `).join('');
+        } catch (e) {
+            grid.innerHTML = '<p>News feed unavailable. Start news API server.</p>';
+        }
+    }
+
+    setupNewsFilters() {
+        const cat = document.getElementById('news-category-filter');
+        const search = document.getElementById('news-search');
+        if (cat && !cat.dataset.bound) {
+            cat.dataset.bound = '1';
+            cat.addEventListener('change', () => this.renderNewsStories());
+        }
+        if (search && !search.dataset.bound) {
+            search.dataset.bound = '1';
+            let t;
+            search.addEventListener('input', () => {
+                clearTimeout(t);
+                t = setTimeout(() => this.renderNewsStories(), 300);
+            });
+        }
+    }
+
+    async markNewsRead(id) {
+        await fetch(`http://localhost:8877/api/news/stories/${id}/read`, {method: 'POST'});
+        this.renderNewsStories();
+    }
+
+    async toggleNewsBookmark(id) {
+        await fetch(`http://localhost:8877/api/news/stories/${id}/bookmark`, {method: 'POST'});
+        this.renderNewsStories();
     }
 
     async fetchCouncilHistory() {

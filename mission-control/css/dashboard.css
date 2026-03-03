@@ -1009,6 +1009,77 @@ body {
     margin-right: 0.4rem;
 }
 
+/* News Aggregator Styles */
+.news-controls {
+    margin-bottom: 1rem;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.news-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s;
+}
+
+.news-card:hover {
+    border-color: var(--accent-cyan);
+}
+
+.news-card.read {
+    opacity: 0.7;
+}
+
+.news-category {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.news-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.news-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.news-title a:hover {
+    color: var(--accent-cyan);
+}
+
+.news-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.news-summary {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.news-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.news-actions .btn-icon.active {
+    color: var(--accent-cyan);
+}
+
 @media (max-width: 768px) {
     .dashboard-row {
         grid-template-columns: 1fr;
@@ -1020,6 +1091,10 @@ body {
 
     .rolling-6days {
         grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr;
     }
     
     .pipeline-board {

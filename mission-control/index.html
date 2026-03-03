@@ -30,6 +30,7 @@
             <button class="nav-btn" data-module="finance">Finance</button>
             <button class="nav-btn" data-module="calendar">Calendar</button>
             <button class="nav-btn" data-module="council">Advisory Council</button>
+            <button class="nav-btn" data-module="news">News</button>
             <button class="nav-btn" data-module="hours">Payroll & Expenses</button>
         </nav>
 
@@ -493,6 +494,27 @@
                 </div>
             </section>
 
+            <section id="news" class="module">
+                <h2>📰 News Aggregator</h2>
+                <div class="news-controls">
+                    <div class="filter-bar">
+                        <select id="news-category-filter">
+                            <option value="">All Categories</option>
+                            <option value="civic_tech">Civic Tech</option>
+                            <option value="nonprofit">Nonprofit</option>
+                            <option value="education">Education</option>
+                            <option value="policy">Policy</option>
+                            <option value="technology">Technology</option>
+                        </select>
+                        <input type="text" id="news-search" placeholder="Search news...">
+                        <button class="btn-primary" onclick="refreshNews()">🔄 Refresh</button>
+                    </div>
+                </div>
+                <div id="news-grid" class="news-grid">
+                    <p>Loading news...</p>
+                </div>
+            </section>
+
             <section id="calendar" class="module">
                 <h2>📅 Command Calendar</h2>
 
@@ -688,6 +710,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=14"></script>
+    <script src="js/dashboard.js?v=15"></script>
 </body>
 </html>
