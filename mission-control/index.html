@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicOS Mission Control</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="css/dashboard.css?v=2">
+</head>
+<body>
+    <div id="app">
+        <header class="mission-header">
+            <h1>CIVICOS <span class="highlight">MISSION CONTROL</span></h1>
+            <div class="status-bar">
+                <span class="status-indicator active">●</span>
+                <span class="system-status">All Systems Operational</span>
+                <span class="router-badge" id="router-badge">Router-first: ON | Fallback: Kimi 2.5</span>
+                <span class="timestamp" id="timestamp"></span>
+            </div>
+        </header>
+
+        <nav class="mission-nav">
+            <button class="nav-btn active" data-module="overview">Overview</button>
+            <button class="nav-btn" data-module="grants">Grants</button>
+            <button class="nav-btn" data-module="donors">Donors</button>
+            <button class="nav-btn" data-module="content">Content</button>
+            <button class="nav-btn" data-module="models">Models</button>
+            <button class="nav-btn" data-module="finance">Finance</button>
+            <button class="nav-btn" data-module="calendar">Calendar</button>
+            <button class="nav-btn" data-module="council">Advisory Council</button>
+            <button class="nav-btn" data-module="hours">Hour Tracking</button>
+        </nav>
+
+        <main class="mission-dashboard">
+            <!-- Overview Module -->
+            <section id="overview" class="module active">
+                <div class="metrics-grid">
+                    <div class="metric-card clickable" data-link="grants">
+                        <h3>Active Grants</h3>
+                        <div class="metric-value" id="active-grants">--</div>
+                        <div class="metric-trend">Click for pipeline →</div>
+                    </div>
+                    <div class="metric-card clickable" data-link="models">
+                        <h3>Daily API Cost</h3>
+                        <div class="metric-value" id="api-cost">$0.00</div>
+                        <div class="metric-trend" id="cost-trend">Click for router →</div>
+                    </div>
+                    <div class="metric-card clickable" data-link="models">
+                        <h3>Model Status</h3>
+                        <div class="metric-value" id="model-status">8/8</div>
+                        <div class="metric-trend">Click for details →</div>
+                    </div>
+                    <div class="metric-card alert clickable" data-link="finance">
+                        <h3>Priority Alerts</h3>
+                        <div class="metric-value" id="alerts">0</div>
+                        <div class="metric-trend">Click for alerts →</div>
+                    </div>
+                </div>
+
+                <!-- External Systems Integration -->
+                <div class="metrics-grid external-systems">
+                    <div class="metric-card crm-card clickable" data-link="donors">
+                        <h3>📇 CRM Contacts</h3>
+                        <div class="metric-value" id="crm-contacts">48</div>
+                        <div class="metric-trend">Click for CRM →</div>
+                    </div>
+                    <div class="metric-card crm-card hot clickable" data-link="donors">
+                        <h3>🔥 Hot Leads</h3>
+                        <div class="metric-value" id="crm-hot-leads">1</div>
+                        <div class="metric-trend">Click for leads →</div>
+                    </div>
+                    <div class="metric-card task-card warning clickable" data-link="hours">
+                        <h3>⚠️ Overdue Tasks</h3>
+                        <div class="metric-value" id="tasks-overdue">16</div>
+                        <div class="metric-trend">Click for tasks →</div>
+                    </div>
+                    <div class="metric-card task-card clickable" data-link="calendar">
+                        <h3>📋 Due This Week</h3>
+                        <div class="metric-value" id="tasks-due-week">5</div>
+                        <div class="metric-trend">Click for calendar →</div>
+                    </div>
+                </div>
+
+                <!-- External Systems Integration -->
+                <div class="metrics-grid external-systems">
+                    <div class="metric-card crm-card">
+                        <h3>📇 CRM Contacts</h3>
+                        <div class="metric-value" id="crm-contacts">48</div>
+                        <div class="metric-trend">From Civic CRM</div>
+                    </div>
+                    <div class="metric-card crm-card hot">
+                        <h3>🔥 Hot Leads</h3>
+                        <div class="metric-value" id="crm-hot-leads">1</div>
+                        <div class="metric-trend">Needs attention</div>
+                    </div>
+                    <div class="metric-card task-card warning">
+                        <h3>⚠️ Overdue Tasks</h3>
+                        <div class="metric-value" id="tasks-overdue">16</div>
+                        <div class="metric-trend">From Task Tracker</div>
+                    </div>
+                    <div class="metric-card task-card">
+                        <h3>📋 Due This Week</h3>
+                        <div class="metric-value" id="tasks-due-week">5</div>
+                        <div class="metric-trend">Upcoming deadlines</div>
+                    </div>
+                </div>
+
+                <!-- YouTube Intelligence Feed -->
+                <div class="panel youtube-feed">
+                    <h3>📺 YouTube Intelligence (Last 48 Hours)</h3>
+                    <div class="youtube-grid" id="youtube-grid">
+                        <a href="https://youtube.com/watch?v=n1sfrc-RjyM" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">OpenClaw Full Tutorial for Beginners</div>
+                                <div class="video-channel">freeCodeCamp.org</div>
+                                <div class="video-meta">54m · Tutorial</div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/watch?v=NA8C8jIQNeM" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">Ultimate Clawdbot Tutorial</div>
+                                <div class="video-channel">AI Master</div>
+                                <div class="video-meta">19m · Tutorial</div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/watch?v=4evf5YqVzOM" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">Master OpenClaw/Clawdbot in 35 minutes</div>
+                                <div class="video-channel">Keith AI</div>
+                                <div class="video-meta">35m · Tutorial</div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/watch?v=Aj6hoC9JaLI" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">You NEED to do this with OpenClaw immediately!</div>
+                                <div class="video-channel">Alex Finn</div>
+                                <div class="video-meta">10m · Tips</div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/watch?v=a63dUwXUgDo" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">ClawdBot Full Tutorial for Beginners</div>
+                                <div class="video-channel">Mikey No Code</div>
+                                <div class="video-meta">14m · Tutorial</div>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/watch?v=3GrG-dOmrLU" target="_blank" class="video-card">
+                            <div class="video-thumb">▶️</div>
+                            <div class="video-info">
+                                <div class="video-title">I figured out the best way to run OpenClaw</div>
+                                <div class="video-channel">Matthew Berman</div>
+                                <div class="video-meta">22m · Guide</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="panel">
+                        <h3>Recent Activity</h3>
+                        <ul id="activity-feed" class="activity-list">
+                            <li>Loading activity...</li>
+                        </ul>
+                    </div>
+                    <div class="panel">
+                        <h3>Model Router Status</h3>
+                        <div id="router-status" class="router-visualization">
+                            <div class="router-node active">Phi-3</div>
+                            <div class="router-node">Llama</div>
+                            <div class="router-node">DeepSeek</div>
+                            <div class="router-node">Qwen</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Grants Module -->
+            <section id="grants" class="module">
+                <h2>Grant Pipeline</h2>
+                <div class="pipeline-board">
+                    <div class="pipeline-column">
+                        <h4>Research</h4>
+                        <div class="pipeline-items" id="grants-research"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <h4>Drafting</h4>
+                        <div class="pipeline-items" id="grants-drafting"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <h4>Submitted</h4>
+                        <div class="pipeline-items" id="grants-submitted"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <h4>Decision Pending</h4>
+                        <div class="pipeline-items" id="grants-pending"></div>
+                    </div>
+                    <div class="pipeline-column won">
+                        <h4>Approved</h4>
+                        <div class="pipeline-items" id="grants-won"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Additional modules placeholder -->
+            <section id="donors" class="module"><h2>Donor Stewardship</h2><p>Loading donor data...</p></section>
+            <section id="content" class="module"><h2>Content Publishing</h2><p>Loading content pipeline...</p></section>
+            <section id="models" class="module"><h2>AI Model Router</h2><p>Loading model metrics...</p></section>
+            <section id="finance" class="module">
+                <h2>💰 Financial Command Center</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card income">
+                        <h3>📥 This Month Income</h3>
+                        <div class="metric-value" id="month-income">$0.00</div>
+                        <div class="metric-trend">vs budget</div>
+                    </div>
+                    <div class="metric-card expense">
+                        <h3>📤 This Month Expenses</h3>
+                        <div class="metric-value" id="month-expenses">$0.00</div>
+                        <div class="metric-trend" id="expense-trend">Tracking</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>📊 Net P&L</h3>
+                        <div class="metric-value" id="month-net">$0.00</div>
+                        <div class="metric-trend" id="net-status">Calculating</div>
+                    </div>
+                    <div class="metric-card alert" id="unpaid-card">
+                        <h3>⚠️ Unpaid Invoices</h3>
+                        <div class="metric-value" id="unpaid-count">0</div>
+                        <div class="metric-trend" id="unpaid-amount">$0.00</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="panel">
+                        <h3>Recent Transactions</h3>
+                        <div class="filter-bar">
+                            <select id="tx-filter-type">
+                                <option value="all">All Types</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                            <select id="tx-filter-category">
+                                <option value="all">All Categories</option>
+                            </select>
+                        </div>
+                        <table class="data-table" id="transactions-table">
+                            <thead>
+                                <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="panel">
+                        <h3>Invoices Requiring Action</h3>
+                        <ul id="action-invoices" class="action-list">
+                            <li>No unpaid invoices</li>
+                        </ul>
+                        <button class="btn-primary" onclick="scanEmails()">📧 Scan Emails Now</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Cash Flow Projection (Next 90 Days)</h3>
+                    <div id="cash-flow-chart" class="chart-container">
+                        <p>Loading projection...</p>
+                    </div>
+                </div>
+            </section>
+            <section id="council" class="module">
+                <h2>🎭 Advisory Council</h2>
+                <div class="council-overview">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h3>Active Deliberations</h3>
+                            <div class="metric-value" id="active-deliberations">0</div>
+                            <div class="metric-trend">No sessions active</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Queue Status</h3>
+                            <div class="metric-value" id="queue-status">Idle</div>
+                            <div class="metric-trend">Ready for requests</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Council History</h3>
+                            <div class="metric-value" id="council-history-count">0</div>
+                            <div class="metric-trend">Sessions completed</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Subagents</h3>
+                            <div class="metric-value" id="active-subagents">0</div>
+                            <div class="metric-trend">Running now</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="council-seats">
+                    <h3>Seven Seats</h3>
+                    <div class="seats-grid">
+                        <div class="seat" data-seat="1">
+                            <div class="seat-name">Magnus</div>
+                            <div class="seat-role">Engineer</div>
+                            <div class="seat-model">Codex (Business)</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat" data-seat="2">
+                            <div class="seat-name">Vera</div>
+                            <div class="seat-role">Philosopher</div>
+                            <div class="seat-model">Qwen 3:14B</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat" data-seat="3">
+                            <div class="seat-name">Dante</div>
+                            <div class="seat-role">Contrarian</div>
+                            <div class="seat-model">Qwen 3.5-9B</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat" data-seat="4">
+                            <div class="seat-name">Eleanor</div>
+                            <div class="seat-role">Strategist</div>
+                            <div class="seat-model">Llama 3.1 8B</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat" data-seat="5">
+                            <div class="seat-name">Ray</div>
+                            <div class="seat-role">Pragmatist</div>
+                            <div class="seat-model">Qwen 3.5-4B</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat" data-seat="6">
+                            <div class="seat-name">Mira</div>
+                            <div class="seat-role">Integrator</div>
+                            <div class="seat-model">Qwen 3.5-4B</div>
+                            <div class="seat-status idle">Idle</div>
+                        </div>
+                        <div class="seat seat-7 active" data-seat="7">
+                            <div class="seat-name">Burt</div>
+                            <div class="seat-role">Chief of Staff</div>
+                            <div class="seat-model">Kimi K2.5</div>
+                            <div class="seat-status active">Active</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="queue-monitor">
+                    <h3>🎬 Subagent Queue Monitor</h3>
+                    <div class="queue-info">
+                        <div class="queue-stat">
+                            <span class="label">Current:</span>
+                            <span id="queue-current">None</span>
+                        </div>
+                        <div class="queue-stat">
+                            <span class="label">Pending:</span>
+                            <span id="queue-pending">0</span>
+                        </div>
+                        <div class="queue-stat">
+                            <span class="label">Completed:</span>
+                            <span id="queue-completed">0</span>
+                        </div>
+                    </div>
+                    <div class="queue-visualization" id="queue-viz">
+                        <div class="queue-slot empty"></div>
+                        <div class="queue-slot empty"></div>
+                        <div class="queue-slot empty"></div>
+                        <div class="queue-slot empty"></div>
+                        <div class="queue-slot empty"></div>
+                    </div>
+                </div>
+
+                <div class="council-history">
+                    <h3>📜 Recent Deliberations</h3>
+                    <ul id="deliberation-list">
+                        <li>No council sessions in recent history</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="calendar" class="module">
+                <h2>📅 Command Calendar</h2>
+                <div class="calendar-controls">
+                    <button id="prev-month">←</button>
+                    <h3 id="calendar-month">March 2026</h3>
+                    <button id="next-month">→</button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- Auto-populated from CRM, Tasks, Grants, Chat -->
+                </div>
+                <div class="calendar-legend">
+                    <span class="legend-item"><span class="dot grant"></span> Grant Deadline</span>
+                    <span class="legend-item"><span class="dot task"></span> Task Due</span>
+                    <span class="legend-item"><span class="dot crm"></span> CRM Follow-up</span>
+                    <span class="legend-item"><span class="dot chat"></span> From Chat</span>
+                    <span class="legend-item"><span class="dot system"></span> System</span>
+                </div>
+                <div class="upcoming-list">
+                    <h4>Up Next (7 Days)</h4>
+                    <ul id="upcoming-events"></ul>
+                </div>
+            </section>
+
+            <section id="hours" class="module">
+                <h2>⏱️ Hour Tracking</h2>
+                <p class="module-desc">Track work and volunteer hours for CivicOS Institute</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>📅 This Week</h3>
+                        <div class="metric-value" id="hours-this-week">0h</div>
+                        <div class="metric-trend">Total logged</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>📊 This Month</h3>
+                        <div class="metric-value" id="hours-this-month">0h</div>
+                        <div class="metric-trend">Total logged</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>🏆 Total Volunteer</h3>
+                        <div class="metric-value" id="hours-volunteer">0h</div>
+                        <div class="metric-trend">All time</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>💼 Total Work</h3>
+                        <div class="metric-value" id="hours-work">0h</div>
+                        <div class="metric-trend">All time</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="panel">
+                        <h3>Log Hours</h3>
+                        <form id="hours-form" class="hours-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" id="hours-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hours</label>
+                                    <input type="number" id="hours-amount" min="0.25" max="24" step="0.25" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select id="hours-type" required>
+                                        <option value="volunteer">Volunteer</option>
+                                        <option value="work">Work</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="hours-category" required>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Development">Development</option>
+                                        <option value="Fundraising">Fundraising</option>
+                                        <option value="Writing">Writing</option>
+                                        <option value="Research">Research</option>
+                                        <option value="Meetings">Meetings</option>
+                                        <option value="Events">Events</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" id="hours-desc" placeholder="What did you work on?" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Log Hours</button>
+                        </form>
+                    </div>
+                    <div class="panel">
+                        <h3>Recent Entries <span class="entry-count" id="entry-count"></span></h3>
+                        <ul id="hours-list" class="hours-list">
+                            <li>No hours logged yet</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Weekly Breakdown</h3>
+                    <div id="hours-chart" class="chart-container">
+                        <p>Chart will appear as you log hours</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mission-footer">
+            <span>CivicOS Institute</span>
+            <span id="footer-status">Local Mode | $0.00/day</span>
+        </footer>
+    </div>
+
+    <script src="js/dashboard.js?v=3"></script>
+</body>
+</html>

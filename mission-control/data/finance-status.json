@@ -1,0 +1,16 @@
+{
+  "monthly": {
+    "income": 0.0,
+    "expenses": 0.0,
+    "net": 0.0,
+    "period": "2026-03"
+  },
+  "invoices": {
+    "unpaid_count": 0,
+    "unpaid_total": 0.0,
+    "overdue_count": 0,
+    "list": []
+  },
+  "transactions": [],
+  "updatedAt": "2026-03-03"
+}
