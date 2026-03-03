@@ -22,6 +22,7 @@ Social media subagent policy:
 
 Local model hard rule (non-negotiable):
 - Local model usage is the default priority for all eligible tasks.
+- All inbound requests, including those targeting the main/default model, must pass through the model-router classification gate first (Phi-3/router policy) before final model selection.
 - Any task using a local model MUST route through:
   - /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/integration_helper.py
   - or /Users/AI-OPS/.openclaw/workspace/skills/ollama-agent-queue/scripts/queue_manager.py
