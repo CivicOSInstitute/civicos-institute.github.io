@@ -495,14 +495,32 @@
 
             <section id="calendar" class="module">
                 <h2>📅 Command Calendar</h2>
-                <div class="calendar-controls">
-                    <button id="prev-month">←</button>
-                    <h3 id="calendar-month">March 2026</h3>
-                    <button id="next-month">→</button>
+
+                <div class="calendar-top-layout">
+                    <div class="panel">
+                        <h3>Today - Events by Time</h3>
+                        <ul id="today-events" class="activity-list">
+                            <li>No events today</li>
+                        </ul>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Rolling Next 6 Days</h3>
+                        <div id="rolling-6days" class="rolling-6days"></div>
+                    </div>
                 </div>
-                <div class="calendar-grid" id="calendar-grid">
-                    <!-- Auto-populated from CRM, Tasks, Grants, Chat -->
+
+                <div class="panel" style="margin-top:1rem;">
+                    <div class="calendar-controls">
+                        <button id="prev-month">←</button>
+                        <h3 id="calendar-month">March 2026</h3>
+                        <button id="next-month">→</button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid">
+                        <!-- Full month grid -->
+                    </div>
                 </div>
+
                 <div class="calendar-legend">
                     <span class="legend-item"><span class="dot grant"></span> Grant Deadline</span>
                     <span class="legend-item"><span class="dot task"></span> Task Due</span>
@@ -510,6 +528,7 @@
                     <span class="legend-item"><span class="dot chat"></span> From Chat</span>
                     <span class="legend-item"><span class="dot system"></span> System</span>
                 </div>
+
                 <div class="upcoming-list">
                     <h4>Up Next (7 Days)</h4>
                     <ul id="upcoming-events"></ul>
@@ -668,6 +687,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=10"></script>
+    <script src="js/dashboard.js?v=11"></script>
 </body>
 </html>

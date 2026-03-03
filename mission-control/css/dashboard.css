@@ -964,9 +964,62 @@ body {
     color: var(--text-secondary);
 }
 
+.calendar-top-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+}
+
+.rolling-6days {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.rolling-day {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.rolling-day .day-title {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+}
+
+.rolling-day ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rolling-day li {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-time {
+    color: var(--accent-cyan);
+    font-family: monospace;
+    margin-right: 0.4rem;
+}
+
 @media (max-width: 768px) {
     .dashboard-row {
         grid-template-columns: 1fr;
+    }
+
+    .calendar-top-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rolling-6days {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
     }
     
     .pipeline-board {

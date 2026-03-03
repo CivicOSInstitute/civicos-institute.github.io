@@ -905,6 +905,8 @@ class MissionControl {
     async loadCalendarData() {
         // Auto-populate calendar from all data sources
         const events = await this.gatherCalendarEvents();
+        this.renderTodayByTime(events);
+        this.renderRollingSixDays(events);
         this.renderCalendar(events);
         this.renderUpcomingEvents(events);
     }
@@ -921,6 +923,7 @@ class MissionControl {
                 // Add CRM follow-up dates
                 events.push({
                     date: '2026-03-05',
+                    time: '10:00',
                     title: 'Follow up: Cindy Cerbone',
                     type: 'crm',
                     source: 'CRM'
@@ -930,33 +933,74 @@ class MissionControl {
         
         // 2. Task Due Dates (from synced data)
         events.push(
-            { date: '2026-03-03', title: 'Task: Review prospectus', type: 'task', source: 'Tasks' },
-            { date: '2026-03-04', title: 'Task: Email Knight Foundation', type: 'task', source: 'Tasks' },
-            { date: '2026-03-06', title: 'Task: Update website', type: 'task', source: 'Tasks' },
-            { date: '2026-03-07', title: 'Task: Social media posts', type: 'task', source: 'Tasks' },
-            { date: '2026-03-09', title: 'Task: Board meeting prep', type: 'task', source: 'Tasks' }
+            { date: '2026-03-03', time: '09:00', title: 'Task: Review prospectus', type: 'task', source: 'Tasks' },
+            { date: '2026-03-04', time: '11:00', title: 'Task: Email Knight Foundation', type: 'task', source: 'Tasks' },
+            { date: '2026-03-06', time: '14:00', title: 'Task: Update website', type: 'task', source: 'Tasks' },
+            { date: '2026-03-07', time: '15:00', title: 'Task: Social media posts', type: 'task', source: 'Tasks' },
+            { date: '2026-03-09', time: '10:30', title: 'Task: Board meeting prep', type: 'task', source: 'Tasks' }
         );
         
         // 3. Grant Deadlines (from database)
         events.push(
-            { date: '2026-03-30', title: 'Grant Due: Miami-Dade Cultural Affairs', type: 'grant', source: 'Grants' },
-            { date: '2026-04-15', title: 'Grant Due: Knight Foundation Civic Tech', type: 'grant', source: 'Grants' }
+            { date: '2026-03-30', time: '17:00', title: 'Grant Due: Miami-Dade Cultural Affairs', type: 'grant', source: 'Grants' },
+            { date: '2026-04-15', time: '17:00', title: 'Grant Due: Knight Foundation Civic Tech', type: 'grant', source: 'Grants' }
         );
         
         // 4. System/Scheduled Events (from HEARTBEAT)
         events.push(
-            { date: '2026-03-03', title: 'YouTube Monitor 6AM', type: 'system', source: 'System' },
-            { date: '2026-03-03', title: 'YouTube Monitor 12PM', type: 'system', source: 'System' },
-            { date: '2026-03-03', title: 'YouTube Monitor 5PM', type: 'system', source: 'System' },
-            { date: '2026-03-03', title: 'Daily Briefing 6AM', type: 'system', source: 'System' },
-            { date: '2026-03-03', title: 'Daily Briefing 6PM', type: 'system', source: 'System' },
-            { date: '2026-03-03', title: 'Email Alerts (every 15min)', type: 'system', source: 'System' }
+            { date: '2026-03-03', time: '06:00', title: 'YouTube Monitor 6AM', type: 'system', source: 'System' },
+            { date: '2026-03-03', time: '12:00', title: 'YouTube Monitor 12PM', type: 'system', source: 'System' },
+            { date: '2026-03-03', time: '17:00', title: 'YouTube Monitor 5PM', type: 'system', source: 'System' },
+            { date: '2026-03-03', time: '06:00', title: 'Daily Briefing 6AM', type: 'system', source: 'System' },
+            { date: '2026-03-03', time: '18:00', title: 'Daily Briefing 6PM', type: 'system', source: 'System' },
+            { date: '2026-03-03', time: '00:15', title: 'Email Alerts (every 15min)', type: 'system', source: 'System' }
         );
         
         // 5. Chat-detected dates (would be extracted from conversation)
         // This would integrate with chat parsing to detect dates mentioned
         
         return events.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    renderTodayByTime(events) {
+        const list = document.getElementById('today-events');
+        if (!list) return;
+        const today = new Date().toISOString().slice(0,10);
+        const todays = events
+            .filter(e => e.date === today)
+            .sort((a,b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+
+        list.innerHTML = todays.length
+            ? todays.map(e => `<li><span class="event-time">${e.time || '--:--'}</span>${e.title} <span class="event-source">${e.source}</span></li>`).join('')
+            : '<li>No events today</li>';
+    }
+
+    renderRollingSixDays(events) {
+        const wrap = document.getElementById('rolling-6days');
+        if (!wrap) return;
+        const today = new Date();
+
+        const days = [];
+        for (let i = 0; i < 6; i++) {
+            const d = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+            const key = d.toISOString().slice(0,10);
+            const label = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+            const dayEvents = events
+                .filter(e => e.date === key)
+                .sort((a,b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+            days.push({ key, label, events: dayEvents });
+        }
+
+        wrap.innerHTML = days.map(d => `
+            <div class="rolling-day">
+                <div class="day-title">${d.label}</div>
+                <ul>
+                    ${d.events.length
+                        ? d.events.slice(0,5).map(e => `<li><span class="event-time">${e.time || '--:--'}</span>${e.title}</li>`).join('')
+                        : '<li>No events</li>'}
+                </ul>
+            </div>
+        `).join('');
     }
 
     renderCalendar(events) {
