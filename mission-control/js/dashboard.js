@@ -741,16 +741,17 @@ class MissionControl {
                 const source = esc(stripHtml(s.source));
                 const summary = esc(stripHtml(s.summary));
                 const date = esc((s.published_at || '').slice(0, 10));
-                const url = String(s.url || '#');
+                const url = esc(encodeURI(String(s.url || '#')));
+                const sid = Number(s.id) || 0;
                 return `
-                <div class="news-card ${s.read ? 'read' : ''}" data-id="${s.id}">
+                <div class="news-card ${s.read ? 'read' : ''}" data-id="${sid}">
                     <div class="news-category">${category}</div>
                     <h4 class="news-title"><a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h4>
                     <div class="news-meta">${source} • ${date}</div>
                     <p class="news-summary">${summary}</p>
                     <div class="news-actions">
-                        <button class="btn-icon" onclick="missionControl.markNewsRead(${s.id})" title="Mark read">✓</button>
-                        <button class="btn-icon ${s.bookmarked ? 'active' : ''}" onclick="missionControl.toggleNewsBookmark(${s.id})" title="Bookmark">★</button>
+                        <button class="btn-icon" onclick="missionControl.markNewsRead(${sid})" title="Mark read">✓</button>
+                        <button class="btn-icon ${s.bookmarked ? 'active' : ''}" onclick="missionControl.toggleNewsBookmark(${sid})" title="Bookmark">★</button>
                     </div>
                 </div>
             `;}).join('');
