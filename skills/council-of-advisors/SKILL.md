@@ -53,13 +53,13 @@ Queue integration pattern (required):
 4. Proceed to synthesis once all six results are present (or explicit timeout/error handled).
 5. Delete consumed callback result files after ingest.
 
-Model assignment + fallback:
-- Seat 1 MAGNUS → `qwen2.5-coder:32b-instruct-q3_K_L` | fallback: `openai-codex/gpt-5.3-codex`
-- Seat 2 VERA → `local/qwen-14b` (now routes to `qwen3:14b`) | fallback: `openai-codex/gpt-5.3-codex`
-- Seat 3 DANTE → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `local/qwen-14b`
-- Seat 4 ELEANOR → `local/qwen-14b` (now routes to `qwen3:14b`) | fallback: `openai-codex/gpt-5.3-codex`
-- Seat 5 RAY → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `local/qwen-14b`
-- Seat 6 MIRA → `mistral-small3.2:24b-instruct-2506-q4_K_M` | fallback: `local/qwen-14b`
+Model assignment + fallback (updated for current local benchmarks/personality tests):
+- Seat 1 MAGNUS → `qwen3:14b` | fallback: `deepseek-coder:6.7b`
+- Seat 2 VERA → `qwen3:14b` | fallback: `llama3.1:8b`
+- Seat 3 DANTE → `qwen3.5:9b` | fallback: `qwen3:14b`
+- Seat 4 ELEANOR → `llama3.1:8b` | fallback: `qwen3:14b`
+- Seat 5 RAY → `qwen3.5:9b` | fallback: `llama3.1:8b`
+- Seat 6 MIRA → `phi3:mini` | fallback: `llama3.1:8b`
 
 Operating intent:
 - Run all six advisor seats locally first via queue serialization.
@@ -67,10 +67,11 @@ Operating intent:
 - Burt seat (Seat 7) owns final synthesis authority.
 
 Expected sequential runtime (target):
-- 3× Mistral seats: ~50–70s total
-- 2× Qwen3-14B seats (via `local/qwen-14b`): ~25–45s total
-- 1× Qwen-Coder-32B seat: ~60–90s total
-- Full council: ~2.5–4 minutes (acceptable and preferred over failed parallel runs)
+- 2× Qwen3.5-9B seats: ~25–45s total
+- 2× Qwen3-14B seats: ~20–40s total
+- 1× Llama3.1-8B seat: ~12–25s total
+- 1× Phi3-mini seat: ~5–12s total
+- Full council: ~1.5–3 minutes (preferred, lower-cost local-first profile)
 
 ### STEP 3 — Cross-pollination (optional)
 Trigger only if 2+ advisors conflict sharply on a key point.
