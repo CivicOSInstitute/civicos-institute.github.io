@@ -429,18 +429,22 @@ class MissionControl {
     renderHoursSummary(hours) {
         const now = new Date();
         const weekStart = new Date(now - now.getDay() * 24 * 60 * 60 * 1000);
-        
+        const toHours = (v) => {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : 0;
+        };
+
         const thisWeek = hours.filter(h => new Date(h.date) >= weekStart)
-            .reduce((sum, h) => sum + parseFloat(h.hours), 0);
+            .reduce((sum, h) => sum + toHours(h.hours), 0);
         const thisMonth = hours.filter(h => {
             const d = new Date(h.date);
             return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-        }).reduce((sum, h) => sum + parseFloat(h.hours), 0);
-        
-        const volunteer = hours.filter(h => h.type === 'volunteer')
-            .reduce((sum, h) => sum + parseFloat(h.hours), 0);
-        const work = hours.filter(h => h.type === 'work')
-            .reduce((sum, h) => sum + parseFloat(h.hours), 0);
+        }).reduce((sum, h) => sum + toHours(h.hours), 0);
+
+        const volunteer = hours.filter(h => String(h.type || '').toLowerCase() === 'volunteer')
+            .reduce((sum, h) => sum + toHours(h.hours), 0);
+        const work = hours.filter(h => String(h.type || '').toLowerCase() === 'work')
+            .reduce((sum, h) => sum + toHours(h.hours), 0);
         
         document.getElementById('hours-this-week').textContent = `${thisWeek.toFixed(1)}h`;
         document.getElementById('hours-this-month').textContent = `${thisMonth.toFixed(1)}h`;
@@ -462,18 +466,21 @@ class MissionControl {
             return;
         }
         
-        list.innerHTML = sorted.map(h => `
+        list.innerHTML = sorted.map(h => {
+            const n = Number(h.hours);
+            const safeHours = Number.isFinite(n) ? n.toFixed(1) : '0.0';
+            return `
             <li class="hours-entry ${h.type}" data-id="${h.id}">
                 <span class="hours-date">${h.date}</span>
                 <span class="hours-desc">${h.description}</span>
                 <span class="hours-cat">${h.category}</span>
-                <span class="hours-amount">${h.hours}h</span>
+                <span class="hours-amount">${safeHours}h</span>
                 <span class="hours-actions">
                     <button class="btn-icon edit" onclick="missionControl.editHours(${h.id})" title="Edit">✏️</button>
                     <button class="btn-icon delete" onclick="missionControl.deleteHours(${h.id})" title="Delete">🗑️</button>
                 </span>
             </li>
-        `).join('');
+        `;}).join('');
     }
 
     editHours(id) {
@@ -523,7 +530,8 @@ class MissionControl {
 
     setupHoursForm() {
         const form = document.getElementById('hours-form');
-        if (!form) return;
+        if (!form || form.dataset.bound === '1') return;
+        form.dataset.bound = '1';
 
         // Set default date to today
         const dateInput = document.getElementById('hours-date');
@@ -534,11 +542,18 @@ class MissionControl {
 
             const editingId = form.dataset.editing;
 
+            const dateVal = document.getElementById('hours-date').value;
+            const hoursVal = Number(document.getElementById('hours-amount').value);
+            if (!dateVal || !Number.isFinite(hoursVal) || hoursVal <= 0) {
+                alert('Please enter a valid date and hours value > 0.');
+                return;
+            }
+
             const entry = {
                 id: editingId ? parseInt(editingId) : Date.now(),
-                date: document.getElementById('hours-date').value,
-                hours: parseFloat(document.getElementById('hours-amount').value),
-                type: document.getElementById('hours-type').value,
+                date: dateVal,
+                hours: Number(hoursVal.toFixed(2)),
+                type: String(document.getElementById('hours-type').value || '').toLowerCase(),
                 category: document.getElementById('hours-category').value,
                 description: document.getElementById('hours-desc').value,
                 created: new Date().toISOString()
