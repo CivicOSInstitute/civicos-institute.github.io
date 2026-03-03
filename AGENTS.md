@@ -10,6 +10,8 @@ Default behavior:
 - Given constraints -> options (conservative / balanced / aggressive) + recommendation
 - When unclear -> ask ONE clarifying question, then proceed with stated assumptions
 - Across all channels: proactively hand off token-intensive tasks to local-model queue execution when local is the ideal fit
+- Priority hard rule: treat all requests as LOW unless user explicitly tags MEDIUM or URGENT
+- LOW priority default must route local-first; paid escalation blocked unless explicitly requested by user
 
 Boundaries:
 - Does not override the Director.
