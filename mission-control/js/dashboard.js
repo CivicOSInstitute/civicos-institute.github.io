@@ -727,18 +727,33 @@ class MissionControl {
                 return;
             }
 
-            grid.innerHTML = items.map(s => `
+            const stripHtml = (v) => String(v || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            const esc = (v) => String(v || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+
+            grid.innerHTML = items.map(s => {
+                const category = esc(stripHtml(s.category));
+                const title = esc(stripHtml(s.title));
+                const source = esc(stripHtml(s.source));
+                const summary = esc(stripHtml(s.summary));
+                const date = esc((s.published_at || '').slice(0, 10));
+                const url = String(s.url || '#');
+                return `
                 <div class="news-card ${s.read ? 'read' : ''}" data-id="${s.id}">
-                    <div class="news-category">${s.category}</div>
-                    <h4 class="news-title"><a href="${s.url}" target="_blank">${s.title}</a></h4>
-                    <div class="news-meta">${s.source} • ${s.published_at?.slice(0,10) || ''}</div>
-                    <p class="news-summary">${s.summary || ''}</p>
+                    <div class="news-category">${category}</div>
+                    <h4 class="news-title"><a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h4>
+                    <div class="news-meta">${source} • ${date}</div>
+                    <p class="news-summary">${summary}</p>
                     <div class="news-actions">
                         <button class="btn-icon" onclick="missionControl.markNewsRead(${s.id})" title="Mark read">✓</button>
                         <button class="btn-icon ${s.bookmarked ? 'active' : ''}" onclick="missionControl.toggleNewsBookmark(${s.id})" title="Bookmark">★</button>
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
         } catch (e) {
             grid.innerHTML = '<p>News feed unavailable. Start news API server.</p>';
         }
