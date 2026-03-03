@@ -30,7 +30,7 @@
             <button class="nav-btn" data-module="finance">Finance</button>
             <button class="nav-btn" data-module="calendar">Calendar</button>
             <button class="nav-btn" data-module="council">Advisory Council</button>
-            <button class="nav-btn" data-module="hours">Hour Tracking</button>
+            <button class="nav-btn" data-module="hours">Payroll & Expenses</button>
         </nav>
 
         <main class="mission-dashboard">
@@ -264,6 +264,7 @@
                             <li>No unpaid invoices</li>
                         </ul>
                         <button class="btn-primary" onclick="scanEmails()">📧 Scan Emails Now</button>
+                        <div id="scan-status" style="margin-top:.5rem;font-size:.85rem;color:#a0a0b0">Scan idle</div>
 
                         <hr style="margin:1rem 0;border-color:#2a2a3e;opacity:.4">
                         <h3>Manual Entry (with receipt/invoice attachment)</h3>
@@ -454,8 +455,8 @@
             </section>
 
             <section id="hours" class="module">
-                <h2>⏱️ Hour Tracking</h2>
-                <p class="module-desc">Track work and volunteer hours for CivicOS Institute</p>
+                <h2>⏱️ Payroll & Expenses</h2>
+                <p class="module-desc">Track work/volunteer hours and operational expenses in one place</p>
                 
                 <div class="metrics-grid">
                     <div class="metric-card">
@@ -537,6 +538,65 @@
                         <p>Chart will appear as you log hours</p>
                     </div>
                 </div>
+
+                <div class="dashboard-row" style="margin-top:1rem;">
+                    <div class="panel">
+                        <h3>Expenses Tracker</h3>
+                        <div class="metrics-grid" style="margin-bottom:1rem;">
+                            <div class="metric-card expense">
+                                <h3>This Week Expenses</h3>
+                                <div class="metric-value" id="exp-this-week">$0.00</div>
+                                <div class="metric-trend">Rolling 7 days</div>
+                            </div>
+                            <div class="metric-card expense">
+                                <h3>This Month Expenses</h3>
+                                <div class="metric-value" id="exp-this-month">$0.00</div>
+                                <div class="metric-trend">Calendar month</div>
+                            </div>
+                        </div>
+                        <form id="expenses-form" class="hours-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" id="exp-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="exp-amount" min="0.01" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="exp-category" required>
+                                        <option value="Software">Software</option>
+                                        <option value="Services">Services</option>
+                                        <option value="Travel">Travel</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Office">Office</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Vendor</label>
+                                    <input type="text" id="exp-vendor" placeholder="Vendor name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" id="exp-desc" placeholder="What was purchased?" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Add Expense</button>
+                        </form>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Recent Expenses <span class="entry-count" id="exp-entry-count"></span></h3>
+                        <ul id="expenses-list" class="hours-list">
+                            <li>No expenses logged yet</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
         </main>
 
@@ -546,6 +606,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=4"></script>
+    <script src="js/dashboard.js?v=7"></script>
 </body>
 </html>

@@ -355,6 +355,12 @@ class MissionControl {
         this.renderHoursSummary(hours);
         this.renderHoursList(hours);
         this.setupHoursForm();
+
+        // Load expenses tracker data on same page
+        const expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
+        this.renderExpenseSummary(expenses);
+        this.renderExpenseList(expenses);
+        this.setupExpensesForm();
     }
 
     renderHoursSummary(hours) {
@@ -507,6 +513,89 @@ class MissionControl {
         cancelBtn.onclick = () => this.cancelEdit();
         cancelBtn.id = 'cancel-edit-btn';
         form.appendChild(cancelBtn);
+    }
+
+    renderExpenseSummary(expenses) {
+        const now = new Date();
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const weekTotal = expenses
+            .filter(e => new Date(e.date) >= weekAgo)
+            .reduce((s, e) => s + Number(e.amount || 0), 0);
+        const monthTotal = expenses
+            .filter(e => {
+                const d = new Date(e.date);
+                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+            })
+            .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+        const w = document.getElementById('exp-this-week');
+        const m = document.getElementById('exp-this-month');
+        if (w) w.textContent = `$${weekTotal.toFixed(2)}`;
+        if (m) m.textContent = `$${monthTotal.toFixed(2)}`;
+    }
+
+    renderExpenseList(expenses) {
+        const list = document.getElementById('expenses-list');
+        const count = document.getElementById('exp-entry-count');
+        if (!list) return;
+
+        if (count) count.textContent = `(${expenses.length} total)`;
+
+        const sorted = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 15);
+        if (!sorted.length) {
+            list.innerHTML = '<li>No expenses logged yet</li>';
+            return;
+        }
+
+        list.innerHTML = sorted.map(e => `
+            <li class="hours-entry work" data-id="${e.id}">
+                <span class="hours-date">${e.date}</span>
+                <span class="hours-desc">${e.description}</span>
+                <span class="hours-cat">${e.category}</span>
+                <span class="hours-amount">$${Number(e.amount).toFixed(2)}</span>
+                <span class="hours-actions">
+                    <button class="btn-icon delete" onclick="missionControl.deleteExpense(${e.id})" title="Delete">🗑️</button>
+                </span>
+            </li>
+        `).join('');
+    }
+
+    deleteExpense(id) {
+        if (!confirm('Delete this expense?')) return;
+        let expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
+        expenses = expenses.filter(e => e.id !== id);
+        localStorage.setItem('civicExpenses', JSON.stringify(expenses));
+        this.renderExpenseSummary(expenses);
+        this.renderExpenseList(expenses);
+    }
+
+    setupExpensesForm() {
+        const form = document.getElementById('expenses-form');
+        if (!form || form.dataset.bound === '1') return;
+        form.dataset.bound = '1';
+
+        const dateInput = document.getElementById('exp-date');
+        if (dateInput) dateInput.valueAsDate = new Date();
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const entry = {
+                id: Date.now(),
+                date: document.getElementById('exp-date').value,
+                amount: parseFloat(document.getElementById('exp-amount').value),
+                category: document.getElementById('exp-category').value,
+                vendor: document.getElementById('exp-vendor').value,
+                description: document.getElementById('exp-desc').value,
+                created: new Date().toISOString()
+            };
+            const expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
+            expenses.push(entry);
+            localStorage.setItem('civicExpenses', JSON.stringify(expenses));
+            this.renderExpenseSummary(expenses);
+            this.renderExpenseList(expenses);
+            form.reset();
+            if (dateInput) dateInput.valueAsDate = new Date();
+        });
     }
 
     async loadCouncilData() {
@@ -854,18 +943,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global button hook from finance panel
     window.scanEmails = async () => {
         const btn = document.querySelector('button[onclick="scanEmails()"]');
-        if (btn) {
-            const prev = btn.textContent;
-            btn.textContent = 'Scanning...';
-            btn.disabled = true;
-            try {
-                // Static dashboard mode: trigger by instructing operator script path
-                const msg = 'Run: python3 scripts/invoice_scanner.py';
-                alert(`Invoice scanner trigger available. ${msg}`);
-            } finally {
+        const status = document.getElementById('scan-status');
+        if (!btn) return;
+
+        const prev = btn.textContent;
+        btn.textContent = 'Scanning...';
+        btn.disabled = true;
+
+        let timer = null;
+        try {
+            if (status) status.textContent = 'Starting scanner...';
+
+            await fetch('http://localhost:8876/api/finance/scan-email', { method: 'POST' });
+
+            timer = setInterval(async () => {
+                try {
+                    const r = await fetch('http://localhost:8876/api/finance/scan-status');
+                    const s = await r.json();
+                    if (status) {
+                        status.textContent = `Scanning: ${s.current || 'working'} (${s.progress || 0}%)`;
+                    }
+                    if (s.state === 'done' || s.state === 'idle' || s.state === 'error') {
+                        clearInterval(timer);
+                        timer = null;
+                        if (status) {
+                            status.textContent = s.state === 'error'
+                              ? `Scan error: ${s.current || 'unknown error'}`
+                              : `Scan complete. Found ${s.found || 0} invoices.`;
+                        }
+                    }
+                } catch (_) {}
+            }, 1200);
+        } catch (e) {
+            if (status) status.textContent = `Scan failed: ${e.message}`;
+        } finally {
+            setTimeout(() => {
                 btn.textContent = prev;
                 btn.disabled = false;
-            }
+            }, 1500);
         }
     };
 });

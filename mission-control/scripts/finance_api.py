@@ -4,11 +4,14 @@ from pathlib import Path
 import sqlite3
 from werkzeug.utils import secure_filename
 from datetime import datetime
+import subprocess
+import json
 
 ROOT = Path(__file__).resolve().parents[1]
 DB = ROOT / 'data' / 'finance.db'
 ATTACH = ROOT / 'data' / 'attachments'
 ATTACH.mkdir(parents=True, exist_ok=True)
+SCAN_STATUS = ROOT / 'data' / 'scan-status.json'
 
 ALLOWED = {'.jpg', '.jpeg', '.png', '.webp', '.pdf'}
 
@@ -97,6 +100,30 @@ def manual_entry():
 @app.get('/api/finance/attachment/<name>')
 def attachment(name):
     return send_from_directory(ATTACH, name, as_attachment=False)
+
+
+@app.post('/api/finance/scan-email')
+def scan_email_start():
+    try:
+        SCAN_STATUS.write_text(json.dumps({"state": "starting", "current": "launching scanner", "progress": 0}))
+        logf = open(ROOT / 'scan_email.log', 'a')
+        proc = subprocess.Popen([
+            str(ROOT / '.venv' / 'bin' / 'python') if (ROOT / '.venv' / 'bin' / 'python').exists() else 'python3',
+            str(ROOT / 'scripts' / 'invoice_scanner.py')
+        ], cwd=str(ROOT), stdout=logf, stderr=logf)
+        return jsonify({"ok": True, "pid": proc.pid})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+
+@app.get('/api/finance/scan-status')
+def scan_status():
+    if SCAN_STATUS.exists():
+        try:
+            return jsonify(json.loads(SCAN_STATUS.read_text()))
+        except Exception:
+            pass
+    return jsonify({"state": "idle", "current": "Scan idle", "progress": 0})
 
 
 if __name__ == '__main__':
