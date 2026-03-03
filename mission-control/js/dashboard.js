@@ -704,18 +704,23 @@ class MissionControl {
 
         const category = document.getElementById('news-category-filter')?.value || '';
         const search = document.getElementById('news-search')?.value || '';
+        const sort = document.getElementById('news-sort')?.value || 'date_desc';
 
         try {
             let url = 'http://localhost:8877/api/news/stories';
             const params = [];
             if (category) params.push(`category=${encodeURIComponent(category)}`);
             if (search) params.push(`search=${encodeURIComponent(search)}`);
+            if (sort) params.push(`sort=${encodeURIComponent(sort)}`);
             if (params.length) url += '?' + params.join('&');
 
             const r = await fetch(url);
             if (!r.ok) throw new Error('news unavailable');
             const j = await r.json();
-            const items = j.items || [];
+            let items = j.items || [];
+
+            // Client-side sort fallback
+            items = this.sortNewsItems(items, sort);
 
             if (!items.length) {
                 grid.innerHTML = '<p>No news stories found.</p>';
@@ -739,9 +744,28 @@ class MissionControl {
         }
     }
 
+    sortNewsItems(items, sortMode) {
+        const sorted = [...items];
+        switch (sortMode) {
+            case 'date_asc':
+                return sorted.sort((a, b) => (a.published_at || '').localeCompare(b.published_at || ''));
+            case 'date_desc':
+                return sorted.sort((a, b) => (b.published_at || '').localeCompare(a.published_at || ''));
+            case 'alpha_asc':
+                return sorted.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+            case 'alpha_desc':
+                return sorted.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+            case 'source':
+                return sorted.sort((a, b) => (a.source || '').localeCompare(b.source || ''));
+            default:
+                return sorted;
+        }
+    }
+
     setupNewsFilters() {
         const cat = document.getElementById('news-category-filter');
         const search = document.getElementById('news-search');
+        const sort = document.getElementById('news-sort');
         if (cat && !cat.dataset.bound) {
             cat.dataset.bound = '1';
             cat.addEventListener('change', () => this.renderNewsStories());
@@ -753,6 +777,10 @@ class MissionControl {
                 clearTimeout(t);
                 t = setTimeout(() => this.renderNewsStories(), 300);
             });
+        }
+        if (sort && !sort.dataset.bound) {
+            sort.dataset.bound = '1';
+            sort.addEventListener('change', () => this.renderNewsStories());
         }
     }
 

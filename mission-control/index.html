@@ -506,6 +506,13 @@
                             <option value="policy">Policy</option>
                             <option value="technology">Technology</option>
                         </select>
+                        <select id="news-sort">
+                            <option value="date_desc">Date ↓ (Newest)</option>
+                            <option value="date_asc">Date ↑ (Oldest)</option>
+                            <option value="alpha_asc">Title A-Z</option>
+                            <option value="alpha_desc">Title Z-A</option>
+                            <option value="source">Source</option>
+                        </select>
                         <input type="text" id="news-search" placeholder="Search news...">
                         <button class="btn-primary" onclick="refreshNews()">🔄 Refresh</button>
                     </div>
@@ -710,6 +717,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=17"></script>
+    <script src="js/dashboard.js?v=18"></script>
 </body>
 </html>
