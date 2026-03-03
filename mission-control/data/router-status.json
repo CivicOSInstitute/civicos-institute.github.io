@@ -1,0 +1,12 @@
+{
+  "routerFirst": true,
+  "fallbackModel": "Local QA (qwen3:14b) via QA-only gate",
+  "fallbackModelId": "qwen3:14b",
+  "paidEscalationModels": [
+    "openai-codex/gpt-5.3-codex",
+    "moonshot/kimi-k2.5",
+    "openai/gpt-4o"
+  ],
+  "source": "skills/model-router/scripts/ai-router.py (QA-only gate active)",
+  "updatedAt": "2026-03-03T12:58:00-05:00"
+}

@@ -235,7 +235,33 @@ def router_last10():
         return 'General'
 
     logs = [Path('/Users/AI-OPS/.openclaw/logs/autonomous-agent.log'), Path('/Users/AI-OPS/.openclaw/logs/router-queue.log')]
+    telemetry = Path('/Users/AI-OPS/.openclaw/workspace/data/telemetry/router_telemetry.jsonl')
     entries = []
+
+    # Prefer structured telemetry first
+    if telemetry.exists():
+        for line in telemetry.read_text(errors='ignore').splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                r = json.loads(line)
+            except Exception:
+                continue
+            ts = r.get('timestamp') or ''
+            route = (r.get('route') or '').lower()
+            model = r.get('model') or r.get('model_used') or ''
+            reason = r.get('reason') or r.get('category') or ''
+            if ts and model:
+                entries.append({
+                    'time': ts,
+                    'request_type': classify(reason),
+                    'model': model,
+                    'route': route or ('local' if ':' in model else 'escalate'),
+                    'reason': reason
+                })
+
+    # Backfill from legacy logs
     for p in logs:
         if not p.exists():
             continue
@@ -254,7 +280,16 @@ def router_last10():
                     'reason': reason
                 })
 
-    return jsonify({'items': entries[-10:]})
+    seen = set()
+    uniq = []
+    for e in sorted(entries, key=lambda x: x.get('time', '')):
+        k = (e.get('time'), e.get('model'), e.get('route'), e.get('reason'))
+        if k in seen:
+            continue
+        seen.add(k)
+        uniq.append(e)
+
+    return jsonify({'items': uniq[-10:]})
 
 
 if __name__ == '__main__':

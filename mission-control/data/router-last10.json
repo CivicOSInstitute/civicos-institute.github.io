@@ -6,6 +6,41 @@
       "model": "qwen3.5:4b",
       "route": "local",
       "reason": "Multimodal task - vision + text (The Integrator)"
+    },
+    {
+      "time": "2026-03-03T10:50:24.939453",
+      "request_type": "Coding",
+      "model": "phi3:mini",
+      "route": "local",
+      "reason": "coding"
+    },
+    {
+      "time": "2026-03-03T10:50:43.675934",
+      "request_type": "Writing",
+      "model": "phi3:mini",
+      "route": "local",
+      "reason": "writing"
+    },
+    {
+      "time": "2026-03-03T10:50:49.126205",
+      "request_type": "General",
+      "model": "deepseek-coder:6.7b",
+      "route": "local",
+      "reason": "tool_use"
+    },
+    {
+      "time": "2026-03-03T10:50:55.828606",
+      "request_type": "General",
+      "model": "phi3:mini",
+      "route": "local",
+      "reason": "persona"
+    },
+    {
+      "time": "2026-03-03T15:21:14.749006",
+      "request_type": "General",
+      "model": "deepseek-coder:6.7b",
+      "route": "local",
+      "reason": ""
     }
   ]
 }

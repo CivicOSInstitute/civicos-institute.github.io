@@ -6,6 +6,7 @@ LOGS = [
     Path('/Users/AI-OPS/.openclaw/logs/autonomous-agent.log'),
     Path('/Users/AI-OPS/.openclaw/logs/router-queue.log')
 ]
+TELEMETRY = Path('/Users/AI-OPS/.openclaw/workspace/data/telemetry/router_telemetry.jsonl')
 OUT = Path('/Users/AI-OPS/.openclaw/workspace/mission-control/data/router-last10.json')
 
 
@@ -22,6 +23,31 @@ def classify(reason: str) -> str:
     return 'General'
 
 entries = []
+
+# 1) Prefer structured telemetry (most accurate)
+if TELEMETRY.exists():
+    for line in TELEMETRY.read_text(errors='ignore').splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            r = json.loads(line)
+        except Exception:
+            continue
+        ts = r.get('timestamp') or ''
+        route = (r.get('route') or '').lower()
+        model = r.get('model') or r.get('model_used') or ''
+        reason = r.get('reason') or r.get('category') or ''
+        if ts and model:
+            entries.append({
+                'time': ts,
+                'request_type': classify(reason),
+                'model': model,
+                'route': route or ('local' if ':' in model else 'escalate'),
+                'reason': reason
+            })
+
+# 2) Backfill from legacy logs
 for p in LOGS:
     if not p.exists():
         continue
@@ -40,8 +66,16 @@ for p in LOGS:
                 'reason': reason
             })
 
-# keep order and tail 10
-items = entries[-10:]
+# de-dup + sort + tail 10
+seen = set()
+uniq = []
+for e in sorted(entries, key=lambda x: x.get('time', '')):
+    k = (e.get('time'), e.get('model'), e.get('route'), e.get('reason'))
+    if k in seen:
+        continue
+    seen.add(k)
+    uniq.append(e)
+items = uniq[-10:]
 OUT.parent.mkdir(parents=True, exist_ok=True)
 OUT.write_text(json.dumps({'items': items}, indent=2))
 print(f'wrote {OUT} with {len(items)} items')
