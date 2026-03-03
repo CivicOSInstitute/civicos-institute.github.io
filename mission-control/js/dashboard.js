@@ -228,6 +228,7 @@ class MissionControl {
             
             // Recent transactions
             this.renderTransactions(summary.transactions || []);
+            this.setupManualEntryForm();
             
         } catch (e) {
             console.log('Finance data unavailable');
@@ -239,6 +240,18 @@ class MissionControl {
     }
 
     async fetchFinanceSummary(year, month) {
+        try {
+            // Prefer live API if running
+            const live = await fetch('http://localhost:8876/api/finance/entries');
+            if (live.ok) {
+                const entries = await live.json();
+                const transactions = entries.items || [];
+                const income = transactions.filter(t => t.type === 'income').reduce((s,t)=>s+Number(t.amount||0),0);
+                const expenses = transactions.filter(t => t.type === 'expense').reduce((s,t)=>s+Number(t.amount||0),0);
+                return { income, expenses, net: income - expenses, transactions };
+            }
+        } catch (e) {}
+
         try {
             const resp = await fetch('/data/finance-status.json?v=1');
             if (!resp.ok) throw new Error('finance status not found');
@@ -275,23 +288,65 @@ class MissionControl {
         }
     }
 
+    setupManualEntryForm() {
+        const form = document.getElementById('manual-entry-form');
+        if (!form || form.dataset.bound === '1') return;
+        form.dataset.bound = '1';
+
+        const d = document.getElementById('me-date');
+        if (d && !d.value) d.valueAsDate = new Date();
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('me-status');
+            const btn = document.getElementById('me-submit');
+            try {
+                btn.disabled = true;
+                if (status) status.textContent = 'Saving...';
+
+                const fd = new FormData(form);
+                const resp = await fetch('http://localhost:8876/api/finance/manual-entry', { method: 'POST', body: fd });
+                if (!resp.ok) {
+                    const txt = await resp.text();
+                    throw new Error(txt || 'save failed');
+                }
+
+                form.reset();
+                if (d) d.valueAsDate = new Date();
+                if (status) status.textContent = 'Saved.';
+                await this.loadFinanceData();
+            } catch (err) {
+                if (status) status.textContent = `Error: ${err.message}`;
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    }
+
     renderTransactions(transactions) {
         const tbody = document.querySelector('#transactions-table tbody');
         if (!tbody) return;
-        
+
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">No transactions yet</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No transactions yet</td></tr>';
             return;
         }
-        
-        tbody.innerHTML = transactions.map(tx => `
+
+        tbody.innerHTML = transactions.map(tx => {
+            const amt = Number(tx.amount || 0);
+            const attachmentUrl = tx.attachment_url || tx.receipt_path || '';
+            const attachCell = attachmentUrl
+                ? `<a href="${attachmentUrl}" target="_blank" title="Open attachment">📎</a>`
+                : '-';
+            return `
             <tr>
-                <td>${tx.date}</td>
-                <td>${tx.description}</td>
-                <td>${tx.category_name || 'Uncategorized'}</td>
-                <td class="${tx.type}">${tx.type === 'income' ? '+' : '-'}$${tx.amount.toFixed(2)}</td>
-            </tr>
-        `).join('');
+                <td>${tx.date || ''}</td>
+                <td>${tx.description || ''}</td>
+                <td>${tx.category_name || tx.category || 'Uncategorized'}</td>
+                <td class="${tx.type || 'expense'}">${(tx.type === 'income' ? '+' : '-')}$${amt.toFixed(2)}</td>
+                <td>${attachCell}</td>
+            </tr>`;
+        }).join('');
     }
 
     async loadHoursData() {
