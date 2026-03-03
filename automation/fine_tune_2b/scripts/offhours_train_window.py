@@ -7,6 +7,7 @@ import sys
 
 ROOT = pathlib.Path('/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b')
 CFG = json.loads((ROOT / 'config/specialists.json').read_text())
+MISSION = ROOT / 'config/mission_plan.json'
 LOG = ROOT / 'logs' / 'offhours_train.log'
 LOG.parent.mkdir(parents=True, exist_ok=True)
 
@@ -19,10 +20,12 @@ def in_window(now: dt.datetime) -> bool:
     return WINDOW_START <= t <= WINDOW_END
 
 
-def pick_specialist(now: dt.datetime) -> str:
-    specs = [s['id'] for s in CFG['specialists']]
-    # Rotate one specialist per day to keep load predictable.
-    return specs[now.toordinal() % len(specs)]
+def load_wave_specialists() -> list[str]:
+    if not MISSION.exists():
+        return [s['id'] for s in CFG['specialists'][:2]]
+    m = json.loads(MISSION.read_text())
+    wave = str(m.get('active_wave', 1))
+    return m.get('waves', {}).get(wave, [])
 
 
 def run(cmd: list[str]):
@@ -39,10 +42,21 @@ def main():
         print('outside window; skip')
         return 0
 
-    sid = pick_specialist(now)
-    print(f'offhours window active; training {sid}')
-    cmd = [sys.executable, str(ROOT / 'scripts/orchestrate.py'), '--specialist', sid]
-    return run(cmd)
+    sids = load_wave_specialists()
+    if not sids:
+        print('no active wave specialists configured; skip')
+        return 0
+
+    rc = 0
+    for sid in sids:
+        print(f'offhours window active; training {sid}')
+        cmd = [sys.executable, str(ROOT / 'scripts/orchestrate.py'), '--specialist', sid]
+        rc = run(cmd) or rc
+
+    # Sync latest router map after nightly run.
+    sync_cmd = [sys.executable, str(ROOT / 'scripts/push_router_map.py')]
+    rc = run(sync_cmd) or rc
+    return rc
 
 
 if __name__ == '__main__':

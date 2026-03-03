@@ -1,0 +1,13 @@
+{
+  "mission": "qwen3.5-2b-specialist-rollout",
+  "priority": "mission-critical",
+  "window_local_time": "01:00-06:30",
+  "timezone": "America/New_York",
+  "active_wave": 1,
+  "waves": {
+    "1": ["outreach_writer_2b", "ops_formatter_2b"],
+    "2": ["grant_analyst_2b", "policy_qa_guard_2b"]
+  },
+  "advance_rule": "advance when all specialists in active wave have eval pass=true",
+  "started_at": "2026-03-03T18:27:00-05:00"
+}
