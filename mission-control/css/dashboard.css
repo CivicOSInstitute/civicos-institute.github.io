@@ -1016,9 +1016,15 @@ body {
 
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
     align-items: stretch;
+    grid-auto-flow: row;
+}
+
+.news-grid > .news-card {
+    width: 100%;
+    max-width: none;
 }
 
 .news-card {
@@ -1104,6 +1110,18 @@ body {
 
 .news-actions .btn-icon.active {
     color: var(--accent-cyan);
+}
+
+@media (max-width: 1200px) {
+    .news-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 960px) {
+    .news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
