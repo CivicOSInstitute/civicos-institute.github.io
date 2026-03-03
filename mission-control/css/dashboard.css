@@ -1016,43 +1016,40 @@ body {
 
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1rem;
+    align-items: stretch;
 }
 
 .news-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
-    padding: 0.5rem;
+    padding: 0.9rem;
     transition: all 0.2s;
-    max-width: 240px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
 }
 
 .news-card img {
-    max-width: 32px;
-    max-height: 32px;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-right: 0.4rem;
-    float: left;
+    display: none;
 }
 
 .news-card .news-title {
-    font-size: 0.9rem;
-    line-height: 1.2;
-    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
 }
 
 .news-card .news-summary {
-    font-size: 0.75rem;
-    line-height: 1.3;
-    max-height: 3.9em;
+    font-size: 0.82rem;
+    line-height: 1.45;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
 .news-card:hover {
@@ -1101,6 +1098,8 @@ body {
 .news-actions {
     display: flex;
     gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.6rem;
 }
 
 .news-actions .btn-icon.active {
