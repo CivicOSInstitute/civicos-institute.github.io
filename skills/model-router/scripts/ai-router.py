@@ -4,10 +4,10 @@ AI Request Router - Routes all requests through lightweight model first
 Uses Llama 3.1 8B to decide: local handling vs API escalation
 """
 import json
+import os
 import subprocess
 import sys
-from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 
 # Model definitions
 LOCAL_MODEL = "phi3:mini"  # Lightweight classifier - 3x faster, 2x smaller
@@ -24,6 +24,37 @@ LOCAL_SPECIALISTS = {
     "chat": "llama3.1:8b",
     "qa": "qwen3:14b",
 }
+
+# Economy policy: keep paid usage for final QA and truly complex tasks only.
+QA_ONLY_GATE = os.getenv("ROUTER_QA_ONLY_GATE", "1") == "1"
+FORCE_ESCALATE_TAGS = ["use codex", "use kimi", "api override", "premium model"]
+HIGH_PRIORITY_TAGS = ["high priority", "urgent", "critical", "ship today", "final check"]
+
+
+def wants_force_escalation(prompt: str) -> bool:
+    p = (prompt or "").lower()
+    return any(tag in p for tag in FORCE_ESCALATE_TAGS)
+
+
+def is_high_priority(prompt: str) -> bool:
+    p = (prompt or "").lower()
+    return any(tag in p for tag in HIGH_PRIORITY_TAGS)
+
+
+def is_extremely_complex(prompt: str) -> bool:
+    p = (prompt or "").lower()
+    if len(p) > 8000:
+        return True
+    complexity_signals = [
+        "multi-service architecture",
+        "distributed system",
+        "threat model",
+        "formal verification",
+        "incident postmortem",
+        "deep debugging",
+        "end-to-end migration plan",
+    ]
+    return any(sig in p for sig in complexity_signals)
 
 def classify_request(prompt: str) -> Dict:
     """Classify request with lightweight guards before model-based routing."""
@@ -111,20 +142,36 @@ def execute_local(prompt: str, model: str) -> str:
         return f"[Local error: {e} - escalating to API]"
 
 def route_request(prompt: str) -> Dict:
-    """Main routing function"""
+    """Main routing function."""
     # Step 1: Classify
     routing = classify_request(prompt)
-    
-    # Step 2: Execute
+
+    # Step 2: Economy policy gate before execution.
+    if routing["route"] == "escalate" and QA_ONLY_GATE:
+        force_escalate = wants_force_escalation(prompt)
+        complex_ok = is_extremely_complex(prompt)
+        priority_ok = is_high_priority(prompt)
+
+        # Allow paid escalation only for explicit override, extreme complexity,
+        # or high-priority final QA style tasks.
+        if not (force_escalate or complex_ok or priority_ok):
+            routing = {
+                "route": "local",
+                "model": LOCAL_SPECIALISTS["qa"],
+                "reason": f"QA-only gate held escalation ({routing.get('reason', 'policy')})",
+                "qa_review_recommended": True,
+            }
+
+    # Step 3: Execute
     if routing["route"] == "local":
         output = execute_local(prompt, routing["model"])
         routing["output"] = output
         routing["cost"] = "$0.00"
     else:
-        # Return escalation info - main agent will handle API call
+        # Return escalation info - main agent/control plane handles paid model call.
         routing["output"] = f"[ESCALATE to {routing['model']}]"
         routing["cost"] = "API_CALL_REQUIRED"
-    
+
     return routing
 
 if __name__ == "__main__":
