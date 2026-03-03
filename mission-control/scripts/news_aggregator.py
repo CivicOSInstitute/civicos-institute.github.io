@@ -8,9 +8,36 @@ import sqlite3
 from datetime import datetime, timedelta
 import requests
 import os
+from urllib.parse import quote_plus
 
 ROOT = Path(__file__).resolve().parents[1]
 DB = ROOT / 'data' / 'news.db'
+
+GOOGLE_NEWS_SEARCH_TERMS = {
+    # Maintainer contact: ncerbone@CivicOS-institute.org
+    'google_news_civicos': [
+        '"CivicOS"',
+        '"CivicOS Institute"',
+        'digital government civic technology nonprofit',
+        'open source civic engagement platform',
+        'municipal digital transformation civic tech',
+    ],
+    'google_news_grants': [
+        'civic technology grants nonprofit',
+        'democracy technology funding',
+        'public interest technology grants',
+    ],
+    'google_news_policy': [
+        'local government AI policy',
+        'public sector open source policy',
+        'digital public infrastructure governance',
+    ],
+}
+
+
+def google_news_rss_url(query: str) -> str:
+    return f"https://news.google.com/rss/search?q={quote_plus(query)}&hl=en-US&gl=US&ceid=US:en"
+
 
 RSS_FEEDS = {
     'civic_tech': [
@@ -32,10 +59,21 @@ RSS_FEEDS = {
     'technology': [
         'https://techcrunch.com/feed/',
         'https://www.theverge.com/rss/index.xml',
-    ]
+    ],
 }
 
+# Append Google News RSS search feeds dynamically.
+for category, terms in GOOGLE_NEWS_SEARCH_TERMS.items():
+    RSS_FEEDS[category] = [google_news_rss_url(t) for t in terms]
+
 app = Flask(__name__)
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+    return response
 
 def load_gnews_key():
     # Priority: env var -> local .env
