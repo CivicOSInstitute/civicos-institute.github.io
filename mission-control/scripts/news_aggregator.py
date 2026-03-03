@@ -7,6 +7,7 @@ import feedparser
 import sqlite3
 from datetime import datetime, timedelta
 import requests
+import os
 
 ROOT = Path(__file__).resolve().parents[1]
 DB = ROOT / 'data' / 'news.db'
@@ -36,6 +37,18 @@ RSS_FEEDS = {
 
 app = Flask(__name__)
 
+def load_gnews_key():
+    # Priority: env var -> local .env
+    key = os.getenv('GNEWS_API_KEY', '').strip()
+    if key:
+        return key
+    envp = ROOT / '.env'
+    if envp.exists():
+        for line in envp.read_text(errors='ignore').splitlines():
+            if line.startswith('GNEWS_API_KEY='):
+                return line.split('=',1)[1].strip().strip('"').strip("'")
+    return ''
+
 def init_db():
     DB.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB)
@@ -56,11 +69,23 @@ def init_db():
     conn.commit()
     conn.close()
 
+def _insert_story(conn, title, url, source, summary, category, published):
+    try:
+        conn.execute('''
+            INSERT INTO stories (title, url, source, summary, category, published_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (title, url, source, summary, category, published))
+        conn.commit()
+        return 1
+    except sqlite3.IntegrityError:
+        return 0
+
+
 def fetch_rss():
     """Fetch all RSS feeds and store new stories."""
     conn = sqlite3.connect(DB)
     new_count = 0
-    
+
     for category, feeds in RSS_FEEDS.items():
         for feed_url in feeds:
             try:
@@ -71,26 +96,61 @@ def fetch_rss():
                     summary = entry.get('summary', '')[:500]
                     source = feed.feed.get('title', 'Unknown')
                     published = entry.get('published', '')
-                    
-                    try:
-                        conn.execute('''
-                            INSERT INTO stories (title, url, source, summary, category, published_at)
-                            VALUES (?, ?, ?, ?, ?, ?)
-                        ''', (title, url, source, summary, category, published))
-                        conn.commit()
-                        new_count += 1
-                    except sqlite3.IntegrityError:
-                        pass  # already exists
+                    new_count += _insert_story(conn, title, url, source, summary, category, published)
             except Exception as e:
                 print(f"Error fetching {feed_url}: {e}")
-    
+
     conn.close()
     return new_count
 
+
+def fetch_gnews():
+    """Fetch GNews API stories when key is configured."""
+    key = load_gnews_key()
+    if not key:
+        return 0
+
+    queries = {
+        'civic_tech': 'civic technology OR digital government',
+        'nonprofit': 'nonprofit OR philanthropy',
+        'education': 'education technology OR learning',
+        'policy': 'public policy OR governance',
+        'technology': 'artificial intelligence OR open source'
+    }
+
+    conn = sqlite3.connect(DB)
+    added = 0
+    for category, q in queries.items():
+        try:
+            url = 'https://gnews.io/api/v4/search'
+            params = {
+                'q': q,
+                'lang': 'en',
+                'max': 10,
+                'apikey': key
+            }
+            r = requests.get(url, params=params, timeout=20)
+            if r.status_code != 200:
+                continue
+            data = r.json()
+            for a in data.get('articles', []):
+                title = a.get('title', '')
+                link = a.get('url', '')
+                source = (a.get('source') or {}).get('name', 'GNews')
+                summary = (a.get('description') or '')[:500]
+                published = a.get('publishedAt', '')
+                added += _insert_story(conn, title, link, source, summary, category, published)
+        except Exception as e:
+            print(f"GNews fetch error ({category}): {e}")
+
+    conn.close()
+    return added
+
 @app.get('/api/news/stories')
 def list_stories():
-    category = requests.args.get('category', '')
-    search = requests.args.get('search', '')
+    from flask import request
+    category = request.args.get('category', '')
+    search = request.args.get('search', '')
     
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
@@ -138,11 +198,13 @@ def list_categories():
 
 @app.post('/api/news/refresh')
 def refresh_news():
-    count = fetch_rss()
-    return jsonify({'ok': True, 'new_stories': count})
+    rss_count = fetch_rss()
+    gnews_count = fetch_gnews()
+    return jsonify({'ok': True, 'new_stories': rss_count + gnews_count, 'rss_new': rss_count, 'gnews_new': gnews_count})
 
 if __name__ == '__main__':
     init_db()
     # Initial fetch
     fetch_rss()
+    fetch_gnews()
     app.run(host='127.0.0.1', port=8877, debug=False)

@@ -127,7 +127,17 @@
       "enabled": true
     }
   ],
-  "scan_limit_per_channel": 5,
+  "scan_limit_per_channel": 10,
   "summarize_new_videos": true,
-  "max_new_summaries_per_run": 3
+  "max_new_summaries_per_run": 25,
+  "priority_channels": [
+    "Matt Wolfe",
+    "Matthew Berman",
+    "AI Explained",
+    "Wes Roth",
+    "Stanford HAI",
+    "Brookings Institution",
+    "CSIS",
+    "Council on Foreign Relations"
+  ]
 }
