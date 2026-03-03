@@ -909,21 +909,36 @@ class MissionControl {
         `;
 
         this.loadRouterLast10();
+
+        // keep last-10 fresh every 60s while on Models page
+        if (this.routerLast10Interval) clearInterval(this.routerLast10Interval);
+        this.routerLast10Interval = setInterval(() => {
+            if (this.currentModule === 'models') this.loadRouterLast10();
+        }, 60000);
     }
 
     async loadRouterLast10() {
         const tbody = document.querySelector('#router-last10-table tbody');
         if (!tbody) return;
         try {
-            const r = await fetch('/data/router-last10.json?v=1');
-            if (!r.ok) throw new Error('router log feed unavailable');
-            const j = await r.json();
-            const rows = j.items || [];
+            // Prefer live API (always last 10), fallback to static json snapshot
+            let j = null;
+            try {
+                const live = await fetch('http://localhost:8876/api/router/last10');
+                if (live.ok) j = await live.json();
+            } catch (_) {}
+            if (!j) {
+                const r = await fetch('/data/router-last10.json?v=1');
+                if (!r.ok) throw new Error('router log feed unavailable');
+                j = await r.json();
+            }
+
+            const rows = (j.items || []).slice(-10);
             if (!rows.length) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">No routed requests available yet</td></tr>';
                 return;
             }
-            tbody.innerHTML = rows.slice(0,10).map(x => `
+            tbody.innerHTML = rows.map(x => `
                 <tr>
                     <td>${x.time || ''}</td>
                     <td>${x.request_type || 'General'}</td>

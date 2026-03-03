@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import subprocess
 import json
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 DB = ROOT / 'data' / 'finance.db'
@@ -217,6 +218,43 @@ def council_send():
         return jsonify({'ok': True, 'queued': True, 'pid': proc.pid, 'mode': 'full_council'})
     except Exception as e:
         return jsonify({'ok': False, 'error': str(e)}), 500
+
+
+@app.get('/api/router/last10')
+def router_last10():
+    def classify(reason: str) -> str:
+        r = (reason or '').lower()
+        if any(k in r for k in ['email', 'inbox', 'gmail']): return 'Email'
+        if any(k in r for k in ['coding', 'code', 'engineer', 'debug']): return 'Coding'
+        if any(k in r for k in ['writing', 'narrative', 'content']): return 'Writing'
+        if any(k in r for k in ['strategy', 'business', 'executive']): return 'Strategy'
+        if any(k in r for k in ['analysis', 'q&a', 'philosopher', 'reasoning']): return 'Analysis/Q&A'
+        if any(k in r for k in ['multimodal', 'vision', 'ocr']): return 'Vision/OCR'
+        if any(k in r for k in ['triage', 'status', 'summary', 'rapid']): return 'Triage/Status'
+        if any(k in r for k in ['contrarian', 'challenge']): return 'Contrarian Review'
+        return 'General'
+
+    logs = [Path('/Users/AI-OPS/.openclaw/logs/autonomous-agent.log'), Path('/Users/AI-OPS/.openclaw/logs/router-queue.log')]
+    entries = []
+    for p in logs:
+        if not p.exists():
+            continue
+        for line in p.read_text(errors='ignore').splitlines():
+            m = re.search(r'\[(.*?)\].*?\[ROUTING\].*?(Decision: (\w+) \| Model: ([^|]+) \| Reason: (.*)|→ (local|escalate) \| ([^|]+) \| (.*))', line)
+            if m:
+                ts = m.group(1)
+                route = m.group(3) or m.group(6) or ''
+                model = (m.group(4) or m.group(7) or '').strip()
+                reason = (m.group(5) or m.group(8) or '').strip()
+                entries.append({
+                    'time': ts,
+                    'request_type': classify(reason),
+                    'model': model,
+                    'route': route.lower() if route else ('local' if ':' in model else 'escalate'),
+                    'reason': reason
+                })
+
+    return jsonify({'items': entries[-10:]})
 
 
 if __name__ == '__main__':
