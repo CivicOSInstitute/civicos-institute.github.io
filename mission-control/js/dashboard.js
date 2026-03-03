@@ -413,8 +413,16 @@ class MissionControl {
     }
 
     async loadHoursData() {
-        // Load hours from localStorage or API
-        const hours = JSON.parse(localStorage.getItem('civicHours') || '[]');
+        // Load hours from localStorage and clean invalid rows
+        const rawHours = JSON.parse(localStorage.getItem('civicHours') || '[]');
+        const hours = rawHours.filter(h => {
+            const n = Number(h?.hours);
+            return h && h.date && Number.isFinite(n) && n > 0;
+        });
+        if (hours.length !== rawHours.length) {
+            localStorage.setItem('civicHours', JSON.stringify(hours));
+        }
+
         this.renderHoursSummary(hours);
         this.renderHoursList(hours);
         this.setupHoursForm();
