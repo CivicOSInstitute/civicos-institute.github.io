@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-03-03T17:10:31",
+  "specialists": [
+    {
+      "id": "grant_analyst_2b",
+      "base_model": "qwen3.5:2b",
+      "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/grant_analyst_2b",
+      "status": "promoted",
+      "trigger_tags": [
+        "grant",
+        "eligibility",
+        "deadline",
+        "fit-score"
+      ]
+    },
+    {
+      "id": "ops_formatter_2b",
+      "base_model": "qwen3.5:2b",
+      "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/ops_formatter_2b",
+      "status": "promoted",
+      "trigger_tags": [
+        "crm",
+        "notion",
+        "structured",
+        "format"
+      ]
+    },
+    {
+      "id": "outreach_writer_2b",
+      "base_model": "qwen3.5:2b",
+      "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/outreach_writer_2b",
+      "status": "promoted",
+      "trigger_tags": [
+        "outreach",
+        "email",
+        "subject-line",
+        "follow-up"
+      ]
+    },
+    {
+      "id": "policy_qa_guard_2b",
+      "base_model": "qwen3.5:2b",
+      "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/policy_qa_guard_2b",
+      "status": "promoted",
+      "trigger_tags": [
+        "policy",
+        "qa",
+        "compliance",
+        "guardrail"
+      ]
+    }
+  ]
+}

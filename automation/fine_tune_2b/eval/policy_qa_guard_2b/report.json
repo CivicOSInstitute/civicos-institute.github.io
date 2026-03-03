@@ -1,0 +1,9 @@
+{
+  "specialist": "policy_qa_guard_2b",
+  "timestamp": "2026-03-03T17:10:31",
+  "task_score": 0.92,
+  "format_valid_rate": 0.98,
+  "hallucination_rate": 0.05,
+  "latency_p95_seconds": 2.3,
+  "pass": true
+}

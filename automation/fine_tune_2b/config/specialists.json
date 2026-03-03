@@ -1,0 +1,34 @@
+{
+  "base_model": "qwen3.5:2b",
+  "specialists": [
+    {
+      "id": "outreach_writer_2b",
+      "trigger_tags": ["outreach", "email", "subject-line", "follow-up"],
+      "quality_threshold": 0.85,
+      "format_schema": "schemas/outreach_email.schema.json"
+    },
+    {
+      "id": "grant_analyst_2b",
+      "trigger_tags": ["grant", "eligibility", "deadline", "fit-score"],
+      "quality_threshold": 0.86,
+      "format_schema": "schemas/grant_brief.schema.json"
+    },
+    {
+      "id": "ops_formatter_2b",
+      "trigger_tags": ["crm", "notion", "structured", "format"],
+      "quality_threshold": 0.9,
+      "format_schema": "schemas/ops_structured.schema.json"
+    },
+    {
+      "id": "policy_qa_guard_2b",
+      "trigger_tags": ["policy", "qa", "compliance", "guardrail"],
+      "quality_threshold": 0.92,
+      "format_schema": "schemas/policy_check.schema.json"
+    }
+  ],
+  "gates": {
+    "format_valid_rate_min": 0.97,
+    "hallucination_rate_max": 0.08,
+    "latency_p95_max_seconds": 4.0
+  }
+}

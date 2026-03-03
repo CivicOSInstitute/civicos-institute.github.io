@@ -1,0 +1,12 @@
+{
+  "id": "policy_qa_guard_2b",
+  "base_model": "qwen3.5:2b",
+  "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/policy_qa_guard_2b",
+  "status": "promoted",
+  "trigger_tags": [
+    "policy",
+    "qa",
+    "compliance",
+    "guardrail"
+  ]
+}

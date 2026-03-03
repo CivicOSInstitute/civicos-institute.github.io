@@ -1,0 +1,12 @@
+{
+  "id": "outreach_writer_2b",
+  "base_model": "qwen3.5:2b",
+  "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/outreach_writer_2b",
+  "status": "promoted",
+  "trigger_tags": [
+    "outreach",
+    "email",
+    "subject-line",
+    "follow-up"
+  ]
+}

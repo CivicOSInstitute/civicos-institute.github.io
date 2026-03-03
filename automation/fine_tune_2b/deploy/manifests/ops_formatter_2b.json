@@ -1,0 +1,12 @@
+{
+  "id": "ops_formatter_2b",
+  "base_model": "qwen3.5:2b",
+  "adapter_path": "/Users/AI-OPS/.openclaw/workspace/automation/fine_tune_2b/adapters/ops_formatter_2b",
+  "status": "promoted",
+  "trigger_tags": [
+    "crm",
+    "notion",
+    "structured",
+    "format"
+  ]
+}
