@@ -1,5 +1,17 @@
 {
   "generated_at": "2026-03-03T17:10:31",
+  "fallback_order": [
+    "qwen3.5:2b-specialist",
+    "qwen3.5:4b",
+    "llama3.1:8b",
+    "api-escalation"
+  ],
+  "council_fallback_order": [
+    "seat-assigned-local-model",
+    "qwen3.5:4b",
+    "llama3.1:8b",
+    "api-escalation"
+  ],
   "specialists": [
     {
       "id": "grant_analyst_2b",

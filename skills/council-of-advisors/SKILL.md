@@ -53,13 +53,13 @@ Queue integration pattern (required):
 4. Proceed to synthesis once all six results are present (or explicit timeout/error handled).
 5. Delete consumed callback result files after ingest.
 
-Model assignment + fallback (updated for current local benchmarks/personality tests):
-- Seat 1 MAGNUS → `qwen3:14b` | fallback: `deepseek-coder:6.7b`
+Model assignment + fallback (2B/4B-first cost profile):
+- Seat 1 MAGNUS → `qwen3:14b` | fallback: `qwen3.5:4b`
 - Seat 2 VERA → `qwen3:14b` | fallback: `llama3.1:8b`
-- Seat 3 DANTE → `qwen3.5:9b` | fallback: `qwen3:14b`
-- Seat 4 ELEANOR → `llama3.1:8b` | fallback: `qwen3:14b`
-- Seat 5 RAY → `qwen3.5:9b` | fallback: `llama3.1:8b`
-- Seat 6 MIRA → `phi3:mini` | fallback: `llama3.1:8b`
+- Seat 3 DANTE → `qwen3.5:4b` | fallback: `llama3.1:8b`
+- Seat 4 ELEANOR → `llama3.1:8b` | fallback: `qwen3.5:4b`
+- Seat 5 RAY → `qwen3.5:4b` | fallback: `llama3.1:8b`
+- Seat 6 MIRA → `phi3:mini` | fallback: `qwen3.5:4b`
 
 Operating intent:
 - Run all six advisor seats locally first via queue serialization.
@@ -67,11 +67,11 @@ Operating intent:
 - Burt seat (Seat 7) owns final synthesis authority.
 
 Expected sequential runtime (target):
-- 2× Qwen3.5-9B seats: ~25–45s total
+- 2× Qwen3.5-4B seats: ~12–24s total
 - 2× Qwen3-14B seats: ~20–40s total
 - 1× Llama3.1-8B seat: ~12–25s total
 - 1× Phi3-mini seat: ~5–12s total
-- Full council: ~1.5–3 minutes (preferred, lower-cost local-first profile)
+- Full council: ~1.2–2.8 minutes (preferred, lower-cost local-first profile)
 
 ### STEP 3 — Cross-pollination (optional)
 Trigger only if 2+ advisors conflict sharply on a key point.
@@ -111,12 +111,12 @@ Delivery rules:
 ## Advisor seats (locked personas)
 
 Use the exact persona intents below (full prompts in references/advisor-prompts.md):
-- **MAGNUS** (Qwen Coder 32B): pragmatic execution realism.
-- **VERA** (Qwen 14B): systems effects and feedback loops.
-- **DANTE** (Mistral Small): adversarial challenge.
-- **ELEANOR** (Qwen 14B): ethics and values alignment.
-- **RAY** (Mistral Small): historical/cross-domain pattern recognition.
-- **MIRA** (Mistral Small): simplification and scope discipline.
+- **MAGNUS** (Qwen3 14B): pragmatic execution realism.
+- **VERA** (Qwen3 14B): systems effects and feedback loops.
+- **DANTE** (Qwen3.5 4B): adversarial challenge.
+- **ELEANOR** (Llama3.1 8B): ethics and values alignment.
+- **RAY** (Qwen3.5 4B): historical/cross-domain pattern recognition.
+- **MIRA** (Phi3 Mini): simplification and scope discipline.
 - **BURT**: orchestrator + final synthesis authority.
 
 ## Response format (to user)
