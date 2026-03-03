@@ -166,13 +166,19 @@ def attachment(name):
 @app.post('/api/finance/scan-email')
 def scan_email_start():
     try:
-        SCAN_STATUS.write_text(json.dumps({"state": "starting", "current": "launching scanner", "progress": 0}))
+        payload = request.get_json(silent=True) or {}
+        scope = payload.get('scope', 'unread')
+        account = payload.get('account', 'nick')
+        SCAN_STATUS.write_text(json.dumps({"state": "starting", "current": "launching scanner", "progress": 0, "scope": scope, "account": account}))
         logf = open(ROOT / 'scan_email.log', 'a')
+        env = dict(**__import__('os').environ)
+        env['SCAN_SCOPE'] = scope
+        env['SCAN_ACCOUNT'] = account
         proc = subprocess.Popen([
             str(ROOT / '.venv' / 'bin' / 'python') if (ROOT / '.venv' / 'bin' / 'python').exists() else 'python3',
             str(ROOT / 'scripts' / 'invoice_scanner.py')
-        ], cwd=str(ROOT), stdout=logf, stderr=logf)
-        return jsonify({"ok": True, "pid": proc.pid})
+        ], cwd=str(ROOT), stdout=logf, stderr=logf, env=env)
+        return jsonify({"ok": True, "pid": proc.pid, "scope": scope, "account": account})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 

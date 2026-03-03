@@ -7,6 +7,7 @@ Integrates with Himalaya email client and Mission Control Finance
 import subprocess
 import re
 import json
+import os
 from datetime import datetime, date
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -57,45 +58,39 @@ class InvoiceScanner:
         self.invoices_dir = DATA_DIR / "invoices"
         self.invoices_dir.mkdir(exist_ok=True)
     
-    def get_himalaya_emails(self, folder: str = "INBOX", limit: int = 50) -> List[Dict]:
-        """Fetch recent emails from Himalaya."""
+    def get_himalaya_emails(self, account: str = "nick", scope: str = "unread", folder: str = "INBOX", limit: int = 50) -> List[Dict]:
+        """Fetch emails from Himalaya with account/scope filters."""
         try:
-            # Get envelope list
-            result = subprocess.run(
-                ["himalaya", "envelope", "list", folder, "-s", str(limit)],
-                capture_output=True, text=True, timeout=30
-            )
-            
+            cmd = ["himalaya", "envelope", "list", "-a", account, "-f", folder, "-s", str(limit), "--output", "json"]
+            if scope == "unread":
+                cmd += ["not", "flag", "seen"]
+
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=45)
             if result.returncode != 0:
                 print(f"Himalaya error: {result.stderr}")
                 return []
-            
+
+            rows = json.loads(result.stdout or "[]")
             emails = []
-            for line in result.stdout.strip().split('\n'):
-                # Parse pipe-delimited output
-                # Format: id|flags|subject|sender|date
-                parts = line.split('|')
-                if len(parts) >= 5:
-                    emails.append({
-                        'id': parts[0],
-                        'flags': parts[1],
-                        'subject': parts[2],
-                        'sender': parts[3],
-                        'date': parts[4]
-                    })
-            
+            for r in rows:
+                emails.append({
+                    'id': r.get('id'),
+                    'flags': r.get('flags', []),
+                    'subject': r.get('subject', ''),
+                    'sender': (r.get('from') or {}).get('addr', ''),
+                    'date': r.get('date', '')
+                })
             return emails
-            
         except Exception as e:
             print(f"Error fetching emails: {e}")
             return []
     
-    def get_email_body(self, email_id: str, folder: str = "INBOX") -> str:
+    def get_email_body(self, email_id: str, account: str = "nick", folder: str = "INBOX") -> str:
         """Get full email body by ID."""
         try:
             result = subprocess.run(
-                ["himalaya", "message", "read", email_id, "-f", folder],
-                capture_output=True, text=True, timeout=30
+                ["himalaya", "message", "read", "-a", account, email_id, "-f", folder],
+                capture_output=True, text=True, timeout=45
             )
             return result.stdout if result.returncode == 0 else ""
         except Exception as e:
@@ -155,10 +150,12 @@ class InvoiceScanner:
     
     def scan_for_invoices(self, limit: int = 50) -> List[Dict]:
         """Scan recent emails for invoices."""
-        print(f"🔍 Scanning last {limit} emails for invoices...")
-        STATUS_FILE.write_text(json.dumps({"state":"running","current":"starting","progress":0}))
-        
-        emails = self.get_himalaya_emails(limit=limit)
+        account = os.getenv('SCAN_ACCOUNT', 'nick')
+        scope = os.getenv('SCAN_SCOPE', 'unread')
+        print(f"🔍 Scanning last {limit} emails for invoices... account={account} scope={scope}")
+        STATUS_FILE.write_text(json.dumps({"state":"running","current":"starting","progress":0,"account":account,"scope":scope}))
+
+        emails = self.get_himalaya_emails(account=account, scope=scope, limit=limit)
         found_invoices = []
         
         # Check which emails we've already processed
@@ -184,7 +181,7 @@ class InvoiceScanner:
                 continue
             
             # Get full body
-            body = self.get_email_body(email_id)
+            body = self.get_email_body(email_id, account=account)
             
             # Check if invoice
             if self.is_likely_invoice(email['subject'], body):
@@ -230,7 +227,7 @@ class InvoiceScanner:
         self.engine.conn.commit()
         
         print(f"\n📊 Scan complete: {len(found_invoices)} invoices found")
-        STATUS_FILE.write_text(json.dumps({"state":"done","current":"complete","found":len(found_invoices),"total":len(emails)}))
+        STATUS_FILE.write_text(json.dumps({"state":"done","current":"complete","found":len(found_invoices),"total":len(emails),"account":account,"scope":scope,"progress":100}))
         return found_invoices
     
     def get_unpaid_invoices_summary(self) -> Dict:
@@ -265,9 +262,9 @@ if __name__ == "__main__":
         print("\n💰 Unpaid Invoices Summary:")
         print(f"  Unpaid: {summary['unpaid_count']} (${summary['unpaid_total']:.2f})")
         print(f"  Overdue: {summary['overdue_count']} (${summary['overdue_total']:.2f})")
-        STATUS_FILE.write_text(json.dumps({"state":"done","current":"complete","found":len(invoices),"unpaid":summary['unpaid_count'],"overdue":summary['overdue_count'],"progress":100}))
+        STATUS_FILE.write_text(json.dumps({"state":"done","current":"complete","found":len(invoices),"unpaid":summary['unpaid_count'],"overdue":summary['overdue_count'],"progress":100,"account":os.getenv('SCAN_ACCOUNT','nick'),"scope":os.getenv('SCAN_SCOPE','unread')}))
     except Exception as e:
-        STATUS_FILE.write_text(json.dumps({"state":"error","current":str(e),"progress":100}))
+        STATUS_FILE.write_text(json.dumps({"state":"error","current":str(e),"progress":100,"account":os.getenv('SCAN_ACCOUNT','nick'),"scope":os.getenv('SCAN_SCOPE','unread')}))
         raise
     finally:
         scanner.engine.close()

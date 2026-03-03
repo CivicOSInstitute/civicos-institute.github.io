@@ -1057,14 +1057,22 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (status) status.textContent = 'Starting scanner...';
 
-            await fetch('http://localhost:8876/api/finance/scan-email', { method: 'POST' });
+            const scope = (document.getElementById('scan-scope') || {}).value || 'unread';
+            const account = (document.getElementById('scan-account') || {}).value || 'nick';
+            await fetch('http://localhost:8876/api/finance/scan-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scope, account })
+            });
 
             timer = setInterval(async () => {
                 try {
                     const r = await fetch('http://localhost:8876/api/finance/scan-status');
                     const s = await r.json();
                     if (status) {
-                        status.textContent = `Scanning: ${s.current || 'working'} (${s.progress || 0}%)`;
+                        const acct = s.account ? ` [${s.account}]` : '';
+                        const scope = s.scope ? ` ${s.scope}` : '';
+                        status.textContent = `Scanning${acct}${scope}: ${s.current || 'working'} (${s.progress || 0}%)`;
                     }
                     if (s.state === 'done' || s.state === 'idle' || s.state === 'error') {
                         clearInterval(timer);
