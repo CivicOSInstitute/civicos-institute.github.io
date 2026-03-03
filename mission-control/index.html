@@ -496,7 +496,12 @@
             <section id="calendar" class="module">
                 <h2>📅 Command Calendar</h2>
 
-                <div class="calendar-top-layout">
+                <div class="upcoming-list" style="margin-top:0;">
+                    <h4>Up Next (7 Days)</h4>
+                    <ul id="upcoming-events"></ul>
+                </div>
+
+                <div class="calendar-top-layout" style="margin-top:1rem;">
                     <div class="panel">
                         <h3>Today - Events by Time</h3>
                         <ul id="today-events" class="activity-list">
@@ -529,10 +534,6 @@
                     <span class="legend-item"><span class="dot system"></span> System</span>
                 </div>
 
-                <div class="upcoming-list">
-                    <h4>Up Next (7 Days)</h4>
-                    <ul id="upcoming-events"></ul>
-                </div>
             </section>
 
             <section id="hours" class="module">
