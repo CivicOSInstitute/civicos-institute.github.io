@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "time": "2026-03-02T21:08:16.071813",
+      "request_type": "Vision/OCR",
+      "model": "qwen3.5:4b",
+      "route": "local",
+      "reason": "Multimodal task - vision + text (The Integrator)"
+    }
+  ]
+}

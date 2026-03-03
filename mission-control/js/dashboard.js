@@ -894,7 +894,46 @@ class MissionControl {
                     <div class="metric-trend">$0.00 cost</div>
                 </div>
             </div>
+
+            <div class="panel" style="margin-top:1rem;">
+                <h3>Last 10 Routed Requests</h3>
+                <table class="data-table" id="router-last10-table">
+                    <thead>
+                        <tr><th>Time</th><th>Request Type</th><th>Model</th><th>Route</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="4" style="text-align:center">Loading router logs...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         `;
+
+        this.loadRouterLast10();
+    }
+
+    async loadRouterLast10() {
+        const tbody = document.querySelector('#router-last10-table tbody');
+        if (!tbody) return;
+        try {
+            const r = await fetch('/data/router-last10.json?v=1');
+            if (!r.ok) throw new Error('router log feed unavailable');
+            const j = await r.json();
+            const rows = j.items || [];
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">No routed requests available yet</td></tr>';
+                return;
+            }
+            tbody.innerHTML = rows.slice(0,10).map(x => `
+                <tr>
+                    <td>${x.time || ''}</td>
+                    <td>${x.request_type || 'General'}</td>
+                    <td>${x.model || ''}</td>
+                    <td>${x.route || ''}</td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Router logs unavailable</td></tr>';
+        }
     }
 
     async loadFinanceDataLegacy() {
