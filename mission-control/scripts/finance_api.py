@@ -200,14 +200,21 @@ def council_send():
     if not prompt:
         return jsonify({'ok': False, 'error': 'prompt required'}), 400
     try:
+        council_msg = (
+            "Convene the council-of-advisors skill now. "
+            "This must go through the full council process with seat perspectives and Burt synthesis. "
+            "Do not answer as a single main-model response.\n\n"
+            f"{prompt}"
+        )
+
         logf = open(ROOT / 'council_send.log', 'a')
         proc = subprocess.Popen(
-            ['openclaw', 'agent', '--agent', 'main', '--message', prompt, '--json'],
+            ['openclaw', 'agent', '--agent', 'main', '--message', council_msg, '--json'],
             stdout=logf,
             stderr=logf,
             cwd=str(ROOT)
         )
-        return jsonify({'ok': True, 'queued': True, 'pid': proc.pid})
+        return jsonify({'ok': True, 'queued': True, 'pid': proc.pid, 'mode': 'full_council'})
     except Exception as e:
         return jsonify({'ok': False, 'error': str(e)}), 500
 

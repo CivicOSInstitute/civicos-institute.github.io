@@ -769,7 +769,7 @@ class MissionControl {
                     });
                     const data = await resp.json();
                     if (!resp.ok || !data.ok) throw new Error(data.error || 'send failed');
-                    if (status) status.textContent = 'Sent to OpenClaw Chat successfully.';
+                    if (status) status.textContent = 'Sent to OpenClaw Chat - full council run queued.';
                 } catch (e) {
                     if (status) status.textContent = `Send failed: ${e.message}`;
                 } finally {
