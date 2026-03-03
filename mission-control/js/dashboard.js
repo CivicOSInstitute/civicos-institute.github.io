@@ -720,31 +720,64 @@ class MissionControl {
         if (!form || form.dataset.bound === '1') return;
         form.dataset.bound = '1';
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
+        const buildPrompt = () => {
             const urgency = document.getElementById('council-urgency').value;
             const from = document.getElementById('council-from').value;
             const category = document.getElementById('council-category').value;
             const outcome = document.getElementById('council-outcome').value;
             const prompt = document.getElementById('council-prompt').value;
+            return `[Council Request]\nUrgency: ${urgency}\nFrom: ${from}\nCategory: ${category}\nRequested Outcome: ${outcome}\n\nPrompt:\n${prompt}`;
+        };
 
-            const built = `[Council Request]\nUrgency: ${urgency}\nFrom: ${from}\nCategory: ${category}\nRequested Outcome: ${outcome}\n\nPrompt:\n${prompt}`;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const built = buildPrompt();
             const preview = document.getElementById('council-request-preview');
             const status = document.getElementById('council-request-status');
             if (preview) {
                 preview.style.display = 'block';
                 preview.textContent = built;
             }
-            if (status) status.textContent = 'Prompt built. Copy from preview and send to council.';
+            if (status) status.textContent = 'Prompt built. Ready to send to OpenClaw Chat.';
 
             const drafts = JSON.parse(localStorage.getItem('councilRequestDrafts') || '[]');
             drafts.unshift({
                 id: Date.now(),
                 datetime: new Date().toISOString(),
-                urgency, from, category, outcome, prompt
+                built
             });
             localStorage.setItem('councilRequestDrafts', JSON.stringify(drafts.slice(0, 50)));
         });
+
+        const sendBtn = document.getElementById('council-send-btn');
+        if (sendBtn) {
+            sendBtn.onclick = async () => {
+                const status = document.getElementById('council-request-status');
+                const built = buildPrompt();
+                if (!built || built.trim().length < 20) {
+                    if (status) status.textContent = 'Please complete fields first.';
+                    return;
+                }
+                sendBtn.disabled = true;
+                const prev = sendBtn.textContent;
+                sendBtn.textContent = 'Sending...';
+                try {
+                    const resp = await fetch('http://localhost:8876/api/council/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt: built })
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok || !data.ok) throw new Error(data.error || 'send failed');
+                    if (status) status.textContent = 'Sent to OpenClaw Chat successfully.';
+                } catch (e) {
+                    if (status) status.textContent = `Send failed: ${e.message}`;
+                } finally {
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = prev;
+                }
+            };
+        }
     }
 
     async updateQueueStatus() {

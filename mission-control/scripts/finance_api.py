@@ -193,5 +193,24 @@ def scan_status():
     return jsonify({"state": "idle", "current": "Scan idle", "progress": 0})
 
 
+@app.post('/api/council/send')
+def council_send():
+    payload = request.get_json(silent=True) or {}
+    prompt = (payload.get('prompt') or '').strip()
+    if not prompt:
+        return jsonify({'ok': False, 'error': 'prompt required'}), 400
+    try:
+        logf = open(ROOT / 'council_send.log', 'a')
+        proc = subprocess.Popen(
+            ['openclaw', 'agent', '--agent', 'main', '--message', prompt, '--json'],
+            stdout=logf,
+            stderr=logf,
+            cwd=str(ROOT)
+        )
+        return jsonify({'ok': True, 'queued': True, 'pid': proc.pid})
+    except Exception as e:
+        return jsonify({'ok': False, 'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8876, debug=False)
