@@ -61,22 +61,22 @@
 
                 <!-- External Systems Integration -->
                 <div class="metrics-grid external-systems">
-                    <div class="metric-card crm-card clickable" data-link="donors">
+                    <div class="metric-card crm-card clickable" data-href="http://localhost:8083" data-link="donors">
                         <h3>📇 CRM Contacts</h3>
                         <div class="metric-value" id="crm-contacts">48</div>
                         <div class="metric-trend">Click for CRM →</div>
                     </div>
-                    <div class="metric-card crm-card hot clickable" data-link="donors">
+                    <div class="metric-card crm-card hot clickable" data-href="http://localhost:8083" data-link="donors">
                         <h3>🔥 Hot Leads</h3>
                         <div class="metric-value" id="crm-hot-leads">1</div>
                         <div class="metric-trend">Click for leads →</div>
                     </div>
-                    <div class="metric-card task-card warning clickable" data-link="hours">
+                    <div class="metric-card task-card warning clickable" data-href="http://localhost:8082" data-link="hours">
                         <h3>⚠️ Overdue Tasks</h3>
                         <div class="metric-value" id="tasks-overdue">16</div>
                         <div class="metric-trend">Click for tasks →</div>
                     </div>
-                    <div class="metric-card task-card clickable" data-link="calendar">
+                    <div class="metric-card task-card clickable" data-href="http://localhost:8082" data-link="calendar">
                         <h3>📋 Due This Week</h3>
                         <div class="metric-value" id="tasks-due-week">5</div>
                         <div class="metric-trend">Click for calendar →</div>
@@ -253,7 +253,7 @@
                         </div>
                         <table class="data-table" id="transactions-table">
                             <thead>
-                                <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th>Attach</th></tr>
+                                <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th>Attach</th><th>Actions</th></tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -311,6 +311,7 @@
                                 <input type="file" id="me-attachment" name="attachment" accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf">
                             </div>
                             <button type="submit" class="btn-primary" id="me-submit">Save Manual Entry</button>
+                            <button type="button" class="btn-secondary" id="me-cancel" style="display:none">Cancel Edit</button>
                             <div id="me-status" style="margin-top:.5rem;font-size:.85rem;color:#a0a0b0"></div>
                         </form>
                     </div>

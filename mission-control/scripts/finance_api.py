@@ -21,7 +21,7 @@ app = Flask(__name__)
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    resp.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+    resp.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
     return resp
 
 
@@ -95,6 +95,67 @@ def manual_entry():
     )
     conn.commit()
     return jsonify({"ok": True, "id": cur.lastrowid})
+
+
+@app.route('/api/finance/entry/<int:entry_id>', methods=['PUT', 'DELETE', 'OPTIONS'])
+def entry_update_delete(entry_id):
+    if request.method == 'OPTIONS':
+        return ('', 204)
+    conn = get_conn()
+    if request.method == 'DELETE':
+        conn.execute('DELETE FROM transactions WHERE id=?', (entry_id,))
+        conn.commit()
+        return jsonify({'ok': True})
+
+    form = request.form
+    date = form.get('date')
+    type_ = form.get('type', 'expense')
+    amount = float(form.get('amount', '0') or 0)
+    category = form.get('category', 'Other')
+    vendor = form.get('vendor', '')
+    description = form.get('description', '')
+    notes = form.get('notes', '')
+
+    if not date or type_ not in ('income', 'expense') or amount < 0 or not description:
+        return ('invalid payload', 400)
+
+    row = conn.execute('SELECT receipt_path FROM transactions WHERE id=?', (entry_id,)).fetchone()
+    receipt_path = row['receipt_path'] if row else None
+
+    f = request.files.get('attachment')
+    if f and f.filename:
+        ext = Path(f.filename).suffix.lower()
+        if ext not in ALLOWED:
+            return ('invalid attachment type', 400)
+        fname = secure_filename(f"{datetime.now().strftime('%Y%m%d-%H%M%S')}_{f.filename}")
+        out = ATTACH / fname
+        f.save(out)
+        receipt_path = str(out)
+
+    cat_id = ensure_category(conn, category, type_)
+    conn.execute("""
+        UPDATE transactions
+        SET date=?, description=?, amount=?, type=?, category_id=?, vendor=?, notes=?, receipt_path=?
+        WHERE id=?
+    """, (date, description, amount, type_, cat_id, vendor, notes, receipt_path, entry_id))
+    conn.commit()
+    return jsonify({'ok': True, 'id': entry_id})
+
+
+@app.post('/api/finance/invoice/<int:invoice_id>/paid')
+def invoice_mark_paid(invoice_id):
+    conn = get_conn()
+    conn.execute("UPDATE invoices SET status='paid' WHERE id=?", (invoice_id,))
+    conn.commit()
+    return jsonify({'ok': True})
+
+
+@app.delete('/api/finance/invoice/<int:invoice_id>')
+def invoice_delete(invoice_id):
+    conn = get_conn()
+    conn.execute('DELETE FROM invoices WHERE id=?', (invoice_id,))
+    conn.commit()
+    return jsonify({'ok': True})
 
 
 @app.get('/api/finance/attachment/<name>')

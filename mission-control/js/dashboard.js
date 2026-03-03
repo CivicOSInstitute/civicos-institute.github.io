@@ -28,10 +28,13 @@ class MissionControl {
         // Clickable metric cards
         document.querySelectorAll('.metric-card.clickable').forEach(card => {
             card.addEventListener('click', () => {
-                const module = card.dataset.link;
-                if (module) {
-                    this.switchModule(module);
+                const href = card.dataset.href;
+                if (href) {
+                    window.open(href, '_blank');
+                    return;
                 }
+                const module = card.dataset.link;
+                if (module) this.switchModule(module);
             });
         });
     }
@@ -278,7 +281,7 @@ class MissionControl {
             if (actionList) {
                 const items = invoices.list || [];
                 actionList.innerHTML = items.length
-                    ? items.slice(0, 8).map(inv => `<li class="${inv.status === 'overdue' ? 'overdue' : ''}"><span>${inv.vendor} (${inv.invoice_number || 'no #'})</span><span>$${Number(inv.amount).toFixed(2)}</span></li>`).join('')
+                    ? items.slice(0, 8).map(inv => `<li class="${inv.status === 'overdue' ? 'overdue' : ''}"><span>${inv.vendor} (${inv.invoice_number || 'no #'})</span><span>$${Number(inv.amount).toFixed(2)}</span><span class="hours-actions"><button class="btn-icon edit" onclick="missionControl.markInvoicePaid(${inv.id})" title="Mark paid">✅</button><button class="btn-icon delete" onclick="missionControl.deleteInvoice(${inv.id})" title="Delete">🗑️</button></span></li>`).join('')
                     : '<li>No unpaid invoices</li>';
             }
 
@@ -294,7 +297,19 @@ class MissionControl {
         form.dataset.bound = '1';
 
         const d = document.getElementById('me-date');
+        const cancelBtn = document.getElementById('me-cancel');
+        const submitBtn = document.getElementById('me-submit');
         if (d && !d.value) d.valueAsDate = new Date();
+
+        const resetManual = () => {
+            delete form.dataset.editing;
+            form.reset();
+            if (d) d.valueAsDate = new Date();
+            if (submitBtn) submitBtn.textContent = 'Save Manual Entry';
+            if (cancelBtn) cancelBtn.style.display = 'none';
+        };
+
+        if (cancelBtn) cancelBtn.onclick = resetManual;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -305,15 +320,20 @@ class MissionControl {
                 if (status) status.textContent = 'Saving...';
 
                 const fd = new FormData(form);
-                const resp = await fetch('http://localhost:8876/api/finance/manual-entry', { method: 'POST', body: fd });
+                const editingId = form.dataset.editing;
+                const url = editingId
+                  ? `http://localhost:8876/api/finance/entry/${editingId}`
+                  : 'http://localhost:8876/api/finance/manual-entry';
+                const method = editingId ? 'PUT' : 'POST';
+
+                const resp = await fetch(url, { method, body: fd });
                 if (!resp.ok) {
                     const txt = await resp.text();
                     throw new Error(txt || 'save failed');
                 }
 
-                form.reset();
-                if (d) d.valueAsDate = new Date();
-                if (status) status.textContent = 'Saved.';
+                resetManual();
+                if (status) status.textContent = editingId ? 'Updated.' : 'Saved.';
                 await this.loadFinanceData();
             } catch (err) {
                 if (status) status.textContent = `Error: ${err.message}`;
@@ -323,12 +343,51 @@ class MissionControl {
         });
     }
 
+    async editFinanceEntry(id) {
+        try {
+            const r = await fetch('http://localhost:8876/api/finance/entries');
+            const j = await r.json();
+            const e = (j.items || []).find(x => Number(x.id) === Number(id));
+            if (!e) return;
+
+            const form = document.getElementById('manual-entry-form');
+            form.dataset.editing = String(id);
+            document.getElementById('me-date').value = e.date || '';
+            document.getElementById('me-type').value = e.type || 'expense';
+            document.getElementById('me-amount').value = Number(e.amount || 0).toFixed(2);
+            document.getElementById('me-category').value = e.category_name || e.category || 'Other';
+            document.getElementById('me-vendor').value = e.vendor || '';
+            document.getElementById('me-description').value = e.description || '';
+            document.getElementById('me-notes').value = e.notes || '';
+            document.getElementById('me-submit').textContent = 'Update Entry';
+            document.getElementById('me-cancel').style.display = 'inline-block';
+            form.scrollIntoView({ behavior: 'smooth' });
+        } catch (_) {}
+    }
+
+    async deleteFinanceEntry(id) {
+        if (!confirm('Delete this transaction?')) return;
+        const resp = await fetch(`http://localhost:8876/api/finance/entry/${id}`, { method: 'DELETE' });
+        if (resp.ok) await this.loadFinanceData();
+    }
+
+    async deleteInvoice(id) {
+        if (!confirm('Delete this invoice?')) return;
+        const resp = await fetch(`http://localhost:8876/api/finance/invoice/${id}`, { method: 'DELETE' });
+        if (resp.ok) await this.loadFinanceData();
+    }
+
+    async markInvoicePaid(id) {
+        const resp = await fetch(`http://localhost:8876/api/finance/invoice/${id}/paid`, { method: 'POST' });
+        if (resp.ok) await this.loadFinanceData();
+    }
+
     renderTransactions(transactions) {
         const tbody = document.querySelector('#transactions-table tbody');
         if (!tbody) return;
 
         if (transactions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No transactions yet</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No transactions yet</td></tr>';
             return;
         }
 
@@ -345,6 +404,7 @@ class MissionControl {
                 <td>${tx.category_name || tx.category || 'Uncategorized'}</td>
                 <td class="${tx.type || 'expense'}">${(tx.type === 'income' ? '+' : '-')}$${amt.toFixed(2)}</td>
                 <td>${attachCell}</td>
+                <td><span class="hours-actions" style="opacity:1"><button class="btn-icon edit" onclick="missionControl.editFinanceEntry(${tx.id})" title="Edit">✏️</button><button class="btn-icon delete" onclick="missionControl.deleteFinanceEntry(${tx.id})" title="Delete">🗑️</button></span></td>
             </tr>`;
         }).join('');
     }
