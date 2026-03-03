@@ -28,7 +28,8 @@ LOCAL_SPECIALISTS = {
 # Economy policy: keep paid usage for final QA and truly complex tasks only.
 QA_ONLY_GATE = os.getenv("ROUTER_QA_ONLY_GATE", "1") == "1"
 FORCE_ESCALATE_TAGS = ["use codex", "use kimi", "api override", "premium model"]
-HIGH_PRIORITY_TAGS = ["high priority", "urgent", "critical", "ship today", "final check"]
+MEDIUM_PRIORITY_TAGS = ["medium priority", "priority: medium", "[medium]", "med priority"]
+URGENT_PRIORITY_TAGS = ["urgent", "priority: urgent", "[urgent]", "critical", "p0"]
 
 
 def wants_force_escalation(prompt: str) -> bool:
@@ -36,9 +37,13 @@ def wants_force_escalation(prompt: str) -> bool:
     return any(tag in p for tag in FORCE_ESCALATE_TAGS)
 
 
-def is_high_priority(prompt: str) -> bool:
+def get_priority(prompt: str) -> str:
     p = (prompt or "").lower()
-    return any(tag in p for tag in HIGH_PRIORITY_TAGS)
+    if any(tag in p for tag in URGENT_PRIORITY_TAGS):
+        return "urgent"
+    if any(tag in p for tag in MEDIUM_PRIORITY_TAGS):
+        return "medium"
+    return "low"
 
 
 def is_extremely_complex(prompt: str) -> bool:
@@ -150,17 +155,29 @@ def route_request(prompt: str) -> Dict:
     if routing["route"] == "escalate" and QA_ONLY_GATE:
         force_escalate = wants_force_escalation(prompt)
         complex_ok = is_extremely_complex(prompt)
-        priority_ok = is_high_priority(prompt)
+        priority = get_priority(prompt)
 
-        # Allow paid escalation only for explicit override, extreme complexity,
-        # or high-priority final QA style tasks.
-        if not (force_escalate or complex_ok or priority_ok):
+        # Hard rule: default LOW unless user tags MEDIUM/URGENT.
+        # LOW blocks paid escalation unless explicit model override is requested.
+        if priority == "low" and not force_escalate:
+            routing = {
+                "route": "local",
+                "model": LOCAL_SPECIALISTS["qa"],
+                "reason": f"Priority default LOW -> escalation blocked ({routing.get('reason', 'policy')})",
+                "qa_review_recommended": False,
+                "priority": priority,
+            }
+        # MEDIUM/URGENT may escalate for true complexity or explicit override.
+        elif not (force_escalate or complex_ok or priority in {"medium", "urgent"}):
             routing = {
                 "route": "local",
                 "model": LOCAL_SPECIALISTS["qa"],
                 "reason": f"QA-only gate held escalation ({routing.get('reason', 'policy')})",
                 "qa_review_recommended": True,
+                "priority": priority,
             }
+        else:
+            routing["priority"] = priority
 
     # Step 3: Execute
     if routing["route"] == "local":
