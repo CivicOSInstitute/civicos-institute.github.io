@@ -662,46 +662,89 @@ class MissionControl {
         // Load council history from filesystem
         const deliberations = await this.fetchCouncilHistory();
         this.renderCouncilHistory(deliberations);
-        
+
+        // Request builder UI
+        this.setupCouncilRequestBuilder();
+
         // Update queue status
         await this.updateQueueStatus();
-        
+
         // Update seat statuses (would integrate with actual queue state)
         this.updateSeatStatuses();
     }
 
     async fetchCouncilHistory() {
-        // In production, this would read from ./data/council/
-        // For now, return sample data or check localStorage
+        // Prefer generated index from markdown transcripts
+        try {
+            const r = await fetch('/data/council-index.json?v=1');
+            if (r.ok) {
+                const j = await r.json();
+                return j.items || [];
+            }
+        } catch (_) {}
+
+        // Fallback: local saved history
         const saved = localStorage.getItem('councilHistory');
-        if (saved) {
-            return JSON.parse(saved);
-        }
-        
-        // Default empty state
+        if (saved) return JSON.parse(saved);
         return [];
     }
 
     renderCouncilHistory(deliberations) {
         const list = document.getElementById('deliberation-list');
         const countEl = document.getElementById('council-history-count');
-        
+
         if (countEl) countEl.textContent = deliberations.length;
-        
         if (!list) return;
-        
+
         if (deliberations.length === 0) {
             list.innerHTML = '<li>No council sessions in recent history. Convene the council for high-consequence decisions.</li>';
             return;
         }
-        
-        list.innerHTML = deliberations.map(d => `
+
+        list.innerHTML = deliberations.map(d => {
+            const dt = d.datetime || d.date || '';
+            const href = d.link || '#';
+            const status = d.status || 'saved';
+            return `
             <li>
-                <span class="deliberation-topic">${d.topic}</span>
-                <span class="deliberation-date">${d.date}</span>
-                <span class="deliberation-status">${d.status}</span>
-            </li>
-        `).join('');
+                <span class="deliberation-topic">${d.topic || d.title || 'Untitled deliberation'}</span>
+                <span class="deliberation-date">${dt}</span>
+                <span class="deliberation-status">${status}</span>
+                <a href="${href}" target="_blank" style="margin-left:.75rem;color:var(--accent-cyan);text-decoration:none">Transcript</a>
+            </li>`;
+        }).join('');
+    }
+
+    setupCouncilRequestBuilder() {
+        const form = document.getElementById('council-request-form');
+        if (!form || form.dataset.bound === '1') return;
+        form.dataset.bound = '1';
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const urgency = document.getElementById('council-urgency').value;
+            const from = document.getElementById('council-from').value;
+            const category = document.getElementById('council-category').value;
+            const outcome = document.getElementById('council-outcome').value;
+            const prompt = document.getElementById('council-prompt').value;
+
+            const built = `[Council Request]\nUrgency: ${urgency}\nFrom: ${from}\nCategory: ${category}\nRequested Outcome: ${outcome}\n\nPrompt:\n${prompt}`;
+            const preview = document.getElementById('council-request-preview');
+            const status = document.getElementById('council-request-status');
+            if (preview) {
+                preview.style.display = 'block';
+                preview.textContent = built;
+            }
+            if (status) status.textContent = 'Prompt built. Copy from preview and send to council.';
+
+            const drafts = JSON.parse(localStorage.getItem('councilRequestDrafts') || '[]');
+            drafts.unshift({
+                id: Date.now(),
+                datetime: new Date().toISOString(),
+                urgency, from, category, outcome, prompt
+            });
+            localStorage.setItem('councilRequestDrafts', JSON.stringify(drafts.slice(0, 50)));
+        });
     }
 
     async updateQueueStatus() {

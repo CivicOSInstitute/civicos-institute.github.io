@@ -424,6 +424,50 @@
                     </div>
                 </div>
 
+                <div class="panel">
+                    <h3>🧭 Council Request Builder</h3>
+                    <form id="council-request-form" class="hours-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Urgency</label>
+                                <select id="council-urgency" required>
+                                    <option value="normal">Normal</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>From</label>
+                                <input type="text" id="council-from" placeholder="Nick / Ops / Board" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Subject Category</label>
+                                <select id="council-category" required>
+                                    <option value="strategy">Strategy</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="operations">Operations</option>
+                                    <option value="governance">Governance</option>
+                                    <option value="product">Product</option>
+                                    <option value="communications">Communications</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Requested Outcome</label>
+                                <input type="text" id="council-outcome" placeholder="Decision, recommendation, risk check" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Prompt</label>
+                            <textarea id="council-prompt" rows="4" placeholder="Describe the problem and context" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Build Council Prompt</button>
+                        <div id="council-request-status" style="margin-top:.5rem;font-size:.85rem;color:#a0a0b0"></div>
+                        <pre id="council-request-preview" style="margin-top:.75rem;white-space:pre-wrap;background:#111827;border:1px solid #2a2a3e;padding:.75rem;border-radius:8px;display:none"></pre>
+                    </form>
+                </div>
+
                 <div class="council-history">
                     <h3>📜 Recent Deliberations</h3>
                     <ul id="deliberation-list">
@@ -607,6 +651,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=7"></script>
+    <script src="js/dashboard.js?v=8"></script>
 </body>
 </html>
