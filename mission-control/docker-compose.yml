@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  mission-control:
+    build: .
+    container_name: civicos-mission-control
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    volumes:
+      # Persist database
+      - ./db:/app/db
+      # Persist any generated data
+      - ./data:/app/data
+      # Logs
+      - ./logs:/app/logs
+    environment:
+      - TZ=America/New_York
+      - CIVICOS_ENV=production
+    networks:
+      - civicos-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  board-dashboard:
+    build: ../board-dashboard
+    container_name: civicos-board-dashboard
+    restart: unless-stopped
+    ports:
+      - "8788:8788"
+    volumes:
+      - ./data:/app/data:ro
+      - ../generated:/app/generated:ro
+      - ../website-news:/app/website-news:ro
+    environment:
+      - TZ=America/New_York
+      - BOARD_KEY_PROVISIONAL=${BOARD_KEY_PROVISIONAL:-provisional-demo-key}
+      - BOARD_KEY_ADVISORY=${BOARD_KEY_ADVISORY:-advisory-demo-key}
+      - BOARD_KEY_BOARD=${BOARD_KEY_BOARD:-board-demo-key}
+    networks:
+      - civicos-network
+
+  # Optional: Add nginx reverse proxy for SSL
+  nginx:
+    image: nginx:alpine
+    container_name: civicos-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - mission-control
+    networks:
+      - civicos-network
+    profiles:
+      - with-nginx
+
+networks:
+  civicos-network:
+    driver: bridge
+
+volumes:
+  civicos-db:
+    driver: local
+  civicos-data:
+    driver: local

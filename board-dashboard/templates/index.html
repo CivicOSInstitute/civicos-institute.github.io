@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CivicOS Board Dashboard</title>
+  <style>body{font-family:Arial;background:#0b1220;color:#e2e8f0;margin:0} .wrap{max-width:1100px;margin:0 auto;padding:20px} .row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#111827;padding:14px;border-radius:10px;border:1px solid #263244}.small{font-size:12px;color:#94a3b8} ul{padding-left:18px} a{color:#60a5fa} @media(max-width:800px){.row{grid-template-columns:1fr}}</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CivicOS Board Dashboard</h1>
+  <div class="small">Role: {{ role }} • Updated: {{ now }}</div>
+
+  <div class="row" style="margin-top:14px">
+    <div class="card"><h3>Income (Month)</h3><div>${{ '%.2f'|format(finance.income) }}</div></div>
+    <div class="card"><h3>Expenses (Month)</h3><div>${{ '%.2f'|format(finance.expenses) }}</div></div>
+    <div class="card"><h3>Net</h3><div>${{ '%.2f'|format(finance.net) }}</div></div>
+  </div>
+
+  <div class="row" style="margin-top:12px">
+    <div class="card"><h3>Unpaid Invoices</h3><div>{{ finance.unpaid_count }}</div><div class="small">${{ '%.2f'|format(finance.unpaid_total) }}</div></div>
+    <div class="card" style="grid-column:span 2"><h3>Grant Pipeline Highlights</h3><ul>{% for g in grants %}<li>{{ g }}</li>{% else %}<li>No grant highlights yet.</li>{% endfor %}</ul></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>News</h3>
+    <ul>
+      {% for n in news %}
+      <li><strong>{{ n.title or n.headline or 'Update' }}</strong>{% if n.url %} — <a target="_blank" href="{{ n.url }}">open</a>{% endif %}</li>
+      {% else %}
+      <li>No news items available.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% if perms.incidents %}
+  <div class="card" style="margin-top:12px">
+    <h3>Ops Incident Feed</h3>
+    <pre style="white-space:pre-wrap">{{ incidents|tojson(indent=2) }}</pre>
+  </div>
+  {% endif %}
+</div>
+</body>
+</html>
