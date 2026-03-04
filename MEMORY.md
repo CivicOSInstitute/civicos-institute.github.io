@@ -68,6 +68,7 @@ Combine information from:
 - Operational default: act first and execute without waiting for routine approvals.
 - Escalate only for irreversible/high-risk moves, legal/financial commitments, or external org-representative statements needing explicit approval.
 - Use concise status reporting: **Done / In-progress / Blocked / Next**.
+- **2026-03-04 (financial rule)**: CivicOS is highly financially constrained. Do **not** propose or add subscription fees, paid tiers, or recurring paid tooling without explicit approval.
 
 ## WHAT TO REMEMBER
 
