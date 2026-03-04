@@ -1,0 +1,35 @@
+{
+  "request": {
+    "title": "West Palm Beach Civic Participation Accelerator",
+    "amount": "$25,000",
+    "period": "April 1, 2026 to March 31, 2027",
+    "funder": "Sample Funder",
+    "summary": "CivicOS Institute seeks support to increase practical civic participation in West Palm Beach through structured engagement programming, partner coordination, and measurable community action outcomes.",
+    "geo_eligible": "YES",
+    "org_eligible": "YES",
+    "fiscal_sponsor": "N/A",
+    "deadline_met": "YES"
+  },
+  "program": {
+    "goal": "Increase local civic engagement capacity and documented resident participation.",
+    "obj1": "Engage 300 residents through structured civic participation opportunities.",
+    "obj2": "Support 12 community-led initiatives with operational tools and facilitation.",
+    "obj3": "Produce quarterly impact reporting with KPI-based accountability."
+  },
+  "budget": {
+    "personnel": "$10,000",
+    "operations": "$6,000",
+    "outreach": "$4,000",
+    "evaluation": "$3,000",
+    "indirect": "$2,000",
+    "total": "$25,000"
+  },
+  "kpi": {
+    "residents": "300+",
+    "participants": "120+",
+    "initiatives": "12+",
+    "partners": "8+",
+    "actions": "50+",
+    "reporting": "Quarterly"
+  }
+}

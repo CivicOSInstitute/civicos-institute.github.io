@@ -1,0 +1,23 @@
+{
+  "org": {
+    "name": "CivicOS Institute",
+    "state": "Florida",
+    "city": "West Palm Beach",
+    "contact_name": "Nicholas A. Cerbone",
+    "contact_title": "Director",
+    "contact_email": "NCerbone@civicos-institute.org",
+    "website": "civicos-institute.org"
+  },
+  "document": {
+    "version": "1.0",
+    "status": "DRAFT",
+    "template_name": "Governance-Style Fundraising Proposal"
+  },
+  "defaults": {
+    "funding_type": "Grant",
+    "fiscal_year": "2026",
+    "currency": "USD",
+    "geography": "West Palm Beach / Palm Beach County / Florida",
+    "reporting_cadence": "Quarterly"
+  }
+}
