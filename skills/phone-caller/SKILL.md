@@ -37,6 +37,32 @@ Optional:
 4. If `dry_run=false`, execute `scripts/twilio_call.py`.
 5. Return concise result with `status`, `provider`, `to_number`, `call_sid` (if live), and `timestamp`.
 
+## Live conversation mode (beta)
+
+This skill now includes `scripts/live_voice_assistant.py` for turn-based live calls:
+
+- Twilio receives call webhook at `/voice`
+- Captures user speech with `<Gather input="speech">`
+- Responds with natural TTS voice and loops
+
+Run locally:
+
+```bash
+# Terminal 1: start voice webhook server
+./.venv/bin/python scripts/live_voice_assistant.py
+
+# Terminal 2: expose public URL for Twilio webhook
+# (example with ngrok)
+ngrok http 8787
+```
+
+Set Twilio phone number Voice webhook to:
+
+- `https://<your-ngrok-domain>/voice` (HTTP POST)
+
+Recommended voice:
+- `TWILIO_TTS_VOICE=Polly.Joanna-Neural`
+
 ## Command examples
 
 ```bash
