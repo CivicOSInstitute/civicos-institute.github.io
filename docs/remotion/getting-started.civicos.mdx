@@ -1,0 +1,85 @@
+---
+id: remotion-getting-started-civicos
+title: Remotion Setup for CivicOS Institute
+sidebar_label: Remotion Installation
+slug: /remotion/getting-started
+crumb: "Create your first CivicOS video pipeline"
+---
+
+## Prerequisites
+
+Use one of the following:
+
+- **Node.js** (LTS recommended)
+- **Bun** (optional runtime)
+
+:::note
+Linux hosts need **glibc >= 2.35** and additional dependencies. Alpine and nixOS are currently unsupported for standard Remotion workflows.
+:::
+
+## CivicOS default: scaffold a new project
+
+For CivicOS workflows, use **npm + Hello World template** unless there is a specific reason to use another stack.
+
+```bash
+npx create-video@latest
+```
+
+If your environment standard is different:
+
+```bash
+# pnpm
+pnpm create video
+
+# yarn
+yarn create video
+
+# bun
+bun create video
+```
+
+## Start development
+
+Inside the generated project:
+
+```bash
+npm run dev
+```
+
+For templates that split app and studio commands:
+
+```bash
+npm run dev
+npm run remotion
+```
+
+## CivicOS operating defaults
+
+When building videos for CivicOS Institute:
+
+1. **Start simple** with a reproducible template.
+2. Keep media assets in versioned folders (e.g., `assets/YYYY-MM-campaign/`).
+3. Prefer deterministic scripts over one-off UI edits.
+4. Capture render commands in project README for repeatability.
+5. Use descriptive composition names (example: `CivicOSDonorUpdate30s`).
+
+## Prompted video workflows (Claude Code)
+
+If you’re generating/editing Remotion projects through Claude Code, follow the dedicated guide:
+
+- `/docs/ai/claude-code` (Prompting videos with Claude Code)
+
+## Existing project install
+
+If you already have a project and only need Remotion added, use the brownfield path:
+
+- `/docs/brownfield`
+
+---
+
+### CivicOS recommendation
+
+For team consistency, standardize on:
+- **npm** package manager
+- **single starter template** for onboarding
+- a shared `render.sh` or `package.json` scripts for common exports
