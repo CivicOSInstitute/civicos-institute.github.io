@@ -61,6 +61,28 @@ def build_ops_formatter():
     return rows
 
 
+def build_from_raw_jsonl(specialist):
+    raw = ROOT / f'data/{specialist}/raw/examples.jsonl'
+    rows=[]
+    if raw.exists():
+        for ln in raw.read_text(errors='ignore').splitlines():
+            ln=ln.strip()
+            if not ln:
+                continue
+            try:
+                obj=json.loads(ln)
+                inst=(obj.get('instruction') or '').strip()
+                inp=(obj.get('input') or '').strip()
+                out=(obj.get('output') or '').strip()
+                if not inst or not out:
+                    continue
+                merged = inst if not inp else f"{inst}\n\nInput:\n{inp}"
+                rows.append(_fmt(merged, out))
+            except Exception:
+                continue
+    return rows
+
+
 def build_generic_from_letters(specialist):
     paths=[
         WS / 'letter-from-director.md',
@@ -95,7 +117,9 @@ def main():
     elif sid=='ops_formatter_2b':
         rows=build_ops_formatter()
     elif sid in {'grant_analyst_2b','policy_qa_guard_2b'}:
-        rows=build_generic_from_letters(sid)
+        rows=build_from_raw_jsonl(sid)
+        if len(rows) < 12:
+            rows=build_generic_from_letters(sid)
     else:
         raise SystemExit(f'unknown specialist: {sid}')
 
