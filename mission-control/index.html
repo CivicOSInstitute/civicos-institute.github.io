@@ -32,6 +32,7 @@
             <button class="nav-btn" data-module="council">Advisory Council</button>
             <button class="nav-btn" data-module="news">News</button>
             <button class="nav-btn" data-module="hours">Payroll & Expenses</button>
+            <button class="nav-btn" data-module="sysadmin">SysAdmin</button>
         </nav>
 
         <main class="mission-dashboard">
@@ -565,6 +566,40 @@
 
             </section>
 
+            <section id="sysadmin" class="module">
+                <h2>🛠️ Systems Admin</h2>
+                <p class="module-desc">Command & control actions via predetermined scripts only.</p>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Gateway</h3>
+                        <div class="metric-value" id="sa-gateway-status">Unknown</div>
+                        <div class="metric-trend" id="sa-gateway-uptime">Uptime: --</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Main Model</h3>
+                        <div class="metric-value" id="sa-main-model">Unknown</div>
+                        <div class="metric-trend" id="sa-model-notes">Router-first status</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Codex Readout</h3>
+                        <div class="metric-value" id="sa-codex-readout">N/A</div>
+                        <div class="metric-trend" id="sa-codex-notes">Limits/readout via CLI</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Quick Recovery Actions</h3>
+                    <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:.75rem;">
+                        <button class="btn-primary" id="sa-reset-gateway-btn" onclick="missionControl.saResetGateway()">Reset Gateway</button>
+                        <button class="btn-secondary" id="sa-doctor-btn" onclick="missionControl.saRunDoctor()">OpenClaw Doctor</button>
+                        <button class="btn-secondary" onclick="missionControl.loadSysAdminData()">Refresh Readouts</button>
+                    </div>
+                    <div id="sa-status" style="font-size:.9rem;color:#a0a0b0;margin-bottom:.5rem;">Idle</div>
+                    <pre id="sa-output" style="white-space:pre-wrap;background:#0b1220;border:1px solid #2a2a3e;padding:.75rem;border-radius:8px;max-height:320px;overflow:auto;">No output yet.</pre>
+                </div>
+            </section>
+
             <section id="hours" class="module">
                 <h2>⏱️ Payroll & Expenses</h2>
                 <p class="module-desc">Track work/volunteer hours and operational expenses in one place</p>
@@ -717,6 +752,6 @@
         </footer>
     </div>
 
-    <script src="js/dashboard.js?v=21"></script>
+    <script src="js/dashboard.js?v=22"></script>
 </body>
 </html>

@@ -202,6 +202,9 @@ class MissionControl {
             case 'hours':
                 await this.loadHoursData();
                 break;
+            case 'sysadmin':
+                await this.loadSysAdminData();
+                break;
             default:
                 break;
         }
@@ -1114,6 +1117,61 @@ class MissionControl {
     async loadFinanceDataLegacy() {
         // legacy placeholder retained intentionally; active finance renderer is above
         return;
+    }
+
+    async loadSysAdminData() {
+        try {
+            const r = await fetch('/api/sysadmin/status');
+            const j = await r.json();
+            document.getElementById('sa-gateway-status').textContent = j.gateway_status || 'Unknown';
+            document.getElementById('sa-gateway-uptime').textContent = `Uptime: ${j.gateway_uptime || '--'}`;
+            document.getElementById('sa-main-model').textContent = j.main_model || 'Unknown';
+            document.getElementById('sa-model-notes').textContent = `Router-first: ${j.router_first || 'Unknown'} | Fallback: ${j.fallback_model || 'Unknown'}`;
+            document.getElementById('sa-codex-readout').textContent = j.codex_readout || 'N/A';
+            document.getElementById('sa-codex-notes').textContent = j.codex_notes || 'No explicit quota telemetry';
+        } catch (e) {
+            document.getElementById('sa-status').textContent = `Readout error: ${e.message}`;
+        }
+    }
+
+    async saResetGateway() {
+        if (!confirm('Reset Gateway now?')) return;
+        const btn = document.getElementById('sa-reset-gateway-btn');
+        const st = document.getElementById('sa-status');
+        const out = document.getElementById('sa-output');
+        btn.disabled = true;
+        st.textContent = 'Running reset script...';
+        try {
+            const r = await fetch('/api/sysadmin/reset-gateway', { method: 'POST' });
+            const j = await r.json();
+            st.textContent = j.status === 'success' ? 'Gateway reset completed.' : `Reset failed: ${j.message || 'unknown'}`;
+            out.textContent = (j.stdout || j.stderr || JSON.stringify(j, null, 2));
+            await this.loadSysAdminData();
+        } catch (e) {
+            st.textContent = `Reset error: ${e.message}`;
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    async saRunDoctor() {
+        if (!confirm('Run OpenClaw Doctor now?')) return;
+        const btn = document.getElementById('sa-doctor-btn');
+        const st = document.getElementById('sa-status');
+        const out = document.getElementById('sa-output');
+        btn.disabled = true;
+        st.textContent = 'Running doctor script...';
+        try {
+            const r = await fetch('/api/sysadmin/openclaw-doctor', { method: 'POST' });
+            const j = await r.json();
+            st.textContent = j.status === 'success' ? 'Doctor completed.' : `Doctor failed: ${j.message || 'unknown'}`;
+            out.textContent = (j.stdout || j.stderr || JSON.stringify(j, null, 2));
+            await this.loadSysAdminData();
+        } catch (e) {
+            st.textContent = `Doctor error: ${e.message}`;
+        } finally {
+            btn.disabled = false;
+        }
     }
 
     async loadCalendarData() {
