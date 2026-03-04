@@ -31,8 +31,8 @@ MLX_PYTHON = "/Users/AI-OPS/.openclaw/workspace/.venv-finetune/bin/python"
 MLX_BASE_MODEL = "mlx-community/Qwen2.5-1.5B-Instruct-4bit"
 
 SPECIALIST_KEYWORDS = {
+    "policy_qa_guard_2b": ["policy", "compliance", "guardrail", "risk", "tone review", "pass/fail", "review this"],
     "grant_analyst_2b": ["grant", "funder", "rfp", "eligibility", "deadline", "foundation"],
-    "policy_qa_guard_2b": ["policy", "compliance", "guardrail", "risk", "tone review"],
     "outreach_writer_2b": ["outreach", "subject line", "follow-up email", "cold email"],
     "ops_formatter_2b": ["format", "structured json", "normalize", "schema"],
 }
@@ -95,6 +95,17 @@ def pick_specialist(prompt: str) -> Optional[str]:
     return None
 
 
+def passes_specialist_guard(output: str, specialist_id: str) -> bool:
+    t = (output or "").lower()
+    if not t:
+        return False
+    if specialist_id == "policy_qa_guard_2b":
+        return ("pass" in t or "fail" in t) and ("risk" in t or "fix" in t)
+    if specialist_id == "grant_analyst_2b":
+        return "fit score" in t or "30-day" in t or "deadline" in t
+    return True
+
+
 def execute_mlx_specialist(prompt: str, specialist_id: str, specialist_map: Dict[str, Dict]) -> Optional[str]:
     spec = specialist_map.get(specialist_id)
     if not spec:
@@ -130,6 +141,8 @@ def execute_mlx_specialist(prompt: str, specialist_id: str, specialist_map: Dict
         out = (res.stdout or "").strip()
         if "==========" in out:
             out = out.split("==========")[-1].strip()
+        if not passes_specialist_guard(out, specialist_id):
+            return None
         return out or None
     except Exception:
         return None
@@ -273,9 +286,17 @@ def route_request(prompt: str) -> Dict:
             # Safe fallback to local QA model if adapter invocation fails.
             fallback_model = LOCAL_SPECIALISTS["qa"]
             routing["route"] = "local"
-            routing["reason"] = f"Specialist unavailable; fallback -> {fallback_model}"
+            routing["reason"] = f"Specialist unavailable/failed quality guard; fallback -> {fallback_model}"
             routing["model"] = fallback_model
-            routing["output"] = execute_local(prompt, fallback_model)
+            if routing.get("model") == "policy_qa_guard_2b" or "policy" in prompt.lower() or "pass/fail" in prompt.lower():
+                guarded_prompt = (
+                    "Review for policy/tone risks. Return exactly sections: RESULT (PASS or FAIL), "
+                    "RISKS (bullets), FIXES (bullets), REWRITE (short).\n\n"
+                    + prompt
+                )
+                routing["output"] = execute_local(guarded_prompt, fallback_model)
+            else:
+                routing["output"] = execute_local(prompt, fallback_model)
             routing["cost"] = "$0.00"
     elif routing["route"] == "local":
         output = execute_local(prompt, routing["model"])
