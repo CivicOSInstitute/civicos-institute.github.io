@@ -7,7 +7,8 @@ import json
 import os
 import subprocess
 import sys
-from typing import Dict
+from pathlib import Path
+from typing import Dict, Optional
 
 # Model definitions
 LOCAL_MODEL = "phi3:mini"  # Lightweight classifier - 3x faster, 2x smaller
@@ -23,6 +24,17 @@ LOCAL_SPECIALISTS = {
     "writing": "llama3.1:8b",
     "chat": "llama3.1:8b",
     "qa": "qwen3:14b",
+}
+
+SPECIALIST_CONFIG = Path("/Users/AI-OPS/.openclaw/workspace/skills/model-router/config/specialist_adapters.json")
+MLX_PYTHON = "/Users/AI-OPS/.openclaw/workspace/.venv-finetune/bin/python"
+MLX_BASE_MODEL = "mlx-community/Qwen2.5-1.5B-Instruct-4bit"
+
+SPECIALIST_KEYWORDS = {
+    "grant_analyst_2b": ["grant", "funder", "rfp", "eligibility", "deadline", "foundation"],
+    "policy_qa_guard_2b": ["policy", "compliance", "guardrail", "risk", "tone review"],
+    "outreach_writer_2b": ["outreach", "subject line", "follow-up email", "cold email"],
+    "ops_formatter_2b": ["format", "structured json", "normalize", "schema"],
 }
 
 # Economy policy: keep paid usage for final QA and truly complex tasks only.
@@ -61,10 +73,81 @@ def is_extremely_complex(prompt: str) -> bool:
     ]
     return any(sig in p for sig in complexity_signals)
 
+def load_specialist_map() -> Dict[str, Dict]:
+    try:
+        if not SPECIALIST_CONFIG.exists():
+            return {}
+        data = json.loads(SPECIALIST_CONFIG.read_text())
+        out = {}
+        for s in data.get("specialists", []):
+            if s.get("status") == "promoted":
+                out[s["id"]] = s
+        return out
+    except Exception:
+        return {}
+
+
+def pick_specialist(prompt: str) -> Optional[str]:
+    p = (prompt or "").lower()
+    for sid, keys in SPECIALIST_KEYWORDS.items():
+        if any(k in p for k in keys):
+            return sid
+    return None
+
+
+def execute_mlx_specialist(prompt: str, specialist_id: str, specialist_map: Dict[str, Dict]) -> Optional[str]:
+    spec = specialist_map.get(specialist_id)
+    if not spec:
+        return None
+    adapter = spec.get("adapter_path")
+    if not adapter or not Path(adapter).exists():
+        return None
+    if not Path(MLX_PYTHON).exists():
+        return None
+
+    try:
+        cmd = [
+            MLX_PYTHON,
+            "-m",
+            "mlx_lm",
+            "generate",
+            "--model",
+            MLX_BASE_MODEL,
+            "--adapter-path",
+            adapter,
+            "--prompt",
+            prompt,
+            "--max-tokens",
+            "900",
+            "--temp",
+            "0.2",
+            "--verbose",
+            "false",
+        ]
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+        if res.returncode != 0:
+            return None
+        out = (res.stdout or "").strip()
+        if "==========" in out:
+            out = out.split("==========")[-1].strip()
+        return out or None
+    except Exception:
+        return None
+
+
 def classify_request(prompt: str) -> Dict:
     """Classify request with lightweight guards before model-based routing."""
     p = (prompt or "").strip()
     p_lower = p.lower()
+
+    specialist_map = load_specialist_map()
+    specialist_id = pick_specialist(p)
+    if specialist_id and specialist_id in specialist_map:
+        return {
+            "route": "local_specialist",
+            "model": specialist_id,
+            "reason": f"Specialist keyword match -> {specialist_id}",
+        }
 
     # Fast-path heuristics to avoid unnecessary classifier calls.
     if len(p) <= 120 and any(k in p_lower for k in ["weather", "time", "date", "what is", "who is", "explain"]):
@@ -180,7 +263,21 @@ def route_request(prompt: str) -> Dict:
             routing["priority"] = priority
 
     # Step 3: Execute
-    if routing["route"] == "local":
+    if routing["route"] == "local_specialist":
+        specialist_map = load_specialist_map()
+        output = execute_mlx_specialist(prompt, routing["model"], specialist_map)
+        if output:
+            routing["output"] = output
+            routing["cost"] = "$0.00"
+        else:
+            # Safe fallback to local QA model if adapter invocation fails.
+            fallback_model = LOCAL_SPECIALISTS["qa"]
+            routing["route"] = "local"
+            routing["reason"] = f"Specialist unavailable; fallback -> {fallback_model}"
+            routing["model"] = fallback_model
+            routing["output"] = execute_local(prompt, fallback_model)
+            routing["cost"] = "$0.00"
+    elif routing["route"] == "local":
         output = execute_local(prompt, routing["model"])
         routing["output"] = output
         routing["cost"] = "$0.00"
