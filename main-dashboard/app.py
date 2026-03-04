@@ -14,6 +14,7 @@ import urllib.request
 import urllib.error
 import os
 import re
+import subprocess
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -94,6 +95,10 @@ COUNCIL_DATA_DIR = WORKSPACE_DIR / 'data' / 'council'
 COUNCIL_ISSUES_DIR = COUNCIL_DATA_DIR / 'issues'
 COUNCIL_SESSIONS_DIR = COUNCIL_DATA_DIR
 COUNCIL_ISSUES_DIR.mkdir(parents=True, exist_ok=True)
+
+MC_SCRIPTS_DIR = WORKSPACE_DIR / 'scripts' / 'mc'
+RESET_GATEWAY_SCRIPT = MC_SCRIPTS_DIR / 'reset_gateway.sh'
+OPENCLAW_DOCTOR_SCRIPT = MC_SCRIPTS_DIR / 'openclaw_doctor.sh'
 
 def check_service(name, config):
     """Check if a service is online."""
@@ -389,6 +394,34 @@ def get_gateway_stats():
     except Exception as e:
         print(f"Error getting gateway stats: {e}")
         return stats
+
+def run_mc_script(script_path: Path, timeout: int = 120):
+    """Run predetermined Mission Control script and return output."""
+    if not script_path.exists():
+        return {
+            'status': 'error',
+            'message': f'Script not found: {script_path}'
+        }
+    try:
+        proc = subprocess.run(
+            [str(script_path)],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            cwd=str(WORKSPACE_DIR)
+        )
+        return {
+            'status': 'success' if proc.returncode == 0 else 'error',
+            'returncode': proc.returncode,
+            'stdout': (proc.stdout or '')[-8000:],
+            'stderr': (proc.stderr or '')[-4000:]
+        }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': str(e)
+        }
+
 
 def get_email_stats():
     """Get email statistics from Himalaya via bridge API."""
@@ -1056,20 +1089,38 @@ def api_council_issues():
 
 @app.route('/api/restart-gateway', methods=['POST'])
 def restart_gateway():
-    """Restart OpenClaw Gateway via host bridge API."""
-    try:
-        bridge_url = 'http://host.docker.internal:18080/gateway/restart'
-        req = urllib.request.Request(bridge_url, method='POST')
-        response = urllib.request.urlopen(req, timeout=12)
-        result = json.loads(response.read().decode('utf-8'))
-        if result.get('status') == 'success':
-            return jsonify({
-                'status': 'success',
-                'message': 'Gateway restart initiated. Polling for recovery...'
-            })
-        return jsonify({'status': 'error', 'message': result.get('message', 'Restart failed')}), 500
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+    """Restart OpenClaw Gateway using predetermined MC script."""
+    result = run_mc_script(RESET_GATEWAY_SCRIPT, timeout=90)
+    if result.get('status') == 'success':
+        return jsonify({
+            'status': 'success',
+            'message': 'Gateway restart script completed.',
+            'stdout': result.get('stdout', '')
+        })
+    return jsonify({
+        'status': 'error',
+        'message': result.get('message', 'Restart failed'),
+        'stdout': result.get('stdout', ''),
+        'stderr': result.get('stderr', '')
+    }), 500
+
+
+@app.route('/api/openclaw-doctor', methods=['POST'])
+def openclaw_doctor():
+    """Run OpenClaw Doctor using predetermined MC script."""
+    result = run_mc_script(OPENCLAW_DOCTOR_SCRIPT, timeout=180)
+    if result.get('status') == 'success':
+        return jsonify({
+            'status': 'success',
+            'message': 'OpenClaw Doctor completed.',
+            'stdout': result.get('stdout', '')
+        })
+    return jsonify({
+        'status': 'error',
+        'message': result.get('message', 'Doctor failed'),
+        'stdout': result.get('stdout', ''),
+        'stderr': result.get('stderr', '')
+    }), 500
 
 
 @app.route('/api/gateway/status')

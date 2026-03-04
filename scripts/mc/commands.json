@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "id": "reset_gateway",
+      "name": "Reset OpenClaw Gateway",
+      "script": "/Users/AI-OPS/.openclaw/workspace/scripts/mc/reset_gateway.sh",
+      "confirm": true
+    },
+    {
+      "id": "openclaw_doctor",
+      "name": "Run OpenClaw Doctor",
+      "script": "/Users/AI-OPS/.openclaw/workspace/scripts/mc/openclaw_doctor.sh",
+      "confirm": true
+    }
+  ]
+}

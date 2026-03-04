@@ -321,7 +321,8 @@
             <div class="card">
                 <div class="card-header">
                     <h2><span class="status-dot {% if gateway_stats.status == 'Running' %}status-online{% elif gateway_stats.status == 'Stopped' %}status-offline{% else %}status-warning{% endif %}"></span>Gateway</h2>
-                    <button id="gateway-restart-btn" onclick="confirmGatewayRestart()" class="btn btn-secondary">Restart</button>
+                    <button id="gateway-restart-btn" onclick="confirmGatewayRestart()" class="btn btn-secondary">Reset Gateway</button>
+                    <button id="gateway-doctor-btn" onclick="runOpenClawDoctor()" class="btn btn-secondary">OpenClaw Doctor</button>
                 </div>
                 <div class="card-body">
                     <div class="metric-row"><span class="metric-label">Status</span><span class="metric-value {% if gateway_stats.status == 'Running' %}success{% elif gateway_stats.status == 'Stopped' %}danger{% else %}warning{% endif %}">{{ gateway_stats.status }}</span></div>
@@ -329,6 +330,7 @@
                     <div class="metric-row"><span class="metric-label">Version</span><span class="metric-value" style="font-size:0.85rem;">{{ gateway_stats.version or 'Unknown' }}</span></div>
                     <div class="quick-links"><a href="/api/gateway/status" class="btn btn-secondary" target="_blank">Raw Status</a></div>
                     <div id="restart-status" style="margin-top: 0.6rem; font-size: 0.75rem; color: #64748b; display: none;"></div>
+                    <pre id="doctor-output" style="display:none; margin-top:0.6rem; max-height:180px; overflow:auto; background:#0f172a; color:#e2e8f0; padding:0.6rem; border-radius:8px; font-size:0.72rem;"></pre>
                 </div>
             </div>
 
@@ -1019,6 +1021,38 @@
                 .catch(e => {
                     statusDiv.innerHTML = '❌ ' + e.message;
                     statusDiv.style.color = '#ef4444';
+                    if (btn) btn.disabled = false;
+                });
+        }
+
+        function runOpenClawDoctor() {
+            if (!confirm('Run OpenClaw Doctor now? This will execute predetermined diagnostics scripts.')) return;
+            const statusDiv = document.getElementById('restart-status');
+            const out = document.getElementById('doctor-output');
+            const btn = document.getElementById('gateway-doctor-btn');
+            if (btn) btn.disabled = true;
+            if (out) { out.style.display = 'none'; out.textContent = ''; }
+
+            statusDiv.style.display = 'block';
+            statusDiv.style.color = '#f59e0b';
+            statusDiv.textContent = '🔎 Running OpenClaw Doctor...';
+
+            fetch('/api/openclaw-doctor', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    const ok = data.status === 'success';
+                    statusDiv.style.color = ok ? '#10b981' : '#ef4444';
+                    statusDiv.textContent = ok ? '✅ OpenClaw Doctor completed.' : `❌ ${data.message || 'Doctor failed'}`;
+                    if (out) {
+                        out.style.display = 'block';
+                        out.textContent = (data.stdout || data.stderr || 'No output').trim();
+                    }
+                })
+                .catch(e => {
+                    statusDiv.style.color = '#ef4444';
+                    statusDiv.textContent = '❌ ' + e.message;
+                })
+                .finally(() => {
                     if (btn) btn.disabled = false;
                 });
         }
