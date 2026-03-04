@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '../..');
 const cfgPath = path.join(__dirname, 'fundraising_config.json');
@@ -16,7 +17,19 @@ function nowStamp() {
   return `${y}${m}${day}-${hh}${mm}`;
 }
 
-function render(cfg, input) {
+function modeTitle(mode){
+  if(mode==='donor-ask') return 'DONOR FUNDRAISING REQUEST';
+  if(mode==='corporate-sponsorship') return 'CORPORATE SPONSORSHIP PROPOSAL';
+  return 'FUNDRAISING PROPOSAL';
+}
+
+function modeFundingType(mode){
+  if(mode==='donor-ask') return 'Donor Ask';
+  if(mode==='corporate-sponsorship') return 'Corporate Sponsorship';
+  return 'Grant';
+}
+
+function render(cfg, input, mode) {
   const req = input.request || {};
   const prog = input.program || {};
   const budget = input.budget || {};
@@ -25,16 +38,16 @@ function render(cfg, input) {
   const title = req.title || '[PROJECT OR REQUEST TITLE]';
   const amount = req.amount || '[$ AMOUNT]';
   const period = req.period || '[START DATE] to [END DATE]';
-  const funder = req.funder || '[FUNDER NAME]';
+  const funder = req.funder || '[FUNDER/DONOR/SPONSOR NAME]';
 
-  return `# ${cfg.org.name.toUpperCase()} FUNDRAISING PROPOSAL
+  return `# ${cfg.org.name.toUpperCase()} ${modeTitle(mode)}
 
 **Document ID:** FR-${cfg.defaults.fiscal_year}-[##]  
 **Version:** ${cfg.document.version}  
 **Status:** ${cfg.document.status}  
 **Prepared By:** ${cfg.org.contact_name}, ${cfg.org.contact_title}  
 **Date:** [MONTH DAY, YEAR]  
-**Funding Type:** ${req.type || cfg.defaults.funding_type}  
+**Funding Type:** ${req.type || modeFundingType(mode)}  
 **Target Funder:** ${funder}
 
 ---
@@ -76,56 +89,28 @@ ${prog.capacity || '[Leadership, partners, and delivery capacity.]'}
 
 ---
 
-## ARTICLE III: PROBLEM STATEMENT AND NEED
+## ARTICLE III: PROGRAM DESIGN AND OUTCOMES
 
-### Section 3.01: Community Need
-${prog.need || '[Define issue in measurable terms.]'}
-
-### Section 3.02: Target Population
-${prog.population || '[Who benefits, with local and underserved emphasis.]'}
-
-### Section 3.03: Why Now
-${prog.urgency || '[Urgency and timing rationale.]'}
-
----
-
-## ARTICLE IV: PROGRAM DESIGN
-
-### Section 4.01: Program Goal
+### Section 3.01: Program Goal
 ${prog.goal || '[Single clear goal statement.]'}
 
-### Section 4.02: Objectives
+### Section 3.02: Objectives
 1. ${prog.obj1 || '[Objective 1]'}
 2. ${prog.obj2 || '[Objective 2]'}
 3. ${prog.obj3 || '[Objective 3]'}
 
-### Section 4.03: Activities and Workplan
-- Phase 1: ${prog.phase1 || '[DATES — ACTIVITIES]'}
-- Phase 2: ${prog.phase2 || '[DATES — ACTIVITIES]'}
-- Phase 3: ${prog.phase3 || '[DATES — ACTIVITIES]'}
-
----
-
-## ARTICLE V: OUTCOMES AND MEASUREMENT
-
-### Section 5.01: KPI Targets (12-Month)
+### Section 3.03: KPI Targets (12-Month)
 - Residents Engaged: ${kpi.residents || '[TARGET]'}
 - Active Participants: ${kpi.participants || '[TARGET]'}
 - Community Initiatives Supported: ${kpi.initiatives || '[TARGET]'}
 - Partner Organizations Activated: ${kpi.partners || '[TARGET]'}
 - Civic Actions Completed: ${kpi.actions || '[TARGET]'}
 
-### Section 5.02: Measurement Methods
-${kpi.methods || '[Attendance logs, partner reports, surveys, quarterly review.]'}
-
-### Section 5.03: Reporting Cadence
-${kpi.reporting || cfg.defaults.reporting_cadence}
-
 ---
 
-## ARTICLE VI: BUDGET AND USE OF FUNDS
+## ARTICLE IV: BUDGET AND USE OF FUNDS
 
-### Section 6.01: Line-Item Budget Summary
+### Section 4.01: Line-Item Budget Summary
 - Personnel/Facilitation: ${budget.personnel || '[$]'}
 - Program Operations: ${budget.operations || '[$]'}
 - Outreach/Communications: ${budget.outreach || '[$]'}
@@ -133,37 +118,20 @@ ${kpi.reporting || cfg.defaults.reporting_cadence}
 - Administrative/Indirect: ${budget.indirect || '[$]'}
 - **Total:** ${budget.total || amount}
 
-### Section 6.02: Budget Narrative
+### Section 4.02: Budget Narrative
 ${budget.narrative || '[Explain necessity and reasonableness by category.]'}
 
 ---
 
-## ARTICLE VII: ELIGIBILITY AND COMPLIANCE CHECK
+## ARTICLE V: ELIGIBILITY, COMPLIANCE, AND SUBMISSION CONTROL
 
-### Section 7.01: Eligibility Confirmation
+### Section 5.01: Eligibility Confirmation
 - Geography Eligible: ${req.geo_eligible || '[YES/NO]'}
 - Org Type Eligible: ${req.org_eligible || '[YES/NO]'}
 - Fiscal Sponsor Allowed: ${req.fiscal_sponsor || '[YES/NO/NA]'}
 - Deadline Met: ${req.deadline_met || '[YES/NO]'}
 
-### Section 7.02: Required Attachments Checklist
-- [ ] Organization One-Pager
-- [ ] Project Narrative
-- [ ] Budget + Budget Narrative
-- [ ] IRS Determination Letter or Fiscal Sponsor Letter
-- [ ] Board/Leadership List
-- [ ] Recent Financials (if required)
-
----
-
-## ARTICLE VIII: APPROVAL AND SUBMISSION CONTROL
-
-### Section 8.01: Internal Review
-- Program Lead Review: [DATE / NAME]
-- Budget Review: [DATE / NAME]
-- Executive Review: [DATE / NAME]
-
-### Section 8.02: Final Submission Record
+### Section 5.02: Final Submission Record
 - Submitted By: [NAME]
 - Submission Date/Time: [TIMESTAMP]
 - Confirmation Number: [ID]
@@ -171,16 +139,34 @@ ${budget.narrative || '[Explain necessity and reasonableness by category.]'}
 `;
 }
 
+function toDocx(mdPath){
+  const docxPath = mdPath.replace(/\.md$/, '.docx');
+  try {
+    execSync(`pandoc "${mdPath}" -o "${docxPath}"`, { stdio: 'ignore' });
+    return docxPath;
+  } catch(e) {
+    return null;
+  }
+}
+
 function main() {
   const inputPath = process.argv[2];
+  const mode = (process.argv[3] || 'grant').trim();
+  const exportDocx = (process.argv[4] || '').includes('--docx');
   const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
   const input = inputPath ? JSON.parse(fs.readFileSync(path.resolve(process.cwd(), inputPath), 'utf8')) : {};
 
   fs.mkdirSync(outDir, { recursive: true });
-  const output = render(cfg, input);
-  const outFile = path.join(outDir, `fundraising-proposal-${nowStamp()}.md`);
+  const output = render(cfg, input, mode);
+  const outFile = path.join(outDir, `${mode}-proposal-${nowStamp()}.md`);
   fs.writeFileSync(outFile, output);
   console.log(outFile);
+
+  if (exportDocx) {
+    const docx = toDocx(outFile);
+    if (docx) console.log(docx);
+    else console.log('DOCX export skipped (pandoc not available)');
+  }
 }
 
 main();
