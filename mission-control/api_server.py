@@ -61,6 +61,21 @@ def read_router_status():
             return {}
     return {}
 
+
+def _json_list(path: Path):
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text())
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+
+def _save_json_list(path: Path, items):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(items, indent=2))
+
 @app.route('/')
 def index():
     """Serve main dashboard."""
@@ -288,6 +303,85 @@ def sysadmin_openclaw_doctor():
     res = run_script('openclaw_doctor.sh', timeout=240)
     code = 200 if res.get('status') == 'success' else 500
     return jsonify(res), code
+
+@app.route('/api/hours', methods=['GET', 'POST'])
+def api_hours():
+    p = DATA_DIR / 'hours_entries.json'
+    if request.method == 'GET':
+        items = _json_list(p)
+        return jsonify({'items': items})
+
+    data = request.json or {}
+    item = {
+        'id': int(time.time() * 1000),
+        'date': data.get('date', datetime.now().date().isoformat()),
+        'hours': float(data.get('hours', 0) or 0),
+        'type': (data.get('type') or 'volunteer').lower(),
+        'category': data.get('category', 'Other'),
+        'description': data.get('description', ''),
+        'created': datetime.now().isoformat()
+    }
+    items = _json_list(p)
+    items.append(item)
+    _save_json_list(p, items)
+    return jsonify({'ok': True, 'item': item})
+
+
+@app.route('/api/hours/<int:item_id>', methods=['PUT', 'DELETE'])
+def api_hours_item(item_id):
+    p = DATA_DIR / 'hours_entries.json'
+    items = _json_list(p)
+    if request.method == 'DELETE':
+        items = [x for x in items if int(x.get('id', 0)) != item_id]
+        _save_json_list(p, items)
+        return jsonify({'ok': True})
+
+    data = request.json or {}
+    for i, x in enumerate(items):
+        if int(x.get('id', 0)) == item_id:
+            x.update({
+                'date': data.get('date', x.get('date')),
+                'hours': float(data.get('hours', x.get('hours', 0)) or 0),
+                'type': (data.get('type', x.get('type', 'volunteer')) or 'volunteer').lower(),
+                'category': data.get('category', x.get('category', 'Other')),
+                'description': data.get('description', x.get('description', '')),
+            })
+            items[i] = x
+            _save_json_list(p, items)
+            return jsonify({'ok': True, 'item': x})
+    return jsonify({'ok': False, 'error': 'not found'}), 404
+
+
+@app.route('/api/expenses-lite', methods=['GET', 'POST'])
+def api_expenses_lite():
+    p = DATA_DIR / 'expenses_entries.json'
+    if request.method == 'GET':
+        return jsonify({'items': _json_list(p)})
+
+    data = request.json or {}
+    item = {
+        'id': int(time.time() * 1000),
+        'date': data.get('date', datetime.now().date().isoformat()),
+        'amount': float(data.get('amount', 0) or 0),
+        'category': data.get('category', 'Other'),
+        'vendor': data.get('vendor', ''),
+        'description': data.get('description', ''),
+        'created': datetime.now().isoformat()
+    }
+    items = _json_list(p)
+    items.append(item)
+    _save_json_list(p, items)
+    return jsonify({'ok': True, 'item': item})
+
+
+@app.route('/api/expenses-lite/<int:item_id>', methods=['DELETE'])
+def api_expenses_lite_item(item_id):
+    p = DATA_DIR / 'expenses_entries.json'
+    items = _json_list(p)
+    items = [x for x in items if int(x.get('id', 0)) != item_id]
+    _save_json_list(p, items)
+    return jsonify({'ok': True})
+
 
 @app.route('/api/council/index')
 def council_index():

@@ -416,22 +416,19 @@ class MissionControl {
     }
 
     async loadHoursData() {
-        // Load hours from localStorage and clean invalid rows
-        const rawHours = JSON.parse(localStorage.getItem('civicHours') || '[]');
-        const hours = rawHours.filter(h => {
-            const n = Number(h?.hours);
-            return h && h.date && Number.isFinite(n) && n > 0;
-        });
-        if (hours.length !== rawHours.length) {
-            localStorage.setItem('civicHours', JSON.stringify(hours));
-        }
+        // Global-only source of truth via Mission Control API
+        const hResp = await fetch('/api/hours');
+        const hJson = await hResp.json();
+        const hours = (hJson.items || []).filter(h => Number(h.hours || 0) > 0);
+
+        const eResp = await fetch('/api/expenses-lite');
+        const eJson = await eResp.json();
+        const expenses = eJson.items || [];
 
         this.renderHoursSummary(hours);
         this.renderHoursList(hours);
         this.setupHoursForm();
 
-        // Load expenses tracker data on same page
-        const expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
         this.renderExpenseSummary(expenses);
         this.renderExpenseList(expenses);
         this.setupExpensesForm();
@@ -494,38 +491,31 @@ class MissionControl {
         `;}).join('');
     }
 
-    editHours(id) {
-        const hours = JSON.parse(localStorage.getItem('civicHours') || '[]');
-        const entry = hours.find(h => h.id === id);
+    async editHours(id) {
+        const r = await fetch('/api/hours');
+        const j = await r.json();
+        const hours = j.items || [];
+        const entry = hours.find(h => Number(h.id) === Number(id));
         if (!entry) return;
-        
-        // Populate form with entry data
+
         document.getElementById('hours-date').value = entry.date;
         document.getElementById('hours-amount').value = entry.hours;
         document.getElementById('hours-type').value = entry.type;
         document.getElementById('hours-category').value = entry.category;
         document.getElementById('hours-desc').value = entry.description;
-        
-        // Change submit button to update
+
         const form = document.getElementById('hours-form');
         form.dataset.editing = id;
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.textContent = 'Update Hours';
         submitBtn.classList.add('editing');
-        
-        // Scroll to form
         form.scrollIntoView({ behavior: 'smooth' });
     }
 
-    deleteHours(id) {
+    async deleteHours(id) {
         if (!confirm('Delete this entry?')) return;
-        
-        let hours = JSON.parse(localStorage.getItem('civicHours') || '[]');
-        hours = hours.filter(h => h.id !== id);
-        localStorage.setItem('civicHours', JSON.stringify(hours));
-        
-        this.renderHoursSummary(hours);
-        this.renderHoursList(hours);
+        await fetch(`/api/hours/${id}`, { method: 'DELETE' });
+        await this.loadHoursData();
     }
 
     cancelEdit() {
@@ -548,11 +538,10 @@ class MissionControl {
         const dateInput = document.getElementById('hours-date');
         if (dateInput) dateInput.valueAsDate = new Date();
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const editingId = form.dataset.editing;
-
             const dateVal = document.getElementById('hours-date').value;
             const hoursVal = Number(document.getElementById('hours-amount').value);
             if (!dateVal || !Number.isFinite(hoursVal) || hoursVal <= 0) {
@@ -560,37 +549,32 @@ class MissionControl {
                 return;
             }
 
-            const entry = {
-                id: editingId ? parseInt(editingId) : Date.now(),
+            const payload = {
                 date: dateVal,
                 hours: Number(hoursVal.toFixed(2)),
                 type: String(document.getElementById('hours-type').value || '').toLowerCase(),
                 category: document.getElementById('hours-category').value,
-                description: document.getElementById('hours-desc').value,
-                created: new Date().toISOString()
+                description: document.getElementById('hours-desc').value
             };
 
-            let hours = JSON.parse(localStorage.getItem('civicHours') || '[]');
-
             if (editingId) {
-                // Update existing entry
-                const index = hours.findIndex(h => h.id === parseInt(editingId));
-                if (index !== -1) {
-                    entry.created = hours[index].created; // Preserve original created date
-                    hours[index] = entry;
-                }
+                await fetch(`/api/hours/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
                 this.cancelEdit();
             } else {
-                // Add new entry
-                hours.push(entry);
+                await fetch('/api/hours', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
                 form.reset();
                 document.getElementById('hours-date').valueAsDate = new Date();
             }
 
-            localStorage.setItem('civicHours', JSON.stringify(hours));
-
-            this.renderHoursSummary(hours);
-            this.renderHoursList(hours);
+            await this.loadHoursData();
         });
 
         // Add cancel button if editing
@@ -649,13 +633,10 @@ class MissionControl {
         `).join('');
     }
 
-    deleteExpense(id) {
+    async deleteExpense(id) {
         if (!confirm('Delete this expense?')) return;
-        let expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
-        expenses = expenses.filter(e => e.id !== id);
-        localStorage.setItem('civicExpenses', JSON.stringify(expenses));
-        this.renderExpenseSummary(expenses);
-        this.renderExpenseList(expenses);
+        await fetch(`/api/expenses-lite/${id}`, { method: 'DELETE' });
+        await this.loadHoursData();
     }
 
     setupExpensesForm() {
@@ -666,24 +647,23 @@ class MissionControl {
         const dateInput = document.getElementById('exp-date');
         if (dateInput) dateInput.valueAsDate = new Date();
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const entry = {
-                id: Date.now(),
+            const payload = {
                 date: document.getElementById('exp-date').value,
                 amount: parseFloat(document.getElementById('exp-amount').value),
                 category: document.getElementById('exp-category').value,
                 vendor: document.getElementById('exp-vendor').value,
-                description: document.getElementById('exp-desc').value,
-                created: new Date().toISOString()
+                description: document.getElementById('exp-desc').value
             };
-            const expenses = JSON.parse(localStorage.getItem('civicExpenses') || '[]');
-            expenses.push(entry);
-            localStorage.setItem('civicExpenses', JSON.stringify(expenses));
-            this.renderExpenseSummary(expenses);
-            this.renderExpenseList(expenses);
+            await fetch('/api/expenses-lite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
             form.reset();
             if (dateInput) dateInput.valueAsDate = new Date();
+            await this.loadHoursData();
         });
     }
 
