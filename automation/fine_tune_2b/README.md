@@ -23,12 +23,21 @@ Goal: run 4 narrow local specialists with shared automation for data prep, LoRA 
 - hallucination_rate <= 0.08
 - latency_p95 <= 4.0s (local target)
 
+## Environment Setup
+```bash
+cd /Users/AI-OPS/.openclaw/workspace
+python3 -m venv .venv-finetune
+source .venv-finetune/bin/activate
+pip install -U pip
+pip install mlx-lm datasets peft trl transformers sentencepiece accelerate
+```
+
 ## Run
 ```bash
 cd /Users/AI-OPS/.openclaw/workspace
-python3 automation/fine_tune_2b/scripts/orchestrate.py --all
+.venv-finetune/bin/python automation/fine_tune_2b/scripts/orchestrate.py --all
 # or
-python3 automation/fine_tune_2b/scripts/orchestrate.py --specialist outreach_writer_2b
+.venv-finetune/bin/python automation/fine_tune_2b/scripts/orchestrate.py --specialist outreach_writer_2b
 ```
 
 ## Notes

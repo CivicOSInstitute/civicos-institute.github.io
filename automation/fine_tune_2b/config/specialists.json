@@ -1,5 +1,14 @@
 {
   "base_model": "qwen3.5:2b",
+  "base_hf_model": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "training": {
+    "batch_size": 2,
+    "iters": 160,
+    "learning_rate": 0.0001,
+    "steps_per_eval": 20,
+    "max_seq_length": 2048,
+    "grad_checkpoint": true
+  },
   "specialists": [
     {
       "id": "outreach_writer_2b",
