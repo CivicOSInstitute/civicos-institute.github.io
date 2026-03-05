@@ -5,6 +5,7 @@ from pathlib import Path
 import json, os, re
 from datetime import datetime
 from io import BytesIO
+from urllib.parse import urlparse
 
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import getSampleStyleSheet
@@ -110,11 +111,46 @@ def grants_snapshot():
     return cleaned[:6]
 
 
+def _news_date_label(item):
+    for key in ('date', 'published', 'publishedAt', 'pubDate'):
+        value = item.get(key)
+        if value:
+            try:
+                iso_value = str(value).replace('Z', '+00:00')
+                return datetime.fromisoformat(iso_value).strftime('%Y-%m-%d')
+            except Exception:
+                return str(value)[:10]
+
+    url = item.get('url') or ''
+    m = re.search(r'/(20\d{2})/(\d{2})/(\d{2})/', url)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    return 'Date unavailable'
+
+
 def news_items():
     p = Path('/app/website-news/news.json') if Path('/app/website-news/news.json').exists() else Path('/Users/AI-OPS/.openclaw/workspace/website-news/news.json')
-    j = read_json(p, {'news': []})
-    items = j.get('news', [])
-    return items[:10]
+    j = read_json(p, {'stories': []})
+    raw_items = j.get('stories') or j.get('news') or []
+
+    cleaned = []
+    for item in raw_items:
+        title = (item.get('title') or item.get('headline') or '').strip()
+        url = (item.get('url') or '').strip()
+        source = (item.get('source') or '').strip()
+        if not source and url:
+            source = urlparse(url).netloc.replace('www.', '')
+        if not title or not url:
+            continue
+
+        cleaned.append({
+            'headline': title,
+            'source': source or 'Unknown source',
+            'date': _news_date_label(item),
+            'url': url,
+        })
+
+    return cleaned[:12]
 
 
 def incidents():
