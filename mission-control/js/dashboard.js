@@ -979,13 +979,41 @@ class MissionControl {
     }
 
     async loadGrantsData() {
-        // Load grant pipeline data
+        // Curated grant pipeline highlights (Board-ready)
         const grants = {
             research: [
-                { name: 'Knight Foundation - Civic Tech', amount: '$150,000', deadline: '2026-04-15' }
+                {
+                    name: 'Walmart Foundation — Spark Good Local Grants',
+                    amount: '$250–$5,000',
+                    deadline: 'Rolling (confirm monthly window)',
+                    summary: 'Small local grants for community projects; fastest near-term entry point.'
+                },
+                {
+                    name: 'Community Foundation for Palm Beach & Martin Counties — Competitive Grantmaking',
+                    amount: 'Up to $75,000',
+                    deadline: 'Cycle-based (next window to verify)',
+                    summary: 'Regional foundation funding aligned to local impact and capacity-building priorities.'
+                }
             ],
             drafting: [
-                { name: 'Miami-Dade Cultural Affairs', amount: '$75,000', deadline: '2026-03-30' }
+                {
+                    name: 'Wells Fargo — Palm Beach Community Trust Fund',
+                    amount: '$4,500–$30,000',
+                    deadline: 'Foundation deadlines (verify current cycle)',
+                    summary: 'Palm Beach-focused trust fund supporting eligible community-serving nonprofits.'
+                },
+                {
+                    name: 'Impact 100 Palm Beach County — LOI / Grant Cycle',
+                    amount: 'Large annual award pool (program-specific)',
+                    deadline: 'LOI calendar posted by Impact 100 PBC',
+                    summary: 'Women-led pooled philanthropy with high-visibility awards for local nonprofits.'
+                },
+                {
+                    name: 'United Way of Palm Beach County — Open RFA Pathways',
+                    amount: 'Program-specific (varies by RFA)',
+                    deadline: 'RFA deadlines (posted per program)',
+                    summary: 'Local funding pathways tied to priority issue areas and service delivery outcomes.'
+                }
             ],
             submitted: [],
             pending: [],
@@ -998,8 +1026,9 @@ class MissionControl {
                 container.innerHTML = grants[stage].map(g => `
                     <div class="pipeline-item">
                         <strong>${g.name}</strong>
-                        <div>${g.amount}</div>
-                        <div class="deadline">Due: ${g.deadline}</div>
+                        <div><strong>Range:</strong> ${g.amount}</div>
+                        <div class="deadline"><strong>Deadline:</strong> ${g.deadline}</div>
+                        <div>${g.summary}</div>
                     </div>
                 `).join('') || '<p class="empty">No grants in this stage</p>';
             }
@@ -1192,10 +1221,14 @@ class MissionControl {
             { date: '2026-03-09', time: '10:30', title: 'Task: Board meeting prep', type: 'task', source: 'Tasks' }
         );
         
-        // 3. Grant Deadlines (from database)
+        // 3. Grant pipeline checkpoints (curated; verify external cycles)
         events.push(
-            { date: '2026-03-30', time: '17:00', title: 'Grant Due: Miami-Dade Cultural Affairs', type: 'grant', source: 'Grants' },
-            { date: '2026-04-15', time: '17:00', title: 'Grant Due: Knight Foundation Civic Tech', type: 'grant', source: 'Grants' }
+            { date: '2026-03-18', time: '12:00', title: 'Grant Checkpoint: Confirm Walmart Spark Good window', type: 'grant', source: 'Grants' },
+            { date: '2026-03-20', time: '12:00', title: 'Grant Checkpoint: Confirm CFPBMC competitive grant cycle', type: 'grant', source: 'Grants' },
+            { date: '2026-03-22', time: '12:00', title: 'Grant Checkpoint: Confirm Wells Fargo Trust Fund deadline', type: 'grant', source: 'Grants' },
+            { date: '2026-03-24', time: '12:00', title: 'Grant Checkpoint: Confirm Impact 100 LOI calendar', type: 'grant', source: 'Grants' },
+            { date: '2026-03-26', time: '12:00', title: 'Grant Checkpoint: Confirm United Way open RFA deadlines', type: 'grant', source: 'Grants' },
+            { date: '2026-03-31', time: '17:00', title: 'Grant Milestone: End-of-March submission-ready packet', type: 'grant', source: 'Grants' }
         );
         
         // 4. System/Scheduled Events (from HEARTBEAT)
