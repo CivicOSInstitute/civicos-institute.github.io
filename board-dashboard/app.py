@@ -19,8 +19,8 @@ CORS(app)
 ROOT = Path('/app') if Path('/app').exists() else Path(__file__).parent
 DATA = ROOT / 'data'  # mission-control shared data (finance/incidents)
 BOARD_DATA = Path('/app/board-data') if Path('/app/board-data').exists() else ROOT / 'data'  # board-dashboard managed data
-DOCS_DIR = ROOT / 'documents'
-RECORDINGS_DIR = ROOT / 'recordings'
+DOCS_DIR = BOARD_DATA / 'documents'
+RECORDINGS_DIR = BOARD_DATA / 'recordings'
 
 STANDARD_AGENDA_ITEMS = [
     'Call to Order',
