@@ -1432,7 +1432,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const r = await fetch('http://localhost:8876/api/finance/scan-status');
                     const s = await r.json();
                     if (status) {
-                        const acct = s.account ? ` [${s.account}]` : '';
+                        const accountLabel = s.account === 'nick' ? 'N. Cerbone' : (s.account === 'burt' ? 'Burt' : s.account);
+                        const acct = accountLabel ? ` [${accountLabel}]` : '';
                         const scope = s.scope ? ` ${s.scope}` : '';
                         status.textContent = `Scanning${acct}${scope}: ${s.current || 'working'} (${s.progress || 0}%)`;
                     }
