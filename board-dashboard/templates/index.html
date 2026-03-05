@@ -4,41 +4,201 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>CivicOS Board Dashboard</title>
-  <style>body{font-family:Arial;background:#0b1220;color:#e2e8f0;margin:0} .wrap{max-width:1100px;margin:0 auto;padding:20px} .row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#111827;padding:14px;border-radius:10px;border:1px solid #263244}.small{font-size:12px;color:#94a3b8} ul{padding-left:18px} a{color:#60a5fa} @media(max-width:800px){.row{grid-template-columns:1fr}}</style>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background:#0b1220; color:#e2e8f0; margin:0; }
+    .wrap { max-width:1100px; margin:0 auto; padding:20px; }
+    .small { font-size:12px; color:#94a3b8; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:16px 0; border-bottom:1px solid #263244; padding-bottom:10px; }
+    .tab { background:#111827; border:1px solid #263244; color:#d1d5db; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; }
+    .tab.active { background:#1e293b; border-color:#60a5fa; color:#fff; }
+    .panel { display:none; }
+    .panel.active { display:block; }
+    .row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .card { background:#111827; padding:14px; border-radius:10px; border:1px solid #263244; }
+    h1, h3 { margin-top:0; }
+    ul { padding-left:18px; }
+    a { color:#60a5fa; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .doc-list li { margin-bottom:10px; }
+    .meeting-item { border-bottom:1px solid #223147; padding:10px 0; }
+    .meeting-item:last-child { border-bottom:none; }
+    .link-group a { margin-right:10px; }
+    .agenda-form { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .agenda-form .full { grid-column:span 2; }
+    input, select, textarea { width:100%; box-sizing:border-box; padding:8px; border-radius:8px; border:1px solid #31435f; background:#0f172a; color:#e2e8f0; }
+    button { background:#1d4ed8; color:white; border:none; border-radius:8px; padding:10px 12px; cursor:pointer; font-weight:600; }
+    button:hover { background:#2563eb; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; border:1px solid #3b4f6c; color:#cbd5e1; }
+    @media(max-width:800px){ .row, .agenda-form { grid-template-columns:1fr; } .agenda-form .full { grid-column:span 1; } }
+  </style>
 </head>
 <body>
 <div class="wrap">
   <h1>CivicOS Board Dashboard</h1>
   <div class="small">Role: {{ role }} • Updated: {{ now }}</div>
 
-  <div class="row" style="margin-top:14px">
-    <div class="card"><h3>Income (Month)</h3><div>${{ '%.2f'|format(finance.income) }}</div></div>
-    <div class="card"><h3>Expenses (Month)</h3><div>${{ '%.2f'|format(finance.expenses) }}</div></div>
-    <div class="card"><h3>Net</h3><div>${{ '%.2f'|format(finance.net) }}</div></div>
+  <div class="tabs">
+    <button class="tab" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="governance">Governance</button>
+    <button class="tab" data-tab="meetings">Meetings</button>
+    <button class="tab" data-tab="news">News</button>
+    <button class="tab" data-tab="finance">Finance Snapshot</button>
   </div>
 
-  <div class="row" style="margin-top:12px">
-    <div class="card"><h3>Unpaid Invoices</h3><div>{{ finance.unpaid_count }}</div><div class="small">${{ '%.2f'|format(finance.unpaid_total) }}</div></div>
-    <div class="card" style="grid-column:span 2"><h3>Grant Pipeline Highlights</h3><ul>{% for g in grants %}<li>{{ g }}</li>{% else %}<li>No grant highlights yet.</li>{% endfor %}</ul></div>
-  </div>
+  <section id="overview" class="panel">
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Board Information Hub</h3>
+      <div class="small">Centralized governance references, meeting records, and operating snapshots for provisional, advisory, and board roles.</div>
+    </div>
+    <div class="row">
+      <div class="card"><h3>Income (Month)</h3><div>${{ '%.2f'|format(finance.income) }}</div></div>
+      <div class="card"><h3>Expenses (Month)</h3><div>${{ '%.2f'|format(finance.expenses) }}</div></div>
+      <div class="card"><h3>Net</h3><div>${{ '%.2f'|format(finance.net) }}</div></div>
+    </div>
+  </section>
 
-  <div class="card" style="margin-top:12px">
-    <h3>News</h3>
-    <ul>
-      {% for n in news %}
-      <li><strong>{{ n.title or n.headline or 'Update' }}</strong>{% if n.url %} — <a target="_blank" href="{{ n.url }}">open</a>{% endif %}</li>
+  <section id="governance" class="panel">
+    <div class="card">
+      <h3>Governance Documents</h3>
+      <ul class="doc-list">
+        {% for item in governance_links %}
+        <li>
+          <strong>{{ item.title }}</strong><br/>
+          <span class="small">{{ item.summary }}</span>
+          {% if item.url %}<br/><a target="_blank" href="{{ item.url }}">Open document</a>{% endif %}
+        </li>
+        {% else %}
+        <li>No governance links available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section id="meetings" class="panel">
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Meetings Archive</h3>
+      {% for m in meetings %}
+      <div class="meeting-item">
+        <div><strong>{{ m.title or 'Board Meeting' }}</strong> <span class="small">({{ m.date or 'Date TBD' }})</span></div>
+        <div class="link-group" style="margin-top:6px;">
+          {% if m.minutes_url %}<a target="_blank" href="{{ m.minutes_url }}">Minutes</a>{% endif %}
+          {% if m.transcript_url %}<a target="_blank" href="{{ m.transcript_url }}">Transcript</a>{% endif %}
+          {% if m.audio_url %}<a target="_blank" href="{{ m.audio_url }}">Audio</a>{% endif %}
+          {% if m.video_url %}<a target="_blank" href="{{ m.video_url }}">Video</a>{% endif %}
+        </div>
+      </div>
       {% else %}
-      <li>No news items available.</li>
+      <div class="small">No meeting archive entries available.</div>
       {% endfor %}
-    </ul>
-  </div>
+    </div>
 
-  {% if perms.incidents %}
-  <div class="card" style="margin-top:12px">
-    <h3>Ops Incident Feed</h3>
-    <pre style="white-space:pre-wrap">{{ incidents|tojson(indent=2) }}</pre>
-  </div>
-  {% endif %}
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Agenda Builder: Next Meeting Agenda</h3>
+      {% if perms.agenda_submit %}
+      <form method="post" action="/agenda/submit?role={{ role }}&key={{ role_key }}">
+        <div class="agenda-form">
+          <div><label class="small">Title</label><input name="title" required placeholder="Agenda item title"/></div>
+          <div><label class="small">Owner</label><input name="owner" required placeholder="Responsible board member"/></div>
+          <div><label class="small">Priority</label>
+            <select name="priority">
+              <option>Low</option><option selected>Medium</option><option>High</option><option>Critical</option>
+            </select>
+          </div>
+          <div class="full"><label class="small">Notes</label><textarea name="notes" rows="3" placeholder="Context, decision needed, or prep materials"></textarea></div>
+          <div class="full"><button type="submit">Queue Agenda Item</button></div>
+        </div>
+      </form>
+      {% else %}
+      <div class="small">View-only for your role. Agenda submissions are enabled for advisory and board roles.</div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3>Queued Agenda Items</h3>
+      {% if agenda_items %}
+      <ul>
+        {% for a in agenda_items %}
+        <li style="margin-bottom:10px;">
+          <strong>{{ a.title }}</strong> <span class="pill">{{ a.priority }}</span><br/>
+          <span class="small">Owner: {{ a.owner }} • Submitted by: {{ a.submitted_by }} • Created: {{ a.created_at }}</span>
+          {% if a.notes %}<div class="small" style="margin-top:4px;">{{ a.notes }}</div>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="small">No agenda items queued yet.</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section id="news" class="panel">
+    <div class="card">
+      <h3>News</h3>
+      <ul>
+        {% for n in news %}
+        <li><strong>{{ n.title or n.headline or 'Update' }}</strong>{% if n.url %} — <a target="_blank" href="{{ n.url }}">open</a>{% endif %}</li>
+        {% else %}
+        <li>No news items available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section id="finance" class="panel">
+    <div class="row">
+      <div class="card"><h3>Income (Month)</h3><div>${{ '%.2f'|format(finance.income) }}</div></div>
+      <div class="card"><h3>Expenses (Month)</h3><div>${{ '%.2f'|format(finance.expenses) }}</div></div>
+      <div class="card"><h3>Net</h3><div>${{ '%.2f'|format(finance.net) }}</div></div>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="card"><h3>Unpaid Invoices</h3><div>{{ finance.unpaid_count }}</div><div class="small">${{ '%.2f'|format(finance.unpaid_total) }}</div></div>
+      <div class="card" style="grid-column:span 2"><h3>Grant Pipeline Highlights</h3><ul>{% for g in grants %}<li>{{ g }}</li>{% else %}<li>No grant highlights yet.</li>{% endfor %}</ul></div>
+    </div>
+
+    {% if perms.incidents %}
+    <div class="card" style="margin-top:12px">
+      <h3>Ops Incident Feed</h3>
+      {% if incident_latest %}
+        <ul>
+          <li><strong>Status:</strong> {{ incident_latest.state or 'unknown' }}</li>
+          <li><strong>Scope:</strong> {{ incident_latest.scope or 'n/a' }} ({{ incident_latest.account or 'n/a' }})</li>
+          <li><strong>Progress:</strong> {{ incident_latest.progress or 0 }}%</li>
+          <li><strong>Unpaid invoices flagged:</strong> {{ incident_latest.unpaid or 0 }}</li>
+          <li><strong>Overdue flagged:</strong> {{ incident_latest.overdue or 0 }}</li>
+        </ul>
+        <div class="small">Last event: {{ incident_latest.current or 'n/a' }}</div>
+      {% else %}
+        <div class="small">No incident records.</div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </section>
 </div>
+
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  const params = new URLSearchParams(window.location.search);
+  let active = params.get('tab') || 'overview';
+
+  function show(tabId){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
+    panels.forEach(p => p.classList.toggle('active', p.id === tabId));
+  }
+
+  tabs.forEach(btn => btn.addEventListener('click', () => {
+    active = btn.dataset.tab;
+    show(active);
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', active);
+    history.replaceState(null, '', url.toString());
+  }));
+
+  if (![...panels].find(p => p.id === active)) active = 'overview';
+  show(active);
+})();
+</script>
 </body>
 </html>

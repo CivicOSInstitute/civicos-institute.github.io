@@ -1,0 +1,47 @@
+{
+  "governance": [
+    {
+      "title": "Bylaws",
+      "summary": "Current governing bylaws and amendment history.",
+      "url": "/documents/bylaws.pdf"
+    },
+    {
+      "title": "Charter",
+      "summary": "Organizational charter and mission authority.",
+      "url": "/documents/charter.pdf"
+    },
+    {
+      "title": "Board roster",
+      "summary": "Current board members, terms, and officer roles.",
+      "url": "/documents/board-roster.pdf"
+    },
+    {
+      "title": "Committee structure",
+      "summary": "Standing committees, chairs, and responsibilities.",
+      "url": "/documents/committee-structure.pdf"
+    },
+    {
+      "title": "Conflict-of-interest policy",
+      "summary": "Disclosure, recusal, and annual attestation policy.",
+      "url": "/documents/conflict-of-interest-policy.pdf"
+    }
+  ],
+  "meetings": [
+    {
+      "date": "2026-02-21",
+      "title": "Quarterly Governance Review",
+      "minutes_url": "/recordings/2026-02-21/minutes.pdf",
+      "transcript_url": "/recordings/2026-02-21/transcript.txt",
+      "audio_url": "/recordings/2026-02-21/audio.mp3",
+      "video_url": "/recordings/2026-02-21/video.mp4"
+    },
+    {
+      "date": "2026-01-17",
+      "title": "Board Operations Sync",
+      "minutes_url": "/recordings/2026-01-17/minutes.pdf",
+      "transcript_url": "/recordings/2026-01-17/transcript.txt",
+      "audio_url": "/recordings/2026-01-17/audio.mp3",
+      "video_url": "/recordings/2026-01-17/video.mp4"
+    }
+  ]
+}
