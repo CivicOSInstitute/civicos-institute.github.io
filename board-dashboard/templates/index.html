@@ -29,6 +29,7 @@
     input, select, textarea { width:100%; box-sizing:border-box; padding:8px; border-radius:8px; border:1px solid #31435f; background:#0f172a; color:#e2e8f0; }
     button { background:#1d4ed8; color:white; border:none; border-radius:8px; padding:10px 12px; cursor:pointer; font-weight:600; }
     button:hover { background:#2563eb; }
+    button[disabled] { opacity:0.55; cursor:not-allowed; }
     .btn-link { display:inline-block; background:#0f766e; color:white; text-decoration:none; border-radius:8px; padding:10px 12px; font-weight:600; }
     .btn-link:hover { background:#0d9488; text-decoration:none; }
     .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; border:1px solid #3b4f6c; color:#cbd5e1; }
@@ -45,7 +46,11 @@
     .inline-form { display:inline; }
     .agenda-edit-form { margin-top:10px; padding:10px; border:1px solid #2a3b54; border-radius:10px; background:#111827; }
     .agenda-edit-form.hidden { display:none; }
-    @media(max-width:800px){ .row, .agenda-form, .news-grid { grid-template-columns:1fr; } .agenda-form .full { grid-column:span 1; } }
+    .minutes-section { margin-bottom:14px; padding:12px; border-radius:10px; border:1px solid #334155; background:#0f172a; }
+    .minutes-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+    .minutes-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .record-item { padding:10px; border:1px solid #334155; border-radius:8px; margin-bottom:8px; background:#0f172a; }
+    @media(max-width:800px){ .row, .agenda-form, .news-grid, .minutes-grid { grid-template-columns:1fr; } .agenda-form .full { grid-column:span 1; } }
   </style>
 </head>
 <body>
@@ -57,6 +62,7 @@
     <button class="tab" data-tab="overview">Overview</button>
     <button class="tab" data-tab="governance">Governance</button>
     <button class="tab" data-tab="meetings">Meetings</button>
+    <button class="tab" data-tab="minutes">Minutes</button>
     <button class="tab" data-tab="news">News</button>
     <button class="tab" data-tab="finance">Finance Snapshot</button>
   </div>
@@ -185,6 +191,93 @@
       {% else %}
       <div class="small">No custom agenda items queued yet.</div>
       {% endif %}
+    </div>
+  </section>
+
+  <section id="minutes" class="panel">
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Meeting Minutes</h3>
+      <div class="small">Sections are auto-populated in order: standard agenda items, then submitted custom agenda items from next_agenda.json.</div>
+      {% if minutes_draft.last_updated_at %}
+      <div class="small" style="margin-top:6px;">Last draft update: {{ minutes_draft.last_updated_at }} by {{ minutes_draft.last_updated_by }}</div>
+      {% endif %}
+      {% if role == 'provisional' %}
+      <div class="small" style="margin-top:8px;">View-only access. Advisory and board roles can save drafts and finalize minutes.</div>
+      {% endif %}
+    </div>
+
+    <form method="post" action="/minutes/save?role={{ role }}&key={{ role_key }}">
+      <div class="card" style="margin-bottom:12px;">
+        <div class="agenda-form">
+          <div>
+            <label class="small">Meeting Date</label>
+            <input name="meeting_date" value="{{ minutes_draft.meeting_date }}" {% if not perms.minutes_edit %}readonly{% endif %}/>
+          </div>
+          <div>
+            <label class="small">Meeting Title</label>
+            <input name="meeting_title" value="{{ minutes_draft.meeting_title }}" {% if not perms.minutes_edit %}readonly{% endif %}/>
+          </div>
+        </div>
+      </div>
+
+      {% for section in minutes_draft.sections %}
+      <div class="minutes-section">
+        <div class="minutes-heading">
+          <strong>{{ loop.index }}. {{ section.title }}</strong>
+          <span class="pill">{{ section.source }}</span>
+        </div>
+        <div class="minutes-grid">
+          <div>
+            <label class="small">Discussion Notes</label>
+            <textarea name="discussion_{{ section.section_id }}" rows="3" {% if not perms.minutes_edit %}readonly{% endif %}>{{ section.discussion_notes }}</textarea>
+          </div>
+          <div>
+            <label class="small">Decisions</label>
+            <textarea name="decisions_{{ section.section_id }}" rows="3" {% if not perms.minutes_edit %}readonly{% endif %}>{{ section.decisions }}</textarea>
+          </div>
+          <div>
+            <label class="small">Action Item</label>
+            <input name="action_desc_{{ section.section_id }}" value="{{ section.action_item.description }}" placeholder="Task or follow-up" {% if not perms.minutes_edit %}readonly{% endif %}/>
+          </div>
+          <div class="minutes-grid" style="grid-template-columns:1fr 1fr;">
+            <div>
+              <label class="small">Action Owner</label>
+              <input name="action_owner_{{ section.section_id }}" value="{{ section.action_item.owner }}" placeholder="Owner" {% if not perms.minutes_edit %}readonly{% endif %}/>
+            </div>
+            <div>
+              <label class="small">Due Date</label>
+              <input type="date" name="action_due_{{ section.section_id }}" value="{{ section.action_item.due_date }}" {% if not perms.minutes_edit %}readonly{% endif %}/>
+            </div>
+          </div>
+          <div>
+            <label class="small">Vote / Result (Optional)</label>
+            <input name="vote_{{ section.section_id }}" value="{{ section.vote_result }}" placeholder="e.g., Passed 5-0" {% if not perms.minutes_edit %}readonly{% endif %}/>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="card" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button type="submit" {% if not perms.minutes_edit %}disabled{% endif %}>Save Draft</button>
+      </div>
+    </form>
+
+    <div class="card" style="margin-top:12px;">
+      <form method="post" action="/minutes/finalize?role={{ role }}&key={{ role_key }}" onsubmit="return confirm('Finalize minutes and store a read-only record?');">
+        <button type="submit" {% if not perms.minutes_edit %}disabled{% endif %}>Finalize Minutes</button>
+      </form>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <h3>Finalized Minutes Records</h3>
+      {% for rec in minutes_records %}
+      <div class="record-item">
+        <div><strong>{{ rec.meeting_title }}</strong> <span class="small">({{ rec.meeting_date }})</span></div>
+        <div class="small">Finalized: {{ rec.finalized_at }} by {{ rec.finalized_by }}</div>
+      </div>
+      {% else %}
+      <div class="small">No finalized records yet.</div>
+      {% endfor %}
     </div>
   </section>
 

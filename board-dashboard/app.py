@@ -21,6 +21,8 @@ DATA = ROOT / 'data'  # mission-control shared data (finance/incidents)
 BOARD_DATA = Path('/app/board-data') if Path('/app/board-data').exists() else ROOT / 'data'  # board-dashboard managed data
 DOCS_DIR = BOARD_DATA / 'documents'
 RECORDINGS_DIR = BOARD_DATA / 'recordings'
+MINUTES_DRAFTS_PATH = BOARD_DATA / 'meeting_minutes_drafts.json'
+MINUTES_RECORDS_PATH = BOARD_DATA / 'meeting_minutes_records.json'
 
 STANDARD_AGENDA_ITEMS = [
     'Call to Order',
@@ -40,9 +42,9 @@ ROLE_KEYS = {
 }
 
 ROLE_PERMS = {
-    'provisional': {'finance': 'summary', 'grants': 'summary', 'news': True, 'incidents': False, 'agenda_submit': False},
-    'advisory': {'finance': 'standard', 'grants': 'standard', 'news': True, 'incidents': True, 'agenda_submit': True},
-    'board': {'finance': 'full', 'grants': 'full', 'news': True, 'incidents': True, 'agenda_submit': True},
+    'provisional': {'finance': 'summary', 'grants': 'summary', 'news': True, 'incidents': False, 'agenda_submit': False, 'minutes_edit': False},
+    'advisory': {'finance': 'standard', 'grants': 'standard', 'news': True, 'incidents': True, 'agenda_submit': True, 'minutes_edit': True},
+    'board': {'finance': 'full', 'grants': 'full', 'news': True, 'incidents': True, 'agenda_submit': True, 'minutes_edit': True},
 }
 
 
@@ -234,6 +236,11 @@ def agenda_items():
     return sorted(items, key=lambda i: i.get('created_at', ''), reverse=True)
 
 
+def ordered_custom_agenda_items():
+    data = _load_agenda_data()
+    return data.get('items', [])
+
+
 def add_agenda_item(title, owner, priority, notes, submitted_by):
     path = _agenda_path()
     data = _load_agenda_data()
@@ -282,6 +289,157 @@ def delete_agenda_item(item_id):
     data['items'] = filtered
     write_json(path, data)
     return True
+
+
+def _minutes_template_sections():
+    sections = []
+    for idx, title in enumerate(STANDARD_AGENDA_ITEMS, start=1):
+        sections.append({'id': f'standard-{idx}', 'title': title, 'source': 'standard'})
+
+    for idx, item in enumerate(ordered_custom_agenda_items(), start=1):
+        title = (item.get('title') or f'Custom Agenda Item {idx}').strip()
+        owner = (item.get('owner') or 'TBD').strip()
+        sections.append({'id': f"custom-{item.get('id', idx)}", 'title': title, 'source': 'custom', 'owner': owner})
+
+    return sections
+
+
+def _load_minutes_drafts():
+    default = {'drafts': {}}
+    if not MINUTES_DRAFTS_PATH.exists():
+        write_json(MINUTES_DRAFTS_PATH, default)
+        return default
+    return read_json(MINUTES_DRAFTS_PATH, default)
+
+
+def _save_minutes_drafts(payload):
+    write_json(MINUTES_DRAFTS_PATH, payload)
+
+
+def _load_minutes_records():
+    default = {'records': []}
+    if not MINUTES_RECORDS_PATH.exists():
+        write_json(MINUTES_RECORDS_PATH, default)
+        return default
+    return read_json(MINUTES_RECORDS_PATH, default)
+
+
+def _save_minutes_records(payload):
+    write_json(MINUTES_RECORDS_PATH, payload)
+
+
+def _draft_key():
+    return datetime.now().strftime('%Y-%m-%d')
+
+
+def _merge_sections(template_sections, existing_sections):
+    existing_map = {s.get('section_id'): s for s in (existing_sections or []) if isinstance(s, dict)}
+    merged = []
+    for section in template_sections:
+        saved = existing_map.get(section['id'], {})
+        merged.append({
+            'section_id': section['id'],
+            'title': section['title'],
+            'source': section['source'],
+            'discussion_notes': saved.get('discussion_notes', ''),
+            'decisions': saved.get('decisions', ''),
+            'action_item': {
+                'description': saved.get('action_item', {}).get('description', ''),
+                'owner': saved.get('action_item', {}).get('owner', ''),
+                'due_date': saved.get('action_item', {}).get('due_date', ''),
+            },
+            'vote_result': saved.get('vote_result', ''),
+        })
+    return merged
+
+
+def current_minutes_draft():
+    drafts = _load_minutes_drafts().get('drafts', {})
+    key = _draft_key()
+    existing = drafts.get(key, {})
+    sections = _merge_sections(_minutes_template_sections(), existing.get('sections', []))
+
+    return {
+        'id': key,
+        'meeting_date': existing.get('meeting_date', key),
+        'meeting_title': existing.get('meeting_title', 'Board Meeting Minutes'),
+        'status': existing.get('status', 'draft'),
+        'last_updated_at': existing.get('last_updated_at'),
+        'last_updated_by': existing.get('last_updated_by'),
+        'sections': sections,
+    }
+
+
+def save_minutes_draft(role, form_data):
+    payload = _load_minutes_drafts()
+    drafts = payload.setdefault('drafts', {})
+    key = _draft_key()
+
+    current = current_minutes_draft()
+    sections = []
+    for section in current['sections']:
+        sid = section['section_id']
+        sections.append({
+            'section_id': sid,
+            'title': section['title'],
+            'source': section['source'],
+            'discussion_notes': (form_data.get(f'discussion_{sid}') or '').strip(),
+            'decisions': (form_data.get(f'decisions_{sid}') or '').strip(),
+            'action_item': {
+                'description': (form_data.get(f'action_desc_{sid}') or '').strip(),
+                'owner': (form_data.get(f'action_owner_{sid}') or '').strip(),
+                'due_date': (form_data.get(f'action_due_{sid}') or '').strip(),
+            },
+            'vote_result': (form_data.get(f'vote_{sid}') or '').strip(),
+        })
+
+    drafts[key] = {
+        'id': key,
+        'meeting_date': (form_data.get('meeting_date') or key).strip(),
+        'meeting_title': (form_data.get('meeting_title') or 'Board Meeting Minutes').strip(),
+        'status': 'draft',
+        'last_updated_at': datetime.now().isoformat(timespec='seconds'),
+        'last_updated_by': role,
+        'sections': sections,
+    }
+
+    _save_minutes_drafts(payload)
+
+
+def finalize_minutes(role):
+    key = _draft_key()
+    payload = _load_minutes_drafts()
+    draft = payload.get('drafts', {}).get(key)
+    if not draft:
+        return False
+
+    records_payload = _load_minutes_records()
+    records = records_payload.setdefault('records', [])
+
+    record = {
+        'record_id': str(uuid4()),
+        'meeting_date': draft.get('meeting_date', key),
+        'meeting_title': draft.get('meeting_title', 'Board Meeting Minutes'),
+        'finalized_at': datetime.now().isoformat(timespec='seconds'),
+        'finalized_by': role,
+        'sections': draft.get('sections', []),
+    }
+
+    records.append(record)
+    _save_minutes_records(records_payload)
+
+    draft['status'] = 'finalized'
+    draft['finalized_at'] = record['finalized_at']
+    draft['finalized_by'] = role
+    payload['drafts'][key] = draft
+    _save_minutes_drafts(payload)
+
+    return True
+
+
+def recent_minutes_records(limit=5):
+    records = _load_minutes_records().get('records', [])
+    return sorted(records, key=lambda r: r.get('finalized_at', ''), reverse=True)[:limit]
 
 
 def build_agenda_pdf(role, custom_items):
@@ -363,6 +521,8 @@ def home():
         meetings=gov.get('meetings', []),
         standard_agenda_items=STANDARD_AGENDA_ITEMS,
         agenda_items=agenda,
+        minutes_draft=current_minutes_draft(),
+        minutes_records=recent_minutes_records(),
         role_key=ROLE_KEYS[role],
         now=datetime.now().isoformat(timespec='seconds')
     )
@@ -432,6 +592,36 @@ def remove_agenda(item_id):
         abort(404)
 
     return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='meetings'))
+
+
+@app.post('/minutes/save')
+def save_minutes():
+    role = auth_role()
+    if not role:
+        abort(401)
+
+    perms = ROLE_PERMS[role]
+    if not perms.get('minutes_edit'):
+        abort(403)
+
+    save_minutes_draft(role, request.form)
+    return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='minutes'))
+
+
+@app.post('/minutes/finalize')
+def finalize_minutes_route():
+    role = auth_role()
+    if not role:
+        abort(401)
+
+    perms = ROLE_PERMS[role]
+    if not perms.get('minutes_edit'):
+        abort(403)
+
+    if not finalize_minutes(role):
+        abort(400)
+
+    return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='minutes'))
 
 
 @app.get('/agenda/export.pdf')
