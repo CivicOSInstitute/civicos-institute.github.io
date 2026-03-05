@@ -29,6 +29,8 @@
     input, select, textarea { width:100%; box-sizing:border-box; padding:8px; border-radius:8px; border:1px solid #31435f; background:#0f172a; color:#e2e8f0; }
     button { background:#1d4ed8; color:white; border:none; border-radius:8px; padding:10px 12px; cursor:pointer; font-weight:600; }
     button:hover { background:#2563eb; }
+    .btn-link { display:inline-block; background:#0f766e; color:white; text-decoration:none; border-radius:8px; padding:10px 12px; font-weight:600; }
+    .btn-link:hover { background:#0d9488; text-decoration:none; }
     .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; border:1px solid #3b4f6c; color:#cbd5e1; }
     @media(max-width:800px){ .row, .agenda-form { grid-template-columns:1fr; } .agenda-form .full { grid-column:span 1; } }
   </style>
@@ -114,8 +116,23 @@
       {% endif %}
     </div>
 
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Current Next-Meeting Agenda</h3>
+      <a class="btn-link" href="/agenda/export.pdf?role={{ role }}&key={{ role_key }}" target="_blank">Export Agenda PDF</a>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <h3>Standard Agenda Items</h3>
+      <div class="small" style="margin-bottom:8px;">These are always pre-listed for every next meeting.</div>
+      <ol>
+        {% for item in standard_agenda_items %}
+        <li style="margin-bottom:8px;"><strong>{{ item }}</strong></li>
+        {% endfor %}
+      </ol>
+    </div>
+
     <div class="card">
-      <h3>Queued Agenda Items</h3>
+      <h3>Submitted Custom Agenda Items</h3>
       {% if agenda_items %}
       <ul>
         {% for a in agenda_items %}
@@ -127,7 +144,7 @@
         {% endfor %}
       </ul>
       {% else %}
-      <div class="small">No agenda items queued yet.</div>
+      <div class="small">No custom agenda items queued yet.</div>
       {% endif %}
     </div>
   </section>

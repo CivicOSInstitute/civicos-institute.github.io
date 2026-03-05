@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, abort, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, abort, redirect, url_for, send_from_directory, make_response
 from flask_cors import CORS
 from pathlib import Path
 import json, os, re
 from datetime import datetime
+from io import BytesIO
+
+from reportlab.lib.pagesizes import LETTER
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +19,17 @@ DATA = ROOT / 'data'  # mission-control shared data (finance/incidents)
 BOARD_DATA = Path('/app/board-data') if Path('/app/board-data').exists() else ROOT / 'data'  # board-dashboard managed data
 DOCS_DIR = ROOT / 'documents'
 RECORDINGS_DIR = ROOT / 'recordings'
+
+STANDARD_AGENDA_ITEMS = [
+    'Call to Order',
+    'Approval of Prior Minutes',
+    'Financial Update',
+    'Program Update',
+    'Risk/Security Update',
+    'New Business',
+    'Action Items',
+    'Adjournment',
+]
 
 ROLE_KEYS = {
     'provisional': os.getenv('BOARD_KEY_PROVISIONAL', 'provisional-demo-key'),
@@ -167,6 +184,60 @@ def add_agenda_item(title, owner, priority, notes, submitted_by):
     write_json(path, data)
 
 
+def build_agenda_pdf(role, custom_items):
+    buffer = BytesIO()
+    filename_stamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=LETTER,
+        rightMargin=0.75 * inch,
+        leftMargin=0.75 * inch,
+        topMargin=0.75 * inch,
+        bottomMargin=0.75 * inch,
+        title='CivicOS Next Meeting Agenda',
+    )
+
+    styles = getSampleStyleSheet()
+    story = [
+        Paragraph('CivicOS Institute — Next Meeting Agenda', styles['Title']),
+        Paragraph(f'Generated: {datetime.now().strftime("%Y-%m-%d %I:%M %p")}', styles['Normal']),
+        Paragraph(f'Requested by role: {role}', styles['Normal']),
+        Spacer(1, 0.25 * inch),
+        Paragraph('Standard Agenda Items', styles['Heading2']),
+    ]
+
+    for idx, item in enumerate(STANDARD_AGENDA_ITEMS, start=1):
+        story.append(Paragraph(f'{idx}. {item}', styles['Normal']))
+
+    story.extend([
+        Spacer(1, 0.2 * inch),
+        Paragraph('Submitted Agenda Items', styles['Heading2']),
+    ])
+
+    if custom_items:
+        for idx, item in enumerate(custom_items, start=1):
+            line = f"{idx}. {item.get('title', 'Untitled')} (Owner: {item.get('owner', 'TBD')}, Priority: {item.get('priority', 'Medium')})"
+            story.append(Paragraph(line, styles['Normal']))
+            notes = (item.get('notes') or '').strip()
+            meta = f"Submitted by: {item.get('submitted_by', 'unknown')} • Created: {item.get('created_at', 'n/a')}"
+            story.append(Paragraph(meta, styles['Italic']))
+            if notes:
+                story.append(Paragraph(f'Notes: {notes}', styles['Normal']))
+            story.append(Spacer(1, 0.1 * inch))
+    else:
+        story.append(Paragraph('No submitted agenda items.', styles['Normal']))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename="civicos-next-meeting-agenda-{filename_stamp}.pdf"'
+    return response
+
+
 @app.route('/')
 def home():
     role = auth_role()
@@ -190,6 +261,7 @@ def home():
         incident_latest=incident_latest,
         governance_links=gov.get('governance', []),
         meetings=gov.get('meetings', []),
+        standard_agenda_items=STANDARD_AGENDA_ITEMS,
         agenda_items=agenda,
         role_key=ROLE_KEYS[role],
         now=datetime.now().isoformat(timespec='seconds')
@@ -219,6 +291,14 @@ def submit_agenda():
     add_agenda_item(title=title, owner=owner, priority=priority, notes=notes, submitted_by=role)
 
     return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='meetings'))
+
+
+@app.get('/agenda/export.pdf')
+def export_agenda_pdf():
+    role = auth_role()
+    if not role:
+        abort(401)
+    return build_agenda_pdf(role=role, custom_items=agenda_items())
 
 
 @app.route('/documents/<path:filename>')
