@@ -18,6 +18,6 @@ Place governance and meeting assets here:
 ## Notes
 
 - Role-based behavior is preserved:
-  - `provisional`: read-only, no agenda submissions
-  - `advisory` and `board`: can submit agenda items
+  - `provisional`: read-only (no submit/edit/delete)
+  - `advisory` and `board`: can submit, edit, and delete agenda items
 - Governance and meeting links are rendered as clean cards/lists (no raw JSON visible to users).

@@ -36,6 +36,15 @@
     .news-card { background:#0f172a; border:1px solid #31435f; border-radius:10px; padding:12px; }
     .news-meta { font-size:12px; color:#94a3b8; margin-bottom:6px; }
     .news-headline { font-weight:600; margin:0 0 8px; line-height:1.35; }
+    .agenda-item { border:1px solid #31435f; border-radius:10px; padding:10px; margin-bottom:10px; background:#0f172a; list-style:none; }
+    .agenda-actions { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+    .btn-secondary { background:#334155; }
+    .btn-secondary:hover { background:#475569; }
+    .btn-danger { background:#b91c1c; }
+    .btn-danger:hover { background:#dc2626; }
+    .inline-form { display:inline; }
+    .agenda-edit-form { margin-top:10px; padding:10px; border:1px solid #2a3b54; border-radius:10px; background:#111827; }
+    .agenda-edit-form.hidden { display:none; }
     @media(max-width:800px){ .row, .agenda-form, .news-grid { grid-template-columns:1fr; } .agenda-form .full { grid-column:span 1; } }
   </style>
 </head>
@@ -138,12 +147,38 @@
     <div class="card">
       <h3>Submitted Custom Agenda Items</h3>
       {% if agenda_items %}
-      <ul>
+      <ul style="padding-left:0;">
         {% for a in agenda_items %}
-        <li style="margin-bottom:10px;">
+        <li class="agenda-item">
           <strong>{{ a.title }}</strong> <span class="pill">{{ a.priority }}</span><br/>
           <span class="small">Owner: {{ a.owner }} • Submitted by: {{ a.submitted_by }} • Created: {{ a.created_at }}</span>
+          {% if a.updated_at %}<div class="small">Last updated: {{ a.updated_at }}</div>{% endif %}
           {% if a.notes %}<div class="small" style="margin-top:4px;">{{ a.notes }}</div>{% endif %}
+
+          {% if perms.agenda_submit %}
+          <div class="agenda-actions">
+            <button type="button" class="btn-secondary js-edit-toggle" data-target="edit-{{ a.id }}">Edit</button>
+            <form class="inline-form" method="post" action="/agenda/{{ a.id }}/delete?role={{ role }}&key={{ role_key }}" onsubmit="return confirm('Delete this agenda item?');">
+              <button type="submit" class="btn-danger">Delete</button>
+            </form>
+          </div>
+          <form id="edit-{{ a.id }}" class="agenda-edit-form hidden" method="post" action="/agenda/{{ a.id }}/edit?role={{ role }}&key={{ role_key }}">
+            <div class="agenda-form">
+              <div><label class="small">Title</label><input name="title" required value="{{ a.title }}"/></div>
+              <div><label class="small">Owner</label><input name="owner" required value="{{ a.owner }}"/></div>
+              <div><label class="small">Priority</label>
+                <select name="priority">
+                  <option {% if a.priority == 'Low' %}selected{% endif %}>Low</option>
+                  <option {% if a.priority == 'Medium' %}selected{% endif %}>Medium</option>
+                  <option {% if a.priority == 'High' %}selected{% endif %}>High</option>
+                  <option {% if a.priority == 'Critical' %}selected{% endif %}>Critical</option>
+                </select>
+              </div>
+              <div class="full"><label class="small">Notes</label><textarea name="notes" rows="3">{{ a.notes or '' }}</textarea></div>
+              <div class="full"><button type="submit">Save Changes</button></div>
+            </div>
+          </form>
+          {% endif %}
         </li>
         {% endfor %}
       </ul>
@@ -223,6 +258,16 @@
 
   if (![...panels].find(p => p.id === active)) active = 'overview';
   show(active);
+
+  document.querySelectorAll('.js-edit-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      const form = document.getElementById(targetId);
+      if (!form) return;
+      const isHidden = form.classList.toggle('hidden');
+      btn.textContent = isHidden ? 'Edit' : 'Cancel';
+    });
+  });
 })();
 </script>
 </body>

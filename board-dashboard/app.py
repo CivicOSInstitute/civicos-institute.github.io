@@ -6,6 +6,7 @@ import json, os, re
 from datetime import datetime
 from io import BytesIO
 from urllib.parse import urlparse
+from uuid import uuid4
 
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import getSampleStyleSheet
@@ -194,22 +195,51 @@ def governance_index():
     return read_json(path, default)
 
 
-def agenda_items():
-    path = BOARD_DATA / 'next_agenda.json'
+def _agenda_path():
+    return BOARD_DATA / 'next_agenda.json'
+
+
+def _normalize_agenda_data(data):
+    changed = False
+    items = data.get('items', [])
+    normalized = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        entry = dict(item)
+        if not entry.get('id'):
+            entry['id'] = str(uuid4())
+            changed = True
+        normalized.append(entry)
+    data['items'] = normalized
+    return data, changed
+
+
+def _load_agenda_data():
+    path = _agenda_path()
     default = {'items': []}
     if not path.exists():
         write_json(path, default)
-        return []
+        return default
     data = read_json(path, default)
+    data, changed = _normalize_agenda_data(data)
+    if changed:
+        write_json(path, data)
+    return data
+
+
+def agenda_items():
+    data = _load_agenda_data()
     items = data.get('items', [])
     return sorted(items, key=lambda i: i.get('created_at', ''), reverse=True)
 
 
 def add_agenda_item(title, owner, priority, notes, submitted_by):
-    path = BOARD_DATA / 'next_agenda.json'
-    data = read_json(path, {'items': []})
+    path = _agenda_path()
+    data = _load_agenda_data()
     data.setdefault('items', [])
     data['items'].append({
+        'id': str(uuid4()),
         'title': title,
         'owner': owner,
         'priority': priority,
@@ -218,6 +248,40 @@ def add_agenda_item(title, owner, priority, notes, submitted_by):
         'created_at': datetime.now().isoformat(timespec='seconds')
     })
     write_json(path, data)
+
+
+def update_agenda_item(item_id, title, owner, priority, notes):
+    path = _agenda_path()
+    data = _load_agenda_data()
+    items = data.get('items', [])
+    updated = False
+
+    for item in items:
+        if item.get('id') != item_id:
+            continue
+        item['title'] = title
+        item['owner'] = owner
+        item['priority'] = priority
+        item['notes'] = notes
+        item['updated_at'] = datetime.now().isoformat(timespec='seconds')
+        updated = True
+        break
+
+    if updated:
+        write_json(path, data)
+    return updated
+
+
+def delete_agenda_item(item_id):
+    path = _agenda_path()
+    data = _load_agenda_data()
+    items = data.get('items', [])
+    filtered = [item for item in items if item.get('id') != item_id]
+    if len(filtered) == len(items):
+        return False
+    data['items'] = filtered
+    write_json(path, data)
+    return True
 
 
 def build_agenda_pdf(role, custom_items):
@@ -325,6 +389,47 @@ def submit_agenda():
         priority = 'Medium'
 
     add_agenda_item(title=title, owner=owner, priority=priority, notes=notes, submitted_by=role)
+
+    return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='meetings'))
+
+
+@app.post('/agenda/<item_id>/edit')
+def edit_agenda(item_id):
+    role = auth_role()
+    if not role:
+        abort(401)
+    perms = ROLE_PERMS[role]
+    if not perms.get('agenda_submit'):
+        abort(403)
+
+    title = (request.form.get('title') or '').strip()
+    owner = (request.form.get('owner') or '').strip()
+    priority = (request.form.get('priority') or 'Medium').strip()
+    notes = (request.form.get('notes') or '').strip()
+
+    if not title or not owner:
+        abort(400)
+
+    if priority not in {'Low', 'Medium', 'High', 'Critical'}:
+        priority = 'Medium'
+
+    if not update_agenda_item(item_id=item_id, title=title, owner=owner, priority=priority, notes=notes):
+        abort(404)
+
+    return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='meetings'))
+
+
+@app.post('/agenda/<item_id>/delete')
+def remove_agenda(item_id):
+    role = auth_role()
+    if not role:
+        abort(401)
+    perms = ROLE_PERMS[role]
+    if not perms.get('agenda_submit'):
+        abort(403)
+
+    if not delete_agenda_item(item_id=item_id):
+        abort(404)
 
     return redirect(url_for('home', role=role, key=ROLE_KEYS[role], tab='meetings'))
 
