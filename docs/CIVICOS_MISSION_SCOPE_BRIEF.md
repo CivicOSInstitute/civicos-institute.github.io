@@ -39,4 +39,4 @@ CivicOS Institute
 https://github.com/CivicOSInstitute
 
 Website
-https://www.civicosinstitute.org
+http://civicos-institute.org/
