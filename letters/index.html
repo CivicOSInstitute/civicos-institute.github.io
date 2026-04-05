@@ -1,18 +1,42 @@
-<!-- REBUILD_TRIGGER_2026-04-05T13:49:41.774607 -->
----
-layout: default
-title: "Director Letters — CivicOS Institute"
-permalink: /letters/
----
-
-<!-- Alert bar -->
-  <div class="letters-alert">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Director Letters — CivicOS Institute</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/civicos.css">
+</head>
+<body>
+  <nav>
+  <a class="nav-logo" href="/">CivicOS Institute</a>
+  <button class="nav-burger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="/" >Home</a></li>
+    <li><a href="/about/" >About</a></li>
+    <li><a href="/publications/" >Publications</a></li>
+    <li><a href="/letters/" class="active">Letters</a></li>
+    <li><a href="/ebook/" >Ebook</a></li>
+    <li><a href="/open-source/" >Open Source</a></li>
+    <li><a href="/governance/" >Governance</a></li>
+    <li><a href="/contact/" >Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="btn-nav-outline">Donate ♡</a>
+    <a href="/publications/" class="btn-nav-outline">Free AI Kit ↓</a>
+    <a href="https://www.amazon.com/dp/B0GQ5JM6LT" target="_blank" rel="noopener" class="btn-nav-solid">Get It Now →</a>
+  </div>
+</nav>
+  <main>
+    <div class="letters-alert">
     <span>Letters published every Tuesday morning</span>
     <span>·</span>
-    <a href="{{ '/contact/' | relative_url }}">Subscribe to receive them by email →</a>
+    <a href="/contact/">Subscribe to receive them by email →</a>
   </div>
 
-  <!-- Letters hub: toggle between views -->
   <div id="letters-hub">
 
     <!-- Hero -->
@@ -64,13 +88,13 @@ permalink: /letters/
             <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;">Support Our Work</div>
             <p style="font-size:13px;color:var(--grey);line-height:1.8;margin-bottom:20px;">CivicOS Institute is funded by readers and ebook sales — no vendors, no ads, no grant dependency.</p>
             <div style="display:flex;flex-direction:column;gap:10px;">
-              <button class="btn-primary" style="cursor:pointer;" onclick="window.location='{{ '/ebook/' | relative_url }}'" style="width:100%;justify-content:center;">Buy the Ebook — $9.99</button>
-              <button class="btn-outline" style="cursor:pointer;" onclick="window.location='{{ '/contact/' | relative_url }}'" style="width:100%;justify-content:center;">Join Our Community</button>
+              <button class="btn-primary" style="cursor:pointer;width:100%;justify-content:center;" onclick="window.location='/ebook/'">Buy the Ebook — $9.99</button>
+              <button class="btn-outline" style="cursor:pointer;width:100%;justify-content:center;" onclick="window.location='/contact/'">Join Our Community</button>
             </div>
           </div>
           <div style="border:1px solid var(--border);padding:28px;">
             <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;">Latest Weekly Letter</div>
-            <div class="latest-letter-card" style="cursor:pointer;" onclick="window.location='{{ '/letters/week-13-2026/' | relative_url }}'" style="padding:24px;">
+            <div class="latest-letter-card" style="cursor:pointer;" onclick="window.location='/letters/week-13-2026/'">
               <div class="llc-issue">Weekly Update — Week 13, 2026</div>
               <div class="llc-date">March 31, 2026</div>
               <div class="llc-title" style="font-size:18px;">A Public-Interest Intelligence Agenda</div>
@@ -81,60 +105,66 @@ permalink: /letters/
       </div>
     </section>
 
-    <!-- Latest weekly letter -->
-    <section class="sec" style="background:var(--navy-mid);">
-      <div class="section-label">Latest Letter</div>
-      <div class="latest-letter-card fi" style="cursor:pointer;" onclick="window.location='{{ '/letters/week-13-2026/' | relative_url }}'">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:start;">
-          <div>
-            <div class="llc-issue">Weekly Update — Week 13, 2026</div>
-            <div class="llc-date">March 31, 2026</div>
-            <div class="llc-title">A Public-Interest Intelligence Agenda</div>
-            <div class="llc-excerpt">A practical call for open systems, runtime governance controls, accessibility by design, and resident outcomes as the scorecard for civic intelligence infrastructure.</div>
-            <div class="llc-read">Read Full Letter →</div>
-          </div>
-          <div style="text-align:right;padding-top:4px;">
-            <div style="font-family:var(--serif);font-size:48px;font-weight:900;color:var(--amber);line-height:1;opacity:.3;">13</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--grey);letter-spacing:0.1em;">Week</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Archive -->
+    <!-- Weekly letters -->
     <section class="sec">
-      <div class="section-label">All Letters</div>
-      <table class="letters-table fi">
+      <div class="section-label">All Weekly Letters</div>
+      <table class="letters-table">
         <thead>
           <tr>
-            <th style="width:120px;">Date</th>
-            <th style="width:260px;">Title</th>
-            <th>Summary</th>
-            <th style="width:40px;"></th>
+            <th>Date</th>
+            <th>Letter</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr style="cursor:pointer;" onclick="window.location='{{ '/letters/week-13-2026/' | relative_url }}'">
-            <td><div class="lt-date">Feb 24, 2026</div></td>
-            <td><span class="lt-title">Weekly Update — Week 13, 2026</span><span class="lt-issue">Issue #8</span></td>
-            <td class="lt-summary">On why the next 1,000 days are an implementation window, and the non-negotiable standards public-sector AI procurement must include: auditability, interoperability, and human accountability.</td>
+          <tr onclick="window.location='/letters/week-13-2026/'">
+            <td class="lt-date">Mar 31, 2026</td>
+            <td><span class="lt-title">Week 13, 2026</span><span class="lt-issue">A Public-Interest Intelligence Agenda</span></td>
             <td class="lt-arr">→</td>
           </tr>
-          <tr style="cursor:pointer;" onclick="window.location='{{ '/letters/week-7-2026/' | relative_url }}'">
-            <td><div class="lt-date">Feb 17, 2026</div></td>
-            <td><span class="lt-title">Weekly Update — Week 7, 2026</span><span class="lt-issue">Issue #7</span></td>
-            <td class="lt-summary">On building the invisible infrastructure that determines whether AI serves democracy, and why the next 1,000 days are critical for establishing governance frameworks that prioritize transparency and accountability.</td>
+          <tr onclick="window.location='/letters/week-12-2026/'">
+            <td class="lt-date">Mar 24, 2026</td>
+            <td><span class="lt-title">Week 12, 2026</span><span class="lt-issue">CivicOS at NIC Spring Conference</span></td>
             <td class="lt-arr">→</td>
           </tr>
-          <tr style="cursor:pointer;" onclick="window.location='{{ '/letters/founding/' | relative_url }}'">
-            <td><div class="lt-date">Feb 17, 2026</div></td>
-            <td><span class="lt-title">A Letter from the Director</span><span class="lt-issue">Founding Letter</span></td>
-            <td class="lt-summary">The founding letter introducing CivicOS Institute, our three priorities, and why the next 1,000 days will define the relationship between artificial intelligence and democratic governance.</td>
+          <tr onclick="window.location='/letters/week-11-2026/'">
+            <td class="lt-date">Mar 17, 2026</td>
+            <td><span class="lt-title">Week 11, 2026</span><span class="lt-issue">Picking Up the Pace</span></td>
+            <td class="lt-arr">→</td>
+          </tr>
+          <tr onclick="window.location='/letters/week-10-2026/'">
+            <td class="lt-date">Mar 10, 2026</td>
+            <td><span class="lt-title">Week 10, 2026</span><span class="lt-issue">The Road to NIC 2026</span></td>
+            <td class="lt-arr">→</td>
+          </tr>
+          <tr onclick="window.location='/letters/week-9-2026/'">
+            <td class="lt-date">Mar 3, 2026</td>
+            <td><span class="lt-title">Week 9, 2026</span><span class="lt-issue">Building the Stack</span></td>
+            <td class="lt-arr">→</td>
+          </tr>
+          <tr onclick="window.location='/letters/week-8-2026/'">
+            <td class="lt-date">Feb 24, 2026</td>
+            <td><span class="lt-title">Week 8, 2026</span><span class="lt-issue">Week 8</span></td>
+            <td class="lt-arr">→</td>
+          </tr>
+          <tr onclick="window.location='/letters/week-7-2026/'">
+            <td class="lt-date">Feb 17, 2026</td>
+            <td><span class="lt-title">Week 7, 2026</span><span class="lt-issue">Week 7</span></td>
             <td class="lt-arr">→</td>
           </tr>
         </tbody>
       </table>
-      <p class="letters-note">Letters are published every Tuesday morning.</p>
+      <p class="letters-note">Older letters coming soon.</p>
     </section>
-
   </div><!-- /letters-hub -->
+  </main>
+  <footer>
+  <div class="footer-brand"><h3>CivicOS Institute</h3><p>A nonprofit research organization dedicated to civic technology, open data systems, and digital public infrastructure.</p><div class="footer-social"><a href="https://github.com/civicos-institute" target="_blank" rel="noopener" class="fsocial">GitHub ↗</a><a href="https://x.com/CivicOSInstitut" target="_blank" rel="noopener" class="fsocial">X ↗</a><a href="https://discord.gg/tECtT9zeTT" target="_blank" rel="noopener" class="fsocial">Discord ↗</a><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener" class="fsocial" style="background:rgba(212,168,67,0.15);border-color:var(--amber);">Donate ↗</a></div></div>
+  <div class="footer-col"><h4>Governance</h4><ul><li><a href="/governance/#gdoc-aoi">Articles of Incorporation</a></li><li><a href="/governance/#gdoc-bylaws">Bylaws</a></li><li><a href="/governance/#gdoc-coi">Conflict of Interest</a></li></ul></div>
+  <div class="footer-col"><h4>Institute</h4><ul><li><a href="/about/">About</a></li><li><a href="/governance/">Governance</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+  <div class="footer-col"><h4>Support</h4><ul><li><a href="/ebook/">Buy the Ebook</a></li><li><a href="https://www.gofundme.com/f/help-launch-the-civicos-institute" target="_blank" rel="noopener">Donate on GoFundMe ↗</a></li><li><a href="/contact/">Join Our Community</a></li></ul></div>
+  <div class="footer-bottom" style="grid-column:1/-1;margin-top:0;"><p>© 2026 CivicOS Institute. All rights reserved. A Florida nonprofit organization in formation: 501(c)(3) pending.</p><span class="footer-update">Last updated: February 2026</span></div>
+</footer>
+  <script src="/assets/js/civicos.js"></script>
+</body>
+</html>
