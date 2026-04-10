@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CivicOS Institute — Expert Input Survey</title>
+<!-- NOTE: Replace REPLACE_WITH_FORM_ID with the live Formspree form id before merge/deploy. -->
+<style>
+  @page { size: letter; margin: 0.65in 0.75in; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 10pt; color: #1a1a1a; line-height: 1.4; background: #fff;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  form { display: block; }
+  .page {
+    width: 100%; max-width: 7.0in; margin: 0 auto;
+    padding: 0.15in 0; page-break-after: always; position: relative;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ───── Header ───── */
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 2pt solid #8B1A1A; padding-bottom: 10pt; margin-bottom: 14pt;
+  }
+  .header-left { display: flex; align-items: center; gap: 10pt; }
+  .logo-frame {
+    width: 40pt;
+    height: 40pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.75pt solid #1B2A4A;
+    border-radius: 2pt;
+    background: #fff;
+    padding: 3pt;
+  }
+  .logo-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+  .logo-text { display: flex; flex-direction: column; }
+  .org-name { font-size: 16pt; font-weight: 700; color: #1B2A4A; letter-spacing: 0.3pt; }
+  .org-sub { font-size: 8.5pt; color: #8B1A1A; font-weight: 600; letter-spacing: 2.5pt; margin-top: 1pt; }
+  .header-right { text-align: right; font-size: 8pt; color: #666; line-height: 1.5; }
+  .doc-title { font-size: 9pt; font-weight: 700; color: #1B2A4A; letter-spacing: 0.5pt; text-transform: uppercase; margin-bottom: 2pt; }
+  .doc-id { font-family: 'Courier New', monospace; font-size: 7.5pt; color: #999; margin-top: 2pt; }
+
+  /* ───── Sections ───── */
+  .section-header {
+    background: #1B2A4A; color: #fff;
+    padding: 7pt 12pt; font-size: 10pt; font-weight: 700;
+    letter-spacing: 1pt; text-transform: uppercase;
+    border-left: 4pt solid #8B1A1A;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 14pt 0 10pt 0;
+  }
+  .section-subheader {
+    font-size: 8.5pt; font-weight: 700; color: #8B1A1A;
+    text-transform: uppercase; letter-spacing: 1pt;
+    margin: 12pt 0 6pt 0; padding-bottom: 3pt;
+    border-bottom: 0.5pt solid #ccc;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* ───── Instruction & intro blocks ───── */
+  .instruction-note {
+    font-size: 8.5pt; color: #555; font-style: italic;
+    padding: 8pt 11pt; margin: 8pt 0 10pt 0;
+    background: #f5f7fa; border-left: 2pt solid #1B2A4A; border-radius: 2pt;
+  }
+  .intro-block {
+    font-size: 9pt; color: #333; line-height: 1.55;
+    padding: 10pt 12pt; margin: 8pt 0 12pt 0;
+    background: #fafbfc; border: 0.5pt solid #e0e4ea; border-radius: 2pt;
+  }
+  .intro-block p { margin-bottom: 6pt; }
+  .intro-block p:last-child { margin-bottom: 0; }
+  .intro-block strong { color: #1B2A4A; }
+
+  /* ───── Question blocks ───── */
+  .question { margin: 10pt 0 12pt 0; page-break-inside: avoid; }
+  .q-number {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 8pt; font-weight: 700; color: #8B1A1A;
+    letter-spacing: 0.5pt; text-transform: uppercase;
+  }
+  .q-lens {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7pt; font-weight: 600; color: #fff;
+    background: #1B2A4A; padding: 1.5pt 5pt; border-radius: 2pt;
+    text-transform: uppercase; letter-spacing: 0.5pt;
+    display: inline-block; margin-left: 4pt; vertical-align: 1pt;
+  }
+  .q-text { font-size: 9.5pt; color: #1a1a1a; line-height: 1.45; margin: 3pt 0 6pt 0; }
+
+  /* ───── Form inputs ───── */
+  input[type="text"], input[type="email"] {
+    width: 100%; border: none; border-bottom: 0.75pt solid #333;
+    padding: 4pt 2pt; margin-top: 4pt; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt; color: #1a1a1a; background: transparent; outline: none;
+  }
+  input[type="text"]:focus, input[type="email"]:focus { border-bottom-color: #1B2A4A; background: #fafbfc; }
+  textarea {
+    width: 100%; border: 0.75pt solid #888; background: #fcfcfd;
+    padding: 6pt 8pt; margin-top: 4pt; min-height: 50pt; resize: vertical;
+    font-family: 'Georgia', 'Times New Roman', serif; font-size: 10pt;
+    color: #1a1a1a; line-height: 1.45; outline: none;
+  }
+  textarea:focus { border-color: #1B2A4A; background: #fff; }
+  textarea.tall { min-height: 72pt; }
+
+  /* ───── Checkboxes / radios ───── */
+  .checkbox-group { display: flex; flex-direction: column; gap: 5pt; margin-top: 5pt; }
+  .checkbox-group.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5pt 14pt; }
+  .checkbox-item {
+    display: flex; align-items: flex-start; gap: 7pt;
+    font-size: 9.5pt; color: #333; line-height: 1.4; cursor: pointer;
+  }
+  .checkbox-item input[type="checkbox"],
+  .checkbox-item input[type="radio"] {
+    margin-top: 2pt; accent-color: #1B2A4A; cursor: pointer; flex-shrink: 0;
+    width: 11pt; height: 11pt;
+  }
+  .other-inline {
+    border: none; border-bottom: 0.5pt dashed #888; margin-left: 4pt;
+    flex: 1; font-size: 9pt;
+  }
+
+  /* ───── Section reflection boxes ───── */
+  .reflection-block {
+    margin: 14pt 0 4pt 0; padding: 10pt 12pt;
+    background: #fdfcf7; border: 0.5pt dashed #c8a94a; border-radius: 2pt;
+    page-break-inside: avoid;
+  }
+  .reflection-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 8pt; font-weight: 700; color: #8B6A1A;
+    text-transform: uppercase; letter-spacing: 0.8pt; margin-bottom: 4pt;
+  }
+  .reflection-block .q-text { color: #333; font-style: italic; margin-bottom: 6pt; }
+  .reflection-block textarea { background: #fffef9; border-color: #c8a94a; }
+
+  /* ───── Context block ───── */
+  .context-block {
+    font-size: 8.5pt; color: #444; line-height: 1.5;
+    padding: 8pt 10pt; margin: 6pt 0 10pt 0;
+    background: #f8f5f5; border-left: 2pt solid #8B1A1A; border-radius: 2pt;
+  }
+  .context-block strong { color: #8B1A1A; }
+
+  /* ───── Submit ───── */
+  .submit-row {
+    margin: 18pt 0 6pt 0; padding: 14pt; text-align: center;
+    background: #f5f7fa; border: 0.5pt solid #d0d5dd; border-radius: 3pt;
+  }
+  .submit-row button {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt; font-weight: 700; letter-spacing: 1pt;
+    text-transform: uppercase; color: #fff; background: #1B2A4A;
+    border: 0; padding: 10pt 26pt; border-radius: 2pt; cursor: pointer;
+    border-left: 3pt solid #8B1A1A;
+  }
+  .submit-row button:hover { background: #0f1a33; }
+  .submit-note { font-size: 8pt; color: #666; font-style: italic; margin-top: 6pt; }
+
+  /* ───── Importance scale (injected) ───── */
+  .importance-scale {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 5pt;
+    margin-top: 8pt; padding: 5pt 9pt;
+    background: #f4f6fa; border: 0.5pt solid #dfe4ed; border-radius: 3pt;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7.5pt; color: #555;
+  }
+  .importance-scale .scale-label {
+    text-transform: uppercase; letter-spacing: 0.6pt; font-weight: 700;
+    color: #1B2A4A; margin-right: 4pt;
+  }
+  .importance-scale label {
+    display: inline-flex; align-items: center; cursor: pointer;
+    position: relative; padding: 2pt;
+  }
+  .importance-scale input[type="radio"] {
+    position: absolute; opacity: 0; pointer-events: none;
+  }
+  .importance-scale label > span.dot {
+    width: 13pt; height: 13pt; border-radius: 50%;
+    border: 1pt solid #999; background: #fff;
+    display: inline-block; transition: all 0.15s ease;
+  }
+  .importance-scale label:hover span.dot { border-color: #1B2A4A; background: #eef1f7; }
+  .importance-scale input[type="radio"]:checked + span.dot {
+    background: #1B2A4A; border-color: #1B2A4A;
+    box-shadow: 0 0 0 1.5pt rgba(27,42,74,0.2);
+  }
+  .importance-scale label.neutral > span.dot { border-style: dashed; }
+  .importance-scale .scale-ends {
+    font-style: italic; color: #888; font-size: 7pt;
+  }
+  .importance-scale .scale-ends.left { margin-right: 2pt; }
+  .importance-scale .scale-ends.right { margin-left: 2pt; }
+  @media print {
+    .importance-scale { background: #fff; border-color: #aaa; }
+    .importance-scale input[type="radio"]:checked + span.dot { background: #1B2A4A !important; }
+  }
+
+  /* ───── Footer ───── */
+  .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 0.5pt solid #ccc; padding-top: 6pt; margin-top: 18pt;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7pt; color: #999;
+  }
+  .footer-center { text-align: center; }
+
+  @media print {
+    body { background: #fff; }
+    .page { padding: 0; margin: 0; width: 100%; min-height: auto; }
+    .submit-row, .no-print { display: none; }
+    textarea { background: #fff; }
+  }
+  @media screen {
+    body { background: #e0e0e0; padding: 16pt 0; }
+    .page { background: #fff; padding: 0.5in 0.6in; margin-bottom: 12pt;
+            box-shadow: 0 2pt 10pt rgba(0,0,0,0.1); }
+  }
+</style>
+</head>
+<body>
+
+<form id="civicos-survey" method="post" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" autocomplete="off">
+
+<!-- ═══════════════ PAGE 1: COVER + ORIENTATION ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Institute &middot; ORTUS &middot; Athena</div>
+      <div class="doc-id">FORM-CIVICOS-SURVEY-2026</div>
+    </div>
+  </div>
+
+  <div class="instruction-note">
+    Estimated time: 8 to 12 minutes. Every question is optional. This survey is intentionally uneven &mdash;
+    please answer only what speaks to your research. Skip anything outside your wheelhouse.
+  </div>
+
+  <div class="intro-block">
+    <p>Thank you for taking the time to contribute your perspective. Your responses will directly shape priorities, evaluation design, and grant framing for three interconnected efforts under the CivicOS Institute umbrella.</p>
+    <p><strong>CivicOS Institute (mission layer)</strong> &mdash; the nonprofit vehicle reducing systemic barriers in public service delivery through practical, low-cost, open source approaches.</p>
+    <p><strong>Project ORTUS (law-as-code layer)</strong> &mdash; an MLIR-based compiler substrate that turns municipal legal text into deterministic, auditable decisions with citation-bound explanations. First pilot: residential fence permits, single municipality, targeting &ge;95% agreement with expert-reviewed baseline.</p>
+    <p><strong>Project Athena (civic intelligence layer)</strong> &mdash; a locally-sovereign civic monitoring platform assembling confidence-rated signal chains from campaign finance, lobbyist filings, property records, agenda items, and votes. First jurisdiction: Palm Beach County, FL (39 municipalities + 80+ governing bodies).</p>
+    <p>We are preparing proposals for upcoming NSF and related grant opportunities. With your permission, your responses will be cited in needs statements, design criteria, and evaluation plans.</p>
+  </div>
+
+  <div class="section-header">Orientation &mdash; Which Lenses Apply to You?</div>
+
+  <div class="question">
+    <div class="q-text">Check any that apply. This helps us route your responses and calibrate follow-up.</div>
+    <div class="checkbox-group two-col">
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="digital_gov">Digital government, institutional design, cross-boundary coordination</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="trust">Transparency, public trust, participation outcomes</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="admin_law">Administrative law, AI in adjudication, automated state</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="adoption">Practical digital adoption, mobile/LBS service delivery</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="fairness">Algorithmic fairness, accountability, high-stakes decisions</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="usable_privacy">Usable privacy, usable security, human factors</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="oss_production">Open source production, sustainability, scientific software</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="foss_metrics">FOSS community health metrics, repository analytics</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="ml_security">ML privacy, model security, adversarial ML</label>
+      <label class="checkbox-item"><input type="checkbox" name="lens" value="other">Other (please specify):</label>
+    </div>
+    <input type="text" name="lens_other" placeholder="If 'other', specify">
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 1 of 6</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 2: SECTION A - MISSION LAYER ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+    </div>
+  </div>
+
+  <div class="section-header">Section A &mdash; Mission Layer: CivicOS Institute</div>
+
+  <div class="question">
+    <div><span class="q-number">A1.</span><span class="q-lens">Institutional Design</span></div>
+    <div class="q-text">Enacting digital government at the municipal level depends as much on institutions and coordination as on tooling. Which institutional lever matters most for the first CivicOS project wave?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="A1" value="info_sharing">Cross-boundary information sharing agreements</label>
+      <label class="checkbox-item"><input type="radio" name="A1" value="governance_capacity">Inter-agency governance capacity</label>
+      <label class="checkbox-item"><input type="radio" name="A1" value="legal_procurement">Legal and procurement reform</label>
+      <label class="checkbox-item"><input type="radio" name="A1" value="co_production">Community and stakeholder co-production</label>
+      <label class="checkbox-item"><input type="radio" name="A1" value="standards">Standards and interoperability mandates</label>
+      <label class="checkbox-item"><input type="radio" name="A1" value="other">Other:</label>
+    </div>
+    <input type="text" name="A1_other" placeholder="If 'other', specify">
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">A2.</span><span class="q-lens">Transparency &amp; Trust</span></div>
+    <div class="q-text">Based on your research, what is the mechanism most likely to translate a CivicOS pilot into measurable public trust gains &mdash; and what is the mechanism most likely to <em>backfire</em>?</div>
+    <textarea name="A2" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">A3.</span><span class="q-lens">Practical Adoption</span></div>
+    <div class="q-text">In your experience with mobile and digital service adoption, what is the single biggest friction point that kills realistic municipal uptake?</div>
+    <textarea name="A3" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">A4.</span><span class="q-lens">Any Lens</span></div>
+    <div class="q-text">Which year-one outcomes matter most? (Pick up to 3)</div>
+    <div class="checkbox-group two-col">
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="friction">Reduced service friction for residents</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="speed">Faster turnaround times</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="transparency">Better transparency and auditability</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="trust">Higher trust and usability</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="cost">Lower implementation/maintenance costs</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="compliance">Stronger legal and governance compliance</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="coordination">Better inter-agency coordination</label>
+      <label class="checkbox-item"><input type="checkbox" name="A4" value="evidence">Evidence for replicable pilots</label>
+    </div>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Section A &mdash; Your thoughts &amp; ideas (optional)</div>
+    <div class="q-text">Open space. Anything on the mission layer you want us to hear &mdash; in your own words. Observations, warnings, analogies, references, half-formed ideas welcome.</div>
+    <textarea name="A_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 2 of 6</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 3: SECTION B - PROJECT ORTUS ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+    </div>
+  </div>
+
+  <div class="section-header">Section B &mdash; Project ORTUS: Law-as-Code</div>
+
+  <div class="context-block">
+    <strong>Context.</strong> ORTUS compiles municipal legal text through an MLIR dialect into deterministic rule bundles.
+    Every decision emits a machine-auditable trace with citation IDs back to source sections. Explanations are
+    generated from the IR trace, not from a free-form LLM. Pilot: residential fence permits, one municipality.
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">B1.</span><span class="q-lens">Administrative Law / AI Adjudication</span></div>
+    <div class="q-text">For a law-as-code system producing lawful, reviewable public decisions, which property is most critical to preserve administrative legitimacy?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="B1" value="determinism">Determinism (identical inputs &rarr; identical outputs)</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="citation">Full citation binding for every material conclusion</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="readable">Human-readable rule representation editable by legal staff</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="conflict">Rule conflict and dead-rule detection prior to release</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="legal_review">Independent legal review loop</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="due_process">Right to explanation consistent with due process</label>
+      <label class="checkbox-item"><input type="radio" name="B1" value="other">Other:</label>
+    </div>
+    <input type="text" name="B1_other" placeholder="If 'other', specify">
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">B2.</span><span class="q-lens">Algorithmic Fairness</span></div>
+    <div class="q-text">Where is a deterministic, rule-bound system like ORTUS <em>still</em> at risk of producing unfair outcomes &mdash; and what fairness audit would you want to see before it goes live?</div>
+    <textarea name="B2" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">B3.</span><span class="q-lens">Institutional / Coordination</span></div>
+    <div class="q-text">ORTUS requires legal staff, engineers, and civic stakeholders to share authorship of the rule bundle. What governance structure is most likely to make that shared authorship work in a real municipality?</div>
+    <textarea name="B3" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">B4.</span><span class="q-lens">Practical Adoption</span></div>
+    <div class="q-text">If a municipality can only adopt one law-as-code domain beyond fence permits, which domain gives the best adoption-to-impact ratio? (e.g., code enforcement, licensing, benefits eligibility, variances, ADA compliance, records access, stormwater)</div>
+    <textarea name="B4" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Section B &mdash; Your thoughts &amp; ideas (optional)</div>
+    <div class="q-text">Open space for ORTUS. Architecture critiques, risks, research connections, cautionary analogues from automated state or legal informatics literature. Anything we should read or stop doing.</div>
+    <textarea name="B_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 3 of 6</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 4: SECTION C - PROJECT ATHENA ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+    </div>
+  </div>
+
+  <div class="section-header">Section C &mdash; Project Athena: Civic Intelligence</div>
+
+  <div class="context-block">
+    <strong>Context.</strong> Athena assembles data points (campaign finance, lobbyist filings, property records,
+    agenda appearances, votes) into confidence-rated signal chains across 39 municipalities and 80+ bodies in
+    Palm Beach County, FL. Every claim is bound to an evidentiary class and source. The system is accountability
+    infrastructure &mdash; not prediction, not enforcement.
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">C1.</span><span class="q-lens">Transparency &amp; Participation</span></div>
+    <div class="q-text">What is the most defensible way to surface a cross-jurisdictional influence pattern to the public without undermining trust or inviting backlash?</div>
+    <textarea name="C1" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">C2.</span><span class="q-lens">Usable Privacy / HCI</span></div>
+    <div class="q-text">Athena processes public records about identifiable people (officials, lobbyists, property owners). What usable privacy and consent design principles should constrain the public-facing layer?</div>
+    <textarea name="C2" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">C3.</span><span class="q-lens">ML Privacy / Security</span></div>
+    <div class="q-text">Where are the most likely attack surfaces on a civic intelligence platform &mdash; data poisoning, membership inference, source impersonation, model manipulation, other &mdash; and which should we prioritize hardening first?</div>
+    <textarea name="C3" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">C4.</span><span class="q-lens">Fairness / Accountability Methods</span></div>
+    <div class="q-text">How would you design an evaluation that demonstrates Athena's signal chains are defensible civic intelligence rather than narrative construction or selective emphasis?</div>
+    <textarea name="C4" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">C5.</span><span class="q-lens">Administrative Law</span></div>
+    <div class="q-text">What legal or constitutional guardrails should bound how Athena outputs can be used by oversight bodies, press, or litigants?</div>
+    <textarea name="C5" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Section C &mdash; Your thoughts &amp; ideas (optional)</div>
+    <div class="q-text">Open space for Athena. Misuse patterns that keep you up at night, comparable projects to learn from, framing concerns, prior work we should study.</div>
+    <textarea name="C_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 4 of 6</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 5: SECTION D - OSS SUSTAINABILITY ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+    </div>
+  </div>
+
+  <div class="section-header">Section D &mdash; Open Source Sustainability &amp; Community Health</div>
+
+  <div class="context-block">
+    <strong>Context.</strong> CivicOS, ORTUS, and Athena are intended to be open source and replicable across
+    jurisdictions. Sustainability and community health are first-order design concerns, not afterthoughts.
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">D1.</span><span class="q-lens">OSS Production / Scientific Software</span></div>
+    <div class="q-text">What is the most underappreciated determinant of whether an open source public-sector project sustains itself beyond its initial grant?</div>
+    <textarea name="D1" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">D2.</span><span class="q-lens">FOSS Community Health Metrics</span></div>
+    <div class="q-text">Which CHAOSS-style metrics would you recommend we commit to tracking from day one as honest indicators of project health &mdash; not vanity metrics?</div>
+    <textarea name="D2" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">D3.</span><span class="q-lens">Any Lens</span></div>
+    <div class="q-text">What governance structure best protects an open source civic project from capture (by vendors, by a single municipality, by a single funder)?</div>
+    <textarea name="D3" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">D4.</span><span class="q-lens">Practical Adoption</span></div>
+    <div class="q-text">What keeps a replicable open source civic tool from actually being replicated in a second jurisdiction &mdash; and what intervention has the highest leverage?</div>
+    <textarea name="D4" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Section D &mdash; Your thoughts &amp; ideas (optional)</div>
+    <div class="q-text">Open space for sustainability and community health. Projects we should study, funding models that actually worked, governance traps to avoid, and any thoughts on replicability that do not fit the questions above.</div>
+    <textarea name="D_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 5 of 6</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE 6: SECTION E - GRANT + F - FOLLOWUP ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-frame"><img class="logo-image" src="/assets/images/logo.png" alt="CivicOS Institute logo"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">EXPERT INPUT SURVEY</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Expert Input Survey</div>
+      <div>Version 2.0 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+    </div>
+  </div>
+
+  <div class="section-header">Section E &mdash; Grant Framing, Evidence, and Evaluation</div>
+
+  <div class="question">
+    <div><span class="q-number">E1.</span></div>
+    <div class="q-text">For an NSF or comparable grant proposal covering the CivicOS / ORTUS / Athena portfolio, which framing is strongest for the program reviewers you know?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="E1" value="pit">Public interest technology and civic infrastructure</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="responsible_ai">Responsible and accountable AI in public systems</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="hai">Human-AI collaboration for administrative decisions</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="digital_gov">Digital government and institutional capacity</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="trust">Transparency, trust, and democratic legitimacy</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="oss">Open source sustainability and community infrastructure</label>
+      <label class="checkbox-item"><input type="radio" name="E1" value="other">Other:</label>
+    </div>
+    <input type="text" name="E1_other" placeholder="If 'other', specify">
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">E2.</span></div>
+    <div class="q-text">What evidence threshold should CivicOS meet before scaling beyond initial pilots? (Pick any that apply)</div>
+    <div class="checkbox-group two-col">
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="ops_metrics">Operational improvement metrics in pilot sites</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="external_eval">Independent evaluation and external review</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="legal_compliance">Legal/policy compliance under real conditions</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="usability">User trust and usability gains</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="cost">Total cost advantage over alternatives</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="replication">Replication in a second jurisdiction</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="fairness">Fairness audit passing</label>
+      <label class="checkbox-item"><input type="checkbox" name="E2" value="security">Security posture review passing</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">E3.</span></div>
+    <div class="q-text">Are there one or two papers, frameworks, datasets, or case studies you would recommend we anchor the proposal to?</div>
+    <textarea name="E3" placeholder="Citations in any format..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">E4.</span></div>
+    <div class="q-text">Is there a specific NSF program, foundation, collaborator, or community of practice you would flag as directly relevant?</div>
+    <textarea name="E4" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">E5.</span></div>
+    <div class="q-text">What should we be worrying about that we probably are not? (This question exists because the people we are asking see the field more clearly than we do.)</div>
+    <textarea name="E5" class="tall" placeholder="Your response..."></textarea>
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Section E &mdash; Your thoughts &amp; ideas (optional)</div>
+    <div class="q-text">Open space for grant strategy. Framing you would push back on, collaborators we should contact, prior proposals that got funded for similar work, review-panel dynamics we should anticipate.</div>
+    <textarea name="E_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="section-header">Section F &mdash; Collaboration and Follow-Up</div>
+
+  <div class="question">
+    <div><span class="q-number">F1.</span></div>
+    <div class="q-text">Would you be open to a short follow-up call (15 to 20 minutes) after we review survey input?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="F1" value="yes">Yes</label>
+      <label class="checkbox-item"><input type="radio" name="F1" value="maybe">Maybe</label>
+      <label class="checkbox-item"><input type="radio" name="F1" value="no">Not at this time</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">F2.</span></div>
+    <div class="q-text">With your permission, may we cite or paraphrase your free-text responses in grant materials?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="F2" value="attributed">Yes, attributed</label>
+      <label class="checkbox-item"><input type="radio" name="F2" value="anonymized">Yes, anonymized</label>
+      <label class="checkbox-item"><input type="radio" name="F2" value="no">No</label>
+      <label class="checkbox-item"><input type="radio" name="F2" value="per_item">Decide on a per-item basis</label>
+    </div>
+  </div>
+
+  <div class="question">
+    <div><span class="q-number">F3.</span></div>
+    <div class="q-text">Would you be willing to be listed as a domain advisor, letter-of-support author, or consulted expert on a specific proposal?</div>
+    <div class="checkbox-group">
+      <label class="checkbox-item"><input type="radio" name="F3" value="advisor">Yes &mdash; advisor</label>
+      <label class="checkbox-item"><input type="radio" name="F3" value="los">Yes &mdash; letter of support (pending proposal review)</label>
+      <label class="checkbox-item"><input type="radio" name="F3" value="citation">Yes &mdash; consulted expert citation only</label>
+      <label class="checkbox-item"><input type="radio" name="F3" value="no">Not at this time</label>
+    </div>
+  </div>
+
+  <div class="section-subheader">F4 &mdash; Contact</div>
+  <div class="question">
+    <div class="q-text" style="color:#666; font-style:italic;">Name</div>
+    <input type="text" name="contact_name" placeholder="Full name (optional)">
+  </div>
+  <div class="question">
+    <div class="q-text" style="color:#666; font-style:italic;">Institution</div>
+    <input type="text" name="contact_institution" placeholder="Institution (optional)">
+  </div>
+  <div class="question">
+    <div class="q-text" style="color:#666; font-style:italic;">Email (optional, for follow-up)</div>
+    <input type="email" name="contact_email" placeholder="you@institution.edu">
+  </div>
+
+  <div class="reflection-block">
+    <div class="reflection-label">Final Open Reflection (optional)</div>
+    <div class="q-text">Anything else you want us to hear &mdash; about CivicOS Institute, ORTUS, Athena, the grant trajectory, or the ecosystem these projects sit inside. No character limit.</div>
+    <textarea name="final_reflection" class="tall" placeholder="Your thoughts..."></textarea>
+  </div>
+
+  <div class="submit-row no-print">
+    <button type="submit">Submit Survey</button>
+    <div class="submit-note">Thank you. Your responses help shape priorities, evaluation design, and grant framing for the CivicOS portfolio.</div>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-SURVEY-2026 &nbsp;&bull;&nbsp; Expert Input Survey</div>
+    <div>Page 6 of 6</div>
+  </div>
+</div>
+
+</form>
+
+<script>
+// Inject an optional importance scale after every rateable research question.
+// Applies to questions whose first form input has name matching /^[A-E]\d$/
+// (A1-A4, B1-B4, C1-C5, D1-D4, E1-E5). Neutral is pre-selected; respondents
+// can change it or ignore it entirely.
+(function() {
+  function build(name) {
+    var wrap = document.createElement('div');
+    wrap.className = 'importance-scale';
+    wrap.innerHTML =
+      '<span class="scale-label">Importance to your research (optional):</span>' +
+      '<span class="scale-ends left">not relevant</span>' +
+      '<label title="Not relevant"><input type="radio" name="' + name + '_importance" value="1"><span class="dot"></span></label>' +
+      '<label title="Low"><input type="radio" name="' + name + '_importance" value="2"><span class="dot"></span></label>' +
+      '<label title="Neutral" class="neutral"><input type="radio" name="' + name + '_importance" value="3" checked><span class="dot"></span></label>' +
+      '<label title="High"><input type="radio" name="' + name + '_importance" value="4"><span class="dot"></span></label>' +
+      '<label title="Critical"><input type="radio" name="' + name + '_importance" value="5"><span class="dot"></span></label>' +
+      '<span class="scale-ends right">critical</span>';
+    return wrap;
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var questions = document.querySelectorAll('form .question');
+    questions.forEach(function(q) {
+      // Skip questions inside reflection blocks
+      if (q.closest('.reflection-block')) return;
+      var first = q.querySelector('input[type="radio"], input[type="checkbox"], textarea, input[type="text"], input[type="email"]');
+      if (!first) return;
+      var name = first.name || '';
+      if (!/^[A-E]\d$/.test(name)) return;
+      var qText = q.querySelector('.q-text');
+      var scale = build(name);
+      if (qText && qText.nextSibling) {
+        qText.parentNode.insertBefore(scale, qText.nextSibling);
+      } else if (qText) {
+        qText.parentNode.appendChild(scale);
+      } else {
+        q.insertBefore(scale, q.firstChild);
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
