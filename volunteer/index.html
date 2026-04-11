@@ -263,6 +263,131 @@
     border: 0.5pt solid #e0e4ea;
   }
 
+  /* ── Electronic Signature Section ── */
+  .esign-intro {
+    font-size: 8.5pt; color: #444; line-height: 1.5;
+    padding: 9pt 12pt; margin: 8pt 0 12pt 0;
+    background: #fafbfc; border: 0.5pt solid #dfe4ed; border-radius: 2pt;
+  }
+  .esign-intro strong { color: #1B2A4A; }
+  .attestation-block {
+    border: 1pt solid #c0c6d4; border-left: 3pt solid #1B2A4A;
+    padding: 10pt 12pt; margin: 10pt 0; background: #fcfdff;
+    border-radius: 2pt;
+  }
+  .attestation-block .att-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 8pt; font-weight: 700; color: #1B2A4A;
+    text-transform: uppercase; letter-spacing: 0.8pt; margin-bottom: 5pt;
+  }
+  .attestation-block .att-text {
+    font-size: 9pt; color: #333; line-height: 1.45; margin-bottom: 8pt;
+  }
+  .attestation-row {
+    display: flex; align-items: flex-end; gap: 14pt; margin-top: 6pt;
+  }
+  .attestation-row .att-check {
+    display: flex; align-items: flex-start; gap: 6pt;
+    font-size: 9pt; color: #333; flex: 1;
+  }
+  .attestation-row .att-check input[type="checkbox"] {
+    width: 12pt; height: 12pt; margin-top: 1pt; accent-color: #1B2A4A;
+    flex-shrink: 0; cursor: pointer;
+  }
+  .attestation-row .att-initials {
+    width: 70pt; flex-shrink: 0;
+  }
+  .attestation-row .att-initials label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7pt; font-weight: 700; color: #8B1A1A;
+    text-transform: uppercase; letter-spacing: 0.5pt;
+    display: block; margin-bottom: 2pt;
+  }
+  .attestation-row .att-initials input {
+    width: 100%; border: none; border-bottom: 1pt solid #333;
+    padding: 3pt 2pt; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt; text-align: center; text-transform: uppercase;
+    letter-spacing: 2pt; background: #fff;
+  }
+  .attestation-row .att-initials input:focus {
+    outline: none; border-bottom-color: #1B2A4A; background: #f5f7fa;
+  }
+  .signature-final {
+    border: 1.5pt solid #1B2A4A; border-left: 4pt solid #8B1A1A;
+    padding: 12pt 14pt; margin: 14pt 0 10pt 0; background: #fff;
+    border-radius: 2pt;
+  }
+  .signature-final .sf-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9pt; font-weight: 700; color: #1B2A4A;
+    text-transform: uppercase; letter-spacing: 1pt; margin-bottom: 4pt;
+  }
+  .signature-final .sf-intent {
+    font-size: 8.5pt; color: #444; font-style: italic;
+    line-height: 1.5; margin-bottom: 10pt;
+  }
+  .sig-field-row {
+    display: flex; gap: 14pt; margin-top: 8pt; flex-wrap: wrap;
+  }
+  .sig-field-row .sf-group { flex: 1; min-width: 180pt; }
+  .sig-field-row .sf-group label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7.5pt; font-weight: 700; color: #444;
+    text-transform: uppercase; letter-spacing: 0.5pt;
+    display: block; margin-bottom: 3pt;
+  }
+  .sig-field-row .sf-group input {
+    width: 100%; border: none; border-bottom: 1pt solid #333;
+    padding: 5pt 2pt; background: #fff;
+    font-family: 'Georgia', serif; font-size: 12pt; color: #1a1a1a;
+  }
+  .sig-field-row .sf-group input[type="date"] {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10pt;
+  }
+  .sig-field-row .sf-group.signature input {
+    font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+    font-size: 16pt; color: #1B2A4A;
+  }
+  .sig-field-row .sf-group input:focus {
+    outline: none; border-bottom-color: #1B2A4A; background: #f8faff;
+  }
+  .final-affirm {
+    margin-top: 14pt; padding: 9pt 11pt;
+    background: #fff8e6; border: 0.75pt solid #c8a94a; border-radius: 2pt;
+    font-size: 9pt; color: #333; line-height: 1.5;
+  }
+  .final-affirm label {
+    display: flex; align-items: flex-start; gap: 7pt; cursor: pointer;
+  }
+  .final-affirm input[type="checkbox"] {
+    width: 13pt; height: 13pt; margin-top: 1pt;
+    accent-color: #1B2A4A; flex-shrink: 0; cursor: pointer;
+  }
+  .submit-row {
+    margin: 18pt 0 6pt 0; padding: 16pt; text-align: center;
+    background: #f5f7fa; border: 0.5pt solid #d0d5dd; border-radius: 3pt;
+  }
+  .submit-row button {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt; font-weight: 700; letter-spacing: 1pt;
+    text-transform: uppercase; color: #fff; background: #1B2A4A;
+    border: 0; padding: 12pt 32pt; border-radius: 2pt; cursor: pointer;
+    border-left: 3pt solid #8B1A1A;
+  }
+  .submit-row button:hover { background: #0f1a33; }
+  .submit-row button:disabled {
+    background: #999; cursor: not-allowed; border-left-color: #888;
+  }
+  .submit-note {
+    font-size: 8pt; color: #666; font-style: italic; margin-top: 8pt;
+  }
+  .esign-footer-meta {
+    margin-top: 10pt; padding-top: 6pt; border-top: 0.5pt dashed #bbb;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 7pt; color: #888; line-height: 1.5;
+  }
+  .esign-footer-meta strong { color: #555; }
+
   /* ── Print ── */
   @media print {
     body { background: #fff; }
@@ -298,7 +423,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="doc-title">Enterprise Volunteer Intake</div>
+      <div class="doc-title">Volunteer Intake</div>
       <div>Version 2.1 &nbsp;|&nbsp; April 2026</div>
       <div>Confidential When Completed</div>
       <div class="doc-id">FORM-CIVICOS-INTAKE-2026</div>
@@ -380,32 +505,10 @@
     </div>
   </div>
 
-  <div class="internal-use">
-    <div class="iu-title">Internal Use Only &mdash; Do Not Write Below This Line</div>
-    <div class="form-row">
-      <div class="form-group third">
-        <label class="form-label">Received By</label>
-        <input type="text" class="form-input" name="internal_received_by">
-      </div>
-      <div class="form-group quarter">
-        <label class="form-label">Date Received</label>
-        <input type="text" class="form-input" name="internal_date_received">
-      </div>
-      <div class="form-group quarter">
-        <label class="form-label">Assigned Track</label>
-        <input type="text" class="form-input" name="internal_assigned_track">
-      </div>
-      <div class="form-group quarter">
-        <label class="form-label">Status</label>
-        <input type="text" class="form-input" name="internal_status">
-      </div>
-    </div>
-  </div>
-
   <div class="footer">
     <div>CivicOS Institute &mdash; Confidential</div>
-    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Enterprise Volunteer Intake</div>
-    <div>Page 1 of 4</div>
+    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Volunteer Intake</div>
+    <div>Page 1 of 5</div>
   </div>
 </div>
 
@@ -420,7 +523,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="doc-title">Enterprise Volunteer Intake</div>
+      <div class="doc-title">Volunteer Intake</div>
       <div>Version 2.1 &nbsp;|&nbsp; April 2026</div>
       <div>Confidential When Completed</div>
       <div class="doc-id">FORM-CIVICOS-INTAKE-2026</div>
@@ -454,33 +557,33 @@
   <div class="form-row">
     <div class="form-group half">
       <label class="form-label">Work Sample 1 &mdash; URL <span class="req">*</span></label>
-      <input type="url" class="form-input" name="strongest_capability_areas">
+      <input type="url" class="form-input" name="work_sample_1_url">
     </div>
     <div class="form-group half">
       <label class="form-label">Description of Contribution</label>
-      <input type="text" class="form-input" name="work_sample_1_url">
+      <input type="text" class="form-input" name="work_sample_1_description">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group half">
       <label class="form-label">Work Sample 2 &mdash; URL <span class="optional">(optional)</span></label>
-      <input type="url" class="form-input" name="work_sample_1_description">
+      <input type="url" class="form-input" name="work_sample_2_url">
     </div>
     <div class="form-group half">
       <label class="form-label">Description of Contribution</label>
-      <input type="text" class="form-input" name="work_sample_2_url">
+      <input type="text" class="form-input" name="work_sample_2_description">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group half">
       <label class="form-label">Work Sample 3 &mdash; URL <span class="optional">(optional)</span></label>
-      <input type="url" class="form-input" name="work_sample_2_description">
+      <input type="url" class="form-input" name="work_sample_3_url">
     </div>
     <div class="form-group half">
       <label class="form-label">Description of Contribution</label>
-      <input type="text" class="form-input" name="work_sample_3_url">
+      <input type="text" class="form-input" name="work_sample_3_description">
     </div>
   </div>
 
@@ -534,8 +637,8 @@
 
   <div class="footer">
     <div>CivicOS Institute &mdash; Confidential</div>
-    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Enterprise Volunteer Intake</div>
-    <div>Page 2 of 4</div>
+    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Volunteer Intake</div>
+    <div>Page 2 of 5</div>
   </div>
 </div>
 
@@ -550,7 +653,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="doc-title">Enterprise Volunteer Intake</div>
+      <div class="doc-title">Volunteer Intake</div>
       <div>Version 2.1 &nbsp;|&nbsp; April 2026</div>
       <div>Confidential When Completed</div>
       <div class="doc-id">FORM-CIVICOS-INTAKE-2026</div>
@@ -576,28 +679,13 @@
   </div>
 
   <div class="instruction-note">
-    By signing below, I acknowledge that I have read, understand, and voluntarily agree to the terms set forth in this Volunteer Agreement &amp; Intellectual Property Assignment.
-  </div>
-
-  <div class="signature-block">
-    <div class="sig-field" style="flex: 2;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Signature of Contributor</div>
-    </div>
-    <div class="sig-field" style="flex: 2;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Printed Full Legal Name</div>
-    </div>
-    <div class="sig-field" style="flex: 1;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Date (MM/DD/YYYY)</div>
-    </div>
+    You will acknowledge and electronically sign this Volunteer Agreement &amp; Intellectual Property Assignment in <strong>Section 5 &mdash; Electronic Signature, Consent &amp; Acknowledgment</strong> at the end of this form.
   </div>
 
   <div class="footer">
     <div>CivicOS Institute &mdash; Confidential</div>
-    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Enterprise Volunteer Intake</div>
-    <div>Page 3 of 4</div>
+    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Volunteer Intake</div>
+    <div>Page 3 of 5</div>
   </div>
 </div>
 
@@ -612,7 +700,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="doc-title">Enterprise Volunteer Intake</div>
+      <div class="doc-title">Volunteer Intake</div>
       <div>Version 2.1 &nbsp;|&nbsp; April 2026</div>
       <div>Confidential When Completed</div>
       <div class="doc-id">FORM-CIVICOS-INTAKE-2026</div>
@@ -638,75 +726,199 @@
   </div>
 
   <div class="instruction-note">
-    By signing below, I acknowledge that I have read, understand, and voluntarily agree to the terms set forth in this Non-Disclosure Agreement. I understand that violation of these terms may result in legal action.
-  </div>
-
-  <div class="signature-block">
-    <div class="sig-field" style="flex: 2;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Signature of Contributor</div>
-    </div>
-    <div class="sig-field" style="flex: 2;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Printed Full Legal Name</div>
-    </div>
-    <div class="sig-field" style="flex: 1;">
-      <div class="sig-line"></div>
-      <div class="sig-label">Date (MM/DD/YYYY)</div>
-    </div>
-  </div>
-
-  <div style="margin-top: 28pt; border-top: 1pt dashed #bbb; padding-top: 10pt;">
-    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 7.5pt; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 1pt; margin-bottom: 8pt;">
-      Witnessed By (CivicOS Institute Authorized Representative)
-    </div>
-    <div class="signature-block" style="margin-top: 4pt;">
-      <div class="sig-field" style="flex: 2;">
-        <div class="sig-line"></div>
-        <div class="sig-label">Signature</div>
-      </div>
-      <div class="sig-field" style="flex: 2;">
-        <div class="sig-line"></div>
-        <div class="sig-label">Printed Name &amp; Title</div>
-      </div>
-      <div class="sig-field" style="flex: 1;">
-        <div class="sig-line"></div>
-        <div class="sig-label">Date (MM/DD/YYYY)</div>
-      </div>
-    </div>
+    You will acknowledge and electronically sign this Non-Disclosure Agreement in <strong>Section 5 &mdash; Electronic Signature, Consent &amp; Acknowledgment</strong> at the end of this form. You understand that violation of these terms may result in legal action.
   </div>
 
   <div class="footer">
     <div>CivicOS Institute &mdash; Confidential</div>
-    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Enterprise Volunteer Intake</div>
-    <div>Page 4 of 4</div>
+    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Volunteer Intake</div>
+    <div>Page 4 of 5</div>
   </div>
 </div>
 
-  <div class="page">
-    <div class="submit-row">
-      <div style="max-width: 640px; margin: 0 auto; text-align: left;">
-        <div class="form-row">
-          <div class="form-group half">
-            <label class="form-label">Digital Signature (Full Legal Name) <span class="req">*</span></label>
-            <input type="text" class="form-input" name="digital_signature_name" required>
-          </div>
-          <div class="form-group half">
-            <label class="form-label">Signature Date <span class="req">*</span></label>
-            <input type="date" class="form-input" name="digital_signature_date" required>
-          </div>
-        </div>
-        <div class="checkbox-group" style="margin-top: 8pt;">
-          <label class="checkbox-item"><input type="checkbox" name="agreement_confirmed" value="yes" required><span>I confirm I have read and agree to the Volunteer Agreement terms.</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="nda_confirmed" value="yes" required><span>I confirm I have read and agree to the NDA terms.</span></label>
-        </div>
+<!-- ═══════════════ PAGE 5: ELECTRONIC SIGNATURE, CONSENT & ACKNOWLEDGMENT ═══════════════ -->
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-shield"></div>
+      <div class="logo-text">
+        <div class="org-name">CivicOS Institute</div>
+        <div class="org-sub">Volunteer Intake</div>
       </div>
-      <input type="hidden" name="_subject" value="CivicOS Volunteer Intake Submission">
-      <input type="hidden" name="_next" value="https://civicos-institute.org/volunteer/?submitted=1">
-      <button type="submit">Submit Volunteer Intake</button>
-      <div class="submit-note">This intake is reviewed manually by CivicOS Institute.</div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Volunteer Intake</div>
+      <div>Version 2.1 &nbsp;|&nbsp; April 2026</div>
+      <div>Confidential When Completed</div>
+      <div class="doc-id">FORM-CIVICOS-INTAKE-2026</div>
     </div>
   </div>
+
+  <div class="section-header">Section 5 &mdash; Electronic Signature, Consent &amp; Acknowledgment</div>
+
+  <div class="esign-intro">
+    <p><strong>Electronic Records &amp; Signature Disclosure.</strong> By completing this section, you agree that the records and agreements contained in this intake form (Sections 3 and 4) may be provided, executed, and retained electronically. You understand that your electronic signature below has the same legal effect, validity, and enforceability as a handwritten signature under the federal Electronic Signatures in Global and National Commerce Act (E-SIGN Act, 15 U.S.C. &sect;&sect; 7001 <em>et seq.</em>) and the Uniform Electronic Transactions Act (UETA) as adopted in the State of Florida.</p>
+    <p style="margin-top: 5pt;"><strong>Hardware &amp; software requirements.</strong> To access and retain these electronic records you will need an internet-connected device, a modern web browser, an email account, and the ability to view and save HTML or PDF documents.</p>
+    <p style="margin-top: 5pt;"><strong>Right to withdraw consent.</strong> You may withdraw your consent to electronic records at any time before final submission by closing this form. Once you submit this form, the electronic record is deemed executed. To request a paper copy of your executed intake, or to withdraw consent after submission, contact CivicOS Institute in writing at <strong>legal@civicos-institute.org</strong>.</p>
+  </div>
+
+  <div class="attestation-block">
+    <div class="att-title">Consent to Electronic Records</div>
+    <div class="att-text">I have read and understand the Electronic Records &amp; Signature Disclosure above. I consent to conducting this intake and executing the agreements contained herein by electronic means.</div>
+    <div class="attestation-row">
+      <label class="att-check">
+        <input type="checkbox" name="consent_esign" value="yes" required>
+        <span>I consent to the use of electronic records and electronic signatures.</span>
+      </label>
+      <div class="att-initials">
+        <label>Initials</label>
+        <input type="text" name="initials_esign" maxlength="4" required autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div class="attestation-block">
+    <div class="att-title">Section 3 &mdash; Volunteer Agreement &amp; Intellectual Property Assignment</div>
+    <div class="att-text">I have read, understand, and voluntarily agree to be bound by the Volunteer Agreement &amp; Intellectual Property Assignment set forth in Section 3 of this form. I understand that all contributions I make during my participation with CivicOS Institute will be assigned to CivicOS Institute as described therein, and that my participation is voluntary and unpaid unless separately agreed in writing.</div>
+    <div class="attestation-row">
+      <label class="att-check">
+        <input type="checkbox" name="agree_volunteer_ip" value="yes" required>
+        <span>I have read and agree to the Volunteer Agreement &amp; IP Assignment (Section 3).</span>
+      </label>
+      <div class="att-initials">
+        <label>Initials</label>
+        <input type="text" name="initials_volunteer_ip" maxlength="4" required autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div class="attestation-block">
+    <div class="att-title">Section 4 &mdash; Non-Disclosure Agreement</div>
+    <div class="att-text">I have read, understand, and voluntarily agree to be bound by the Non-Disclosure Agreement set forth in Section 4 of this form. I understand that my obligations of confidentiality survive termination of my participation and remain in effect for three (3) years thereafter, and that unauthorized disclosure of Confidential Information may result in injunctive relief and other legal remedies.</div>
+    <div class="attestation-row">
+      <label class="att-check">
+        <input type="checkbox" name="agree_nda" value="yes" required>
+        <span>I have read and agree to the Non-Disclosure Agreement (Section 4).</span>
+      </label>
+      <div class="att-initials">
+        <label>Initials</label>
+        <input type="text" name="initials_nda" maxlength="4" required autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div class="signature-final">
+    <div class="sf-title">Signer Identity &amp; Electronic Signature</div>
+    <div class="sf-intent">By typing my full legal name below, I intend this typed name to constitute my legal electronic signature on the agreements referenced above, with the same binding effect as a handwritten signature. I affirm under penalty of perjury that the identifying information provided in this form is true and accurate.</div>
+
+    <div class="sig-field-row">
+      <div class="sf-group signature">
+        <label>Electronic Signature (type your full legal name) <span class="req">*</span></label>
+        <input type="text" name="signature_typed_name" required autocomplete="off" placeholder="Jane Q. Doe">
+      </div>
+    </div>
+
+    <div class="sig-field-row">
+      <div class="sf-group">
+        <label>Printed Full Legal Name <span class="req">*</span></label>
+        <input type="text" name="signature_printed_name" required autocomplete="off">
+      </div>
+      <div class="sf-group">
+        <label>Email Address (re-confirm) <span class="req">*</span></label>
+        <input type="email" name="signature_email" required autocomplete="off">
+      </div>
+      <div class="sf-group">
+        <label>Date of Signature <span class="req">*</span></label>
+        <input type="date" name="signature_date" required>
+      </div>
+    </div>
+
+    <div class="final-affirm">
+      <label>
+        <input type="checkbox" name="final_affirmation" value="yes" required>
+        <span>I affirm that (a) I am at least 18 years of age, (b) I am the person named above, (c) my typed name above is my legal electronic signature, (d) I intend to be legally bound by the Volunteer Agreement, IP Assignment, and Non-Disclosure Agreement contained in this form, and (e) the information I have provided in this intake is true and complete to the best of my knowledge.</span>
+      </label>
+    </div>
+
+    <div class="esign-footer-meta">
+      <strong>Execution record.</strong> Upon submission, the following are automatically captured and bound to this executed record for audit purposes: your typed signature, the initials you provided, the agreements you checked, the email address on file, the date and time (UTC) of submission, and your browser/device metadata. CivicOS Institute will email a copy of this executed intake to the address you provided.
+    </div>
+  </div>
+
+  <!-- Hidden fields for Formspree routing and execution record -->
+  <input type="hidden" name="_subject" value="CivicOS Volunteer Intake — Executed Submission">
+  <input type="hidden" name="_next" value="https://civicos-institute.org/volunteer/?submitted=1">
+  <input type="hidden" name="_format" value="plain">
+  <input type="hidden" name="executed_timestamp_iso" id="executed_timestamp_iso">
+  <input type="hidden" name="executed_timezone" id="executed_timezone">
+  <input type="hidden" name="executed_user_agent" id="executed_user_agent">
+  <input type="hidden" name="executed_document_version" value="CivicOS-Volunteer-Intake-v2.1-2026-04">
+
+  <div class="submit-row">
+    <button type="submit">Submit Executed Intake</button>
+    <div class="submit-note">Submission creates a legally binding electronic record. You will receive an email confirmation. CivicOS Institute reviews every intake manually.</div>
+  </div>
+
+  <div class="footer">
+    <div>CivicOS Institute &mdash; Confidential</div>
+    <div class="footer-center">FORM-CIVICOS-INTAKE-2026 &nbsp;&bull;&nbsp; Volunteer Intake</div>
+    <div>Page 5 of 5</div>
+  </div>
+</div>
+
 </form>
+
+<script>
+// Auto-fill signature date and capture execution record metadata on load.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      var now = new Date();
+      var pad = function(n) { return (n < 10 ? '0' : '') + n; };
+      var yyyy = now.getFullYear();
+      var mm = pad(now.getMonth() + 1);
+      var dd = pad(now.getDate());
+      var dateInput = document.querySelector('input[name="signature_date"]');
+      if (dateInput) dateInput.value = yyyy + '-' + mm + '-' + dd;
+
+      var tsField = document.getElementById('executed_timestamp_iso');
+      if (tsField) tsField.value = now.toISOString();
+
+      var tzField = document.getElementById('executed_timezone');
+      if (tzField) {
+        try { tzField.value = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }
+        catch (e) { tzField.value = ''; }
+      }
+
+      var uaField = document.getElementById('executed_user_agent');
+      if (uaField) uaField.value = navigator.userAgent || '';
+
+      // Auto-derive initials from typed signature if initials empty.
+      var typed = document.querySelector('input[name="signature_typed_name"]');
+      if (typed) {
+        typed.addEventListener('blur', function() {
+          var parts = (typed.value || '').trim().split(/\s+/).filter(Boolean);
+          if (parts.length === 0) return;
+          var initials = parts.map(function(p) { return p.charAt(0).toUpperCase(); }).join('').slice(0, 4);
+          document.querySelectorAll('.att-initials input').forEach(function(inp) {
+            if (!inp.value) inp.value = initials;
+          });
+        });
+      }
+
+      // Refresh timestamp at submit time so it reflects the actual submission moment.
+      var form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          var t = new Date();
+          if (tsField) tsField.value = t.toISOString();
+        });
+      }
+    } catch (err) {
+      // Fail silently; server-side validation still applies.
+    }
+  });
+})();
+</script>
 </body>
 </html>
