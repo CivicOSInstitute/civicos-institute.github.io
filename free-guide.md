@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Free AI Learning Kit — CivicOS Institute"
+description: "Download the free CivicOS AI Learning Kit: practical AI literacy materials for technical and non-technical learners, educators, and civic teams."
 permalink: /free-guide/
 ---
 
@@ -9,7 +10,7 @@ permalink: /free-guide/
     <!-- Header -->
     <div style="text-align:center;margin-bottom:48px;">
       <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;">Free Resource</div>
-      <h1 style="font-family:var(--serif);font-size:clamp(36px,6vw,56px);font-weight:900;line-height:1.05;letter-spacing:-0.02em;margin-bottom:16px;">CivicOS AI <em style="font-style:italic;color:var(--amber);">Learning Kit</em></h1>
+      <h1 style="font-family:var(--serif);font-size:clamp(36px,6vw,56px);font-weight:900;line-height:1.05;letter-spacing:0;margin-bottom:16px;">CivicOS AI <em style="font-style:italic;color:var(--amber);">Learning Kit</em></h1>
       <p style="font-size:16px;color:var(--grey);line-height:1.7;max-width:560px;margin:0 auto;">Comprehensive instructional materials for technical and non-technical learners — building practical AI literacy and civic readiness.</p>
     </div>
 

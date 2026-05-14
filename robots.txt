@@ -1,0 +1,16 @@
+---
+layout: null
+permalink: /robots.txt
+---
+User-agent: *
+Allow: /
+Disallow: /generated/
+Disallow: /google-voice-stack/
+Disallow: /main-dashboard/
+Disallow: /token-dashboard/
+Disallow: /skills/
+Disallow: /data/
+Disallow: /config/
+Disallow: /tmp/
+
+Sitemap: {{ site.url }}/sitemap.xml

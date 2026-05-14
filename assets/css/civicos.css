@@ -138,7 +138,7 @@ body{padding-top:64px;}
 .hero-overline::before{content:'';width:28px;height:1px;background:var(--amber);}
 .home-hero h1{
   font-family:var(--serif);font-size:clamp(52px,8vw,108px);
-  font-weight:900;line-height:0.95;letter-spacing:-0.025em;
+  font-weight:900;line-height:0.95;letter-spacing:0;
   max-width:900px;margin-bottom:36px;
 }
 .home-hero h1 em{font-style:italic;color:var(--amber);}
@@ -250,7 +250,7 @@ body{padding-top:64px;}
 .ebook-series::before{content:'◆';font-size:8px;}
 .ebook-hero-left h1{
   font-family:var(--serif);font-size:clamp(42px,5.5vw,72px);
-  font-weight:900;line-height:1.0;letter-spacing:-0.02em;margin-bottom:12px;
+  font-weight:900;line-height:1.0;letter-spacing:0;margin-bottom:12px;
 }
 .ebook-hero-left h1 em{font-style:italic;color:var(--amber);}
 .ebook-edition{
@@ -429,7 +429,7 @@ body{padding-top:64px;}
   background:radial-gradient(circle,rgba(212,168,67,.05) 0%,transparent 65%);
   pointer-events:none;
 }
-.pub-hero h1{font-family:var(--serif);font-size:clamp(44px,6vw,80px);font-weight:900;line-height:1.0;letter-spacing:-0.02em;}
+.pub-hero h1{font-family:var(--serif);font-size:clamp(44px,6vw,80px);font-weight:900;line-height:1.0;letter-spacing:0;}
 .pub-hero h1 em{font-style:italic;color:var(--amber);}
 .pub-hero-right{display:flex;flex-direction:column;justify-content:flex-end;gap:24px;}
 .pub-hero-right p{font-size:15px;color:var(--grey);line-height:1.85;}
@@ -604,7 +604,7 @@ body{padding-top:64px;}
   background:radial-gradient(circle,rgba(212,168,67,.05) 0%,transparent 65%);
   pointer-events:none;
 }
-.about-hero h1{font-family:var(--serif);font-size:clamp(44px,7vw,90px);font-weight:900;line-height:.95;letter-spacing:-0.025em;margin-bottom:28px;max-width:700px;}
+.about-hero h1{font-family:var(--serif);font-size:clamp(44px,7vw,90px);font-weight:900;line-height:.95;letter-spacing:0;margin-bottom:28px;max-width:700px;}
 .about-hero h1 em{font-style:italic;color:var(--amber);}
 .about-hero p{font-size:16px;color:var(--grey);max-width:580px;line-height:1.85;}
 
@@ -648,7 +648,7 @@ body{padding-top:64px;}
   background:radial-gradient(circle,rgba(212,168,67,.05) 0%,transparent 65%);
   pointer-events:none;
 }
-.oss-hero h1{font-family:var(--serif);font-size:clamp(44px,7vw,90px);font-weight:900;line-height:.95;letter-spacing:-0.025em;margin-bottom:28px;max-width:700px;}
+.oss-hero h1{font-family:var(--serif);font-size:clamp(44px,7vw,90px);font-weight:900;line-height:.95;letter-spacing:0;margin-bottom:28px;max-width:700px;}
 .oss-hero h1 em{font-style:italic;color:var(--amber);}
 .oss-hero p{font-size:16px;color:var(--grey);max-width:560px;line-height:1.85;}
 
@@ -675,7 +675,7 @@ body{padding-top:64px;}
 ══════════════════════════════════════════ */
 #contact{}
 .contact-hero{padding:80px 56px 64px;border-bottom:1px solid var(--border);}
-.contact-hero h1{font-family:var(--serif);font-size:clamp(44px,6vw,80px);font-weight:900;line-height:.95;letter-spacing:-0.025em;margin-bottom:28px;}
+.contact-hero h1{font-family:var(--serif);font-size:clamp(44px,6vw,80px);font-weight:900;line-height:.95;letter-spacing:0;margin-bottom:28px;}
 .contact-hero h1 em{font-style:italic;color:var(--amber);}
 .contact-hero p{font-size:15px;color:var(--grey);max-width:500px;line-height:1.85;}
 
@@ -1019,7 +1019,7 @@ footer{
   background:radial-gradient(circle,rgba(212,168,67,.05) 0%,transparent 65%);
   pointer-events:none;
 }
-.letters-hero h1{font-family:var(--serif);font-size:clamp(42px,6vw,80px);font-weight:900;line-height:.95;letter-spacing:-0.025em;margin-bottom:18px;}
+.letters-hero h1{font-family:var(--serif);font-size:clamp(42px,6vw,80px);font-weight:900;line-height:.95;letter-spacing:0;margin-bottom:18px;}
 .letters-hero h1 em{font-style:italic;color:var(--amber);}
 .letters-hero p{font-size:15px;color:var(--grey);max-width:560px;line-height:1.85;}
 
@@ -1180,12 +1180,16 @@ footer{
   .home-hero,.pub-hero,.about-hero,.oss-hero,.contact-hero,.ebook-hero,
   .sec,.mission-strip,.ebook-cta{padding-left:24px;padding-right:24px;}
   .hero-actions{flex-direction:column;align-items:stretch;width:100%;}
-  .hero-actions .btn{width:100%;text-align:center;justify-content:center;}
+  .hero-actions .btn-primary,.hero-actions .btn-outline{width:100%;text-align:center;justify-content:center;}
   .mission-inner,.tech-inner,[class*="mission-grid"],[class*="tech-grid"],.mission-split{grid-template-columns:1fr;}
   .ebook-banner .eb-actions{flex-direction:column;width:100%;}
   .ebook-banner .eb-actions .btn{width:100%;text-align:center;}
   .ebook-cta .btn{width:100%;text-align:center;display:block;}
   .home-hero,.pub-hero,.ebook-hero{grid-template-columns:1fr;}
+  .pub-hero{gap:36px;}
+  .pub-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px;}
+  .pub-stat-num{font-size:28px;}
+  .pub-stat-label{line-height:1.35;}
   .hero-stats,.specs-grid,.inside-grid,.reviews-grid,.papers-grid,.work-grid,
   .team-grid,.repo-grid,.contrib-steps,.partners-grid,.mission-pillars,.oss-inner,
   footer{grid-template-columns:1fr;}
@@ -1208,6 +1212,8 @@ footer{
   /* Hero */
   .home-hero { padding: 80px 20px 60px; }
   .home-hero h1 { font-size: clamp(36px, 10vw, 56px); }
+  .pub-hero h1 { font-size: clamp(36px, 10vw, 56px); }
+  .pub-hero-right p { font-size: 14px; line-height: 1.75; }
   
   /* Stats bar */
   .hero-stats { grid-template-columns: repeat(2, 1fr); }
@@ -1227,7 +1233,8 @@ footer{
   
   /* Free resource / AI kit */
   .kit-grid { grid-template-columns: 1fr; }
-  .kit-card { padding: 20px; }
+  .kit-card { padding: 0; }
+  .kit-left,.kit-right { padding: 28px 20px; }
   .ai-kit-grid { grid-template-columns: 1fr; gap: 32px; }
   .ai-kit-grid .kit-dl { flex-direction: column; align-items: flex-start; padding: 16px; gap: 8px; }
   .ai-kit-grid .kit-dl-icon { margin-bottom: 0; }
@@ -1246,7 +1253,10 @@ footer{
   
   /* Sections general */
   .sec { padding: 48px 20px; }
-  .section-label { padding: 0 20px; }
+  .section-label { padding: 0; line-height: 1.5; }
+  .paper-footer { align-items:flex-start; flex-direction:column; gap:10px; }
+  .spec-row { flex-direction:column; gap:4px; }
+  .spec-key { width:auto; }
   
   /* Footer */
   footer { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px; }
